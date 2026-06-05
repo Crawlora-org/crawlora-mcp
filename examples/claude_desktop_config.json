@@ -1,0 +1,9 @@
+{
+  "mcpServers": {
+    "crawlora": {
+      "url": "https://mcp.crawlora.net/mcp",
+      "transport": "streamable-http",
+      "headers": { "Authorization": "Bearer YOUR_CRAWLORA_API_KEY" }
+    }
+  }
+}

@@ -1,0 +1,11 @@
+# Secrets — never commit API keys
+.env
+.env.*
+*.key
+
+# OS / editor
+.DS_Store
+.idea/
+.vscode/*
+!.vscode/mcp.json
+node_modules/
