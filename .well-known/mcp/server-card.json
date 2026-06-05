@@ -1,0 +1,36 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/v1/server-card.schema.json",
+  "name": "net.crawlora/crawlora-mcp",
+  "version": "1.0.0",
+  "title": "Crawlora MCP",
+  "description": "Crawlora MCP exposes agent-native structured public web data tools and documentation resources for AI workflows.",
+  "websiteUrl": "https://crawlora.net/mcp",
+  "serverInfo": {
+    "name": "crawlora-mcp",
+    "version": "1.0.0"
+  },
+  "transport": {
+    "type": "streamable-http",
+    "endpoint": "https://mcp.crawlora.net/mcp"
+  },
+  "authentication": {
+    "type": "api-key",
+    "envVar": "CRAWLORA_API_KEY",
+    "preferred": {
+      "scheme": "bearer",
+      "header": "Authorization",
+      "value": "Bearer <api-key>"
+    },
+    "alternatives": [
+      { "header": "x-api-key", "value": "<api-key>" }
+    ]
+  },
+  "capabilities": {
+    "tools": true,
+    "resources": true,
+    "prompts": false
+  },
+  "remotes": [
+    { "type": "streamable-http", "url": "https://mcp.crawlora.net/mcp" }
+  ]
+}
