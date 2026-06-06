@@ -6,7 +6,7 @@
 [![smithery badge](https://smithery.ai/badge/crawlora/crawlora)](https://smithery.ai/servers/crawlora/crawlora)
 
 **Crawlora MCP** is a **hosted** Model Context Protocol server that gives AI clients and
-agents **319 structured public‑web‑data tools** across 30+ categories — search, maps,
+agents **321 structured public‑web‑data tools** across 30+ categories — search, maps,
 e‑commerce, social, finance, travel, app stores, media, and reviews — each returning clean,
 normalized **JSON** instead of HTML to parse.
 
@@ -67,7 +67,7 @@ codex mcp add crawlora \
 More ready‑to‑paste configs are in [`examples/`](examples/). For Cline, see
 [`llms-install.md`](llms-install.md).
 
-## What you can call (319 tools / 30+ categories)
+## What you can call (321 tools / 30+ categories)
 
 | Category | Tools | Examples |
 |---|---|---|
@@ -75,7 +75,7 @@ More ready‑to‑paste configs are in [`examples/`](examples/). For Cline, see
 | **Media & entertainment** | 64 | Spotify, Spotify Podcasts, Apple Podcasts, JustWatch — tracks, artists, charts, episodes, where‑to‑watch |
 | **Social & video** | 47 | YouTube, TikTok, Instagram, Reddit, LinkedIn — search, profiles, posts, comments, transcripts, trends |
 | **E‑commerce** | 36 | Amazon, eBay, Shopify, Shop.app — product, search, sellers, collections, reviews |
-| **Search & web** | 24 | Google, Bing, Brave, Google Trends — SERPs, suggestions, news, images, interest‑over‑time |
+| **Search & web** | 26 | Google, Bing, Brave, Google Trends — SERPs, suggestions, news, videos, images, interest‑over‑time |
 | **App stores** | 20 | App Store, Google Play — app details, reviews, rankings, similar apps |
 | **Reviews & companies** | 18 | Trustpilot, Product Hunt — business reviews, launches, makers, leaderboards |
 | **Travel & real estate** | 13 | Airbnb, TripAdvisor, Zillow — listings, calendars, hotels, property data |
@@ -90,7 +90,7 @@ Full, always‑current tool list with parameters, response examples, and a live 
 - **Normalized JSON per tool** — ship data features, not scraper infrastructure.
 - **No proxies, browsers, or parsers** to maintain.
 - **Pay on success** — credit‑based, billed only on `2xx` responses.
-- **One key, 319 tools** — search, commerce, social, finance, and more behind a single MCP endpoint.
+- **One key, 321 tools** — search, commerce, social, finance, and more behind a single MCP endpoint.
 
 A good alternative to stitching together SerpApi, Firecrawl, ScraperAPI, or ScrapingBee.
 
