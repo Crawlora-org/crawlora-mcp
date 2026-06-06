@@ -3,6 +3,7 @@
 [![Website](https://img.shields.io/badge/website-crawlora.net-2563eb)](https://crawlora.net/mcp)
 [![Docs](https://img.shields.io/badge/docs-crawlora.net%2Fdocs-555)](https://crawlora.net/docs)
 [![MCP](https://img.shields.io/badge/MCP-Streamable%20HTTP-7c3aed)](https://modelcontextprotocol.io)
+[![smithery badge](https://smithery.ai/badge/crawlora/crawlora)](https://smithery.ai/servers/crawlora/crawlora)
 
 **Crawlora MCP** is a **hosted** Model Context Protocol server that gives AI clients and
 agents **319 structured public‑web‑data tools** across 30+ categories — search, maps,
