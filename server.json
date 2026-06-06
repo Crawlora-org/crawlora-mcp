@@ -1,7 +1,8 @@
 {
-  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-09-29/server.schema.json",
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
   "name": "net.crawlora/crawlora-mcp",
-  "description": "Hosted MCP for structured public web data: 319 tools across search, maps, commerce, social, and finance, returning clean JSON.",
+  "title": "Crawlora MCP",
+  "description": "Hosted MCP: 319 structured web-data tools for search, maps, commerce, social & finance.",
   "version": "1.0.0",
   "websiteUrl": "https://crawlora.net/mcp",
   "repository": {
@@ -11,7 +12,15 @@
   "remotes": [
     {
       "type": "streamable-http",
-      "url": "https://mcp.crawlora.net/mcp"
+      "url": "https://mcp.crawlora.net/mcp",
+      "headers": [
+        {
+          "name": "x-api-key",
+          "description": "Your Crawlora API key. Get one free (2,000 credits/mo, no card required) at https://crawlora.net.",
+          "isRequired": true,
+          "isSecret": true
+        }
+      ]
     }
   ]
 }
