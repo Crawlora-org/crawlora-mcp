@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "crawlora": {
+      "httpUrl": "https://mcp.crawlora.net/mcp",
+      "headers": { "Authorization": "Bearer YOUR_CRAWLORA_API_KEY" }
+    }
+  }
+}

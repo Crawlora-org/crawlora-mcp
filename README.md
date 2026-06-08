@@ -28,9 +28,26 @@ normalized **JSON** instead of HTML to parse.
 
 A missing or invalid API key returns `401`.
 
-## Quick start
+## Connect your client
 
-### Generic `mcp.json` (Claude Desktop, Cursor, and most clients)
+Crawlora MCP works with any MCP‑capable client. Pick yours below — they all point at the same
+hosted endpoint (`https://mcp.crawlora.net/mcp`, Streamable HTTP) and authenticate with your
+`CRAWLORA_API_KEY`. Prefer keeping the key in an environment variable over pasting it literally,
+and never commit it. Ready‑to‑paste files for each client live in [`examples/`](examples/).
+
+### Claude Code (CLI)
+
+```bash
+claude mcp add --transport http crawlora https://mcp.crawlora.net/mcp \
+  --header "Authorization: Bearer ${CRAWLORA_API_KEY}"
+```
+
+Adds at `local` scope by default. Use `--scope user` to make it available in every project, or
+`--scope project` to write a shared `.mcp.json`. Confirm with `claude mcp list`.
+
+### Claude Desktop
+
+Settings → Developer → **Edit Config**, then add to `claude_desktop_config.json`:
 
 ```json
 {
@@ -38,6 +55,21 @@ A missing or invalid API key returns `401`.
     "crawlora": {
       "url": "https://mcp.crawlora.net/mcp",
       "transport": "streamable-http",
+      "headers": { "Authorization": "Bearer YOUR_CRAWLORA_API_KEY" }
+    }
+  }
+}
+```
+
+### Cursor
+
+Project‑local `.cursor/mcp.json` (or `~/.cursor/mcp.json` for all projects):
+
+```json
+{
+  "mcpServers": {
+    "crawlora": {
+      "url": "https://mcp.crawlora.net/mcp",
       "headers": { "Authorization": "Bearer ${CRAWLORA_API_KEY}" }
     }
   }
@@ -52,7 +84,9 @@ codex mcp add crawlora \
   --bearer-token-env-var CRAWLORA_API_KEY
 ```
 
-### VS Code (`.vscode/mcp.json`)
+### VS Code (GitHub Copilot)
+
+`.vscode/mcp.json` (project) or your user `mcp.json`:
 
 ```json
 {
@@ -66,8 +100,58 @@ codex mcp add crawlora \
 }
 ```
 
-More ready‑to‑paste configs are in [`examples/`](examples/). For Cline, see
-[`llms-install.md`](llms-install.md).
+### Windsurf
+
+`~/.codeium/windsurf/mcp_config.json` (note the `serverUrl` key):
+
+```json
+{
+  "mcpServers": {
+    "crawlora": {
+      "serverUrl": "https://mcp.crawlora.net/mcp",
+      "headers": { "Authorization": "Bearer ${env:CRAWLORA_API_KEY}" }
+    }
+  }
+}
+```
+
+### Gemini CLI
+
+`~/.gemini/settings.json` (note the `httpUrl` key):
+
+```json
+{
+  "mcpServers": {
+    "crawlora": {
+      "httpUrl": "https://mcp.crawlora.net/mcp",
+      "headers": { "Authorization": "Bearer YOUR_CRAWLORA_API_KEY" }
+    }
+  }
+}
+```
+
+### Cline / Roo Code
+
+Add to `cline_mcp_settings.json` using the generic remote shape — full walkthrough in
+[`llms-install.md`](llms-install.md):
+
+```json
+{
+  "mcpServers": {
+    "crawlora": {
+      "url": "https://mcp.crawlora.net/mcp",
+      "transport": "streamable-http",
+      "headers": { "Authorization": "Bearer ${CRAWLORA_API_KEY}" }
+    }
+  }
+}
+```
+
+### Other clients
+
+Any client that speaks **Streamable HTTP** can use the generic config in
+[`examples/mcp.json`](examples/mcp.json). **stdio‑only** clients (e.g. Zed) should run the
+[local server](#run-it-locally-open-source-server) below and point at its `npx` command.
 
 ## Run it locally (open‑source server)
 
