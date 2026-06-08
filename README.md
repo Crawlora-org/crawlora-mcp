@@ -10,9 +10,10 @@ agents **323 structured public‑web‑data tools** across 30+ categories — se
 e‑commerce, social, finance, travel, app stores, media, and reviews — each returning clean,
 normalized **JSON** instead of HTML to parse.
 
-> This is a **remote/hosted** server — there is nothing to build or run locally. Point any
-> MCP‑capable client at the hosted endpoint and authenticate with your Crawlora API key.
-> Start free with **2,000 credits/month** (no card) at **[crawlora.net](https://crawlora.net)**.
+> **Two ways to use it:** connect any MCP client to the **hosted** endpoint
+> (`https://mcp.crawlora.net/mcp`), or run the small **open‑source local server** in this repo
+> (`npx` / Docker, stdio) — both expose the same tools and authenticate with your Crawlora API
+> key. Start free with **2,000 credits/month** (no card) at **[crawlora.net](https://crawlora.net)**.
 
 ## Connection
 
@@ -67,7 +68,41 @@ codex mcp add crawlora \
 More ready‑to‑paste configs are in [`examples/`](examples/). For Cline, see
 [`llms-install.md`](llms-install.md).
 
-## What you can call (323 tools / 30+ categories)
+## Run it locally (open‑source server)
+
+This repo also ships a small **stdio** MCP server (`index.mjs`) that exposes the same **321
+tools**, each wrapping the Crawlora REST API (`https://api.crawlora.net/api/v1`) with your
+`CRAWLORA_API_KEY`. Useful if you'd rather run the server yourself than use the hosted endpoint.
+
+```bash
+# Node 20+ (no install)
+CRAWLORA_API_KEY=your-key npx -y crawlora-mcp
+
+# or from a clone
+npm install && CRAWLORA_API_KEY=your-key node index.mjs
+
+# or Docker
+docker build -t crawlora-mcp . && docker run -i -e CRAWLORA_API_KEY=your-key crawlora-mcp
+```
+
+Client config (stdio):
+
+```json
+{
+  "mcpServers": {
+    "crawlora": {
+      "command": "npx",
+      "args": ["-y", "crawlora-mcp"],
+      "env": { "CRAWLORA_API_KEY": "your-key" }
+    }
+  }
+}
+```
+
+The tool definitions in [`tools.json`](tools.json) are generated from Crawlora's published API
+catalog; each carries its real input schema and maps to a single REST endpoint.
+
+## What you can call (321 tools / 30+ categories)
 
 | Category | Tools | Examples |
 |---|---|---|

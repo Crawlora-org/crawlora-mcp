@@ -1,0 +1,14 @@
+.git
+node_modules
+npm-debug.log
+examples
+assets
+.well-known
+*.md
+server.json
+glama.json
+server-card.json
+Dockerfile
+.dockerignore
+.gitignore
+test.mjs

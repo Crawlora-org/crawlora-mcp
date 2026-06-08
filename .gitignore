@@ -8,4 +8,7 @@
 .idea/
 .vscode/*
 !.vscode/mcp.json
+
+# deps / local test artifacts (package-lock.json IS committed for reproducible npm ci)
 node_modules/
+test.mjs
