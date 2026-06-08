@@ -107,15 +107,15 @@ catalog; each carries its real input schema and maps to a single REST endpoint.
 
 | Category | Tools | Examples |
 |---|---|---|
-| **Finance & crypto** | 82 | Yahoo Finance, Google Finance, CoinGecko, Polymarket — quotes, financials, screeners, markets, trending, coins, prediction markets |
-| **Media & entertainment** | 64 | Spotify, Spotify Podcasts, Apple Podcasts, JustWatch — tracks, artists, charts, episodes, where‑to‑watch |
-| **Social & video** | 47 | YouTube, TikTok, Instagram, Reddit, LinkedIn — search, profiles, posts, comments, transcripts, trends |
+| **Finance & crypto** | 142 | Yahoo Finance, Google Finance, CoinGecko, Polymarket, Kalshi, Metaculus — quotes, financials, screeners, markets, trending, coins, prediction markets |
+| **Media & entertainment** | 113 | Spotify, Spotify Podcasts, Apple Podcasts, JustWatch, IMDb, Rotten Tomatoes, Box Office Mojo — tracks, artists, charts, episodes, where‑to‑watch, titles, ratings, box office |
+| **Social & video** | 54 | YouTube, TikTok, Instagram, Reddit, LinkedIn — search, profiles, posts, comments, transcripts, trends |
 | **E‑commerce** | 36 | Amazon, eBay, Shopify, Shop.app — product, search, sellers, collections, reviews |
 | **Search & web** | 26 | Google, Bing, Brave, Google Trends — SERPs, suggestions, news, videos, images, interest‑over‑time |
 | **App stores** | 20 | App Store, Google Play — app details, reviews, rankings, similar apps |
 | **Reviews & companies** | 18 | Trustpilot, Product Hunt — business reviews, launches, makers, leaderboards |
 | **Travel & real estate** | 13 | Airbnb, TripAdvisor, Zillow — listings, calendars, hotels, property data |
-| **Data & utility** | 14 | Datasets, SimilarWeb, usage — curated datasets, website intelligence, account usage |
+| **Data & utility** | 12 | Datasets, SimilarWeb, usage — curated datasets, website intelligence, account usage |
 | **Maps & places** | 5 | Google Maps, Geocoding — place search, details, forward/reverse geocoding |
 
 Full, always‑current tool list with parameters, response examples, and a live Playground:
