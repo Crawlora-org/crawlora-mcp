@@ -7,7 +7,7 @@
 [![crawlora-mcp MCP server](https://glama.ai/mcp/servers/Crawlora-org/crawlora-mcp/badges/score.svg)](https://glama.ai/mcp/servers/Crawlora-org/crawlora-mcp)
 
 **Crawlora MCP** is a **hosted** Model Context Protocol server that gives AI clients and
-agents **323 structured public‑web‑data tools** across 30+ categories — search, maps,
+agents **439 structured public‑web‑data tools** across 30+ categories — search, maps,
 e‑commerce, social, finance, travel, app stores, media, and reviews — each returning clean,
 normalized **JSON** instead of HTML to parse.
 
@@ -71,7 +71,7 @@ More ready‑to‑paste configs are in [`examples/`](examples/). For Cline, see
 
 ## Run it locally (open‑source server)
 
-This repo also ships a small **stdio** MCP server (`index.mjs`) that exposes the same **321
+This repo also ships a small **stdio** MCP server (`index.mjs`) that exposes the same **439
 tools**, each wrapping the Crawlora REST API (`https://api.crawlora.net/api/v1`) with your
 `CRAWLORA_API_KEY`. Useful if you'd rather run the server yourself than use the hosted endpoint.
 
@@ -103,7 +103,7 @@ Client config (stdio):
 The tool definitions in [`tools.json`](tools.json) are generated from Crawlora's published API
 catalog; each carries its real input schema and maps to a single REST endpoint.
 
-## What you can call (321 tools / 30+ categories)
+## What you can call (439 tools / 30+ categories)
 
 | Category | Tools | Examples |
 |---|---|---|
@@ -126,7 +126,7 @@ Full, always‑current tool list with parameters, response examples, and a live 
 - **Normalized JSON per tool** — ship data features, not scraper infrastructure.
 - **No proxies, browsers, or parsers** to maintain.
 - **Pay on success** — credit‑based, billed only on `2xx` responses.
-- **One key, 323 tools** — search, commerce, social, finance, and more behind a single MCP endpoint.
+- **One key, 439 tools** — search, commerce, social, finance, and more behind a single MCP endpoint.
 
 A good alternative to stitching together SerpApi, Firecrawl, ScraperAPI, or ScrapingBee.
 
