@@ -1,0 +1,37 @@
+{
+  "name": "crawlora-mcp",
+  "version": "1.0.0",
+  "description": "Local MCP server for Crawlora — 321 structured public web-data tools (search, maps, commerce, social, finance) wrapping the Crawlora REST API.",
+  "type": "module",
+  "main": "index.mjs",
+  "bin": {
+    "crawlora-mcp": "index.mjs"
+  },
+  "files": [
+    "index.mjs",
+    "tools.json"
+  ],
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "start": "node index.mjs"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.12.0"
+  },
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "crawlora",
+    "web-scraping",
+    "serp",
+    "data-extraction"
+  ],
+  "homepage": "https://crawlora.net/mcp",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Crawlora-org/crawlora-mcp.git"
+  },
+  "license": "MIT"
+}
