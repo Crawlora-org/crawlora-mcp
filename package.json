@@ -15,7 +15,8 @@
     "node": ">=20"
   },
   "scripts": {
-    "start": "node index.mjs"
+    "start": "node index.mjs",
+    "test": "node scripts/smoke-test.mjs"
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.12.0"
