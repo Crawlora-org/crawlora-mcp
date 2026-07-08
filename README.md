@@ -187,7 +187,7 @@ Client config (stdio):
 The tool definitions in [`tools.json`](tools.json) are generated from Crawlora's published API
 catalog; each carries its real input schema and maps to a single REST endpoint.
 
-## What you can call (478 tools / 30+ categories)
+## What you can call (505 tools / 30+ categories)
 
 | Category | Tools | Examples |
 |---|---|---|
@@ -196,7 +196,7 @@ catalog; each carries its real input schema and maps to a single REST endpoint.
 | **Social & video** | 54 | YouTube, TikTok, Instagram, Reddit, LinkedIn — search, profiles, posts, comments, transcripts, trends |
 | **E‑commerce** | 36 | Amazon, eBay, Shopify, Shop.app — product, search, sellers, collections, reviews |
 | **Search & web** | 27 | Google, Bing, Brave, Google Trends, Web Scrape — SERPs, suggestions, news, videos, images, interest‑over‑time, URL‑to‑markdown |
-| **App stores** | 20 | App Store, Google Play — app details, reviews, rankings, similar apps |
+| **App stores** | 29 | App Store, Google Play, Chrome Web Store — app/extension details, reviews, rankings, similar apps, categories |
 | **Reviews & companies** | 18 | Trustpilot, Product Hunt — business reviews, launches, makers, leaderboards |
 | **Travel & real estate** | 21 | Airbnb, TripAdvisor, Zillow, Redfin — listings, calendars, hotels, property data, estimates, region trends |
 | **Data & utility** | 12 | Datasets, SimilarWeb, usage — curated datasets, website intelligence, account usage |
@@ -210,7 +210,7 @@ Full, always‑current tool list with parameters, response examples, and a live 
 - **Normalized JSON per tool** — ship data features, not scraper infrastructure.
 - **No proxies, browsers, or parsers** to maintain.
 - **Pay on success** — credit‑based, billed only on `2xx` responses.
-- **One key, 478 tools** — search, commerce, social, finance, and more behind a single MCP endpoint.
+- **One key, 505 tools** — search, commerce, social, finance, and more behind a single MCP endpoint.
 
 A good alternative to stitching together SerpApi, Firecrawl, ScraperAPI, or ScrapingBee.
 
