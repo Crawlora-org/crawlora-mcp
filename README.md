@@ -7,7 +7,7 @@
 [![crawlora-mcp MCP server](https://glama.ai/mcp/servers/Crawlora-org/crawlora-mcp/badges/score.svg)](https://glama.ai/mcp/servers/Crawlora-org/crawlora-mcp)
 
 **Crawlora MCP** is a **hosted** Model Context Protocol server that gives AI clients and
-agents **571 structured public‑web‑data tools** across 30+ categories — search, maps,
+agents **587 structured public‑web‑data tools** across 30+ categories — search, maps,
 e‑commerce, social, finance, travel, app stores, media, and reviews — each returning clean,
 normalized **JSON** instead of HTML to parse.
 
@@ -155,7 +155,7 @@ Any client that speaks **Streamable HTTP** can use the generic config in
 
 ## Run it locally (open‑source server)
 
-This repo also ships a small **stdio** MCP server (`index.mjs`) that exposes the same **571
+This repo also ships a small **stdio** MCP server (`index.mjs`) that exposes the same **587
 tools**, each wrapping the Crawlora REST API (`https://api.crawlora.net/api/v1`) with your
 `CRAWLORA_API_KEY`. Useful if you'd rather run the server yourself than use the hosted endpoint.
 
@@ -187,7 +187,7 @@ Client config (stdio):
 The tool definitions in [`tools.json`](tools.json) are generated from Crawlora's published API
 catalog; each carries its real input schema and maps to a single REST endpoint.
 
-## What you can call (571 tools / 30+ categories)
+## What you can call (587 tools / 30+ categories)
 
 | Category | Tools | Examples |
 |---|---|---|
@@ -199,10 +199,10 @@ catalog; each carries its real input schema and maps to a single REST endpoint.
 | **App stores** | 29 | App Store, Google Play, Chrome Web Store — app/extension details, reviews, rankings, similar apps, categories |
 | **Reviews & companies** | 18 | Trustpilot, Product Hunt — business reviews, launches, makers, leaderboards |
 | **Travel & real estate** | 21 | Airbnb, TripAdvisor, Zillow, Redfin — listings, calendars, hotels, property data, estimates, region trends |
-| **Data & utility** | 12 | Datasets, SimilarWeb, usage — curated datasets, website intelligence, account usage |
+| **Data & utility** | 19 | Datasets, SimilarWeb, usage — curated datasets (apps, Steam games & charts, housing markets, tech‑stack), website intelligence, account usage |
 | **Maps & places** | 5 | Google Maps, Geocoding — place search, details, forward/reverse geocoding |
 | **Jobs & hiring** | 11 | Greenhouse, Lever, Ashby, Workday, SmartRecruiters — job boards, single postings, hiring signals, cross-provider company search |
-| **Gaming** | 12 | Steam — app & package details, reviews & histogram, search, featured, player counts, achievements, news, SteamSpy stats |
+| **Gaming** | 21 | Steam — app & package details, reviews & histogram, search, featured, player counts, achievements, news, SteamSpy stats, store tag/category browse, charts (concurrent, most‑played, top releases), top sellers, community recommendations |
 
 Full, always‑current tool list with parameters, response examples, and a live Playground:
 **https://crawlora.net/docs**.
@@ -212,7 +212,7 @@ Full, always‑current tool list with parameters, response examples, and a live 
 - **Normalized JSON per tool** — ship data features, not scraper infrastructure.
 - **No proxies, browsers, or parsers** to maintain.
 - **Pay on success** — credit‑based, billed only on `2xx` responses.
-- **One key, 571 tools** — search, commerce, social, finance, and more behind a single MCP endpoint.
+- **One key, 587 tools** — search, commerce, social, gaming, finance, and more behind a single MCP endpoint.
 
 A good alternative to stitching together SerpApi, Firecrawl, ScraperAPI, or ScrapingBee.
 
