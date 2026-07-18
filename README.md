@@ -7,7 +7,7 @@
 [![crawlora-mcp MCP server](https://glama.ai/mcp/servers/Crawlora-org/crawlora-mcp/badges/score.svg)](https://glama.ai/mcp/servers/Crawlora-org/crawlora-mcp)
 
 **Crawlora MCP** is a **hosted** Model Context Protocol server that gives AI clients and
-agents **683 structured public‑web‑data tools** across 30+ categories — search, maps,
+agents **728 structured public‑web‑data tools** across 30+ categories — search, maps,
 e‑commerce, social, finance, travel, app stores, media, and reviews — each returning clean,
 normalized **JSON** instead of HTML to parse.
 
@@ -155,7 +155,7 @@ Any client that speaks **Streamable HTTP** can use the generic config in
 
 ## Run it locally (open‑source server)
 
-This repo also ships a small **stdio** MCP server (`index.mjs`) that exposes the same **683
+This repo also ships a small **stdio** MCP server (`index.mjs`) that exposes the same **728
 tools**, each wrapping the Crawlora REST API (`https://api.crawlora.net/api/v1`) with your
 `CRAWLORA_API_KEY`. Useful if you'd rather run the server yourself than use the hosted endpoint.
 
@@ -187,22 +187,22 @@ Client config (stdio):
 The tool definitions in [`tools.json`](tools.json) are generated from Crawlora's published API
 catalog; each carries its real input schema and maps to a single REST endpoint.
 
-## What you can call (683 tools / 30+ categories)
+## What you can call (728 tools / 30+ categories)
 
 | Category | Tools | Examples |
 |---|---|---|
-| **Finance & crypto** | 152 | Yahoo Finance, Google Finance, SEC EDGAR, CoinGecko, Polymarket, Kalshi, Metaculus — quotes, financials, SEC filings & normalized statements, screeners, markets, trending, coins, prediction markets |
-| **Media & entertainment** | 162 | Spotify, Spotify Podcasts, Apple Podcasts, JustWatch, IMDb, Rotten Tomatoes, Box Office Mojo, Metacritic, TMDB, Letterboxd, Discogs, Goodreads, AniList (anime & manga) — tracks, artists, charts, episodes, where‑to‑watch, titles, ratings, critic and user reviews, box office, movies & TV, music releases, books, anime & manga |
-| **Social & video** | 54 | YouTube, TikTok, Instagram, Reddit, LinkedIn — search, profiles, posts, comments, transcripts, trends |
-| **E‑commerce** | 39 | Amazon, eBay, Walmart, Shopify, Shop.app — product, search, sellers, collections, reviews |
-| **Search & web** | 27 | Google, Bing, Brave, Google Trends, Web Scrape — SERPs, suggestions, news, videos, images, interest‑over‑time, URL‑to‑markdown |
-| **App stores** | 29 | App Store, Google Play, Chrome Web Store — app/extension details, reviews, rankings, similar apps, categories |
-| **Reviews & companies** | 21 | Trustpilot, Capterra, Product Hunt — business and software reviews, launches, makers, leaderboards |
-| **Travel & real estate** | 21 | Airbnb, TripAdvisor, Zillow, Redfin — listings, calendars, hotels, property data, estimates, region trends |
-| **Data & utility** | 43 | Datasets, Numbeo, SimilarWeb, usage — curated datasets (Chrome extensions, journalists, cost of living, apps, Steam games & charts, housing markets, tech‑stack), website intelligence, account usage |
-| **Maps & places** | 5 | Google Maps, Geocoding — place search, details, forward/reverse geocoding |
-| **Jobs & hiring** | 11 | Greenhouse, Lever, Ashby, Workday, SmartRecruiters — job boards, single postings, hiring signals, cross-provider company search |
-| **Gaming** | 21 | Steam — app & package details, reviews & histogram, search, featured, player counts, achievements, news, SteamSpy stats, store tag/category browse, charts (concurrent, most‑played, top releases), top sellers, community recommendations |
+| **Finance & company intelligence** | 143 | Yahoo Finance, SEC EDGAR, CoinGecko, Polymarket, Kalshi, Metaculus, PitchBook, TrustMRR, Brand — markets, filings, company data, revenue, and prediction markets |
+| **Media & entertainment** | 162 | Spotify, podcasts, JustWatch, IMDb, Rotten Tomatoes, Box Office Mojo, Metacritic, TMDB, Letterboxd, Discogs, Goodreads, anime and manga — music, shows, films, books, ratings, reviews, and charts |
+| **Social, video & developer** | 73 | YouTube, TikTok, Instagram, Reddit, LinkedIn, X, GitHub — search, profiles, relationships, posts, comments, transcripts, and trends |
+| **E‑commerce** | 39 | Amazon, eBay, Walmart, Shopify, Shop.app — products, search, sellers, collections, and reviews |
+| **Search, web & maps** | 54 | Google, Bing, Brave, Google Trends, Google Maps, Geocoding, Web Scrape — SERPs, suggestions, maps, news, media search, interest over time, and URL-to-markdown |
+| **App stores** | 32 | App Store, Google Play, Chrome Web Store — apps and extensions, reviews, rankings, similar items, categories, and datasets |
+| **Reviews & companies** | 21 | Trustpilot, Capterra, Product Hunt — business and software reviews, launches, makers, and leaderboards |
+| **Travel & real estate** | 21 | Airbnb, TripAdvisor, Zillow, Redfin — listings, calendars, hotels, property data, estimates, and region trends |
+| **Data & utility** | 92 | Datasets, Numbeo, SimilarWeb, usage — jobs, companies, financials, browser extensions, journalists, cost of living, apps, games, housing, website intelligence, and account usage |
+| **Jobs & hiring** | 26 | Greenhouse, Lever, Ashby, Workday, SmartRecruiters, iCIMS, Eightfold, Workable, Recruitee, Rippling, Personio, Teamtailor, Oracle, and UKG — boards, postings, feeds, and hiring signals |
+| **Gaming & collectibles** | 41 | Steam, PlayStation, TCDB — games, packages, reviews, player counts, achievements, releases, trading cards, sets, teams, and people |
+| **Sports** | 24 | ESPN, SofaScore — live scores, schedules, standings, teams, players, leagues, and tournaments |
 
 Full, always‑current tool list with parameters, response examples, and a live Playground:
 **https://crawlora.net/docs**.
@@ -212,7 +212,7 @@ Full, always‑current tool list with parameters, response examples, and a live 
 - **Normalized JSON per tool** — ship data features, not scraper infrastructure.
 - **No proxies, browsers, or parsers** to maintain.
 - **Pay on success** — credit‑based, billed only on `2xx` responses.
-- **One key, 683 tools** — search, commerce, social, gaming, finance, and more behind a single MCP endpoint.
+- **One key, 728 tools** — search, commerce, social, gaming, finance, and more behind a single MCP endpoint.
 
 A good alternative to stitching together SerpApi, Firecrawl, ScraperAPI, or ScrapingBee.
 
