@@ -7,7 +7,7 @@
 [![crawlora-mcp MCP server](https://glama.ai/mcp/servers/Crawlora-org/crawlora-mcp/badges/score.svg)](https://glama.ai/mcp/servers/Crawlora-org/crawlora-mcp)
 
 **Crawlora MCP** is a **hosted** Model Context Protocol server that gives AI clients and
-agents **728 structured public‑web‑data tools** across 30+ categories — search, maps,
+agents **733 structured public‑web‑data tools** across 30+ categories — search, maps,
 e‑commerce, social, finance, travel, app stores, media, and reviews — each returning clean,
 normalized **JSON** instead of HTML to parse.
 
@@ -155,7 +155,7 @@ Any client that speaks **Streamable HTTP** can use the generic config in
 
 ## Run it locally (open‑source server)
 
-This repo also ships a small **stdio** MCP server (`index.mjs`) that exposes the same **728
+This repo also ships a small **stdio** MCP server (`index.mjs`) that exposes the same **733
 tools**, each wrapping the Crawlora REST API (`https://api.crawlora.net/api/v1`) with your
 `CRAWLORA_API_KEY`. Useful if you'd rather run the server yourself than use the hosted endpoint.
 
@@ -187,13 +187,13 @@ Client config (stdio):
 The tool definitions in [`tools.json`](tools.json) are generated from Crawlora's published API
 catalog; each carries its real input schema and maps to a single REST endpoint.
 
-## What you can call (728 tools / 30+ categories)
+## What you can call (733 tools / 30+ categories)
 
 | Category | Tools | Examples |
 |---|---|---|
 | **Finance & company intelligence** | 143 | Yahoo Finance, SEC EDGAR, CoinGecko, Polymarket, Kalshi, Metaculus, PitchBook, TrustMRR, Brand — markets, filings, company data, revenue, and prediction markets |
 | **Media & entertainment** | 162 | Spotify, podcasts, JustWatch, IMDb, Rotten Tomatoes, Box Office Mojo, Metacritic, TMDB, Letterboxd, Discogs, Goodreads, anime and manga — music, shows, films, books, ratings, reviews, and charts |
-| **Social, video & developer** | 73 | YouTube, TikTok, Instagram, Reddit, LinkedIn, X, GitHub — search, profiles, relationships, posts, comments, transcripts, and trends |
+| **Social, video & developer** | 78 | YouTube, TikTok, Instagram, Threads, Reddit, LinkedIn, X, GitHub — search, profiles, relationships, posts, replies, comments, transcripts, and trends |
 | **E‑commerce** | 39 | Amazon, eBay, Walmart, Shopify, Shop.app — products, search, sellers, collections, and reviews |
 | **Search, web & maps** | 54 | Google, Bing, Brave, Google Trends, Google Maps, Geocoding, Web Scrape — SERPs, suggestions, maps, news, media search, interest over time, and URL-to-markdown |
 | **App stores** | 32 | App Store, Google Play, Chrome Web Store — apps and extensions, reviews, rankings, similar items, categories, and datasets |
@@ -212,7 +212,7 @@ Full, always‑current tool list with parameters, response examples, and a live 
 - **Normalized JSON per tool** — ship data features, not scraper infrastructure.
 - **No proxies, browsers, or parsers** to maintain.
 - **Pay on success** — credit‑based, billed only on `2xx` responses.
-- **One key, 728 tools** — search, commerce, social, gaming, finance, and more behind a single MCP endpoint.
+- **One key, 733 tools** — search, commerce, social, gaming, finance, and more behind a single MCP endpoint.
 
 A good alternative to stitching together SerpApi, Firecrawl, ScraperAPI, or ScrapingBee.
 
