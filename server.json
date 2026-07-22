@@ -3,7 +3,7 @@
   "name": "net.crawlora/crawlora-mcp",
   "title": "Crawlora MCP",
   "description": "Hosted MCP: 733 structured web-data tools for search, maps, commerce, social, gaming & finance.",
-  "version": "1.7.0",
+  "version": "1.8.0",
   "websiteUrl": "https://crawlora.net/mcp",
   "repository": {
     "url": "https://github.com/Crawlora-org/crawlora-mcp",
