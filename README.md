@@ -23,7 +23,7 @@ normalized **JSON** instead of HTML to parse.
 | **Endpoint** | `https://mcp.crawlora.net/mcp` |
 | **Transport** | Streamable HTTP |
 | **Auth** | `Authorization: Bearer <CRAWLORA_API_KEY>` (preferred) — `x-api-key: <key>` also accepted |
-| **Get a key** | https://crawlora.net?utm_source=github&utm_medium=referral&utm_campaign=crawlora-mcp (free 2,000 credits/mo) |
+| **Get a key** | [https://crawlora.net](https://crawlora.net?utm_source=github&utm_medium=referral&utm_campaign=crawlora-mcp) (free 2,000 credits/mo) |
 | **Server card** | https://crawlora.net/.well-known/mcp/server-card.json |
 
 A missing or invalid API key returns `401`.
@@ -205,7 +205,7 @@ catalog; each carries its real input schema and maps to a single REST endpoint.
 | **Sports** | 24 | ESPN, SofaScore — live scores, schedules, standings, teams, players, leagues, and tournaments |
 
 Full, always‑current tool list with parameters, response examples, and a live Playground:
-**https://crawlora.net/docs?utm_source=github&utm_medium=referral&utm_campaign=crawlora-mcp**.
+**[https://crawlora.net/docs](https://crawlora.net/docs?utm_source=github&utm_medium=referral&utm_campaign=crawlora-mcp)**.
 
 ## Why Crawlora
 
@@ -218,9 +218,9 @@ A good alternative to stitching together SerpApi, Firecrawl, ScraperAPI, or Scra
 
 ## Links
 
-- Website: https://crawlora.net/mcp?utm_source=github&utm_medium=referral&utm_campaign=crawlora-mcp
-- Docs & Playground: https://crawlora.net/docs?utm_source=github&utm_medium=referral&utm_campaign=crawlora-mcp · https://crawlora.net/playground?utm_source=github&utm_medium=referral&utm_campaign=crawlora-mcp
-- Pricing: https://crawlora.net/pricing?utm_source=github&utm_medium=referral&utm_campaign=crawlora-mcp
+- Website: [https://crawlora.net/mcp](https://crawlora.net/mcp?utm_source=github&utm_medium=referral&utm_campaign=crawlora-mcp)
+- Docs & Playground: [https://crawlora.net/docs](https://crawlora.net/docs?utm_source=github&utm_medium=referral&utm_campaign=crawlora-mcp) · [https://crawlora.net/playground](https://crawlora.net/playground?utm_source=github&utm_medium=referral&utm_campaign=crawlora-mcp)
+- Pricing: [https://crawlora.net/pricing](https://crawlora.net/pricing?utm_source=github&utm_medium=referral&utm_campaign=crawlora-mcp)
 - Server card: https://crawlora.net/.well-known/mcp/server-card.json
 - Official MCP registry manifest: [`server.json`](server.json)
 
