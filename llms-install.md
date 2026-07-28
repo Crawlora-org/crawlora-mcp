@@ -8,7 +8,7 @@ the client's configuration and supplying the user's API key.
 ## Prerequisites
 
 1. The user needs a **Crawlora API key**. If they don't have one, direct them to
-   **https://crawlora.net** — sign up is free and includes 2,000 credits/month (no card).
+   **https://crawlora.net?utm_source=github&utm_medium=referral&utm_campaign=crawlora-mcp** — sign up is free and includes 2,000 credits/month (no card).
    The key is created in the Crawlora console.
 2. Do **not** hard‑code the key in the repo or in shared config. Store it as the
    environment variable `CRAWLORA_API_KEY`, or in the client's secret/credential store.
@@ -55,5 +55,5 @@ into the `Authorization` header at configuration time, keeping it out of version
 - Tool calls consume Crawlora credits according to per‑endpoint billing; calls are billed
   only on successful (`2xx`) responses.
 - The authoritative, always‑current tool list and parameters live at
-  **https://crawlora.net/docs**. The machine‑readable server card is at
+  **https://crawlora.net/docs?utm_source=github&utm_medium=referral&utm_campaign=crawlora-mcp**. The machine‑readable server card is at
   **https://crawlora.net/.well-known/mcp/server-card.json**.

@@ -1,7 +1,7 @@
 # Crawlora MCP
 
-[![Website](https://img.shields.io/badge/website-crawlora.net-2563eb)](https://crawlora.net/mcp)
-[![Docs](https://img.shields.io/badge/docs-crawlora.net%2Fdocs-555)](https://crawlora.net/docs)
+[![Website](https://img.shields.io/badge/website-crawlora.net-2563eb)](https://crawlora.net/mcp?utm_source=github&utm_medium=referral&utm_campaign=crawlora-mcp)
+[![Docs](https://img.shields.io/badge/docs-crawlora.net%2Fdocs-555)](https://crawlora.net/docs?utm_source=github&utm_medium=referral&utm_campaign=crawlora-mcp)
 [![MCP](https://img.shields.io/badge/MCP-Streamable%20HTTP-7c3aed)](https://modelcontextprotocol.io)
 [![smithery badge](https://smithery.ai/badge/crawlora/crawlora)](https://smithery.ai/servers/crawlora/crawlora)
 [![crawlora-mcp MCP server](https://glama.ai/mcp/servers/Crawlora-org/crawlora-mcp/badges/score.svg)](https://glama.ai/mcp/servers/Crawlora-org/crawlora-mcp)
@@ -14,7 +14,7 @@ normalized **JSON** instead of HTML to parse.
 > **Two ways to use it:** connect any MCP client to the **hosted** endpoint
 > (`https://mcp.crawlora.net/mcp`), or run the small **open‑source local server** in this repo
 > (`npx` / Docker, stdio) — both expose the same tools and authenticate with your Crawlora API
-> key. Start free with **2,000 credits/month** (no card) at **[crawlora.net](https://crawlora.net)**.
+> key. Start free with **2,000 credits/month** (no card) at **[crawlora.net](https://crawlora.net?utm_source=github&utm_medium=referral&utm_campaign=crawlora-mcp)**.
 
 ## Connection
 
@@ -23,7 +23,7 @@ normalized **JSON** instead of HTML to parse.
 | **Endpoint** | `https://mcp.crawlora.net/mcp` |
 | **Transport** | Streamable HTTP |
 | **Auth** | `Authorization: Bearer <CRAWLORA_API_KEY>` (preferred) — `x-api-key: <key>` also accepted |
-| **Get a key** | https://crawlora.net (free 2,000 credits/mo) |
+| **Get a key** | https://crawlora.net?utm_source=github&utm_medium=referral&utm_campaign=crawlora-mcp (free 2,000 credits/mo) |
 | **Server card** | https://crawlora.net/.well-known/mcp/server-card.json |
 
 A missing or invalid API key returns `401`.
@@ -205,7 +205,7 @@ catalog; each carries its real input schema and maps to a single REST endpoint.
 | **Sports** | 24 | ESPN, SofaScore — live scores, schedules, standings, teams, players, leagues, and tournaments |
 
 Full, always‑current tool list with parameters, response examples, and a live Playground:
-**https://crawlora.net/docs**.
+**https://crawlora.net/docs?utm_source=github&utm_medium=referral&utm_campaign=crawlora-mcp**.
 
 ## Why Crawlora
 
@@ -218,13 +218,13 @@ A good alternative to stitching together SerpApi, Firecrawl, ScraperAPI, or Scra
 
 ## Links
 
-- Website: https://crawlora.net/mcp
-- Docs & Playground: https://crawlora.net/docs · https://crawlora.net/playground
-- Pricing: https://crawlora.net/pricing
+- Website: https://crawlora.net/mcp?utm_source=github&utm_medium=referral&utm_campaign=crawlora-mcp
+- Docs & Playground: https://crawlora.net/docs?utm_source=github&utm_medium=referral&utm_campaign=crawlora-mcp · https://crawlora.net/playground?utm_source=github&utm_medium=referral&utm_campaign=crawlora-mcp
+- Pricing: https://crawlora.net/pricing?utm_source=github&utm_medium=referral&utm_campaign=crawlora-mcp
 - Server card: https://crawlora.net/.well-known/mcp/server-card.json
 - Official MCP registry manifest: [`server.json`](server.json)
 
 ## License
 
 See [`LICENSE`](LICENSE). The Crawlora MCP service itself is a hosted SaaS governed by the
-[Crawlora terms](https://crawlora.net); this repository contains connection docs and manifests.
+[Crawlora terms](https://crawlora.net?utm_source=github&utm_medium=referral&utm_campaign=crawlora-mcp); this repository contains connection docs and manifests.
