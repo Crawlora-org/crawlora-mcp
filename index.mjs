@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 // Crawlora MCP — local stdio MCP server.
-// Exposes 733 structured web-data tools, each wrapping the Crawlora REST API
+// Exposes 795 structured web-data tools, each wrapping the Crawlora REST API
 // (https://api.crawlora.net/api/v1) with your CRAWLORA_API_KEY. Get a free key
 // (2,000 credits/month, no card) at https://crawlora.net.
 //
