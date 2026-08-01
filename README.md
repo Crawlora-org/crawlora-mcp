@@ -7,7 +7,7 @@
 [![crawlora-mcp MCP server](https://glama.ai/mcp/servers/Crawlora-org/crawlora-mcp/badges/score.svg)](https://glama.ai/mcp/servers/Crawlora-org/crawlora-mcp)
 
 **Crawlora MCP** is a **hosted** Model Context Protocol server that gives AI clients and
-agents **795 structured public‑web‑data tools** across 68 platform groups — search, maps,
+agents **828 structured public‑web‑data tools** across 71 platform groups — search, maps,
 e‑commerce, social, finance, travel, app stores, media, and reviews — each returning clean,
 normalized **JSON** instead of HTML to parse.
 
@@ -155,7 +155,7 @@ Any client that speaks **Streamable HTTP** can use the generic config in
 
 ## Run it locally (open‑source server)
 
-This repo also ships a small **stdio** MCP server (`index.mjs`) that exposes the same **795
+This repo also ships a small **stdio** MCP server (`index.mjs`) that exposes the same **828
 tools**, each wrapping the Crawlora REST API (`https://api.crawlora.net/api/v1`) with your
 `CRAWLORA_API_KEY`. Useful if you'd rather run the server yourself than use the hosted endpoint.
 
@@ -187,14 +187,14 @@ Client config (stdio):
 The tool definitions in [`tools.json`](tools.json) are generated from Crawlora's published API
 catalog; each carries its real input schema and maps to a single REST endpoint.
 
-## What you can call (795 tools / 12 categories)
+## What you can call (828 tools / 12 categories)
 
 | Category | Tools | Examples |
 |---|---|---|
 | **Finance & company intelligence** | 145 | Yahoo Finance, SEC EDGAR, CoinGecko, Polymarket, Kalshi, Metaculus, PitchBook, TrustMRR, Brand — markets, filings, company data, revenue, and prediction markets |
-| **Media & entertainment** | 181 | Spotify, podcasts, Apple Books, JustWatch, IMDb, Rotten Tomatoes, Box Office Mojo, Metacritic, TMDB, Letterboxd, Discogs, Goodreads, anime and manga — music, shows, films, books, ratings, reviews, and charts |
-| **Social, video & developer** | 79 | YouTube, TikTok, Instagram, Facebook, Threads, Reddit, LinkedIn, X, GitHub — search, profiles, relationships, posts, replies, comments, transcripts, and trends |
-| **E‑commerce** | 42 | Amazon, eBay, Walmart, Shopify, Shop.app, Uber Eats — products, search, sellers, collections, and reviews |
+| **Media & entertainment** | 193 | Spotify, podcasts, Apple Books, JustWatch, IMDb, Rotten Tomatoes, Box Office Mojo, Metacritic, TMDB, Letterboxd, Discogs, Goodreads, Ticketmaster, anime and manga — music, shows, films, events, books, ratings, reviews, and charts |
+| **Social, video & developer** | 81 | YouTube, TikTok, Instagram, Facebook, Threads, Reddit, LinkedIn, X, GitHub — search, profiles, relationships, posts, replies, comments, transcripts, and trends |
+| **E‑commerce** | 49 | Amazon, eBay, Target, Walmart, Shopify, Shop.app, Uber Eats — products, search, sellers, collections, and reviews |
 | **Search, web & maps** | 56 | Google, Bing, Brave, Google Trends, Google Maps, Geocoding, Web Scrape — SERPs, suggestions, maps, news, media search, interest over time, and URL-to-markdown |
 | **App stores** | 35 | App Store, Google Play, Chrome Web Store — apps and extensions, reviews, ratings, rankings, similar items, categories, and datasets |
 | **Reviews & companies** | 21 | Trustpilot, Capterra, Product Hunt — business and software reviews, launches, makers, and leaderboards |
@@ -202,7 +202,7 @@ catalog; each carries its real input schema and maps to a single REST endpoint.
 | **Data & utility** | 123 | Datasets, Numbeo, SimilarWeb, usage — jobs, companies, financials, browser extensions, journalists, cost of living, apps, games, housing, website intelligence, and account usage |
 | **Jobs & hiring** | 39 | Amazon Jobs, Apple Jobs, Google Jobs, Meta Jobs, Tesla Jobs, Greenhouse, Lever, Ashby, Workday, SmartRecruiters, iCIMS, and other public hiring systems — boards, postings, feeds, and hiring signals |
 | **Gaming & collectibles** | 29 | Steam and PlayStation — games, packages, reviews, player counts, achievements, and releases |
-| **Sports** | 24 | ESPN, SofaScore — live scores, schedules, standings, teams, players, leagues, and tournaments |
+| **Sports** | 36 | ESPN, MLB, SofaScore — live scores, schedules, standings, teams, players, leagues, and tournaments |
 
 Full, always‑current tool list with parameters, response examples, and a live Playground:
 **[https://crawlora.net/docs](https://crawlora.net/docs?utm_source=github&utm_medium=referral&utm_campaign=crawlora-mcp)**.
@@ -212,7 +212,7 @@ Full, always‑current tool list with parameters, response examples, and a live 
 - **Normalized JSON per tool** — ship data features, not scraper infrastructure.
 - **No proxies, browsers, or parsers** to maintain.
 - **Pay on success** — credit‑based, billed only on `2xx` responses.
-- **One key, 795 tools** — search, commerce, social, gaming, finance, and more behind a single MCP endpoint.
+- **One key, 828 tools** — search, commerce, social, gaming, finance, and more behind a single MCP endpoint.
 
 A good alternative to stitching together SerpApi, Firecrawl, ScraperAPI, or ScrapingBee.
 
