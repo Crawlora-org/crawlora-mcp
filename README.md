@@ -7,7 +7,7 @@
 [![crawlora-mcp MCP server](https://glama.ai/mcp/servers/Crawlora-org/crawlora-mcp/badges/score.svg)](https://glama.ai/mcp/servers/Crawlora-org/crawlora-mcp)
 
 **Crawlora MCP** is a **hosted** Model Context Protocol server that gives AI clients and
-agents **828 structured public‑web‑data tools** across 71 platform groups — search, maps,
+agents **831 structured public‑web‑data tools** across 72 platform groups — search, maps,
 e‑commerce, social, finance, travel, app stores, media, and reviews — each returning clean,
 normalized **JSON** instead of HTML to parse.
 
@@ -155,7 +155,7 @@ Any client that speaks **Streamable HTTP** can use the generic config in
 
 ## Run it locally (open‑source server)
 
-This repo also ships a small **stdio** MCP server (`index.mjs`) that exposes the same **828
+This repo also ships a small **stdio** MCP server (`index.mjs`) that exposes the same **831
 tools**, each wrapping the Crawlora REST API (`https://api.crawlora.net/api/v1`) with your
 `CRAWLORA_API_KEY`. Useful if you'd rather run the server yourself than use the hosted endpoint.
 
@@ -187,14 +187,14 @@ Client config (stdio):
 The tool definitions in [`tools.json`](tools.json) are generated from Crawlora's published API
 catalog; each carries its real input schema and maps to a single REST endpoint.
 
-## What you can call (828 tools / 12 categories)
+## What you can call (831 tools / 12 categories)
 
 | Category | Tools | Examples |
 |---|---|---|
 | **Finance & company intelligence** | 145 | Yahoo Finance, SEC EDGAR, CoinGecko, Polymarket, Kalshi, Metaculus, PitchBook, TrustMRR, Brand — markets, filings, company data, revenue, and prediction markets |
-| **Media & entertainment** | 193 | Spotify, podcasts, Apple Books, JustWatch, IMDb, Rotten Tomatoes, Box Office Mojo, Metacritic, TMDB, Letterboxd, Discogs, Goodreads, Ticketmaster, anime and manga — music, shows, films, events, books, ratings, reviews, and charts |
+| **Media & entertainment** | 194 | Spotify, podcasts, Apple Books, JustWatch, IMDb, Rotten Tomatoes, Box Office Mojo, Metacritic, TMDB, Letterboxd, Discogs, Goodreads, Ticketmaster, anime and manga — music, shows, films, events, books, ratings, reviews, and charts |
 | **Social, video & developer** | 81 | YouTube, TikTok, Instagram, Facebook, Threads, Reddit, LinkedIn, X, GitHub — search, profiles, relationships, posts, replies, comments, transcripts, and trends |
-| **E‑commerce** | 49 | Amazon, eBay, Target, Walmart, Shopify, Shop.app, Uber Eats — products, search, sellers, collections, and reviews |
+| **E‑commerce** | 51 | Amazon, eBay, Target, Walmart, Shopify, Shop.app, Uber Eats, DoorDash — products, restaurants, menus, search, sellers, collections, and reviews |
 | **Search, web & maps** | 56 | Google, Bing, Brave, Google Trends, Google Maps, Geocoding, Web Scrape — SERPs, suggestions, maps, news, media search, interest over time, and URL-to-markdown |
 | **App stores** | 35 | App Store, Google Play, Chrome Web Store — apps and extensions, reviews, ratings, rankings, similar items, categories, and datasets |
 | **Reviews & companies** | 21 | Trustpilot, Capterra, Product Hunt — business and software reviews, launches, makers, and leaderboards |
@@ -212,7 +212,7 @@ Full, always‑current tool list with parameters, response examples, and a live 
 - **Normalized JSON per tool** — ship data features, not scraper infrastructure.
 - **No proxies, browsers, or parsers** to maintain.
 - **Pay on success** — credit‑based, billed only on `2xx` responses.
-- **One key, 828 tools** — search, commerce, social, gaming, finance, and more behind a single MCP endpoint.
+- **One key, 831 tools** — search, commerce, social, gaming, finance, and more behind a single MCP endpoint.
 
 A good alternative to stitching together SerpApi, Firecrawl, ScraperAPI, or ScrapingBee.
 
