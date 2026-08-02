@@ -7,7 +7,7 @@
 [![crawlora-mcp MCP server](https://glama.ai/mcp/servers/Crawlora-org/crawlora-mcp/badges/score.svg)](https://glama.ai/mcp/servers/Crawlora-org/crawlora-mcp)
 
 **Crawlora MCP** is a **hosted** Model Context Protocol server that gives AI clients and
-agents **831 structured public‑web‑data tools** across 72 platform groups — search, maps,
+agents **841 structured public‑web‑data tools** across 76 platform groups — search, maps,
 e‑commerce, social, finance, travel, app stores, media, and reviews — each returning clean,
 normalized **JSON** instead of HTML to parse.
 
@@ -191,28 +191,46 @@ catalog; each carries its real input schema and maps to a single REST endpoint.
 
 | Category | Tools | Examples |
 |---|---|---|
-| **Finance & company intelligence** | 145 | Yahoo Finance, SEC EDGAR, CoinGecko, Polymarket, Kalshi, Metaculus, PitchBook, TrustMRR, Brand — markets, filings, company data, revenue, and prediction markets |
-| **Media & entertainment** | 194 | Spotify, podcasts, Apple Books, JustWatch, IMDb, Rotten Tomatoes, Box Office Mojo, Metacritic, TMDB, Letterboxd, Discogs, Goodreads, Ticketmaster, anime and manga — music, shows, films, events, books, ratings, reviews, and charts |
-| **Social, video & developer** | 81 | YouTube, TikTok, Instagram, Facebook, Threads, Reddit, LinkedIn, X, GitHub — search, profiles, relationships, posts, replies, comments, transcripts, and trends |
-| **E‑commerce** | 51 | Amazon, eBay, Target, Walmart, Shopify, Shop.app, Uber Eats, DoorDash — products, restaurants, menus, search, sellers, collections, and reviews |
-| **Search, web & maps** | 56 | Google, Bing, Brave, Google Trends, Google Maps, Geocoding, Web Scrape — SERPs, suggestions, maps, news, media search, interest over time, and URL-to-markdown |
-| **App stores** | 35 | App Store, Google Play, Chrome Web Store — apps and extensions, reviews, ratings, rankings, similar items, categories, and datasets |
-| **Reviews & companies** | 21 | Trustpilot, Capterra, Product Hunt — business and software reviews, launches, makers, and leaderboards |
-| **Travel & real estate** | 21 | Airbnb, TripAdvisor, Zillow, Redfin — listings, calendars, hotels, property data, estimates, and region trends |
-| **Data & utility** | 123 | Datasets, Numbeo, SimilarWeb, usage — jobs, companies, financials, browser extensions, journalists, cost of living, apps, games, housing, website intelligence, and account usage |
-| **Jobs & hiring** | 39 | Amazon Jobs, Apple Jobs, Google Jobs, Meta Jobs, Tesla Jobs, Greenhouse, Lever, Ashby, Workday, SmartRecruiters, iCIMS, and other public hiring systems — boards, postings, feeds, and hiring signals |
-| **Gaming & collectibles** | 29 | Steam and PlayStation — games, packages, reviews, player counts, achievements, and releases |
-| **Sports** | 36 | ESPN, MLB, SofaScore — live scores, schedules, standings, teams, players, leagues, and tournaments |
+---
 
-Full, always‑current tool list with parameters, response examples, and a live Playground:
-**[https://crawlora.net/docs](https://crawlora.net/docs?utm_source=github&utm_medium=referral&utm_campaign=crawlora-mcp)**.
+## Hosted MCP (recommended)
 
-## Why Crawlora
+Just paste the URL into your client settings. No Node.js required.
 
-- **Normalized JSON per tool** — ship data features, not scraper infrastructure.
-- **No proxies, browsers, or parsers** to maintain.
-- **Pay on success** — credit‑based, billed only on `2xx` responses.
-- **One key, 831 tools** — search, commerce, social, gaming, finance, and more behind a single MCP endpoint.
+```text
+https://mcp.crawlora.net/mcp
+```
+
+Header:
+`x-api-key`: `<your-api-key>`
+
+Get a key at [crawlora.net](https://crawlora.net?utm_source=github&utm_medium=referral&utm_campaign=crawlora-mcp).
+Every account includes **2,000 free credits / month** with no credit card required.
+
+---
+
+## What you can call (841 tools / 12 categories)
+
+See [`tools.json`](./tools.json) or your MCP client UI for exact schemas. Below is a overview by category:
+
+| Category | Highlights |
+|---|---|
+| **Search & Web** | `google_search`, `google_news`, `bing_search`, `duckduckgo_search`, `baidu_search`, `brave_search`, `startpage_search`, `yandex_search`, `kagi_search`, `web_scrape`, `web_parse` |
+| **Maps & Places** | `google_maps_search`, `google_maps_place`, `google_maps_reviews`, `google_maps_photos` |
+| **Marketplace & Products** | `amazon_search`, `amazon_product`, `amazon_reviews`, `walmart_search`, `ebay_search`, `etsy_search`, `shopify_store`, `target_search`, `doordash_store`, `doordash_feed`, `ubereats_store` |
+| **Social & Profiles** | `twitter_user`, `twitter_tweet`, `instagram_user`, `reddit_post`, `reddit_comments`, `threads_user`, `tiktok_user` |
+| **Finance & Markets** | `google_finance_search`, `google_finance_quote`, `yahoo_finance_quote`, `polymarket_events`, `kalshi_markets` |
+| **Travel & Lodging** | `airbnb_search`, `airbnb_room`, `tripadvisor_search`, `booking_search` |
+| **Jobs & Companies** | `linkedin_jobs`, `indeed_jobs`, `glassdoor_company`, `pitchbook_company` |
+| **Media & Audio** | `youtube_video`, `youtube_transcript`, `spotify_artist`, `apple_podcasts_show` |
+| **App Stores** | `appstore_app`, `googleplay_app` |
+| **Reviews & Q&A** | `trustpilot_reviews`, `g2_reviews`, `capterra_product`, `goodreads_book` |
+
+---
+
+## Why Crawlora MCP?
+
+- **One key, 841 tools** — search, commerce, social, gaming, finance, and more behind a single MCP endpoint.
 
 A good alternative to stitching together SerpApi, Firecrawl, ScraperAPI, or ScrapingBee.
 
