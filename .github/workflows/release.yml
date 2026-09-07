@@ -19,7 +19,6 @@ jobs:
           node-version: "24"
           cache: npm
           package-manager-cache: false
-          registry-url: "https://registry.npmjs.org"
       - run: npm ci --omit=dev
       - name: Smoke test
         run: npm test
@@ -28,4 +27,4 @@ jobs:
         with:
           generate_release_notes: true
       - name: Publish to npm
-        run: npm publish --access public
+        run: npm publish --registry=https://registry.npmjs.org --access public
