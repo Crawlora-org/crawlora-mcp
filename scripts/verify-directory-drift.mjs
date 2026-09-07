@@ -43,7 +43,7 @@ const DIRECTORIES = [
   },
   {
     name: "MCP.so",
-    url: "https://mcp.so/servers/crawlora-mcp",
+    url: "https://chat.mcp.so/server/crawlora-mcp/Crawlora",
     check: (body, expected) => {
       if (!body.includes(`${expected.toolCount} structured`)) {
         throw new Error(`page does not contain ${expected.toolCount} structured tools`);
