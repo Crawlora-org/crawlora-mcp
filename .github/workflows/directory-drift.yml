@@ -1,0 +1,20 @@
+name: MCP directory drift
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "17 3 * * *"
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v6
+        with:
+          node-version: "24"
+      - name: Verify public MCP directories
+        run: node scripts/verify-directory-drift.mjs
