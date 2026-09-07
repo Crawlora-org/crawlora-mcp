@@ -50,5 +50,48 @@ jobs:
           echo "Published version: ${published_version:-<missing>}" >&2
           echo "latest dist-tag: ${latest_version:-<missing>}" >&2
           exit 1
+      - name: Publish to official MCP Registry
+        env:
+          MCP_PRIVATE_KEY: ${{ secrets.MCP_PRIVATE_KEY }}
+        run: |
+          set -euo pipefail
+          test -n "$MCP_PRIVATE_KEY"
+          curl -fsSL --retry 3 \
+            https://github.com/modelcontextprotocol/registry/releases/latest/download/mcp-publisher_linux_amd64.tar.gz \
+            | tar -xz -C "$RUNNER_TEMP"
+          "$RUNNER_TEMP/mcp-publisher" login dns \
+            -domain crawlora.net \
+            -private-key "$MCP_PRIVATE_KEY"
+          "$RUNNER_TEMP/mcp-publisher" validate
+          "$RUNNER_TEMP/mcp-publisher" publish
+      - name: Verify official MCP Registry publication
+        env:
+          MCP_REGISTRY: https://registry.modelcontextprotocol.io/v0/servers?search=net.crawlora%2Fcrawlora-mcp
+        run: |
+          set -euo pipefail
+          package_version=$(node -p "require('./package.json').version")
+          for attempt in $(seq 1 12); do
+            latest_version=$(curl -fsSL "$MCP_REGISTRY" | node -e '
+              let input = "";
+              process.stdin.on("data", chunk => input += chunk);
+              process.stdin.on("end", () => {
+                const payload = JSON.parse(input);
+                const latest = (payload.servers ?? []).find(entry =>
+                  entry._meta?.["io.modelcontextprotocol.registry/official"]?.isLatest,
+                );
+                process.stdout.write(latest?.server?.version ?? "");
+              });
+            ')
+            if [ "$latest_version" = "$package_version" ]; then
+              echo "Verified net.crawlora/crawlora-mcp@$package_version on the official MCP Registry"
+              exit 0
+            fi
+            echo "Waiting for net.crawlora/crawlora-mcp@$package_version to appear in the official registry (attempt $attempt/12)"
+            sleep 5
+          done
+          echo "Official MCP Registry publication verification failed" >&2
+          echo "Expected version: $package_version" >&2
+          echo "Observed latest version: ${latest_version:-<missing>}" >&2
+          exit 1
       - name: Verify MCP directory listings
         run: node scripts/verify-directory-drift.mjs
