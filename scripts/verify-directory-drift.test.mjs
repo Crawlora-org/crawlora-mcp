@@ -8,6 +8,7 @@ import {
   expectedFacts,
   verifyDirectories,
 } from "./verify-directory-drift.mjs";
+import { validateReleaseTag } from "./validate-release.mjs";
 
 const expected = expectedFacts({
   packageJSON: {
@@ -99,4 +100,13 @@ test("tracks additional directory surfaces without making them false automated p
   assert.equal(lines.length, 4);
   assert.ok(lines.every((line) => line.includes("2 tools / 2 platform groups")));
   assert.ok(lines.some((line) => line.includes("submissions-paused")));
+});
+
+test("rejects a release tag that does not match package version", () => {
+  assert.throws(
+    () => validateReleaseTag({ version: "1.16.2", ref: "refs/tags/v1.16.1" }),
+    /does not match package version v1\.16\.2/,
+  );
+  assert.doesNotThrow(() => validateReleaseTag({ version: "1.16.2", ref: "refs/tags/v1.16.2" }));
+  assert.doesNotThrow(() => validateReleaseTag({ version: "1.16.2", ref: "refs/heads/main" }));
 });

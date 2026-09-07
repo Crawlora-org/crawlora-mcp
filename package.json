@@ -17,8 +17,11 @@
   "scripts": {
     "start": "node index.mjs",
     "test": "node scripts/smoke-test.mjs",
+    "test:publication": "node --test scripts/*.test.mjs",
     "sync:readme-tools": "node scripts/sync-readme-tools.mjs",
-    "check:readme-tools": "node scripts/sync-readme-tools.mjs --check"
+    "check:readme-tools": "node scripts/sync-readme-tools.mjs --check",
+    "check:release": "node scripts/validate-release.mjs",
+    "check:published": "node scripts/verify-published.mjs"
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.12.0"

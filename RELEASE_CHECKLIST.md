@@ -12,7 +12,7 @@ surfaces below show the same version and catalog counts.
 - `node scripts/validate-release.mjs` checks package, registry manifest, README,
   tool count, and platform-group count for drift.
 - npm publishes with GitHub Actions OIDC provenance and is verified by exact
-  version and `latest` dist-tag.
+  version, `latest` dist-tag, and the published npm provenance attestation.
 - The official MCP Registry is published with the DNS-authenticated
   `MCP_PRIVATE_KEY` secret and verified by its `isLatest` entry.
 - `node scripts/verify-published.mjs` checks npm, the official registry,
@@ -21,6 +21,9 @@ surfaces below show the same version and catalog counts.
 - The same verification summary lists the additional directory surfaces below
   with an explicit status, so account-gated, unlisted, or paused directories
   cannot disappear silently from the release process.
+- `npm run check:release`, `npm run test:publication`, and
+  `npm run check:published` are the canonical local/CI commands; workflows do
+  not maintain a second copy of those checks.
 
 ## Required GitHub configuration
 

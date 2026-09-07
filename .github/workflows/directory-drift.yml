@@ -22,6 +22,6 @@ jobs:
         with:
           node-version: "24"
       - name: Validate release contract
-        run: node scripts/validate-release.mjs
+        run: npm run check:release
       - name: Verify public MCP directories
         run: node scripts/verify-directory-drift.mjs

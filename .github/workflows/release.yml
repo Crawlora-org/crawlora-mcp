@@ -27,11 +27,11 @@ jobs:
       - name: Install production dependencies
         run: npm ci --omit=dev
       - name: Validate release contract
-        run: node scripts/validate-release.mjs
+        run: npm run check:release
       - name: Verify MCP.so README tool catalog
         run: npm run check:readme-tools
       - name: Test publication checks
-        run: node --test scripts/*.test.mjs
+        run: npm run test:publication
       - name: Smoke test
         run: npm test
       - name: Verify npm package contents
@@ -56,9 +56,21 @@ jobs:
           set -euo pipefail
           package_name=$(node -p "require('./package.json').name")
           package_version=$(node -p "require('./package.json').version")
-          if npm view "${package_name}@${package_version}" version --registry="$NPM_REGISTRY" >/dev/null 2>&1; then
+          metadata_file=$(mktemp)
+          trap 'rm -f "$metadata_file"' EXIT
+          encoded_name=$(node -p "encodeURIComponent('$package_name')")
+          curl --fail-with-body --silent --show-error --location --retry 3 \
+            "${NPM_REGISTRY}/${encoded_name}" > "$metadata_file"
+          version_exists=$(METADATA_FILE="$metadata_file" PACKAGE_VERSION="$package_version" node --input-type=module <<'NODE'
+          import { readFileSync } from "node:fs";
+          const metadata = JSON.parse(readFileSync(process.env.METADATA_FILE, "utf8"));
+          process.stdout.write(metadata.versions?.[process.env.PACKAGE_VERSION] ? "yes" : "no");
+          NODE
+          )
+          if [ "$version_exists" = "yes" ]; then
             echo "${package_name}@${package_version} already exists; verifying instead of republishing"
           else
+            echo "Publishing ${package_name}@${package_version} with npm trusted publishing and provenance"
             npm publish --provenance --registry="$NPM_REGISTRY" --access public
           fi
       - name: Publish to official MCP Registry
@@ -97,7 +109,7 @@ jobs:
             "$RUNNER_TEMP/mcp-publisher" publish
           fi
       - name: Verify every publication surface
-        run: node scripts/verify-published.mjs
+        run: npm run check:published
       - name: Create GitHub release after all publication checks pass
         if: github.event_name == 'push'
         uses: softprops/action-gh-release@v2

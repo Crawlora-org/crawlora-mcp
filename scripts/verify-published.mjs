@@ -51,7 +51,11 @@ async function verifyNpm(packageJSON) {
   if (published.name !== packageJSON.name || published.version !== packageJSON.version) {
     throw new Error("npm metadata does not match the release package");
   }
-  return `${packageJSON.name}@${packageJSON.version}`;
+  const provenance = published.dist?.attestations?.provenance;
+  if (!provenance?.predicateType) {
+    throw new Error(`${packageJSON.name}@${packageJSON.version} has no npm provenance attestation`);
+  }
+  return `${packageJSON.name}@${packageJSON.version} (provenance verified)`;
 }
 
 async function verifyPublished() {
