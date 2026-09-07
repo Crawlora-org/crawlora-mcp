@@ -116,6 +116,10 @@ jobs:
           - [Smithery release](https://smithery.ai/servers/crawlora/crawlora/releases) — its private scan requires an API key
           - [MCP.so editor](https://mcp.so/servers/crawlora-mcp)
           - [Official MCP Registry](https://registry.modelcontextprotocol.io/?search=net.crawlora%2Fcrawlora-mcp)
+          - [MCP Servers.org listing](https://mcpservers.org/servers/crawlora-net-mcp) — update request submitted
+          - [GoodFirms listing](https://www.goodfirms.co/software/crawlora) — update the claimed vendor profile
+          - [StackShare search](https://stackshare.io/?q=crawlora) — create a listing only if desired
+          - [PulseMCP](https://www.pulsemcp.com/) — submissions currently paused
 
           See [RELEASE_CHECKLIST.md](https://github.com/Crawlora-org/crawlora-mcp/blob/main/RELEASE_CHECKLIST.md) for the SDK, skills, profile, and trusted-publishing batch.
           EOF

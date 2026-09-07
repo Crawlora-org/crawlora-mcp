@@ -69,6 +69,49 @@ export const DIRECTORIES = [
   },
 ];
 
+// These directories either require a signed-in maintainer workflow or currently
+// do not expose a stable public listing endpoint. Keep them visible in every
+// release summary without treating an external access limitation as a false
+// automated pass/fail result.
+export const ADDITIONAL_DIRECTORY_SURFACES = [
+  {
+    name: "MCP Servers.org",
+    url: "https://mcpservers.org/servers/crawlora-net-mcp",
+    status: "update-requested",
+    checkedOn: "2026-09-07",
+    detail: "Update request submitted; wait for the listing maintainer to refresh the page.",
+  },
+  {
+    name: "GoodFirms",
+    url: "https://www.goodfirms.co/software/crawlora",
+    status: "stale-account-update-required",
+    checkedOn: "2026-09-07",
+    detail: "The claimed listing still showed 549 hosted MCP tools; update it to the current release facts from the signed-in vendor account.",
+  },
+  {
+    name: "StackShare",
+    url: "https://stackshare.io/?q=crawlora",
+    status: "listing-not-found",
+    checkedOn: "2026-09-07",
+    detail: "No Crawlora listing was found; creating a new listing requires an explicit maintainer decision and account access.",
+  },
+  {
+    name: "PulseMCP",
+    url: "https://www.pulsemcp.com/",
+    status: "submissions-paused",
+    checkedOn: "2026-09-07",
+    detail: "PulseMCP reports that new server submissions and listing changes are paused; retry after the directory reopens.",
+  },
+];
+
+export function additionalDirectoryLines(expected) {
+  const target = `${expected.toolCount} tools / ${expected.groupCount} platform groups`;
+  return ADDITIONAL_DIRECTORY_SURFACES.map(
+    (surface) =>
+      `- **${surface.name}** [${surface.status}; checked ${surface.checkedOn}]: ${surface.detail} Target: ${target}. [Open listing](${surface.url})`,
+  );
+}
+
 function fail(message) {
   throw new Error(message);
 }
@@ -169,7 +212,8 @@ async function main() {
   if (process.env.GITHUB_STEP_SUMMARY) {
     await appendFile(
       process.env.GITHUB_STEP_SUMMARY,
-      `### MCP directory verification\n\n${summary.join("\n")}\n`,
+      `### MCP directory verification\n\n${summary.join("\n")}\n\n` +
+        `### Additional directory refreshes\n\n${additionalDirectoryLines(expected).join("\n")}\n`,
     );
   }
   if (failures.length > 0) {

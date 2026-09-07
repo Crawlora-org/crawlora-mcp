@@ -18,6 +18,9 @@ surfaces below show the same version and catalog counts.
 - `node scripts/verify-published.mjs` checks npm, the official registry,
   Glama, Smithery, and MCP.so. Any stale, blocked, or unavailable directory
   fails the job and is written to the GitHub Actions summary.
+- The same verification summary lists the additional directory surfaces below
+  with an explicit status, so account-gated, unlisted, or paused directories
+  cannot disappear silently from the release process.
 
 ## Required GitHub configuration
 
@@ -47,6 +50,29 @@ affected listing before rerunning the job:
    public page shows a non-empty Tools section (not “No tools detected”).
 4. Rerun **MCP directory drift** and confirm all four directory checks pass.
 
+## Additional directory surfaces
+
+These surfaces are tracked in every directory-drift and post-publication
+summary, but are not blocking HTTP checks because their update flows are
+account-gated, lack a stable public listing endpoint, or are currently paused:
+
+1. [MCP Servers.org](https://mcpservers.org/servers/crawlora-net-mcp): an
+   update request has been submitted. Recheck the listing after the maintainer
+   refreshes it and confirm it shows the current `1,873` tools / `215` platform
+   groups.
+2. [GoodFirms](https://www.goodfirms.co/software/crawlora): the claimed page
+   was still showing `549` hosted MCP tools. Sign in to the vendor account and
+   update the profile to the current `1,873` tools / `215` platform groups.
+3. [StackShare search](https://stackshare.io/?q=crawlora): no Crawlora listing
+   was found. Creating a new listing is a separate account-authorized action,
+   not a refresh of an existing page.
+4. [PulseMCP](https://www.pulsemcp.com/): the site currently says new server
+   submissions and listing changes are paused. Retry this check when the
+   submission flow reopens.
+
+The release is not complete until each item has either reached the current
+counts or has an explicit, current external-status note like the ones above.
+
 ## Weekly SDK, skills, and profile batch
 
 The MCP repo cannot safely publish the sibling SDKs or marketplace listings
@@ -60,8 +86,9 @@ complete:
   integration version, and current tool/platform counts;
 - sync `crawlora-skills` and `crawlora-openclaw-skill` into their published
   skill directories and verify their marketplace pages;
-- refresh the MCP manifest/readme and verify the MCP.so, Smithery, Glama, and
-  official registry pages again.
+- refresh the MCP manifest/readme and verify the MCP.so, Smithery, Glama,
+  official registry, MCP Servers.org, GoodFirms, StackShare, and PulseMCP
+  statuses again.
 
 Do not mark the batch complete from a successful npm publish alone. The public
 pages and registry metadata are the acceptance checks.

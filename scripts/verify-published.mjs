@@ -1,7 +1,12 @@
 #!/usr/bin/env node
 
 import { appendFile, readFile } from "node:fs/promises";
-import { expectedFacts, fetchDirectoryPage, verifyDirectories } from "./verify-directory-drift.mjs";
+import {
+  additionalDirectoryLines,
+  expectedFacts,
+  fetchDirectoryPage,
+  verifyDirectories,
+} from "./verify-directory-drift.mjs";
 
 const RETRIES = 12;
 const RETRY_DELAY_MS = 5_000;
@@ -74,10 +79,14 @@ async function verifyPublished() {
     (check) => `- ${check.ok === false ? "FAIL" : "PASS"} **${check.name}**: ${check.detail}`,
   );
   for (const line of lines) console.log(line.replaceAll("**", ""));
+  const additionalLines = additionalDirectoryLines(expected);
+  console.log("Additional directory refreshes:");
+  for (const line of additionalLines) console.log(line.replaceAll("**", ""));
   if (process.env.GITHUB_STEP_SUMMARY) {
     await appendFile(
       process.env.GITHUB_STEP_SUMMARY,
-      `### Publication verification (${expected.version})\n\n${lines.join("\n")}\n`,
+      `### Publication verification (${expected.version})\n\n${lines.join("\n")}\n\n` +
+        `### Additional directory refreshes\n\n${additionalLines.join("\n")}\n`,
     );
   }
   if (failures.length > 0) {

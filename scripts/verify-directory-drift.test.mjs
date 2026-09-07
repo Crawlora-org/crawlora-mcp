@@ -1,7 +1,13 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 
-import { DIRECTORIES, expectedFacts, verifyDirectories } from "./verify-directory-drift.mjs";
+import {
+  ADDITIONAL_DIRECTORY_SURFACES,
+  DIRECTORIES,
+  additionalDirectoryLines,
+  expectedFacts,
+  verifyDirectories,
+} from "./verify-directory-drift.mjs";
 
 const expected = expectedFacts({
   packageJSON: {
@@ -82,4 +88,15 @@ test("fails when MCP.so still shows an empty Tools section", () => {
     () => mcpSo.check("2 structured public 2 platform groups No tools detected", expected),
     /README tool catalog is empty/,
   );
+});
+
+test("tracks additional directory surfaces without making them false automated passes", () => {
+  assert.deepEqual(
+    ADDITIONAL_DIRECTORY_SURFACES.map((surface) => surface.name),
+    ["MCP Servers.org", "GoodFirms", "StackShare", "PulseMCP"],
+  );
+  const lines = additionalDirectoryLines(expected);
+  assert.equal(lines.length, 4);
+  assert.ok(lines.every((line) => line.includes("2 tools / 2 platform groups")));
+  assert.ok(lines.some((line) => line.includes("submissions-paused")));
 });
