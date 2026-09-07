@@ -28,6 +28,9 @@ const DIRECTORIES = [
       if (!body.includes(`${expected.toolCount} structured`)) {
         throw new Error(`page does not contain ${expected.toolCount} structured tools`);
       }
+      if (!body.includes(`${expected.groupCount} platform groups`)) {
+        throw new Error(`page does not contain ${expected.groupCount} platform groups`);
+      }
       return `${expected.toolCount} tools`;
     },
   },
@@ -35,8 +38,9 @@ const DIRECTORIES = [
     name: "Smithery",
     url: "https://smithery.ai/servers/crawlora/crawlora",
     check: (body, expected) => {
-      if (!body.includes(`${expected.toolCount} structured`)) {
-        throw new Error(`page does not contain ${expected.toolCount} structured tools`);
+      const marker = `${expected.toolCount} structured web-data tools across ${expected.groupCount} platform groups`;
+      if (!body.includes(marker)) {
+        throw new Error(`page description does not contain ${marker}`);
       }
       return `${expected.toolCount} tools`;
     },
@@ -45,8 +49,9 @@ const DIRECTORIES = [
     name: "MCP.so",
     url: "https://chat.mcp.so/server/crawlora-mcp/Crawlora",
     check: (body, expected) => {
-      if (!body.includes(`${expected.toolCount} structured`)) {
-        throw new Error(`page does not contain ${expected.toolCount} structured tools`);
+      const marker = `${expected.toolCount} tools across ${expected.groupCount} platform groups`;
+      if (!body.includes(marker)) {
+        throw new Error(`page description does not contain ${marker}`);
       }
       return `${expected.toolCount} tools`;
     },
@@ -62,7 +67,9 @@ export function expectedFacts({ packageJSON, serverJSON, tools }) {
   if (serverJSON.name !== "net.crawlora/crawlora-mcp") fail(`unexpected server name ${serverJSON.name}`);
   if (packageJSON.version !== serverJSON.version) fail("package.json and server.json versions differ");
   if (!Array.isArray(tools) || tools.length === 0) fail("tools.json is empty or not an array");
-  return { version: packageJSON.version, toolCount: tools.length };
+  const groupCount = new Set(tools.map((tool) => tool?._http?.group).filter(Boolean)).size;
+  if (groupCount === 0) fail("tools.json has no platform groups");
+  return { version: packageJSON.version, toolCount: tools.length, groupCount };
 }
 
 export async function verifyDirectories({ fetchImpl = fetch, directories = DIRECTORIES, expected }) {

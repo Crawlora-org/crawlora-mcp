@@ -6,11 +6,14 @@ import { expectedFacts, verifyDirectories } from "./verify-directory-drift.mjs";
 const expected = expectedFacts({
   packageJSON: { name: "crawlora-mcp", version: "1.16.2" },
   serverJSON: { name: "net.crawlora/crawlora-mcp", version: "1.16.2" },
-  tools: [{ name: "one" }, { name: "two" }],
+  tools: [
+    { name: "one", _http: { group: "One" } },
+    { name: "two", _http: { group: "Two" } },
+  ],
 });
 
 test("derives the release facts from the MCP source files", () => {
-  assert.deepEqual(expected, { version: "1.16.2", toolCount: 2 });
+  assert.deepEqual(expected, { version: "1.16.2", toolCount: 2, groupCount: 2 });
 });
 
 test("fails when a directory serves an older snapshot", async () => {
