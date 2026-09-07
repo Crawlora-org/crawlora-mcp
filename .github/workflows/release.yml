@@ -28,4 +28,25 @@ jobs:
         with:
           generate_release_notes: true
       - name: Publish to npm
-        run: npm publish --registry=https://registry.npmjs.org --access public
+        run: npm publish --provenance --registry=https://registry.npmjs.org --access public
+      - name: Verify npm publication
+        env:
+          NPM_REGISTRY: https://registry.npmjs.org
+        run: |
+          set -euo pipefail
+          package_name=$(node -p "require('./package.json').name")
+          package_version=$(node -p "require('./package.json').version")
+          for attempt in $(seq 1 12); do
+            published_version=$(npm view "${package_name}@${package_version}" version --registry="$NPM_REGISTRY" 2>/dev/null || true)
+            latest_version=$(npm view "$package_name" dist-tags.latest --registry="$NPM_REGISTRY" 2>/dev/null || true)
+            if [ "$published_version" = "$package_version" ] && [ "$latest_version" = "$package_version" ]; then
+              echo "Verified $package_name@$package_version on $NPM_REGISTRY"
+              exit 0
+            fi
+            echo "Waiting for $package_name@$package_version to appear on npm (attempt $attempt/12)"
+            sleep 5
+          done
+          echo "npm publication verification failed for $package_name@$package_version" >&2
+          echo "Published version: ${published_version:-<missing>}" >&2
+          echo "latest dist-tag: ${latest_version:-<missing>}" >&2
+          exit 1
