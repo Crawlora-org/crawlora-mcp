@@ -1,7 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 
-import { expectedFacts, verifyDirectories } from "./verify-directory-drift.mjs";
+import { DIRECTORIES, expectedFacts, verifyDirectories } from "./verify-directory-drift.mjs";
 
 const expected = expectedFacts({
   packageJSON: {
@@ -21,7 +21,7 @@ const expected = expectedFacts({
 });
 
 test("derives the release facts from the MCP source files", () => {
-  assert.deepEqual(expected, { version: "1.16.2", toolCount: 2, groupCount: 2 });
+  assert.deepEqual(expected, { version: "1.16.2", toolCount: 2, groupCount: 2, sampleToolName: "one" });
 });
 
 test("rejects stale package or registry descriptions", () => {
@@ -74,4 +74,12 @@ test("fails when a directory cannot be fetched", async () => {
     fetchImpl: async () => new Response("blocked", { status: 403 }),
   });
   assert.deepEqual(failures, ["test directory: HTTP 403"]);
+});
+
+test("fails when MCP.so still shows an empty Tools section", () => {
+  const mcpSo = DIRECTORIES.find((directory) => directory.name === "MCP.so");
+  assert.throws(
+    () => mcpSo.check("2 structured public 2 platform groups No tools detected", expected),
+    /README tool catalog is empty/,
+  );
 });

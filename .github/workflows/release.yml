@@ -28,6 +28,8 @@ jobs:
         run: npm ci --omit=dev
       - name: Validate release contract
         run: node scripts/validate-release.mjs
+      - name: Verify MCP.so README tool catalog
+        run: npm run check:readme-tools
       - name: Test publication checks
         run: node --test scripts/*.test.mjs
       - name: Smoke test

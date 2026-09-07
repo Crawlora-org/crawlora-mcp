@@ -58,7 +58,13 @@ export const DIRECTORIES = [
       if (!body.includes(overviewMarker) || !body.includes(groupMarker)) {
         throw new Error(`page overview does not contain ${overviewMarker} and ${groupMarker}`);
       }
-      return `${expected.toolCount} tools in overview`;
+      if (body.includes("No tools detected")) {
+        throw new Error("README tool catalog is empty on the public page");
+      }
+      if (!body.includes(expected.sampleToolName)) {
+        throw new Error(`public Tools section does not contain ${expected.sampleToolName}`);
+      }
+      return `${expected.toolCount} tools in overview and Tools section`;
     },
   },
 ];
@@ -106,7 +112,12 @@ export function expectedFacts({ packageJSON, serverJSON, tools }) {
   if (!serverJSON.description?.includes(`${groupCount} platform groups`)) {
     fail(`server.json description does not contain ${groupCount} platform groups`);
   }
-  return { version: packageJSON.version, toolCount: tools.length, groupCount };
+  return {
+    version: packageJSON.version,
+    toolCount: tools.length,
+    groupCount,
+    sampleToolName: tools[0].name,
+  };
 }
 
 export async function verifyDirectories({ fetchImpl = fetch, directories = DIRECTORIES, expected }) {

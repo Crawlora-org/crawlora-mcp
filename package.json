@@ -16,7 +16,9 @@
   },
   "scripts": {
     "start": "node index.mjs",
-    "test": "node scripts/smoke-test.mjs"
+    "test": "node scripts/smoke-test.mjs",
+    "sync:readme-tools": "node scripts/sync-readme-tools.mjs",
+    "check:readme-tools": "node scripts/sync-readme-tools.mjs --check"
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.12.0"

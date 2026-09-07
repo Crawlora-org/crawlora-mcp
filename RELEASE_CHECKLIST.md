@@ -7,6 +7,8 @@ surfaces below show the same version and catalog counts.
 ## Automated gates
 
 - `npm test` lists the complete embedded tool catalog.
+- `npm run sync:readme-tools` regenerates the MCP.so `## Tools` section from
+  `tools.json`; CI and release fail if `npm run check:readme-tools` detects drift.
 - `node scripts/validate-release.mjs` checks package, registry manifest, README,
   tool count, and platform-group count for drift.
 - npm publishes with GitHub Actions OIDC provenance and is verified by exact
@@ -39,9 +41,10 @@ affected listing before rerunning the job:
    publish a new release from `https://mcp.crawlora.net/mcp`, keep `x-api-key`
    secret and required, and provide the scan key only in Smithery's private
    credential form. Confirm the release reaches `SUCCESS`.
-3. [MCP.so listing](https://mcp.so/servers/crawlora-mcp): use **Edit** and
-   save the public description/overview with the current counts. Confirm the
-   public page, not only the editor, contains the current markers.
+3. [MCP.so listing](https://mcp.so/servers/crawlora-mcp): the README's generated
+   `## Tools` section is the source for the tool catalog. Use **Edit** and save
+   the public description/overview with the current counts, then confirm the
+   public page shows a non-empty Tools section (not “No tools detected”).
 4. Rerun **MCP directory drift** and confirm all four directory checks pass.
 
 ## Weekly SDK, skills, and profile batch
