@@ -47,13 +47,14 @@ const DIRECTORIES = [
   },
   {
     name: "MCP.so",
-    url: "https://chat.mcp.so/server/crawlora-mcp/Crawlora",
+    url: "https://mcp.so/servers/crawlora-mcp",
     check: (body, expected) => {
-      const marker = `${expected.toolCount} tools across ${expected.groupCount} platform groups`;
-      if (!body.includes(marker)) {
-        throw new Error(`page description does not contain ${marker}`);
+      const overviewMarker = `${expected.toolCount} structured public`;
+      const groupMarker = `${expected.groupCount} platform groups`;
+      if (!body.includes(overviewMarker) || !body.includes(groupMarker)) {
+        throw new Error(`page overview does not contain ${overviewMarker} and ${groupMarker}`);
       }
-      return `${expected.toolCount} tools`;
+      return `${expected.toolCount} tools in overview`;
     },
   },
 ];
@@ -77,10 +78,22 @@ export async function verifyDirectories({ fetchImpl = fetch, directories = DIREC
   const failures = [];
   for (const directory of directories) {
     try {
-      const response = await fetchImpl(directory.url, {
-        headers: { "user-agent": "crawlora-mcp-directory-check" },
-      });
-      if (!response.ok) throw new Error(`HTTP ${response.status}`);
+      let response;
+      let lastError;
+      for (let attempt = 1; attempt <= 3; attempt += 1) {
+        try {
+          response = await fetchImpl(directory.url, {
+            headers: { "user-agent": "crawlora-mcp-directory-check" },
+            signal: AbortSignal.timeout(15_000),
+          });
+          if (response.ok) break;
+          lastError = new Error(`HTTP ${response.status}`);
+        } catch (error) {
+          lastError = error;
+        }
+        if (attempt < 3) await new Promise((resolve) => setTimeout(resolve, attempt * 1000));
+      }
+      if (!response?.ok) throw lastError ?? new Error("request failed");
       const detail = directory.check(await response.text(), expected);
       results.push({ ...directory, detail, ok: true });
     } catch (error) {
