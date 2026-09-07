@@ -11,10 +11,10 @@ function cleanDescription(description) {
 
 export function renderToolsSection(tools) {
   if (!Array.isArray(tools) || tools.length === 0) throw new Error("tools.json is empty or not an array");
-  const entries = tools.map((tool) => {
+  const entries = tools.flatMap((tool) => {
     if (!tool?.name) throw new Error("tools.json contains a tool without a name");
     const description = cleanDescription(tool.description);
-    return description ? `- \`${tool.name}\` — ${description}` : `- \`${tool.name}\``;
+    return description ? [`### \`${tool.name}\``, "", description, ""] : [`### \`${tool.name}\``, ""];
   });
   return [
     "## Tools",

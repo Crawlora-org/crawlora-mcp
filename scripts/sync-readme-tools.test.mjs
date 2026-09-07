@@ -11,8 +11,8 @@ const tools = [
 test("renders an MCP.so-compatible tool list", () => {
   const section = renderToolsSection(tools);
   assert.match(section, /^## Tools/m);
-  assert.match(section, /- `alpha` — First 'tool' with whitespace\./);
-  assert.match(section, /- `beta` — Second tool\./);
+  assert.match(section, /### `alpha`\n\nFirst 'tool' with whitespace\./);
+  assert.match(section, /### `beta`\n\nSecond tool\./);
 });
 
 test("replaces an existing generated section idempotently", () => {
