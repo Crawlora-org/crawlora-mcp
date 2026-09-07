@@ -8,13 +8,20 @@ on:
 permissions:
   contents: read
 
+concurrency:
+  group: mcp-directory-drift
+  cancel-in-progress: true
+
 jobs:
   verify:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v6
         with:
           node-version: "24"
+      - name: Validate release contract
+        run: node scripts/validate-release.mjs
       - name: Verify public MCP directories
         run: node scripts/verify-directory-drift.mjs

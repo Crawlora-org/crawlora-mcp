@@ -1,8 +1,12 @@
 #!/usr/bin/env node
 
-import { readFile } from "node:fs/promises";
+import { appendFile, readFile } from "node:fs/promises";
+import { execFile } from "node:child_process";
+import { promisify } from "node:util";
 
-const DIRECTORIES = [
+const execFileAsync = promisify(execFile);
+
+export const DIRECTORIES = [
   {
     name: "Official MCP Registry",
     url: "https://registry.modelcontextprotocol.io/v0/servers?search=net.crawlora%2Fcrawlora-mcp",
@@ -63,6 +67,29 @@ function fail(message) {
   throw new Error(message);
 }
 
+export async function fetchDirectoryPage(url, { headers = {} } = {}) {
+  const args = [
+    "--fail-with-body",
+    "--silent",
+    "--show-error",
+    "--ipv4",
+    "--retry",
+    "2",
+    "--retry-all-errors",
+    "--connect-timeout",
+    "10",
+    "--max-time",
+    "30",
+    "--user-agent",
+    headers["user-agent"] ?? "crawlora-mcp-directory-check",
+    url,
+  ];
+  const { stdout } = await execFileAsync("curl", args, {
+    maxBuffer: 64 * 1024 * 1024,
+  });
+  return new Response(stdout, { status: 200 });
+}
+
 export function expectedFacts({ packageJSON, serverJSON, tools }) {
   if (packageJSON.name !== "crawlora-mcp") fail(`unexpected package name ${packageJSON.name}`);
   if (serverJSON.name !== "net.crawlora/crawlora-mcp") fail(`unexpected server name ${serverJSON.name}`);
@@ -70,38 +97,48 @@ export function expectedFacts({ packageJSON, serverJSON, tools }) {
   if (!Array.isArray(tools) || tools.length === 0) fail("tools.json is empty or not an array");
   const groupCount = new Set(tools.map((tool) => tool?._http?.group).filter(Boolean)).size;
   if (groupCount === 0) fail("tools.json has no platform groups");
+  if (!packageJSON.description?.includes(String(tools.length))) {
+    fail(`package.json description does not contain ${tools.length} tools`);
+  }
+  if (!serverJSON.description?.includes(String(tools.length))) {
+    fail(`server.json description does not contain ${tools.length} tools`);
+  }
+  if (!serverJSON.description?.includes(`${groupCount} platform groups`)) {
+    fail(`server.json description does not contain ${groupCount} platform groups`);
+  }
   return { version: packageJSON.version, toolCount: tools.length, groupCount };
 }
 
 export async function verifyDirectories({ fetchImpl = fetch, directories = DIRECTORIES, expected }) {
-  const results = [];
-  const failures = [];
-  for (const directory of directories) {
-    try {
-      let response;
-      let lastError;
-      for (let attempt = 1; attempt <= 3; attempt += 1) {
-        try {
-          response = await fetchImpl(directory.url, {
-            headers: { "user-agent": "crawlora-mcp-directory-check" },
-            signal: AbortSignal.timeout(15_000),
-          });
-          if (response.ok) break;
-          lastError = new Error(`HTTP ${response.status}`);
-        } catch (error) {
-          lastError = error;
+  const results = await Promise.all(
+    directories.map(async (directory) => {
+      try {
+        let response;
+        let lastError;
+        for (let attempt = 1; attempt <= 3; attempt += 1) {
+          try {
+            response = await fetchImpl(directory.url, {
+              headers: { "user-agent": "crawlora-mcp-directory-check" },
+              signal: AbortSignal.timeout(15_000),
+            });
+            if (response.ok) break;
+            lastError = new Error(`HTTP ${response.status}`);
+          } catch (error) {
+            lastError = error;
+          }
+          if (attempt < 3) await new Promise((resolve) => setTimeout(resolve, attempt * 1000));
         }
-        if (attempt < 3) await new Promise((resolve) => setTimeout(resolve, attempt * 1000));
+        if (!response?.ok) throw lastError ?? new Error("request failed");
+        const detail = directory.check(await response.text(), expected);
+        return { ...directory, detail, ok: true };
+      } catch (error) {
+        return { ...directory, detail: error.message, ok: false };
       }
-      if (!response?.ok) throw lastError ?? new Error("request failed");
-      const detail = directory.check(await response.text(), expected);
-      results.push({ ...directory, detail, ok: true });
-    } catch (error) {
-      const message = `${directory.name}: ${error.message}`;
-      failures.push(message);
-      results.push({ ...directory, detail: error.message, ok: false });
-    }
-  }
+    }),
+  );
+  const failures = results
+    .filter((result) => !result.ok)
+    .map((result) => `${result.name}: ${result.detail}`);
   return { results, failures };
 }
 
@@ -112,12 +149,23 @@ async function main() {
     readFile(new URL("../tools.json", import.meta.url), "utf8").then(JSON.parse),
   ]);
   const expected = expectedFacts({ packageJSON, serverJSON, tools });
-  const { results, failures } = await verifyDirectories({ expected });
+  const { results, failures } = await verifyDirectories({ expected, fetchImpl: fetchDirectoryPage });
+  const summary = [];
   for (const result of results) {
     console.log(`${result.ok ? "PASS" : "FAIL"} ${result.name}: ${result.detail}`);
+    summary.push(`- ${result.ok ? "PASS" : "FAIL"} **${result.name}**: ${result.detail}`);
+  }
+  if (process.env.GITHUB_STEP_SUMMARY) {
+    await appendFile(
+      process.env.GITHUB_STEP_SUMMARY,
+      `### MCP directory verification\n\n${summary.join("\n")}\n`,
+    );
   }
   if (failures.length > 0) {
-    fail(`MCP directory drift detected:\n- ${failures.join("\n- ")}`);
+    fail(
+      `MCP directory drift detected:\n- ${failures.join("\n- ")}\n\n` +
+        "Refresh the affected public listing, then rerun the directory-drift workflow.",
+    );
   }
   console.log(`MCP directory check passed: ${results.length} directories match ${expected.version}/${expected.toolCount} tools`);
 }

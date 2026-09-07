@@ -4,8 +4,16 @@ import assert from "node:assert/strict";
 import { expectedFacts, verifyDirectories } from "./verify-directory-drift.mjs";
 
 const expected = expectedFacts({
-  packageJSON: { name: "crawlora-mcp", version: "1.16.2" },
-  serverJSON: { name: "net.crawlora/crawlora-mcp", version: "1.16.2" },
+  packageJSON: {
+    name: "crawlora-mcp",
+    version: "1.16.2",
+    description: "Local MCP server with 2 structured tools",
+  },
+  serverJSON: {
+    name: "net.crawlora/crawlora-mcp",
+    version: "1.16.2",
+    description: "Hosted MCP: 2 structured web-data tools across 2 platform groups.",
+  },
   tools: [
     { name: "one", _http: { group: "One" } },
     { name: "two", _http: { group: "Two" } },
@@ -14,6 +22,29 @@ const expected = expectedFacts({
 
 test("derives the release facts from the MCP source files", () => {
   assert.deepEqual(expected, { version: "1.16.2", toolCount: 2, groupCount: 2 });
+});
+
+test("rejects stale package or registry descriptions", () => {
+  assert.throws(
+    () =>
+      expectedFacts({
+        packageJSON: {
+          name: "crawlora-mcp",
+          version: "1.16.2",
+          description: "Local MCP server with 1 tool",
+        },
+        serverJSON: {
+          name: "net.crawlora/crawlora-mcp",
+          version: "1.16.2",
+          description: "Hosted MCP: 2 structured web-data tools across 2 platform groups.",
+        },
+        tools: [
+          { name: "one", _http: { group: "One" } },
+          { name: "two", _http: { group: "Two" } },
+        ],
+      }),
+    /package\.json description does not contain 2 tools/,
+  );
 });
 
 test("fails when a directory serves an older snapshot", async () => {
