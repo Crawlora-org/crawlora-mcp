@@ -16,8 +16,9 @@ surfaces below show the same version and catalog counts.
 - The official MCP Registry is published with the DNS-authenticated
   `MCP_PRIVATE_KEY` secret and verified by its `isLatest` entry.
 - `node scripts/verify-published.mjs` checks npm, the official registry,
-  Glama, Smithery, and MCP.so. Any stale, blocked, or unavailable directory
-  fails the job and is written to the GitHub Actions summary.
+  Glama, Smithery, and MCP.so. Registry and metadata failures block the job;
+  account-managed or bot-protected public listings are reported as `WARN` and
+  written to the GitHub Actions summary until they can be refreshed manually.
 - The same verification summary lists the additional directory surfaces below
   with an explicit status, so account-gated, unlisted, or paused directories
   cannot disappear silently from the release process.

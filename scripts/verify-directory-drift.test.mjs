@@ -83,6 +83,27 @@ test("fails when a directory cannot be fetched", async () => {
   assert.deepEqual(failures, ["test directory: HTTP 403"]);
 });
 
+test("reports non-blocking directory drift as a warning", async () => {
+  const { failures, warnings, results } = await verifyDirectories({
+    expected,
+    directories: [
+      {
+        name: "account-managed directory",
+        url: "https://example.test/server",
+        blocking: false,
+        check: (body, facts) => {
+          if (!body.includes(`${facts.toolCount} structured`)) throw new Error("stale tool count");
+          return "ok";
+        },
+      },
+    ],
+    fetchImpl: async () => new Response("319 structured tools", { status: 200 }),
+  });
+  assert.deepEqual(failures, []);
+  assert.deepEqual(warnings, ["account-managed directory: stale tool count"]);
+  assert.equal(results[0].blocking, false);
+});
+
 test("fails when MCP.so still shows an empty Tools section", () => {
   const mcpSo = DIRECTORIES.find((directory) => directory.name === "MCP.so");
   assert.throws(

@@ -75,13 +75,15 @@ async function verifyPublished() {
       name: result.name,
       detail: result.detail,
       ok: result.ok,
+      blocking: result.blocking,
     });
   }
 
   const failures = [...directories.failures];
-  const lines = checks.map(
-    (check) => `- ${check.ok === false ? "FAIL" : "PASS"} **${check.name}**: ${check.detail}`,
-  );
+  const lines = checks.map((check) => {
+    const status = check.ok ? "PASS" : check.blocking === false ? "WARN" : "FAIL";
+    return `- ${status} **${check.name}**: ${check.detail}`;
+  });
   for (const line of lines) console.log(line.replaceAll("**", ""));
   const additionalLines = additionalDirectoryLines(expected);
   console.log("Additional directory refreshes:");

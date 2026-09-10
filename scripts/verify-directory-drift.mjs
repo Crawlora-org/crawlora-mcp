@@ -28,6 +28,9 @@ export const DIRECTORIES = [
   {
     name: "Glama",
     url: "https://glama.ai/mcp/servers/Crawlora-org/crawlora-mcp",
+    // Glama is refreshed from its signed-in admin UI and may lag a release.
+    // Keep the observation visible without blocking unrelated CI health.
+    blocking: false,
     check: (body, expected) => {
       if (!body.includes(`${expected.toolCount} structured`)) {
         throw new Error(`page does not contain ${expected.toolCount} structured tools`);
@@ -52,6 +55,9 @@ export const DIRECTORIES = [
   {
     name: "MCP.so",
     url: "https://mcp.so/servers/crawlora-mcp",
+    // The canonical page is intermittently bot-protected from hosted runners,
+    // and its listing is maintained through the MCP.so editor.
+    blocking: false,
     check: (body, expected) => {
       const overviewMarker = `${expected.toolCount} structured public`;
       const groupMarker = `${expected.groupCount} platform groups`;
@@ -184,16 +190,24 @@ export async function verifyDirectories({ fetchImpl = fetch, directories = DIREC
         }
         if (!response?.ok) throw lastError ?? new Error("request failed");
         const detail = directory.check(await response.text(), expected);
-        return { ...directory, detail, ok: true };
+        return { ...directory, detail, ok: true, blocking: directory.blocking !== false };
       } catch (error) {
-        return { ...directory, detail: error.message, ok: false };
+        return {
+          ...directory,
+          detail: error.message,
+          ok: false,
+          blocking: directory.blocking !== false,
+        };
       }
     }),
   );
   const failures = results
-    .filter((result) => !result.ok)
+    .filter((result) => !result.ok && result.blocking)
     .map((result) => `${result.name}: ${result.detail}`);
-  return { results, failures };
+  const warnings = results
+    .filter((result) => !result.ok && !result.blocking)
+    .map((result) => `${result.name}: ${result.detail}`);
+  return { results, failures, warnings };
 }
 
 async function main() {
@@ -203,11 +217,12 @@ async function main() {
     readFile(new URL("../tools.json", import.meta.url), "utf8").then(JSON.parse),
   ]);
   const expected = expectedFacts({ packageJSON, serverJSON, tools });
-  const { results, failures } = await verifyDirectories({ expected, fetchImpl: fetchDirectoryPage });
+  const { results, failures, warnings } = await verifyDirectories({ expected, fetchImpl: fetchDirectoryPage });
   const summary = [];
   for (const result of results) {
-    console.log(`${result.ok ? "PASS" : "FAIL"} ${result.name}: ${result.detail}`);
-    summary.push(`- ${result.ok ? "PASS" : "FAIL"} **${result.name}**: ${result.detail}`);
+    const status = result.ok ? "PASS" : result.blocking ? "FAIL" : "WARN";
+    console.log(`${status} ${result.name}: ${result.detail}`);
+    summary.push(`- ${status} **${result.name}**: ${result.detail}`);
   }
   if (process.env.GITHUB_STEP_SUMMARY) {
     await appendFile(
@@ -222,7 +237,10 @@ async function main() {
         "Refresh the affected public listing, then rerun the directory-drift workflow.",
     );
   }
-  console.log(`MCP directory check passed: ${results.length} directories match ${expected.version}/${expected.toolCount} tools`);
+  console.log(
+    `MCP directory check passed: ${results.length - warnings.length} directories match ${expected.version}/${expected.toolCount} tools` +
+      (warnings.length > 0 ? ` (${warnings.length} warning${warnings.length === 1 ? "" : "s"})` : ""),
+  );
 }
 
 if (import.meta.url === `file://${process.argv[1]}`) {
