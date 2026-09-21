@@ -7,7 +7,7 @@
 [![crawlora-mcp MCP server](https://glama.ai/mcp/servers/Crawlora-org/crawlora-mcp/badges/score.svg)](https://glama.ai/mcp/servers/Crawlora-org/crawlora-mcp)
 
 **Crawlora MCP** is a **hosted** Model Context Protocol server that gives AI clients and
-agents **1873 structured public‑web‑data tools** across 215 platform groups — search, maps,
+agents **2221 structured public‑web‑data tools** across 260 platform groups — search, maps,
 e‑commerce, social, finance, travel, app stores, media, and reviews — each returning clean,
 normalized **JSON** instead of HTML to parse.
 
@@ -155,7 +155,7 @@ Any client that speaks **Streamable HTTP** can use the generic config in
 
 ## Run it locally (open‑source server)
 
-This repo also ships a small **stdio** MCP server (`index.mjs`) that exposes the same **1873
+This repo also ships a small **stdio** MCP server (`index.mjs`) that exposes the same **2221
 tools**, each wrapping the Crawlora REST API (`https://api.crawlora.net/api/v1`) with your
 `CRAWLORA_API_KEY`. Useful if you'd rather run the server yourself than use the hosted endpoint.
 
@@ -328,6 +328,22 @@ Get Airbnb room reviews. Returns normalized Airbnb public review snippets.
 
 Search Airbnb stays. Returns normalized Airbnb public web search results.
 
+### `aljazeera_article`
+
+Get Al Jazeera article content. Returns a public Al Jazeera article's metadata and body paragraphs from a canonical article URL.
+
+### `aljazeera_categories`
+
+Get Al Jazeera section navigation. Returns Al Jazeera's current public section navigation. Use a returned slug directly as the topic parameter on aljazeera-topic.
+
+### `aljazeera_headlines`
+
+Get Al Jazeera site-wide headlines. Returns fresh headlines from Al Jazeera's public, site-wide RSS feed.
+
+### `aljazeera_topic`
+
+Get Al Jazeera section headlines. Returns the newest public Al Jazeera stories from one section archive page. topic is a section slug; use aljazeera-categories for the current value space.
+
 ### `allbirds_collection_products`
 
 List Allbirds collection products. Returns normalized products from one Allbirds (https://www.allbirds.com) collection. The storefront URL is fixed server-side; 'handle' is the collection's URL slug.
@@ -372,13 +388,61 @@ List Allbirds sitemaps. Returns child sitemap URLs from Allbirds's (https://www.
 
 Get Allbirds store metadata. Returns normalized storefront metadata for Allbirds (https://www.allbirds.com), sourced from credential-free storefront JSON. This endpoint is a brand-pinned wrapper around the generic Shopify store family: the storefront URL is fixed server-side, so no 'url' parameter is accepted. If the vanity domain blocks '/products.json', the service may fall back to a public '*.myshopify.com' domain discovered from the storefront page, or to the storefront's own embedded page data for storefronts that expose neither.
 
+### `alt_asset`
+
+Get one card design's population report and recent sales. Returns one card design's identity, full population report (across every grading company and grade Alt tracks), and a recent raw sales feed -- the "is this card actually rare, and what does it sell for" data for a specific card design, independent of any single listing. asset_id comes from a prior alt-search/alt-sold-listings/alt-card-search result's asset_id field. recent_sales has no per-transaction grade breakdown -- Alt's own API does not expose one; see alt-sold-listings for per-grade sold prices on specific listings. Credential-free public data from Alt's own GraphQL API.
+
+### `alt_auctions`
+
+Search Alt's own live 24/7 auctions. Searches Alt's own currently live auctions -- the same pool shown on alt.xyz/browse's "Auctions" tab filtered to the Alt source. Unlike alt-search, this never returns another source auction house's listings or Alt's own fixed-price items: it always uses a search key scoped server-side to Alt's own live auction pool. Credential-free public data from Alt's own search backend. See alt-categories for the accepted category/grading_company/sort values.
+
+### `alt_card_search`
+
+Search Alt's reference card-design catalog. Searches Alt's reference card-design catalog -- a canonical catalog of card designs (one entry per year/brand/subject/card-number/variety combination), separate from live listings or sales. Useful for finding a card design's asset_id (to feed into alt-asset for a population report and recent sales) without already having a live listing or sale that references it. Credential-free public data from Alt's own search backend.
+
+### `alt_categories`
+
+List Alt search filter values. Returns every accepted value for alt-search/alt-auctions/alt-sold-listings' category, auction_house, grading_company, and listing_type params, plus the sort enum. category/auction_house/grading_company/listing_type are read live from Alt's own current search index via a facets-only query on every call, not a fixed taxonomy -- so this endpoint self-corrects if Alt's aggregator adds a new source auction house, grading company, or category. Credential-free public data from Alt's own search backend.
+
+### `alt_listing`
+
+Get one Alt listing's full public detail. One listing's full public detail -- title, description, price/bid state, grading info, and images -- normalized across Alt's own native listings and its aggregated external listings. id and listing_type come from a prior alt-search/alt-auctions result. Not every response field applies to every listing_type -- see the field-level notes in this endpoint's markdown doc.
+
+### `alt_market_trends`
+
+Get Alt's card-market price-trend index. Returns Alt's own category-level price-trend index -- the same data alt.xyz's "Market Trends" page shows: a weekly/monthly/90-day change and a current index value per card category, built from Alt's own sold/valuation data. Credential-free public data from Alt's own GraphQL API.
+
+### `alt_search`
+
+Search Alt's aggregated card marketplace. Searches Alt's universal aggregator index -- live auction and fixed-price listings from Alt itself and every other source auction house its search carries (eBay, Fanatics Collect, Pristine Auction, Goldin, CardHobby, Memory Lane) -- by free-text query, category, source auction house, grading company, and listing type, in a caller-selected sort order. Only currently-live listings are returned; see alt-sold-listings for completed sales. Credential-free public data from Alt's own search backend. See alt-categories for the accepted category/auction_house/grading_company/listing_type/sort values.
+
+### `alt_sold_listings`
+
+Search Alt's completed sales archive. Searches Alt's global archive of completed card sales, aggregated across every source auction house its search carries -- the "market data" side of Alt's card-investment-marketplace positioning. This is a separate index from alt-search/alt-auctions, scoped to a rolling recent time window, not a filtered view of live listings. Pass auction_house=Alt to see only Alt's own completed auctions. Credential-free public data from Alt's own search backend. See alt-categories for the accepted category/auction_house/grading_company values.
+
+### `alt_top_movers`
+
+Get Alt's biggest card-market price movers. Returns Alt's biggest price-index movers -- either a cross-subject leaderboard (optionally scoped to one category) or, when subject is set, that one player/character's own trend broken out per category it appears in. category is not strictly validated against alt-categories' list -- this trend index's own category set is broader (e.g. it includes MULTI-SPORT_CARDS). Credential-free public data from Alt's own GraphQL API.
+
+### `amazon_charts`
+
+Amazon product charts. Returns one page of a ranked Amazon chart (Best Sellers, New Releases, or Most Wished For) for a department or department subcategory on 'amazon.com'. Discover valid department/node values with amazon-charts-categories.
+
+### `amazon_charts_categories`
+
+Amazon chart categories. Returns the department and subcategory values amazon-charts accepts for a given chart. Omit department to list a chart's top-level departments; pass a department (and optionally a node) to get that category's own name plus its immediate child categories.
+
+### `amazon_jobs_categories`
+
+Amazon Jobs category discovery. Lists every value amazon-jobs/search's 'category' parameter accepts, each with its current live job count. Live-queries amazon.jobs's own search category facet rather than a static list, so counts and coverage stay current.
+
 ### `amazon_jobs_job`
 
 Amazon Jobs single posting. Returns one Amazon.jobs posting by its numeric job id (the 'id' field returned by search). Parsed from amazon.jobs's stable server-rendered job detail page — there is no separate JSON detail endpoint upstream.
 
 ### `amazon_jobs_search`
 
-Amazon Jobs search. Searches Amazon's public careers site (amazon.jobs) via its credential-free search JSON. Each result includes the full description and qualifications inline. 'sort' accepts 'relevant' (default, upstream relevance ranking) or 'recent' (newest posted first). Either 'q' or 'category' (or both) must be given -- 'category' filters by Amazon's own job-category taxonomy and works with no text query at all.
+Amazon Jobs search. Searches Amazon's public careers site (amazon.jobs) via its credential-free search JSON. Each result includes the full description and qualifications inline. 'sort' accepts 'relevant' (default, upstream relevance ranking) or 'recent' (newest posted first). Either 'q' or 'category' (or both) must be given -- 'category' filters by Amazon's own job-category taxonomy and works with no text query at all. See 'amazon-jobs-categories' for the full, live-verified list of accepted 'category' values.
 
 ### `amazon_product`
 
@@ -496,6 +560,10 @@ Retrieve an Apple Books series and its full book list. Returns series metadata a
 
 Apple Jobs single posting. Returns one Apple Careers posting by its job id (the 'id' field returned by search, e.g. '200674676-0836' for a specific requisition or 'PIPE-200314122' for an evergreen/pipeline retail role). Parsed from jobs.apple.com's server-rendered job detail page.
 
+### `apple_jobs_locations`
+
+Apple Jobs location discovery. Discovery endpoint for apple-jobs-search's 'location' parameter, whose accepted values are a closed set Apple itself defines (its own '<slug>-<CODE>' location ids -- free-text location names are rejected by the search backend). Apple exposes no bulk "list everything" API for this; its only source is its own location-filter typeahead, a fuzzy search capped at 10 results per call covering four granularities (country, state/province, metro area, city) with no empty-input listing mode. With no 'q', this returns the full country-level value space (206 values, live-verified) as a static list -- the granularity apple-jobs-search's own examples use and nearly every caller needs, with no live upstream call required. With 'q' supplied, this instead live-proxies Apple's own typeahead so callers can discover state/metro/city-level values for finer filtering; results at those deeper levels may include more than one candidate and are ranked by Apple's own relevance, not alphabetically.
+
 ### `apple_jobs_search`
 
 Apple Jobs search. Searches Apple's public careers site (jobs.apple.com) via its server-rendered search page's embedded job data. Page size is fixed by Apple at 20 results. Search results carry identity/location/team metadata only — call the job endpoint for the full description and qualifications.
@@ -612,6 +680,10 @@ Retrieve Apple Podcasts "You Might Also Like" related shows. Returns the "You Mi
 
 Retrieve full App Store app details. Returns normalized app metadata from the App Store lookup API. Provide either 'id' (numeric track ID) or 'app_id' (bundle ID). 'id'/'app_id' can identify an iPhone, iPad, or Mac App Store listing.
 
+### `appstore_categories`
+
+Retrieve App Store chart categories and collections. Returns every category ID and chart collection accepted by '/appstore/list', including Games and Magazines & Newspapers subgenres with their parent ID. Collections carry their device platform ('phone', 'pad', 'mac'), chart type ('top_free', 'top_paid', 'top_grossing', 'top', 'new'), and whether the feed currently returns entries.
+
 ### `appstore_developer`
 
 Retrieve apps by developer ID. Returns App Store apps associated with a specific developer artist ID.
@@ -676,6 +748,10 @@ Find Arby's restaurants near a coordinate. Returns Arby's restaurants within a r
 
 List one Arby's menu category's items with full nutrition and price. Returns the items in one Arby's menu category, each with its stable product code, name, description, image, tags, availability, a full per-serving nutrition panel (calories, total and saturated fat, trans fat, cholesterol, sodium, carbohydrate, fiber, sugar, protein and serving weight), and a price when store_id resolves to a priced catalog. Category slugs come from GET /arbys/categories. store_id (optional, default 0) is Arby's own priceless national reference catalog; pass a store_id you already know to get that store's pricing instead -- there is no location-lookup endpoint in this family, so store_id is a passthrough value, not something this API can look up for you. A price of exactly 0 on an item is a genuine free add-on, distinct from the default catalog's complete absence of pricing.
 
+### `audible_author_charts`
+
+Get Audible's top-author chart. Returns one page of Audible's public ranked author chart. This is a people-shaped HTML surface and exposes only rank, author identity, image metadata when available, and a canonical author URI; author detail remains outside the credential-free public surface.
+
 ### `audible_categories`
 
 Get Audible's genre/category tree. Returns Audible's full genre/category tree (root genres with their subgenres), including the category ids accepted by GET /audible/search's category_id filter. Credential-free public catalog data from api.audible.com.
@@ -728,6 +804,46 @@ Search Autotrader vehicle listings. Searches Autotrader for new and used car lis
 
 Get Autotrader vehicle listing detail. Returns a normalized Autotrader vehicle listing: full vehicle spec (make, model, trim, mileage, colors, transmission, fuel type, engine, images, pricing), the full listing description, and seller detail (dealership or private seller). Credential-free public data sourced from Autotrader's own server-rendered vehicle detail page.
 
+### `axios_article`
+
+Get Axios article content. Returns a public Axios article's metadata and full body paragraphs from a canonical article URL. Subscriber-only stories with no free preview return a 403 permission error instead of an empty body.
+
+### `axios_categories`
+
+Get Axios topic navigation. Returns Axios's full public topic and subtopic navigation tree. Use a subtopic's topic value directly as the topic parameter on axios-headlines.
+
+### `axios_headlines`
+
+Get Axios topic headlines. Returns the newest public Axios stories on one topic or subtopic page. topic is a topic slug (e.g. technology) or a topic/subtopic path (e.g. technology/automation-and-ai) -- see axios-categories for the full known value space.
+
+### `balenciaga_categories`
+
+List Balenciaga categories. Returns Balenciaga's live storefront navigation/category taxonomy. Each categories[].path is the exact value accepted by balenciaga-category's path parameter.
+
+### `balenciaga_category`
+
+Browse a Balenciaga category. Returns one Balenciaga category listing from the site's own Search-ShowAjax fragment. path comes from balenciaga-categories. sort accepts latest, price_ascending, or price_descending. filters is a comma-separated list of exact field:value pairs from the response's live facets; repeat a field to OR multiple values within that facet; omit it for an unfiltered listing.
+
+### `balenciaga_product`
+
+Get a Balenciaga product. Returns structured product detail from Balenciaga's product page, including schema.org name/SKU/price/availability, images, color variants, and visible product details. url must be a product URL returned by balenciaga-category or balenciaga-search.
+
+### `balenciaga_product_variants`
+
+Get Balenciaga product variations. Returns Balenciaga's live color/size variation matrix for a product, including variation ids, selection/sellability flags, care text, availability, and related product ids. url may be a product URL or a Product-Variation URL from balenciaga-product's colors[].url.
+
+### `balenciaga_search`
+
+Search Balenciaga products. Searches Balenciaga's storefront by keyword using the site's own product-grid fragment. q is required; sort accepts latest, price_ascending, or price_descending; page is one-based with 12 products per page; and filters accepts comma-separated exact field:value pairs from live facets. Repeat a field to OR multiple values within that facet. A genuine no-result query returns an empty products list.
+
+### `balenciaga_store_countries`
+
+List Balenciaga store-locator countries. Returns every country code accepted by balenciaga-stores, discovered from Balenciaga's own public store-locator form.
+
+### `balenciaga_stores`
+
+List Balenciaga stores. Returns Balenciaga's public physical-store directory for one country, including addresses, coordinates, phone numbers, opening hours, and store-service flags. Use balenciaga-store-countries to discover the complete accepted country enum.
+
 ### `bbb_business`
 
 Get a Better Business Bureau business profile. Returns a normalized bbb.org business profile: BBB rating letter grade and reasons, accreditation status and since-date, years in business, BBB file/incorporation dates, entity type, contact info, business categories, social media, and a short latest-reviews preview. Credential-free public Better Business Bureau data.
@@ -778,7 +894,7 @@ Get a BBC News live-page text snapshot. Returns the current server-rendered text
 
 ### `bbc_search`
 
-Search public BBC pages. Returns a bounded page of public BBC search-result metadata. Media entries link only to their BBC landing pages; streams, downloads, and transcripts are not returned.
+Search public BBC pages. Returns a bounded page of public BBC search-result metadata: title, URL, standfirst summary, display date, and a type of article, video, audio, live, topic, or page. Topic items are BBC topic hub pages rather than articles and carry no published_at. Media entries link only to their BBC landing pages; streams, downloads, and transcripts are not returned.
 
 ### `bestbuy_brands`
 
@@ -878,7 +994,7 @@ Search Bing news results. Returns normalized Bing news search results for a quer
 
 ### `bing_search`
 
-Search Bing web results. Returns normalized Bing web search results for a query string, including organic results, optional context panel data, related queries, people-also-ask questions, news modules, video modules, and page-based pagination. Empty optional blocks are omitted from the JSON response. Locale defaults to country=us and lang=en-us. Results are fetched with a Chrome-impersonated request client and return 503 on a genuine transport failure or challenge page. Bing occasionally serves a well-formed page whose results share no significant term with the query; when every hedged attempt hits this, the response is still returned as 200 with data.low_confidence set to true (and the X-Low-Confidence header) instead of being withheld, so callers get Bing's real answer plus an honest signal to double-check it rather than nothing. Queries that use the site: operator (for example site:gov.hu) are not supported: Bing serves a bot-verification challenge for them, so they are rejected with 400 before any request is made. Use the Google search endpoint (/api/v1/google/search) for domain-restricted searches.
+Search Bing web results. Returns normalized Bing web search results for a query string, including organic results, optional context panel data, related queries, people-also-ask questions, news modules, video modules, and page-based pagination. Empty optional blocks are omitted from the JSON response. Locale defaults to country=us and lang=en-us. Results are fetched with a Chrome-impersonated request client and return 503 on a genuine transport failure or challenge page. Bing occasionally serves a well-formed page whose results share no significant term with the query; when every hedged attempt hits this, the response is still returned as 200 with data.low_confidence set to true (and the X-Low-Confidence header) instead of being withheld, so callers get Bing's real answer plus an honest signal to double-check it rather than nothing. Queries that use the site: operator (for example site:gov.hu) are not supported: Bing serves a bot-verification challenge for them, so they are rejected with 400 before any request is made. Use the DuckDuckGo (/api/v1/duckduckgo/search), Brave (/api/v1/brave/search), or Yahoo (/api/v1/yahoo-search/search) search endpoints for domain-restricted searches instead.
 
 ### `bing_suggest`
 
@@ -887,6 +1003,14 @@ Suggest Bing search queries. Returns Bing autosuggest query completions for a qu
 ### `bing_videos`
 
 Search Bing video results. Returns normalized Bing video search results for a query string. Locale defaults to country=us and lang=en-us. Results are fetched from public Bing video HTML/async pages and return 503 when Bing serves a challenge page or unusable HTML.
+
+### `bloomberg_article`
+
+Get a Bloomberg article's content. Returns one public Bloomberg article's metadata and body paragraphs from a canonical article URL. Subscriber-only articles are not available.
+
+### `bloomberg_news`
+
+Get the latest Bloomberg stories. Returns Bloomberg's current news feed: the newest stories across all sections, each with its title, canonical URL, and publication time.
 
 ### `bluesky_author_feed`
 
@@ -900,9 +1024,25 @@ A Bluesky account's followers. Returns a page of a Bluesky account's followers. 
 
 Accounts a Bluesky account follows. Returns a page of the accounts a Bluesky account follows. Public data, sourced from the AT Protocol's public, credential-free AppView API.
 
+### `bluesky_post_likes`
+
+List actors who liked a Bluesky post. Returns public actors who liked a post, with an optional cursor for pagination.
+
+### `bluesky_post_quotes`
+
+List quotes of a Bluesky post. Returns public posts that quote the specified post, with an optional cursor for pagination.
+
+### `bluesky_post_reposted_by`
+
+List actors who reposted a Bluesky post. Returns public actors who reposted a post, with an optional cursor for pagination.
+
 ### `bluesky_post_thread`
 
 A Bluesky post and its reply tree. Returns a Bluesky post along with its nested replies (and, when the post is itself a reply, its parent chain), up to 'depth' levels deep. Public data, sourced from the AT Protocol's public, credential-free AppView API.
+
+### `bluesky_posts`
+
+Look up Bluesky posts in a batch. Returns public Bluesky posts for 1-25 at:// post URIs. Missing, deleted, or blocked posts are omitted when the public AppView omits them.
 
 ### `bluesky_profile`
 
@@ -1127,6 +1267,30 @@ List Brooklinen sitemaps. Returns child sitemap URLs from Brooklinen's (https://
 ### `brooklinen_store`
 
 Get Brooklinen store metadata. Returns normalized storefront metadata for Brooklinen (https://www.brooklinen.com), sourced from credential-free storefront JSON. This endpoint is a brand-pinned wrapper around the generic Shopify store family: the storefront URL is fixed server-side, so no 'url' parameter is accepted. If the vanity domain blocks '/products.json', the service may fall back to a public '*.myshopify.com' domain discovered from the storefront page, or to the storefront's own embedded page data for storefronts that expose neither.
+
+### `burberry_categories`
+
+List Burberry categories. Lists every department, section, and leaf category from Burberry's own site navigation, flattened with a breadcrumb-style path. Each entry's url is exactly what burberry-category's own category parameter accepts. Filter to one top-level department with department (e.g. Women, Men, Children, Gifts, Trench, Scarves, Bags, Beauty & Fragrances, Sale); omit for every department. See the response's own departments field for the live list.
+
+### `burberry_category`
+
+Browse a Burberry category. Returns one page (20 products) of a Burberry category/browse listing. category is the site-relative category path, e.g. /l/womens-clothing/new-arrivals/ -- use burberry-categories to discover every valid value instead of guessing from site URLs. offset paginates in increments of 20 (the upstream's own fixed page size). sort selects the result order. The response includes the upstream's own available filters (facets) with live per-option result counts; feed a selection back in via facets, a comma-separated list of property:value pairs taken from this same response's facets field (e.g. benefit:bags,dotcomreportingcolour:black -- see a live response for the values valid for that category). At most one value per facet property; an unmatched or invalid combination returns a well-formed empty result, not an error.
+
+### `burberry_product`
+
+Get a Burberry product. Returns product detail for one Burberry product page: name, sku, colour, material, description, price, stock status, every product image, and every other purchasable colourway of the same style. url is the site-relative product path, e.g. /check-cashmere-cardigan-p81336111, as returned by burberry-search's or burberry-category's own products[].url field.
+
+### `burberry_related`
+
+Get related Burberry products. Returns the cross-sell surfaces a real Burberry product page itself loads for that product: similar_products (algorithmically similar items) and shop_the_look (other pieces in the same styled outfit, when the upstream has curated one -- most products have none, returned as a well-formed empty list, not an error). url is the site-relative product path, e.g. /check-cashmere-cardigan-p81336111, as returned by burberry-search's, burberry-category's, or burberry-product's own url field.
+
+### `burberry_search`
+
+Search Burberry products. Searches Burberry's product catalog by keyword. Returns normalized product summaries plus the upstream's own available filters (facets) with live per-option result counts. offset paginates in increments of 20 (the upstream's own fixed page size). sort selects the result order. facets applies a facet selection back, a comma-separated list of property:value pairs taken from this same response's facets field (e.g. benefit:bags,dotcomreportingcolour:black). A query with no matches, or a facet combination with no matches, returns a well-formed empty result, not an error. Unlike burberry-category, this response has no true grand-total result count -- only the current page's own count.
+
+### `burberry_suggest`
+
+Get Burberry search-box suggestions. Returns Burberry's own search-box suggestions (typeahead) for a partial query: a flat list of suggested search phrases, each with its own live result count on the search index. Not product data.
 
 ### `burgerking_availability`
 
@@ -1360,6 +1524,38 @@ Retrieve related Chrome Web Store items. Returns the related-items shelf the sto
 
 Suggest Chrome Web Store search terms. Returns item-name suggestions for a search prefix, drawn from the top store-search results. Defaults: 'num=8', 'country=us', 'lang=en'.
 
+### `chrono24_autocomplete`
+
+Get Chrono24 search-box suggestions. Fetches Chrono24's own search-box typeahead suggestions for a partial query: each suggested phrase with its own live result count, plus the Chrono24 search URL it resolves to. Useful for building a search box against chrono24-search without guessing a full query.
+
+### `chrono24_brands`
+
+List Chrono24 watch brands. Returns Chrono24's full watch-brand index: every brand name and the slug identifying it, usable as the brand parameter on chrono24-models and chrono24-search. This is the discovery endpoint for that parameter, so every accepted value is obtainable from this API rather than by reading the website.
+
+### `chrono24_dealer`
+
+Get a Chrono24 dealer's storefront. Fetches one Chrono24 dealer/seller's public storefront page: business description, trust badge, average buyer rating and review count, lifetime watches-sold count, and their current listed inventory in the same shape chrono24-search returns. slug is found in a chrono24-search or chrono24-listing result's seller link; there is no separate dealer-discovery endpoint since dealer slugs are not a closed set Chrono24 publishes an index of.
+
+### `chrono24_dealer_reviews`
+
+Get a Chrono24 dealer's buyer reviews. Fetches one page of a Chrono24 dealer/seller's buyer reviews: reviewer name and country, review date, star-rating breakdown (shipping/description/communication), whether the buyer recommends the seller, their free-text comment, and the dealer's own reply when present. slug is the same dealer slug chrono24-dealer takes.
+
+### `chrono24_facets`
+
+Get a Chrono24 search filter's accepted values. Fetches every value Chrono24 accepts for one of chrono24-search's advanced-search filter params, each with its own live listing count: the discovery endpoint for condition, used_or_new, case_material, dial_color, bracelet_material, movement_type, gender, watch_type and stock_info.
+
+### `chrono24_listing`
+
+Get a Chrono24 watch listing's detail. Fetches one Chrono24 listing's full detail page: brand, model, reference number, price with currency and negotiability, condition, year of production, movement, case material and diameter, bracelet material, location, availability, seller type, photos, and the complete raw spec table Chrono24 itself shows (grouped by section: Basic Info, Caliber, Case, Bracelet/strap, Functions). path is the listing URL from a chrono24-search result's url field; Chrono24 has no lookup by numeric id alone.
+
+### `chrono24_models`
+
+List Chrono24 models for a brand. Returns every model/collection Chrono24 lists for one watch brand (e.g. Rolex Submariner, Rolex Datejust), each with the slug identifying it, usable as the model parameter on chrono24-search. This is the discovery endpoint for that parameter, so every accepted value for a brand is obtainable from this API rather than by reading the website.
+
+### `chrono24_search`
+
+Search Chrono24 watch listings. Searches Chrono24's luxury-watch marketplace by free-text keyword, or browses one brand's (optionally narrowed to one model's) current listings, returning normalized result cards: title, price with currency, seller type, seller country, promotional badge, image, and the listing URL to pass to chrono24-listing. At least one of query or brand is required. Optional advanced-search filters (condition, used_or_new, case_material, dial_color, bracelet_material, movement_type, gender, watch_type, stock_info) narrow results further; each filter's accepted values are discoverable from chrono24-facets and echoed back in the response's filters field.
+
 ### `cnn_article`
 
 CNN article content. Returns a CNN article's headline, description, author, publication and update times, section, image, and body paragraphs. Provide a canonical cnn.com article URL.
@@ -1499,6 +1695,18 @@ List Cole Haan sitemaps. Returns child sitemap URLs from Cole Haan's (https://ww
 ### `colehaan_store`
 
 Get Cole Haan store metadata. Returns normalized storefront metadata for Cole Haan (https://www.colehaan.com), sourced from credential-free storefront JSON. This endpoint is a brand-pinned wrapper around the generic Shopify store family: the storefront URL is fixed server-side, so no 'url' parameter is accepted. If the vanity domain blocks '/products.json', the service may fall back to a public '*.myshopify.com' domain discovered from the storefront page, or to the storefront's own embedded page data for storefronts that expose neither.
+
+### `comc_categories`
+
+List COMC categories. Returns COMC's (comc.com) closed, top-level category/sport taxonomy -- the discovery endpoint for the search endpoint's 'category' param. Every slug is the exact path segment comc.com's own site uses.
+
+### `comc_listing`
+
+Get COMC card listing detail. Returns one card+grade combination's full detail from COMC (comc.com): card identity and every seller's individual for-sale copy (owner, item id, price). handle is the value returned by comc_search's CardSummary.handle field (or the equivalent comc.com card URL path).
+
+### `comc_search`
+
+Search COMC card listings. Searches or browses COMC's (comc.com) live consignment marketplace for graded and ungraded trading cards. Each result row is a distinct card+grade combination (COMC's own category/search grid aggregates every seller's copy under one row); chain a row's handle into the listing endpoint for the per-seller breakdown. At least one of category or query is typically useful, but both are optional -- omitting both searches all categories.
 
 ### `congress_report`
 
@@ -1782,7 +1990,7 @@ Get trending Chrome Web Store items. Returns stored Chrome Web Store items ranke
 
 ### `datasets_creators_search`
 
-Search the TikTok creators dataset. Searches TikTok creators stored in a search index (one document per creator), with follower counts, verified status, niche, and engagement. Deleted and private accounts are excluded by default; set 'include_inactive=true' to include them for historical lookups. Sort enum: 'followers_desc', 'engagement_desc', 'likes_desc', 'relevance'. Coverage note: 'followers_desc', 'likes_desc', and 'relevance' are backed by profile fields present across the full dataset; the post-level engagement metrics ('engagement_rate', 'avg_views', and the nested 'post_stats' object) and the 'engagement_desc' sort are currently populated for a growing subset of creators, prioritizing the highest-reach accounts. Creators without these metrics are still returned but sort last under 'engagement_desc' and omit those fields. Sound fields: 'post_stats.top_sounds' holds only a creator's FIVE most-used sounds from the sampled posts, ranked by use count with ties broken by lowest 'music_id', so it is a top-5 view and not the creator's full sound list; 'post_stats.distinct_sounds' gives the true number of different sounds the sample used. Use each sound's 'original' boolean to tell TikTok-generated original audio from catalogue tracks - do NOT infer it from the title, because TikTok localizes the original-audio label ('sonido original', 'som original', 'оригинальный звук', and at least fifteen more), so a title match silently reclassifies original audio as named tracks.
+Search the TikTok creators dataset. Searches TikTok creators stored in a search index (one document per creator), with follower counts, verified status, niche, and engagement. Deleted and private accounts are excluded by default; set 'include_inactive=true' to include them for historical lookups. Sort enum: 'followers_desc', 'engagement_desc', 'engagement_qualified_desc', 'likes_desc', 'relevance'. Coverage note: 'followers_desc', 'likes_desc', and 'relevance' are backed by profile fields present across the full dataset; the post-level engagement metrics ('engagement_rate', 'avg_views', and the nested 'post_stats' object) and the 'engagement_desc'/'engagement_qualified_desc' sorts are currently populated for a growing subset of creators, prioritizing the highest-reach accounts. Creators without these metrics are still returned but sort last under 'engagement_desc' and omit those fields; 'engagement_qualified_desc' excludes them outright (they cannot clear its floors). 'engagement_desc' ranks by raw 'engagement_rate' with no eligibility floor — it surfaces a real stale-record + ratio-by-design trap: an account whose last real post was years ago can still carry an unrealistic rate computed from a handful of old posts. 'engagement_qualified_desc' is the same metric restricted to creators with a recent post ('last_post_at' within 90 days), a minimum reach ('avg_views >= 10000') and sample size ('post_stats.sampled_posts >= 10'), and a sanity ceiling ('engagement_rate <= 50%') — use this, not the raw sort, for a "best engagement" leaderboard. Sound fields: 'post_stats.top_sounds' holds only a creator's FIVE most-used sounds from the sampled posts, ranked by use count with ties broken by lowest 'music_id', so it is a top-5 view and not the creator's full sound list; 'post_stats.distinct_sounds' gives the true number of different sounds the sample used. Use each sound's 'original' boolean to tell TikTok-generated original audio from catalogue tracks - do NOT infer it from the title, because TikTok localizes the original-audio label ('sonido original', 'som original', 'оригинальный звук', and at least fifteen more), so a title match silently reclassifies original audio as named tracks.
 
 ### `datasets_facebook_pages_facets`
 
@@ -1902,7 +2110,7 @@ Search the jobs dataset (all companies' live postings). Full-text + faceted sear
 
 ### `datasets_journalists_facets`
 
-Facet the journalists dataset. Returns distribution counts over the journalists index (dataset id enum value 'journalists'), honoring the same filters as search. Facet enum: 'outlet', 'vertical', 'topic', 'contact_type'.
+Facet the journalists dataset. Returns distribution counts over the journalists index (dataset id enum value 'journalists'), honoring the same filters as search. Facet enum: 'outlet', 'vertical', 'topic', 'contact_type', 'record_type', 'role_type', 'email_kind', 'outreach_readiness_band'.
 
 ### `datasets_journalists_item`
 
@@ -1910,7 +2118,7 @@ Get a journalist from the journalists dataset. Returns one journalist by outlet 
 
 ### `datasets_journalists_search`
 
-Search the journalists dataset. Searches the journalists index (dataset id enum value 'journalists') — public journalist and reporter contact records crawled from news outlets' own staff/author pages, for PR outreach. Each record carries the outlet, title, best-effort beat topics, and any public contact info (a work email or a social handle) found on that outlet's own page. There is no cross-outlet upstream search; this dataset is built by crawling a curated roster of outlets ourselves. vertical enum: 'tech', 'crypto', 'marketing', 'consumer_tech', 'consumer_policy', 'cybersecurity', 'health', 'gaming', 'climate', 'business', 'entertainment', 'sports', 'legal', 'science', 'politics', 'real_estate', 'automotive', 'travel', 'food', 'education', 'design', 'film_tv', 'fashion', 'music', 'personal_finance', 'tech_independent', 'culture_independent', 'local_news', 'construction', 'banking', 'retail', 'aerospace_defense', 'energy', 'agriculture', 'local_business'. contact_type enum: 'email', 'social', 'none'. sort enum: 'relevance', 'name_asc', 'outlet_asc', 'crawled_desc'.
+Search the journalists dataset. Searches the journalists index (dataset id enum value 'journalists') — public journalist and reporter records crawled from news outlets' own staff/author pages, for PR outreach. Each record carries the outlet, title, best-effort beat topics, and any public contact info found on that outlet's own page, plus deterministic record_type, role_type, email_kind, and outreach-readiness quality signals. There is no cross-outlet upstream search; this dataset is built by crawling a curated roster of outlets ourselves. vertical enum: 'tech', 'crypto', 'marketing', 'consumer_tech', 'consumer_policy', 'cybersecurity', 'health', 'gaming', 'climate', 'business', 'entertainment', 'sports', 'legal', 'science', 'politics', 'real_estate', 'automotive', 'travel', 'food', 'education', 'design', 'film_tv', 'fashion', 'music', 'personal_finance', 'tech_independent', 'culture_independent', 'local_news', 'construction', 'banking', 'retail', 'aerospace_defense', 'energy', 'agriculture', 'local_business'. contact_type enum: 'email', 'social', 'none'. record_type enum: 'person', 'house_account', 'desk', 'organization', 'syndicated_byline', 'unknown'. role_type enum: 'staff', 'editor', 'reporter', 'contributor', 'freelancer', 'columnist', 'executive', 'non_editorial', 'unknown'. email_kind enum: 'individual_work', 'individual_personal_public', 'shared_desk', 'tips_or_submissions', 'outlet_generic', 'unknown'. sort enum: 'relevance', 'name_asc', 'outlet_asc', 'crawled_desc', 'readiness_desc'.
 
 ### `datasets_list`
 
@@ -2610,7 +2818,7 @@ Expedia Stays property guest reviews. Returns a hotel's overall rating and highl
 
 ### `expedia_properties_search`
 
-Search Expedia Stays properties. Returns normalized Expedia Stays (hotel) search results for a free-text destination and date range.
+Search Expedia Stays properties. Returns normalized Expedia Stays (hotel) search results for a free-text destination and date range. Promotional banners and sponsored ad slots are dropped, so every returned property has an id and name.
 
 ### `extract`
 
@@ -2623,6 +2831,98 @@ Search Facebook Marketplace. Fetches Facebook Marketplace search or browse resul
 ### `facebook_page`
 
 Get Facebook page details. Fetches public data about a Facebook Page given its page ID, vanity name, or full page URL: name, follower/like counts, intro, category, business hours/price range, review count, and any public contact details (email, phone, address, website, WhatsApp number) exposed on the Page's About tab.
+
+### `fanatics_categories`
+
+Get Fanatics' league and team navigation tree. Returns Fanatics' full top-level navigation tree: leagues (NFL, MLB, NBA, NHL, Soccer, WWE, College, ...) and, where Fanatics exposes a team-level breakdown, each league's teams (College's several hundred schools included). Each league's or team's url is directly usable as fanatics_category's url input. Public data sourced from fanatics.com's own navigation data.
+
+### `fanatics_category`
+
+Browse a Fanatics league or team category. Returns one page of a Fanatics league or team category's product listing (name, brand, price, availability, image, url). Use GET /fanatics/categories to discover valid category urls.
+
+### `fanatics_product`
+
+Get a Fanatics product's detail. Returns one Fanatics product's detail (name, brand, category, price, availability, condition, images), plus per-size availability/price, a fit/value/quality review-rating breakdown, a richer media gallery, and comparable-product alternates (e.g. a jersey's Game/Limited/Elite stitch tiers) where Fanatics exposes them. Use GET /fanatics/search or GET /fanatics/category to discover product urls.
+
+### `fanatics_search`
+
+Search Fanatics' product catalog. Returns one page of Fanatics' own keyword search results (name, brand, price, availability, image, url).
+
+### `fanaticscollect_auctions`
+
+List Fanatics Collect auction events. Returns Fanatics Collect's current and recent weekly and premier auction events -- the same short list the site's own header auction switcher and countdown banner show. This is the discovery endpoint for Search's auction_urn param: copy an event's urn value to browse every lot in that auction. A small, current/recent set (observed live: around 6 events), not a full historical archive -- older auctions' urn values found on a Search result or a GetListing response remain valid for Search even once they no longer appear here. Credential-free public data from Fanatics Collect's own GraphQL API.
+
+### `fanaticscollect_categories`
+
+List Fanatics Collect search filter values. Returns every accepted value for GetListing's marketplace param -- WEEKLY, PREMIER, FIXED -- and for Search's marketplace, category_parent, sub_category, grading_service, status, and sort params. Discovery endpoint for those closed enums.
+
+### `fanaticscollect_instant_rips_categories`
+
+Get Fanatics Collect Instant Rips categories. Returns every category Fanatics Collect's "Instant Rips" mystery-pack product (fanaticscollect.com/instant-rips) currently advertises on its homepage: id, name, and price range. Instant Rips is a "buy a randomized pack, a real graded card is revealed" product; each category's id is a real listing id, fetchable through GetListing with type=FIXED for that entry point's own full detail. This does not cover the individual pack-tier tiles within a category or the homepage's "Recently ripped" live feed -- both are hydrated client-side in a form this repo cannot reliably parse. Credential-free public data, server-rendered on Fanatics Collect's own page.
+
+### `fanaticscollect_listing`
+
+Get Fanatics Collect listing detail. Returns full detail for a single Fanatics Collect listing: a weekly-auction lot, a premier-auction lot, or a fixed-price "buy now" item (including an Instant Rips pack). Fields include title, current bid/starting/asking price, bid count, auction window and status, images, description, completed sale history, and -- when the card is stored in Fanatics' vault -- grading/authentication metadata including a direct PSA cert-verification link. Credential-free public data from Fanatics Collect's own GraphQL API.
+
+### `fanaticscollect_search`
+
+Search Fanatics Collect listings. Searches Fanatics Collect's full marketplace -- weekly auctions, premier auctions, and the fixed-price "Buy Now" marketplace -- by free-text query, category, grading service, price/year/grade range, and listing status, in a caller-selected sort order. Credential-free public data from Fanatics Collect's own public search index. See GetCategories for the accepted category, grading-service, status, and sort values.
+
+### `fanaticscollect_sold_items`
+
+Search Fanatics Collect sold items. Searches Fanatics Collect's sales-history archive -- every completed sale across every marketplace, not just what the live search index currently surfaces. A separate product from Search, reached from the "View all sold items" link on every marketplace search page. Credential-free public data from Fanatics Collect's own public sales-history API. See GetCategories for the accepted category, grading-service, eye-appeal-grade, and sort values.
+
+### `fanaticscollect_trending_searches`
+
+Get Fanatics Collect trending search terms. Returns Fanatics Collect's own currently trending search terms -- the same list shown in the site's own header search box before the visitor types anything. Credential-free public data from Fanatics Collect's own GraphQL API.
+
+### `fanaticslive_browse`
+
+Browse Fanatics Live shows by league. Returns the live and upcoming shows currently listed under a Fanatics Live league: name, status, cover image, viewers, and the hosting channel/shop. Public data sourced from Fanatics Live's own GraphQL API.
+
+### `fanaticslive_channel`
+
+Get a Fanatics Live channel's detail page. Returns a Fanatics Live channel's own detail page: its parent shop, and a first page of its live/upcoming and past/replay shows. A shop can run several channels (e.g. a league-specific sub-feed) -- see /fanaticslive/shop/{slug} for a shop's full channel list and /fanaticslive/shop/{slug}/shows for cursor-paginated access to a full show history. Public data sourced from Fanatics Live's own GraphQL API.
+
+### `fanaticslive_instant_rips`
+
+Get a Fanatics Live show's current instant-rip state. Returns a Fanatics Live show's current break's digital-instant-rip state: spot claim/rip progress and the currently revealing item, when a rip is actively in progress. current_break is omitted when the show has no active break at request time. Public data sourced from Fanatics Live's own GraphQL API.
+
+### `fanaticslive_leagues`
+
+Get Fanatics Live's league taxonomy. Returns Fanatics Live's full league/category list (e.g. "Pokemon", "NFL", "MTG"). Each entry's type is usable directly with /fanaticslive/browse's league filter. Public data sourced from Fanatics Live's own GraphQL API.
+
+### `fanaticslive_shop`
+
+Get a Fanatics Live shop's public profile. Returns a Fanatics Live shop's public profile page: description, social links, follower count, and its channels and staffers. Public data sourced from Fanatics Live's own GraphQL API.
+
+### `fanaticslive_shop_shows`
+
+Get a Fanatics Live shop's own live or replay show list. Returns a Fanatics Live shop's own live/upcoming or past/replay show list -- distinct from /fanaticslive/browse, which lists shows across all shops filtered by league. status=replay is the only credential-free way to observe a COMPLETE-status show. Public data sourced from Fanatics Live's own GraphQL API.
+
+### `fanaticslive_shops`
+
+Get Fanatics Live's shop directory. Returns Fanatics Live's full public shop directory: every shop's id, name, slug, logo, and follower count. Each entry's slug is usable directly with /fanaticslive/shop/{slug}. Public data sourced from Fanatics Live's own GraphQL API.
+
+### `fanaticslive_show`
+
+Get a Fanatics Live show's detail page. Returns a Fanatics Live live show's detail page: status, viewers, hosting channel/shop, its currently active break/lot, and its full break/lot list. Public data sourced from Fanatics Live's own GraphQL API.
+
+### `farfetch_categories`
+
+Farfetch category directory. Returns every department's top-level category directory (name, slug, URL). Each slug is usable directly as the category filter on GET /farfetch/search. Public data sourced live from Farfetch's own listing pages.
+
+### `farfetch_designers`
+
+Farfetch designer directory. Returns a department's full designer directory (name, slug, URL). Each slug is usable directly as the designer filter on GET /farfetch/search. Public data sourced from Farfetch's own designer-directory pages.
+
+### `farfetch_product`
+
+Farfetch product detail. Returns a Farfetch product's full detail: name, brand, color, description, images, category breadcrumb, and every size variant with its own price and availability. Public data sourced from Farfetch's own product pages.
+
+### `farfetch_search`
+
+Search Farfetch listings. Browses Farfetch's luxury multi-brand marketplace by department plus a designer and/or category filter (at least one is required), returning normalized listing summaries (name, brand, price, image, availability) and the upstream page count. Public data sourced from Farfetch's own listing pages.
 
 ### `fashionnova_collection_products`
 
@@ -2668,6 +2968,70 @@ List Fashion Nova sitemaps. Returns child sitemap URLs from Fashion Nova's (http
 
 Get Fashion Nova store metadata. Returns normalized storefront metadata for Fashion Nova (https://www.fashionnova.com), sourced from credential-free storefront JSON. This endpoint is a brand-pinned wrapper around the generic Shopify store family: the storefront URL is fixed server-side, so no 'url' parameter is accepted. If the vanity domain blocks '/products.json', the service may fall back to a public '*.myshopify.com' domain discovered from the storefront page, or to the storefront's own embedded page data for storefronts that expose neither.
 
+### `fashionphile_collection_products`
+
+List Fashionphile collection products. Returns normalized products from one Fashionphile (https://www.fashionphile.com) collection. The storefront URL is fixed server-side; 'handle' is the collection's URL slug.
+
+### `fashionphile_collections`
+
+List Fashionphile collections. Returns normalized collections from Fashionphile (https://www.fashionphile.com). The storefront URL is fixed server-side. Valid empty result pages return '200' with an empty collections array.
+
+### `fashionphile_page`
+
+Get a Fashionphile static page. Returns normalized static page detail for one Fashionphile (https://www.fashionphile.com) page handle. The storefront URL is fixed server-side.
+
+### `fashionphile_pages`
+
+List Fashionphile static pages. Returns normalized static pages from Fashionphile (https://www.fashionphile.com). The storefront URL is fixed server-side.
+
+### `fashionphile_product`
+
+Get a Fashionphile product. Returns normalized product detail for one Fashionphile (https://www.fashionphile.com) product handle. The storefront URL is fixed server-side; 'handle' is the product's URL slug.
+
+### `fashionphile_product_recommendations`
+
+List Fashionphile product recommendations. Returns normalized recommended products for one Fashionphile (https://www.fashionphile.com) product handle. The route handle is resolved to a Shopify product id before fetching recommendations. The storefront URL is fixed server-side.
+
+### `fashionphile_products`
+
+List Fashionphile products. Returns normalized products from Fashionphile's (https://www.fashionphile.com) public product catalog. The storefront URL is fixed server-side. Valid empty result pages return '200' with an empty products array.
+
+### `fashionphile_search`
+
+Search Fashionphile products. Returns normalized, ranked products from Fashionphile's (https://www.fashionphile.com) own full-text and faceted product search, including condition grade, discount percentage, and other filter attributes not available from the classic catalog JSON endpoints in this family. The storefront URL is fixed server-side. Omitting 'q' browses the full catalog subject to any condition/vendor/availability filters and the chosen sort. By default only in-stock listings are searched, matching the storefront; 'availability=sold' searches the sold archive instead. 'total_items' is the exact number of products matching the query and all filters.
+
+### `fashionphile_search_suggest`
+
+Get Fashionphile search suggestions. Returns products, collections, and query suggestions from Fashionphile's (https://www.fashionphile.com) credential-free predictive search Ajax endpoint. The storefront URL is fixed server-side.
+
+### `fashionphile_sitemap_urls`
+
+List Fashionphile sitemap URLs. Returns capped URL entries from Fashionphile's (https://www.fashionphile.com) child sitemaps matching the requested type. The storefront URL is fixed server-side.
+
+### `fashionphile_sitemaps`
+
+List Fashionphile sitemaps. Returns child sitemap URLs from Fashionphile's (https://www.fashionphile.com) '/sitemap.xml' index with inferred sitemap types. The storefront URL is fixed server-side.
+
+### `fashionphile_store`
+
+Get Fashionphile store metadata. Returns normalized storefront metadata for Fashionphile (https://www.fashionphile.com), sourced from credential-free storefront JSON. This endpoint is a brand-pinned wrapper around the generic Shopify store family: the storefront URL is fixed server-side, so no 'url' parameter is accepted. If the vanity domain blocks '/products.json', the service may fall back to a public '*.myshopify.com' domain discovered from the storefront page, or to the storefront's own embedded page data for storefronts that expose neither.
+
+### `firstdibs_categories`
+
+List 1stDibs categories and filters. Returns the live handbags category directory, sort keys, price presets, and filter values discovered from 1stDibs. Returned category slugs are valid for firstdibs-search.
+
+### `firstdibs_designers`
+
+List 1stDibs designers. Returns designer values discovered from the selected 1stDibs category page. Each slug is valid for firstdibs-search's designer filter.
+
+### `firstdibs_product`
+
+Get a 1stDibs product. Returns public product detail, pricing, availability, brand, category, description, and images for a 1stDibs product URL.
+
+### `firstdibs_search`
+
+Search 1stDibs listings. Searches or browses 1stDibs handbags and purses with category, designer, price, sale, color, period, location, gender, origin, seller, and sort filters.
+
 ### `fiveguys_directory`
 
 Browse the Five Guys restaurant directory by state and city. Returns one level of Five Guys' US restaurant directory: the 50 states at the root, one state's cities when path is a state (e.g. 'il'), and that city's restaurants when path is a city (e.g. 'il/chicago'). Each child carries the path to pass back as this endpoint's 'path', and a 'location_count' of how many restaurants sit under it. At the deepest level children are restaurants themselves ('is_location' true) -- pass their path to GET /fiveguys/store for the full profile. Use this to enumerate or browse locations; use GET /fiveguys/search or /fiveguys/nearby to find them by query or coordinate instead.
@@ -2710,15 +3074,15 @@ Get one Five Guys restaurant by its locator path. Returns one Five Guys restaura
 
 ### `fiverr_gig`
 
-Get Fiverr gig detail. Returns a normalized Fiverr gig detail page: title, description, category, pricing packages (basic/standard/premium tiers with price and delivery time), rating, review count, orders in queue, tags, gallery images, and a seller summary (level, rating, response time, languages). Public data sourced from Fiverr's own server-rendered gig pages via a real browser-rendering backend.
+Get Fiverr gig detail. Returns a normalized Fiverr gig detail page: title, description, category, pricing packages (basic/standard/premium tiers with price and delivery time), rating, review count, orders in queue, tags, gallery images, and a seller summary (level, rating, response time, languages). Public data sourced from Fiverr's own server-rendered gig pages via a real browser-rendering backend. Seller level uses the same values on the search, seller and gig endpoints: level_one_seller, level_two_seller, top_rated_seller, or new_seller.
 
 ### `fiverr_search`
 
-Search Fiverr gigs. Searches Fiverr's public gig listings by free-text keyword, returning normalized gig summaries (title, seller username, seller level, rating, review count, starting price, category, thumbnail image). Public data sourced from Fiverr's own server-rendered search pages via a real browser-rendering backend.
+Search Fiverr gigs. Searches Fiverr's public gig listings by free-text keyword, returning normalized gig summaries (title, seller username, seller level, rating, review count, starting price, category, thumbnail image). Public data sourced from Fiverr's own server-rendered search pages via a real browser-rendering backend. Seller level uses the same values on the search, seller and gig endpoints: level_one_seller, level_two_seller, top_rated_seller, or new_seller.
 
 ### `fiverr_seller`
 
-Get Fiverr seller profile. Returns a normalized Fiverr seller profile: display name, one-liner title, description, country, seller level, verification status, hourly rate, spoken languages, join date, and the seller's gig ids. Public data sourced from Fiverr's own server-rendered seller profile pages via a real browser-rendering backend.
+Get Fiverr seller profile. Returns a normalized Fiverr seller profile: display name, one-liner title, description, country, seller level, verification status, hourly rate, spoken languages, join date, and the seller's gig ids. Public data sourced from Fiverr's own server-rendered seller profile pages via a real browser-rendering backend. Seller level uses the same values on the search, seller and gig endpoints: level_one_seller, level_two_seller, top_rated_seller, or new_seller.
 
 ### `foodpanda_restaurant`
 
@@ -2734,7 +3098,75 @@ Get a sample of one foodpanda restaurant's customer reviews. Returns a sample of
 
 ### `foodpanda_search`
 
-Search foodpanda restaurants near a location. Returns restaurants delivering to a latitude/longitude in a foodpanda market, optionally filtered by a numeric cuisine id (from a prior response's cuisines[].id). Each restaurant carries its code (the value the restaurant and menu endpoints take), name, address, coordinates, budget tier, rating, cuisines, minimum order amount and delivery fee, delivery/pickup availability, and a hero image. A location with no coverage returns an empty list rather than an error.
+Search foodpanda restaurants near a location. Returns restaurants delivering to a latitude/longitude in a foodpanda market, optionally filtered by a numeric cuisine id (call foodpanda_search_cuisines for the live, location-scoped set of valid ids). Each restaurant carries its code (the value the restaurant and menu endpoints take), name, address, coordinates, budget tier, rating, cuisines, minimum order amount and delivery fee, delivery/pickup availability, and a hero image. A location with no coverage returns an empty list rather than an error.
+
+### `foodpanda_search_cuisines`
+
+Get foodpanda's live cuisine filter catalog for a location. Returns foodpanda's own live cuisine catalog for a latitude/longitude in a foodpanda market -- the exact facet list (with real, live restaurant counts) the site's own search page cuisine filter sidebar is populated from. Every entry's id is a valid value for /foodpanda/search's cuisine_id parameter. Cuisine ids are location- and market-scoped, not a fixed global enum: the same coordinate in a different neighborhood, or a different market, can return a different id/count set entirely, so call this endpoint with the same market/latitude/longitude you intend to search rather than reusing ids captured elsewhere.
+
+### `foreignaffairs_article`
+
+Extract a Foreign Affairs article. Returns public article metadata and ordered body paragraphs from a canonical Foreign Affairs article URL. Incomplete, truncated, challenge, or contaminated upstream HTML is rejected as an upstream error.
+
+### `foreignaffairs_headlines`
+
+Get Foreign Affairs site-wide headlines. Returns fresh Foreign Affairs headlines from the site's public, site-wide RSS feed. Article pages and account state are not required.
+
+### `foreignaffairs_topic`
+
+Get a Foreign Affairs topic feed. Returns the newest items from one Foreign Affairs topic RSS feed. Discover accepted values with foreignaffairs-topics; unknown topic values are rejected before upstream I/O.
+
+### `foreignaffairs_topics`
+
+List Foreign Affairs topic feeds. Returns the complete research-backed directory of topic values accepted by foreignaffairs-topic, including each topic's public RSS feed URL.
+
+### `foreignpolicy_article`
+
+Get Foreign Policy article content. Returns a public Foreign Policy article's metadata and full body paragraphs from a canonical article URL. is_gated reports the site's own content-tier marker; the full body is always returned regardless, since Foreign Policy serves it in full to anonymous requests either way.
+
+### `foreignpolicy_headlines`
+
+Get Foreign Policy site-wide headlines. Returns fresh headlines from Foreign Policy's public, site-wide RSS feed. There is no section parameter: use foreignpolicy-topic to scope to one category or tag.
+
+### `foreignpolicy_live`
+
+List Foreign Policy Live conversations. Returns Foreign Policy's public FP Live conversation directory. The upstream renders the complete all-conversations list and applies year filtering in the browser.
+
+### `foreignpolicy_live_detail`
+
+Get a Foreign Policy Live conversation. Returns one public FP Live conversation by the slug returned by foreignpolicy-live, including its description and any embedded video highlight metadata.
+
+### `foreignpolicy_project`
+
+Get a Foreign Policy project hub. Returns a public Foreign Policy curated project hub and its current article cards. Use foreignpolicy-projects to discover live project slugs.
+
+### `foreignpolicy_projects`
+
+List Foreign Policy project hubs. Returns one page of Foreign Policy's live public project directory. Follow next_page until it is zero to enumerate the current project slug space, then pass a slug to foreignpolicy-project.
+
+### `foreignpolicy_topic`
+
+Get Foreign Policy category or tag archive. Returns one page of a public Foreign Policy category or tag archive (newest first). type selects the archive namespace and defaults to category; topic is the slug within it; page is 1-based.
+
+### `ft_article`
+
+Get a Financial Times article's content. Returns one public Financial Times article's metadata and body paragraphs from a canonical article URL. Subscriber-only articles that the FT serves as a subscription page are not available.
+
+### `ft_categories`
+
+List Financial Times sections. Lists every Financial Times section accepted by /ft/headlines, grouped by top-level section, with each section's slug, display name, and landing-page URL.
+
+### `ft_headlines`
+
+Get the latest stories in a Financial Times section. Returns one page of a Financial Times section front: each story's title, canonical URL, summary, section tag, publication time, and lead image. Section must be a slug returned by /ft/categories.
+
+### `ft_news`
+
+Get the latest Financial Times stories. Returns the Financial Times' current news feed: the newest stories across all sections, each with its title, canonical URL, and publication time.
+
+### `ft_search`
+
+Search Financial Times articles. Returns one page of Financial Times search results: each story's title, canonical URL, summary, section tag, publication time, and lead image. Results can be ordered by relevance or date and filtered by publication window.
 
 ### `gdelt_context`
 
@@ -2904,6 +3336,26 @@ Autocomplete a GOAT search. Returns GOAT's own search-box autocomplete for a par
 
 Get GOAT trending searches. Returns the search terms GOAT is currently surfacing as popular, in GOAT's own ranking order -- the same list its own search box shows. Each term is free text ready to pass to GET /goat/search's query parameter. Credential-free public data.
 
+### `goldin_auctions`
+
+List Goldin's full auction history. Goldin's complete auction event history, back to 2012 -- title, type, status, start/end window, and buyer's premium for every auction Goldin has run. Pass an auction's own id as auction_id to goldin-search to browse its lots.
+
+### `goldin_categories`
+
+List Goldin's search filter enums. Goldin's full filter-enum surface for goldin-search, scoped to one lot pool -- category, sub_category, certification, item_type, and the live auction list (each with its own id, name, and current lot count), plus the sort enum valid for that pool. category/sub_category/certification/item_type are read live from Goldin's own current inventory, not a fixed taxonomy, so results can shift over time. The Auction pool (default) and the Fixed Price "Private Sales" marketplace are disjoint item pools with different certification/item_type values and different sort enums -- pass the same auction_type here and to goldin-search.
+
+### `goldin_listing`
+
+Get one Goldin lot's full public detail. One lot's full public detail: title, description, current bid/starting price, auction window and status, grading info, images, and prev/next lot pointers within the same auction. slug is the meta_slug from a goldin-search result (or the trailing path segment of the lot's own goldin.co/item/{slug} page URL).
+
+### `goldin_search`
+
+Search Goldin's lot auction inventory. Browse or search Goldin's current lot inventory by free-text keyword, category, sub_category, certification, item_type, and auction_id, in a caller-selected sort order. Every filter is optional and combines with AND semantics. All enum values come from goldin-categories -- pass the matching auction_type to both. The Auction pool (default) and the Fixed Price "Private Sales" marketplace are disjoint item pools with different certification/item_type values and different sort enums.
+
+### `goldin_suggest`
+
+Get Goldin's search suggestions for a keyword. Goldin's own search-suggestions/autocomplete for a partial keyword, matching the site's own search box typeahead. keyword is optional -- when omitted, returns Goldin's current trending/popular searches instead of an error.
+
 ### `goodreads_author`
 
 Get a Goodreads author. Returns a normalized Goodreads author profile: bio, birth/death dates, website, genres, photo, and aggregate rating stats. Credential-free public Goodreads data.
@@ -3054,11 +3506,11 @@ Google Maps search API. Returns results from Google Maps based on search options
 
 ### `google_news`
 
-Search Google News. Returns normalized Google News vertical results (title, source, link, age) parsed from the public Google News results page. Locale defaults to country=us and lang=en. Returns 503 when Google serves a challenge page or unusable HTML.
+Search Google News. Returns current Google News search results using anonymous HTTP requests with fresh proxy profiles, without browser rendering. Pages slice the finite result snapshot; they do not traverse the Google Search index. Results include title, source, publisher article URL, age, and thumbnail when available. Valid no-results searches and exhausted pages return an empty array. Locale defaults to country=us and lang=en. Returns 503 for blocked or malformed upstream responses.
 
-### `google_search`
+### `google_news_search`
 
-Google search API. Returns normalized Google web search results. Results are fetched through proxied browser renderers that race several concurrent renders per request and return the first clean result, with stale-cache fallback when available. The endpoint returns 503 when Google serves a challenge page or unusable HTML. Rate limit is enforced at 1 request per second, and if the limit is exceeded a 429 status code is returned with rate limit headers.
+Search Google News with JSON. Restored JSON compatibility endpoint. Returns current Google News articles using anonymous HTTP requests with fresh proxy profiles, without browser rendering. Pages slice the finite current result snapshot. Uses the legacy result array and field names; no-results searches and exhausted pages return an empty result array.
 
 ### `google_suggest`
 
@@ -3180,6 +3632,50 @@ Retrieve similar Google Play apps. Returns apps from the "Similar apps" cluster 
 
 Retrieve Google Play query suggestions. Returns up to 10 suggestions for a search term.
 
+### `grailed_categories`
+
+List Grailed's facet taxonomy. Returns Grailed's full facet taxonomy for the enum-like parameters grailed-search/grailed-sold-listings accept: department, category, category_path (a more granular subcategory slug), condition, color, and size, each with its own live listing count. department and condition are exhaustive closed sets (2 and 5 values respectively); category/category_path/color/size are the full, exhaustive value space as of the request. Designer is NOT included here (7,363 values, far too large for a facet-count response) -- see grailed-designers for that discovery endpoint.
+
+### `grailed_collection`
+
+Get one Grailed curated collection's listings. Returns one Grailed curated homepage collection's full listing set. id is the collection's numeric id, from grailed-collections' own collections[].id field. An unknown id returns a typed not-found error.
+
+### `grailed_collections`
+
+List Grailed's curated homepage collections. Returns Grailed's own curated homepage merchandising collections (e.g. "Trending: Apparel", "Dark Luxury", "Chromed Out") -- editorial/trending shelves distinct from a plain search or facet browse. Each collection's numeric id is the value grailed-collection's own id parameter accepts.
+
+### `grailed_designers`
+
+List or search Grailed's designer/brand taxonomy. Returns a page of Grailed's full designer/brand taxonomy (7,363 designers as of 2026-09-09) -- the value space grailed-search/grailed-sold-listings' own designer parameter accepts (by name). q is an optional free-text filter (typo-tolerant, e.g. a partial name for typeahead-style lookup); an empty q lists the full taxonomy ordered by Grailed's own default ranking (most-listed designers first).
+
+### `grailed_listing`
+
+Get a Grailed listing. Returns full normalized listing-detail data for one Grailed listing: description, every photo, measurements, designers, and the seller's full profile -- richer than the flattened summary grailed-search/grailed-sold-listings return per listing. id is the listing's numeric id, from a search or sold-listings result's own listings[].id field.
+
+### `grailed_search`
+
+Search or browse Grailed active listings. Searches or browses Grailed's (grailed.com) peer-to-peer resale marketplace for currently-active listings. q, designer, department, category, size, color, condition, min_price, and max_price are all optional and combine as an AND -- a free-text q can be combined with any of the facet filters in the same request, or every field can be omitted to browse the full active catalog by Grailed's own "heat" relevance ranking. designer accepts one of the values grailed-designers' own designers[].name field returns; department, category, size, and color accept values from grailed-categories' own departments[].value/categories[].value/sizes[].value/colors[].value fields. condition and sort are fixed, closed enums (listed below). Keyword search is Algolia's own typo-tolerant relevance ranking, not a guaranteed exact match. A query with genuinely zero matches returns a well-formed empty result rather than an error.
+
+### `grailed_seller`
+
+Get a Grailed seller's profile and active listings. Returns a Grailed seller's public profile plus a page of their current active listings (Grailed's own "shop" view of a seller). username is the seller's Grailed username, from a listing's own seller.username field or grailed.com/{username}. Listings only ever contains that seller's ACTIVE listings; use grailed-sold-listings with a designer/query filter for a broader sales-history lookup, since sold listings are not filterable by seller through this endpoint. An unknown username returns a typed not-found error.
+
+### `grailed_seller_reviews`
+
+Get a Grailed seller's buyer feedback. Returns a page of a Grailed seller's individual buyer feedback entries (rating, note, feedback tags, and the listing each review was left for) -- reputation detail grailed-seller does not carry (grailed-seller only exposes the aggregate rating_average/rating_count). username is the seller's Grailed username, from a listing's own seller.username field or grailed.com/{username}. An unknown username returns a typed not-found error.
+
+### `grailed_similar_listings`
+
+Get listings similar to a Grailed listing. Returns the listings Grailed's own product page recommends as "similar" to one listing -- the same related-items shelf shown on grailed.com's own listing-detail page. id is the listing's numeric id, from a search, sold-listings, or collection result's own id field. An id for a listing that does not exist (deleted, sold and removed, or never valid) returns a typed not-found error.
+
+### `grailed_sold_listings`
+
+Search Grailed sold listings (sale price history). Searches Grailed's SOLD-listing index -- a separate dataset from active listings, carrying each item's final sale price and sale date. Same filter shape as grailed-search (q, designer, department, category, size, color, condition), but min_price/max_price filter the SOLD price, not the original asking price. Useful for sale-price-history/comparable-sales lookups (e.g. "what did this designer/category actually sell for recently"). A query with genuinely zero matches returns a well-formed empty result rather than an error.
+
+### `grailed_suggest`
+
+Grailed search-box typeahead suggestions. Returns Grailed's own search-box typeahead suggestions for a partial query -- a flat list of suggested search phrases with a popularity score and live active-listing match count, no listing data. Pass a suggestion straight through to grailed-search/grailed-sold-listings' own q parameter. A query with no genuine matches returns a well-formed empty result rather than an error.
+
 ### `grubhub_availability`
 
 Check ordering availability for a batch of Grubhub restaurants. Returns current ordering state for up to 20 restaurants in one call, relative to a diner location. Each entry reports whether the restaurant is open overall and per channel (these can differ), whether delivery and pickup are offered at all as distinct from open right now, whether it delivers to the supplied coordinate, blackout and overloaded flags, distance, delivery and pickup time estimates, delivery fee, order minimum, cuisines, and the next time an order can be sent per channel -- useful when a restaurant is currently closed. The response echoes the requested ids so a caller can tell which ones Grubhub returned nothing for.
@@ -3218,7 +3714,43 @@ Get Guardian section headlines. Returns fresh headlines from a public Guardian R
 
 ### `guardian_topic`
 
-Get Guardian topic archive. Returns a paginated public Guardian topic or category archive. topic is a Guardian tag or section slug and page defaults to 1.
+Get Guardian topic archive. Returns the stories on a public Guardian tag archive (20 per page, newest first, with total pages and results) or section front (a single curated page, is_front true). topic is a Guardian tag or section slug and page defaults to 1. resolved_topic reports the path actually served, which differs for edition-scoped fronts.
+
+### `gucci_categories`
+
+List Gucci's category and subcategory taxonomy. Returns Gucci's full department/category/subcategory taxonomy, sourced directly from the site's own header navigation menu. Each entry's category value is exactly what gucci-category's own category parameter accepts. Filter to one department with department (e.g. women, men); omit for every department -- see the response's own departments field for the live list of top-level department labels to filter by.
+
+### `gucci_category`
+
+Browse a Gucci category listing. Returns one Gucci category/browse listing: normalized products (name, price, colors, images, stock) plus the upstream's own product count, page count, sibling-category counts, and sort options. category comes from gucci-categories' own category field. page selects how many of the upstream's own batches to accumulate -- Gucci's own category pages page this way: requesting page=N returns every product from page 1 through page N combined (its own "Load All" button simply requests the last page), not a single page's worth. Defaults to 1 (the upstream's own first batch, 36 products); request page equal to the response's own pages_count to fetch a category's complete listing in one call.
+
+### `gucci_product`
+
+Get a Gucci product. Returns full normalized product detail for one style: name, marketing description, breadcrumb trail, brand line, gender, colors, materials, sizes, price, images, and stock -- combining Gucci's own structured product record with the product page's own marketing copy. style_code comes from gucci-search's or gucci-category's own style_code field.
+
+### `gucci_recommendations`
+
+Gucci product recommendations. Returns one Gucci recommendations shelf: normalized product summaries (name, price, image, stock) from either a given product's own "You May Also Like" carousel (style_code set) or the site's general trending-items shelf (style_code omitted). style_code comes from gucci-search's or gucci-category's own style_code field.
+
+### `gucci_search`
+
+Search Gucci's product catalog. Searches Gucci's product catalog by keyword: normalized product summaries (name, price, colors, materials, sizes, gender, stock) with the search index's own live total result count. A genuinely empty result (e.g. a nonsense query) returns a well-formed empty products list, not an error. The response's own size_facets field lists every size value present in the result set (with live counts) -- pass one of those values as size on a follow-up call to filter to just that size.
+
+### `gucci_size_guide`
+
+Gucci product size chart. Returns Gucci's own size-conversion chart for one product style, as a plain header row plus data rows. Not every style carries one -- a one-size accessory (a bag, a scarf) returns available: false with no headers/rows, a well-formed signal rather than an error. style_code comes from gucci-search's or gucci-category's own style_code field.
+
+### `gucci_store`
+
+Get a Gucci store's detail. Returns one Gucci store's full detail: name, phone, address, opening hours, and photos. slug comes from gucci-stores' own slug field.
+
+### `gucci_stores`
+
+List Gucci store locations. Returns Gucci's full US store-locator listing: name, address, phone, coordinates, product departments carried, and a link to book an in-store appointment for each location. Filter to stores carrying one department with department (e.g. jewelry, mens_shoes); omit for every store -- see the response's own departments field for the live list of department tags to filter by.
+
+### `gucci_suggest`
+
+Gucci search-box suggestions. Returns Gucci's own search-box typeahead suggestions for a partial query, each with its own live total result count on the search index. Not product data -- pass a suggestion's own query value straight into gucci-search for results.
 
 ### `gymshark_collection_products`
 
@@ -3259,6 +3791,54 @@ List Gymshark sitemaps. Returns child sitemap URLs from Gymshark's (https://row.
 ### `gymshark_store`
 
 Get Gymshark store metadata. Returns normalized storefront metadata for Gymshark (https://row.gymshark.com), sourced from credential-free storefront JSON. This endpoint is a brand-pinned wrapper around the generic Shopify store family: the storefront URL is fixed server-side, so no 'url' parameter is accepted. If the vanity domain blocks '/products.json', the service may fall back to a public '*.myshopify.com' domain discovered from the storefront page, or to the storefront's own embedded page data for storefronts that expose neither.
+
+### `hbr_article`
+
+Get Harvard Business Review article content. Returns a public Harvard Business Review article's metadata and full body text from a canonical article URL. from_magazine flags articles originally published in the print magazine.
+
+### `hbr_categories`
+
+Get Harvard Business Review topic taxonomy. Returns Harvard Business Review's full public topic taxonomy, grouped into Subject, Industry, and Geography. Use a topic's slug directly as the topic parameter on hbr-topic.
+
+### `hbr_headlines`
+
+Get Harvard Business Review latest headlines. Returns fresh entries from Harvard Business Review's public, site-wide "The Latest" content stream.
+
+### `hbr_topic`
+
+Get Harvard Business Review topic archive. Returns the newest public Harvard Business Review articles on one topic archive page. topic is a "<group>/<slug>" value -- see hbr-categories for the full known value space.
+
+### `hermes_categories`
+
+List Hermès category codes. Returns every browsable Hermès category for a market: the category code hermes-category accepts, its display name, its page path and absolute URL, its parent code and its depth in the tree. This is the discovery endpoint for hermes-category's category parameter, so every accepted value is obtainable from this API rather than by reading the website. Editorial and story tiles that carry no browsable category page are excluded, so every code returned is one hermes-category will accept.
+
+### `hermes_category`
+
+Browse a Hermès category. Browses one Hermès product category and returns a page of normalized products (SKU, title, price with currency, colour, size, stock, images) plus the facet groups Hermès offers for that category, and the category's own title and description. The category parameter takes a category code from hermes-categories, which is the discovery endpoint for every accepted value. Page size is fixed at 48 by Hermès and cannot be changed. Prices are returned with the ISO-4217 currency for the selected market, since Hermès itself publishes bare numbers.
+
+### `hermes_product`
+
+Get a Hermès product. Returns one Hermès product's full detail: title, description, dimensions, the Hermès colour name, country of manufacture, price with its market currency, stock, every product image, and the complete colour and size variant matrix with per-variant sku, price, stock and image. Care, gift and delivery text are returned as Hermès' own HTML fragments. sku accepts the reference-plus-colour form (H252013Z BM), the fuller listing sku that also carries size (H252013Z BM360), or the URL identifier returned by hermes-products (H252013ZvBM).
+
+### `hermes_product_recommendations`
+
+Get a Hermès product's recommended items. Returns the cross-sell shelves Hermès shows on a product page: "keep exploring" (similar items) and "perfect partner" (items styled with it), each a list of normalized products with price, stock and image. Takes the same sku forms as hermes-product. A product Hermès offers no recommendations for returns an empty shelves list rather than an error.
+
+### `hermes_products`
+
+List the Hermès catalogue index. Returns a page of Hermès' full catalogue index for one market: each product's URL, slug, URL identifier and the date Hermès last modified it. Built from Hermès' own product sitemap, so it enumerates the entire catalogue for that market including items no category listing surfaces. Use changed_since to return only products added or updated on or after a date, which makes this a new-arrivals feed. The product_id is the identifier used in the product URL and is NOT the same string as the sku returned by hermes-category and hermes-search, which also encodes size.
+
+### `hermes_search`
+
+Search the Hermès catalogue. Searches the Hermès catalogue by keyword and returns a page of normalized products in the same shape as hermes-category. A query Hermès has no match for returns total 0 with an empty products array: Hermès itself renders unrelated fallback recommendations on a no-results page, and those are deliberately not returned as results. When Hermès applies its own spelling correction the corrected term is reported in results_for. Page size is fixed at 48 by Hermès and cannot be changed.
+
+### `hermes_stores`
+
+List Hermès stores. Returns Hermès' worldwide store directory: name, street address, city, postal code, country, geographic coordinates, phone, displayed opening hours, whether in-store appointments are offered, and store photos. Optionally narrowed to one country (by name or ISO-2 code) or city. Hermès publishes the same worldwide directory for every market, so locale selects the language names are returned in rather than which stores are listed.
+
+### `hermes_suggest`
+
+Hermès search suggestions. Returns Hermès' own search-box autocomplete for a partial term: matching categories with the number of items behind each, and matching products. The category codes returned are the same codes hermes-category accepts, so a suggestion feeds straight into a category browse. An empty query is supported and returns Hermès' default suggestions rather than an error.
 
 ### `hm_categories`
 
@@ -3344,9 +3924,13 @@ Search Hotels.com hotels. Returns a page of date-bound Hotels.com hotel search r
 
 Get an IKEA item's real-time stock availability. Returns one IKEA item's real-time home-delivery and click-and-collect stock signal for the requested country. item_no is IKEA's own item number.
 
+### `ikea_categories`
+
+Discover IKEA category keys. Returns a page of IKEA's full category taxonomy, sourced from IKEA's own site navigation data: every top-level department and nested subcategory, with the key each one uses as ikea_category's own category input. key is IKEA's own category key (numeric, e.g. 20649, or a short alphanumeric department code, e.g. st001). parent_key is the immediate parent category's own key (empty for a top-level department); level is depth in the taxonomy tree, starting at 1. q optionally filters by a case-insensitive substring of name.
+
 ### `ikea_category`
 
-Browse an IKEA category. Returns one page of an IKEA category's product listing, with real offset/size pagination and sort. category is IKEA's own category key (e.g. 20649), taken from a category URL's trailing -{key}/ segment or a product's own category_path field.
+Browse an IKEA category. Returns one page of an IKEA category's product listing, with real offset/size pagination and sort. category is IKEA's own category key (e.g. 20649), taken from a category URL's trailing -{key}/ segment, a product's own category_path field, or GET /ikea/categories, which discovers every valid category value.
 
 ### `ikea_product`
 
@@ -3376,6 +3960,10 @@ Get IKEA search-box typeahead suggestions. Returns IKEA's own search-box typeahe
 
 IMDb title charts. Returns normalized rows from public IMDb title charts. Chart values: 'top_rated_movies', 'top_rated_tv_shows', 'most_popular_movies', 'most_popular_tv_shows', 'top_rated_english_movies', 'lowest_rated_movies'.
 
+### `imdb_image_types`
+
+IMDb image types. Lists every value the 'type' parameter of the IMDb image endpoints accepts: 'behind_the_scenes', 'event', 'poster', 'product', 'production_art', 'publicity', 'still_frame', 'unknown'. Each row carries a display label and a short description.
+
 ### `imdb_name`
 
 IMDb name detail. Returns normalized public IMDb person metadata and known-for rows. Pass exactly one of 'id' or 'url'.
@@ -3387,6 +3975,14 @@ IMDb name awards. Returns normalized public IMDb award rows for a person. Pass e
 ### `imdb_name_credits`
 
 IMDb name credits. Returns normalized public IMDb filmography sections for a person. Pass exactly one of 'id' or 'url'.
+
+### `imdb_name_images`
+
+IMDb name images. Returns image metadata from a person's media index, including the original image URL, dimensions, caption and credited people. Filter by image type with 'type', which accepts a single value or a comma-separated list of: 'behind_the_scenes', 'event', 'poster', 'product', 'production_art', 'publicity', 'still_frame', 'unknown'. Omit 'type' to return every type. Limit defaults to 50 and clamps to 1000. Pass exactly one of 'id' or 'url'.
+
+### `imdb_name_videos`
+
+IMDb name video metadata. Returns public person video metadata and thumbnail URLs only; playback URLs and media manifests are never returned. IMDb caps the upstream slice at 100 and provides no usable continuation cursor, so 'total' can exceed returned rows and 'has_more' reports that condition. Limit defaults to 50 and clamps to 100. Pass exactly one of 'id' or 'url'.
 
 ### `imdb_search`
 
@@ -3404,9 +4000,17 @@ IMDb title detail. Returns normalized IMDb title metadata from a credential-free
 
 IMDb title awards. Returns normalized public IMDb award rows for a title. Pass exactly one of 'id' or 'url'.
 
+### `imdb_title_box_office`
+
+IMDb title box office summary. Returns a title's public box-office summary: lifetime gross by market (domestic, international, worldwide), the domestic opening weekend, and the production budget. IMDb reports each figure independently, so a real title with no box office data (most TV series, many non-theatrical titles) returns 'has_box_office: false' with every figure omitted rather than an error. Pass exactly one of 'id' or 'url'.
+
 ### `imdb_title_company_credits`
 
 IMDb title company credits. Returns normalized public IMDb company-credit sections for a title. Pass exactly one of 'id' or 'url'.
+
+### `imdb_title_connections`
+
+IMDb title connections. Returns a bounded slice of a title's public connections: other titles it references or is referenced by, such as remakes, spin-offs, "featured in" clips, and "edited into" compilations. 'category' is upstream-supplied free text, not a closed enum. IMDb's connections list can run to hundreds or thousands of rows, so 'total' can exceed the returned rows and 'has_more' reports that condition. Limit defaults to 50 and clamps to 250. Pass exactly one of 'id' or 'url'.
 
 ### `imdb_title_credits`
 
@@ -3423,6 +4027,10 @@ IMDb title filming locations. Returns normalized public IMDb filming-location ro
 ### `imdb_title_goofs`
 
 IMDb title goofs. Returns normalized public IMDb goof rows for a title. Pass exactly one of 'id' or 'url'.
+
+### `imdb_title_images`
+
+IMDb title images. Returns image metadata from a title's media index, including the original image URL, dimensions, caption and credited people. Filter by image type with 'type', which accepts a single value or a comma-separated list of: 'behind_the_scenes', 'event', 'poster', 'product', 'production_art', 'publicity', 'still_frame', 'unknown'. Omit 'type' to return every type. Limit defaults to 50 and clamps to 1000. Pass exactly one of 'id' or 'url'.
 
 ### `imdb_title_keywords`
 
@@ -3463,6 +4071,10 @@ IMDb title technical specs. Returns normalized public IMDb technical specificati
 ### `imdb_title_trivia`
 
 IMDb title trivia. Returns normalized public IMDb trivia rows for a title. Pass exactly one of 'id' or 'url'.
+
+### `imdb_title_videos`
+
+IMDb title video metadata. Returns public title video metadata and thumbnail URLs only; playback URLs and media manifests are never returned. IMDb server-truncates this connection and exposes no usable continuation cursor, so 'total' can exceed returned rows and 'has_more' reports that condition. Limit defaults to 50 and clamps to 100. Pass exactly one of 'id' or 'url'.
 
 ### `importyeti_company`
 
@@ -3704,6 +4316,10 @@ Get one Just Eat restaurant's menu with prices. Returns one restaurant's full me
 
 Search Just Eat restaurants near a UK postcode. Returns Just Eat's full restaurant listing for a UK postcode -- every restaurant the site's own area page carries, ordered as Just Eat's default "best match" sort presents them (or by sort_by, if set), not a curated subset. Each restaurant carries its unique_name (the value the restaurant and menu endpoints take), name, image, rating, delivery time window, and open-now status. A postcode with no coverage returns an empty list rather than an error.
 
+### `justeat_search_filters`
+
+Get Just Eat's live filter slug catalog for a UK postcode. Returns the exact filter slugs Just Eat's own area page currently offers for a UK postcode -- star-rating thresholds, boolean toggles (open_now, new, free_delivery, halal, vegan, ...), cuisine tiles (pizza, chinese, italian, ...), and non-restaurant top-nav verticals (groceries, alcohol, pharmacy, electronics, flowers, gifts, and more) alike -- each with the live count of restaurants it currently narrows this postcode's listing to. Every filter value is the literal string /justeat/search's repeatable filter parameter accepts. The slug set is genuinely postcode-dependent: a rural postcode's own area page offers fewer cuisine tiles than central London's, because Just Eat's own frontend never advertises a filter with zero local coverage -- call this endpoint again for a different postcode rather than assume one location's slug set applies everywhere.
+
 ### `justwatch_age_certifications`
 
 Get JustWatch age certifications. Returns JustWatch age certification technical names for a country.
@@ -3932,9 +4548,13 @@ Find nearby Kohl's store locations. Returns physical Kohl's store locations near
 
 Kohl's search-box typeahead suggestions. Returns Kohl's own search-box typeahead result for a partial query: a flat list of suggested search phrases (no product data). A nonsense query returns a genuine, well-formed empty list rather than an error.
 
+### `kroger_categories`
+
+Get Kroger's product-browse category taxonomy. Returns Kroger's full product-browse category taxonomy: every slug/category_id pair kroger-search and kroger-category accept, each with its department and full breadcrumb. This is how to discover valid slug/category_id values -- previously the only way was to already have one from a search response's facet group. Sourced from Kroger's own site navigation menu; covers every category a shopper can browse to from Kroger's site menu (321 at time of writing across 7 departments). Takes no parameters.
+
 ### `kroger_category`
 
-Browse a Kroger category. Browses a Kroger product category and returns normalized product cards plus facet groups, in the same shape as kroger-search. slug and category_id together identify the category (e.g. "pet" and "27" for kroger.com/pl/pet/27). Served from Kroger's own search JSON API using category_id as a taxonomy filter, with real upstream pagination; it falls back to parsing the rendered category page if that path is unavailable, and the source field reports which path answered. Facet filters and sort apply to the JSON path only: when any of them is set, a JSON-path failure returns an error rather than silently falling back to unfiltered results.
+Browse a Kroger category. Browses a Kroger product category and returns normalized product cards plus facet groups, in the same shape as kroger-search. slug and category_id together identify the category (e.g. "pet" and "27" for kroger.com/pl/pet/27) -- call kroger-categories to discover every valid slug/category_id pair. Served from Kroger's own search JSON API using category_id as a taxonomy filter, with real upstream pagination; it falls back to parsing the rendered category page if that path is unavailable, and the source field reports which path answered. Facet filters and sort apply to the JSON path only: when any of them is set, a JSON-path failure returns an error rather than silently falling back to unfiltered results.
 
 ### `kroger_coupons`
 
@@ -4012,6 +4632,18 @@ List Kylie Cosmetics sitemaps. Returns child sitemap URLs from Kylie Cosmetics's
 
 Get Kylie Cosmetics store metadata. Returns normalized storefront metadata for Kylie Cosmetics (https://www.kyliecosmetics.com), sourced from credential-free storefront JSON. This endpoint is a brand-pinned wrapper around the generic Shopify store family: the storefront URL is fixed server-side, so no 'url' parameter is accepted. If the vanity domain blocks '/products.json', the service may fall back to a public '*.myshopify.com' domain discovered from the storefront page, or to the storefront's own embedded page data for storefronts that expose neither.
 
+### `latimes_article`
+
+Get Los Angeles Times article content. Returns a Los Angeles Times article's public metadata and body paragraphs from a canonical article URL, read from the page's NewsArticle structured data.
+
+### `latimes_headlines`
+
+Get Los Angeles Times section headlines. Returns fresh headlines from a public Los Angeles Times section RSS feed: title, canonical URL, summary, author, publication time, and lead image. section defaults to main.
+
+### `latimes_sections`
+
+List Los Angeles Times section feeds. Returns the complete set of section slugs accepted by latimes-headlines, each with its display name and public RSS feed URL.
+
 ### `lazada_categories`
 
 Get a Lazada country storefront's category directory. Returns one Lazada country storefront's public category directory from the server-rendered LazMall navigation menu. The response includes top-level groups, categories, and subcategory links; it does not include product listings.
@@ -4079,6 +4711,14 @@ Get LinkedIn Company info by ID. Returns detailed company information by LinkedI
 ### `linkedin_product`
 
 Get LinkedIn Product info by ID. Returns detailed product information from LinkedIn by product ID.
+
+### `linkedin_product_categories`
+
+Discover LinkedIn product categories. Returns the standardized product categories accepted by the products/search endpoint's category_id filter. With a keyword, returns matching categories from LinkedIn's own category search. Without one, returns every known category.
+
+### `linkedin_products_search`
+
+Search the LinkedIn product directory. Returns one page of LinkedIn's public product directory search results, optionally scoped to a keyword and/or category. Keyword matching is on word prefixes. start is an upstream card offset advanced by the previous response's next_start; LinkedIn's guest search stops returning results at offset 1200.
 
 ### `linkedin_showcase`
 
@@ -4328,6 +4968,46 @@ List MLB teams. Returns the 30 MLB clubs for a season with league, division, ven
 
 List MLB transactions. Lists signings, trades, options, assignments, injured-list moves, and other MLB transactions for a date range.
 
+### `modaoperandi_categories`
+
+List Moda Operandi categories and facets. Returns the live category tree, designer, color, size, availability, and sort values discovered from Moda Operandi's public catalog. Returned category and designer slugs are valid for modaoperandi-search.
+
+### `modaoperandi_designers`
+
+List Moda Operandi designers. Returns the live designer facet for one department. Every returned slug is valid for modaoperandi-search.
+
+### `modaoperandi_product`
+
+Get a Moda Operandi product. Returns public product detail, price, availability, size inventory, description, designer, color, and images for a Moda Operandi product URL.
+
+### `modaoperandi_search`
+
+Search Moda Operandi products. Searches or browses Moda Operandi's public catalog with category, designer, color, size, availability, price, sale, sort, and page filters.
+
+### `moncler_categories`
+
+List Moncler categories. Returns Moncler's full category tree (id, name, description, and subcategories). Every id is a valid value for moncler-category's own category_id parameter. levels controls how many levels of subcategories are included.
+
+### `moncler_category`
+
+Browse a Moncler category. Lists products within one category. category_id must be a value returned by moncler-categories' own category_id field -- a closed set the upstream defines. Returns the same normalized result and facet shape as moncler-search. Narrow the same results with the filter param below.
+
+### `moncler_product`
+
+Get a Moncler product's detail. Returns one product's full detail: name, brand, price, descriptions, color, composition and care instructions, size availability, live stock, variation attributes (color/size options), every orderable variant SKU, product images, "styled with" related products, and a size guide (per-size body measurements and/or a cross-region size conversion table) when the upstream provides one. product_id accepts either a variant-level id or a master/style-level id, both as returned by moncler-search/moncler-category's own result ids.
+
+### `moncler_search`
+
+Search Moncler products. Searches Moncler's product catalog by keyword. Returns normalized product results (name, price, image, orderable color/size variant ids, and live stock level) plus the search index's own sort options and facets (gender, category, color, size, and others) with live per-option result counts. Narrow the same results with the filter param below.
+
+### `moncler_stores`
+
+List Moncler boutiques. Returns Moncler's full worldwide boutique list: name, coordinates, address, phone, email, opening hours, store type, and in-store service flags. This is the full list, not geo-filtered -- filter by country_code or proximity to coordinates client-side over the returned list.
+
+### `moncler_suggest`
+
+Get Moncler search-box suggestions. Returns the storefront's own search-box suggestions (typeahead) for a partial query: completed/corrected search terms, suggested full phrases, and matching categories. Not product data.
+
 ### `monitors_checks`
 
 List a monitor's check history. Returns the caller's own monitor's most recent check runs (most recent first, capped at 50), including webhook delivery status per run.
@@ -4388,6 +5068,22 @@ Find nearby Nike stores. Searches Nike's physical retail store locator by coordi
 
 Get Nike search-box suggestions. Returns Nike's own search-box suggestions (typeahead) for a partial query, the same "Top Suggestions" list shown while typing into Nike's search box: a flat list of suggested search phrases, no product data.
 
+### `npr_article`
+
+Get NPR article content. Returns a public NPR article's metadata and body paragraphs from a canonical article URL.
+
+### `npr_categories`
+
+Get NPR section navigation. Returns NPR's current public section navigation. Use a returned slug directly as the topic parameter on npr-topic.
+
+### `npr_headlines`
+
+Get NPR site-wide headlines. Returns fresh headlines from NPR's public, site-wide RSS feed.
+
+### `npr_topic`
+
+Get NPR section headlines. Returns the newest public NPR stories from one section archive page. topic is a section slug; use npr-categories for the current value space.
+
 ### `numbeo_cost_of_living_city`
 
 Get a Numbeo city's cost-of-living prices. Returns itemized cost-of-living prices for one city (restaurants, markets, transportation, utilities, rent, and more), grouped by category. Credential-free public Numbeo data (numbeo.com).
@@ -4419,6 +5115,18 @@ Get the global Numbeo city ranking for an index family. Returns the global city 
 ### `numbeo_indices_rankings_by_country`
 
 Get the global Numbeo country ranking for an index family. Returns the global country-level ranking for a Numbeo index family. Credential-free public Numbeo data (numbeo.com).
+
+### `nyt_article`
+
+Get a New York Times article's content. Returns one public New York Times article's metadata and body paragraphs from a canonical article URL.
+
+### `nyt_headlines`
+
+Get the latest stories in a New York Times section. Returns a New York Times section RSS feed: each story's title, canonical URL, description, author, publication time, and lead image. Section must be a slug returned by /nyt/sections.
+
+### `nyt_sections`
+
+List New York Times sections. Lists every New York Times section accepted by /nyt/headlines, with its slug, display name, and public feed URL.
 
 ### `ohpolly_collection_products`
 
@@ -4926,35 +5634,59 @@ Search Pizza Hut restaurants by city, state, postal code, name, franchise code, 
 
 ### `playstation_browse`
 
-Browse the PlayStation Store all-games grid. Returns a page of the PlayStation Store "all games" grid with per-item price, platforms, and media, plus the available filter facets (price, genre, platform, subscription, content type, etc.) with value counts. Pass page to advance; next_page is set when more results exist. cc selects the store region (and price currency) and l the text language. Credential-free public PlayStation Store data.
+Browse the PlayStation Store all-games grid. Returns a page of the PlayStation Store "all games" grid with per-item price, platforms, and media, plus the available filter facets (price, genre, platform, subscription, content type, etc.) with value counts. Pass page to advance; next_page is set when more results exist. cc selects the store region (and price currency); l accepts a language code or locale such as en or en-US, with the locale's primary language used for text. Credential-free public PlayStation Store data.
 
 ### `playstation_category`
 
-Browse a PlayStation Store category grid. Returns a page of a specific PlayStation Store category grid (by category UUID) with per-item price, platforms, and media, plus the available filter facets with value counts. Pass page to advance; next_page is set when more results exist. cc selects the store region (and price currency) and l the text language. Credential-free public PlayStation Store data.
+Browse a PlayStation Store category grid. Returns a page of a specific PlayStation Store category grid (by category UUID) with per-item price, platforms, and media, plus the available filter facets with value counts. Pass page to advance; next_page is set when more results exist. cc selects the store region (and price currency); l accepts a language code or locale such as en or en-US, with the locale's primary language used for text. Credential-free public PlayStation Store data.
 
 ### `playstation_concept`
 
-Get PlayStation Store details for a concept (game hub). Returns normalized store metadata for a PlayStation concept: title, publisher, release date, platforms, genres, description, content rating, aggregate star rating, the default product's purchase price, media, and the full lists of purchasable editions and add-ons. cc selects the store region (and price currency) and l the text language. Credential-free public PlayStation Store data.
+Get PlayStation Store details for a concept (game hub). Returns normalized store metadata for a PlayStation concept: title, publisher, release date, platforms, genres, description, content rating, aggregate star rating, the default product's purchase price, media, and the full lists of purchasable editions and add-ons. cc selects the store region (and price currency); l accepts a language code or locale such as en or en-US, with the locale's primary language used for text. Credential-free public PlayStation Store data.
+
+### `playstation_concept_reviews`
+
+Get PlayStation concept reviews. Returns one page of written PlayStation Store reviews for a concept (game hub), each with its title, body, rating, helpful count, spoiler flag, the edition the reviewer owned, and reviewer identity (online id, PS Plus subscriber status, verified-purchase status, avatar). Also includes the concept's aggregate star rating (including its rating distribution). page/page_size page through the full review list (total_count reports the true upstream review count, has_next_page whether a later page has more), sort controls ordering, and rating optionally filters to one star value. Reviews are region-scoped: cc selects the store region whose reviews are returned (and the price currency); l accepts a language code or locale such as en or en-US, with the locale's primary language used for text. Credential-free public PlayStation Store data.
 
 ### `playstation_deals`
 
-Get PlayStation Store deals shelves. Returns the PlayStation Store deals landing page as a list of merchandising shelves (sections), each with its titles and per-item price, plus a flattened, de-duplicated item list across all shelves. cc selects the store region (and price currency) and l the text language. Credential-free public PlayStation Store data.
+Get PlayStation Store deals shelves. Returns the PlayStation Store deals landing page as a list of merchandising shelves (sections), each with its titles and per-item price, plus a flattened, de-duplicated item list across all shelves. cc selects the store region (and price currency); l accepts a language code or locale such as en or en-US, with the locale's primary language used for text. Credential-free public PlayStation Store data.
 
 ### `playstation_latest`
 
-Get PlayStation Store latest-release shelves. Returns the PlayStation Store latest-releases landing page as a list of merchandising shelves (sections), each with its titles and per-item price, plus a flattened, de-duplicated item list across all shelves. cc selects the store region (and price currency) and l the text language. Credential-free public PlayStation Store data.
+Get PlayStation Store latest-release shelves. Returns the PlayStation Store latest-releases landing page as a list of merchandising shelves (sections), each with its titles and per-item price, plus a flattened, de-duplicated item list across all shelves. cc selects the store region (and price currency); l accepts a language code or locale such as en or en-US, with the locale's primary language used for text. Credential-free public PlayStation Store data.
 
 ### `playstation_page`
 
-Get a PlayStation Store merchandising page by alias. Reads any PlayStation Store merchandising page by alias (e.g. collections, subscriptions, or a promotional alias) and returns its shelves (sections) plus the curated collection links found on the page. Each collection link carries a category_id (UUID) you can pass to /playstation/category to fetch that collection's full, paginated title grid — the credential-free way to browse themed/curated selections. Known aliases: collections, subscriptions, deals, latest. cc selects the store region (and price currency) and l the text language. Credential-free public PlayStation Store data.
+Get a PlayStation Store merchandising page by alias. Reads any PlayStation Store merchandising page by alias (e.g. collections, subscriptions, or a promotional alias) and returns its shelves (sections) plus the curated collection links found on the page. Each collection link carries a category_id (UUID) you can pass to /playstation/category to fetch that collection's full, paginated title grid — the credential-free way to browse themed/curated selections. Known aliases: collections, subscriptions, deals, latest. cc selects the store region (and price currency); l accepts a language code or locale such as en or en-US, with the locale's primary language used for text. Credential-free public PlayStation Store data.
 
 ### `playstation_product`
 
-Get PlayStation Store details for a single product. Returns normalized store metadata for a single PlayStation product/edition: title, np title id, parent concept id, product type and store classification, edition name, publisher, release date, platforms, genres, spoken/screen languages, content rating, aggregate star rating, purchase price, and media. cc selects the store region (and price currency) and l the text language. Credential-free public PlayStation Store data.
+Get PlayStation Store details for a single product. Returns normalized store metadata for a single PlayStation product/edition: title, np title id, parent concept id, product type and store classification, edition name, publisher, release date, platforms, genres, spoken/screen languages, content rating, aggregate star rating, purchase price, and media. cc selects the store region (and price currency); l accepts a language code or locale such as en or en-US, with the locale's primary language used for text. Credential-free public PlayStation Store data.
 
 ### `playstation_search`
 
-Search the PlayStation Store. Returns a page of PlayStation Store search results (concepts and products) for a term, with pagination and per-item price, platforms, classification, and media. Pass page to advance; next_page is set when more results exist. cc selects the store region (and price currency) and l the text language. Credential-free public PlayStation Store data.
+Search the PlayStation Store. Returns a page of PlayStation Store search results (concepts and products) for a term, with pagination and per-item price, platforms, classification, and media. Pass page to advance; next_page is set when more results exist. cc selects the store region (and price currency); l accepts a language code or locale such as en or en-US, with the locale's primary language used for text. Credential-free public PlayStation Store data.
+
+### `playstation_suggest`
+
+Get PlayStation Store search suggestions for a term. Returns typeahead-style PlayStation Store search suggestions for a partial or full term: id, name, classification, platforms, publisher, release date, price, a representative image, and a direct store URL per match. Matching is upstream-ordered and loose (it may include titles that only loosely relate to the term), not a ranked exact-substring search. limit caps how many suggestions are returned (max 20; the upstream API does not honor a higher value). cc selects the store region (and price currency); l accepts a language code or locale such as en or en-US, with the locale's primary language used for text. Credential-free public PlayStation Store data.
+
+### `politico_article`
+
+Get Politico article content. Returns a public Politico article's metadata and full body paragraphs from a canonical article URL.
+
+### `politico_categories`
+
+Get Politico section navigation. Returns Politico's full public section navigation tree, grouped the same way the site's own nav menu groups it. Use a section's slug directly as the topic parameter on politico-topic.
+
+### `politico_headlines`
+
+Get Politico site-wide headlines. Returns fresh headlines from Politico's public, site-wide RSS feed.
+
+### `politico_topic`
+
+Get Politico section archive. Returns the newest public Politico stories on one section archive page. topic is a section slug -- see politico-categories for the full known value space.
 
 ### `polymarket_activity_trades`
 
@@ -5140,6 +5872,94 @@ Search Poshmark listings. Searches Poshmark for clothing, shoes, and accessory l
 
 Browse a Poshmark trend/showroom collection. Returns a page of normalized Poshmark listings for a curated trend/showroom collection (e.g. "Vintage Celine Handbags"), the same browsing view as Poshmark's own trend pages. Pass a previous response's next_max_id back as max_id to fetch the next page. Credential-free public data sourced from Poshmark's own server-rendered trend page and, for pages past the first, Poshmark's own JSON pagination API.
 
+### `prada_categories`
+
+List Prada's category taxonomy and gender filter values. Returns Prada's (prada.com) full category taxonomy -- every browsable category with its own breadcrumb path and canonical URL -- plus the two gender values products.prada.com currently carries. categories[].id is exactly the value prada-category accepts as its own category_id parameter; genders[].value is exactly what prada-search and prada-category accept as their own gender parameter.
+
+### `prada_category`
+
+Browse a Prada category. Browses one Prada category by ID, returning every product/color variant in it. category_id is required and must be one of prada-categories' own categories[].id values. gender optionally narrows to one of prada-categories' own genders[].value values. sort selects Prada's own relevance ranking or one of its price/newest orderings. A category with no products returns a well-formed empty result rather than an error.
+
+### `prada_product`
+
+Get a Prada product. Returns normalized product-detail data for one Prada product/color variant: name, price, stock, available sizes, breadcrumb, alternate colors, and images. pv is the product/color identifier, returned by prada-search's, prada-category's, and this endpoint's own products[].pv/other_colors[] fields (also the trailing path segment of a Prada product URL). description and the full image gallery are populated on a best-effort basis from the product's own page and may be briefly absent even for a valid pv; every other field is always populated. An unknown pv returns a not-found error.
+
+### `prada_search`
+
+Search Prada products. Searches Prada's (prada.com) product catalog by keyword, through its own public search index. q is required; gender and sort are the same optional values prada-category accepts. Keyword search is typo-tolerant relevance ranking, not a guaranteed exact match. A query with genuinely zero matches returns a well-formed empty result rather than an error.
+
+### `prada_stores`
+
+Locate Prada retail stores. Locates Prada's (prada.com) physical retail stores worldwide, through its own public store-locator search. All parameters are optional: with none set, this returns Prada's full worldwide store list (up to limit). query is a free-text location search (city, country, or store name); lat/lng (both required together) narrow it to a geo-radius search, optionally sized with radius_km (defaults to 50, maximum 20000). A search with genuinely zero matches returns a well-formed empty result rather than an error.
+
+### `prada_suggest`
+
+Get Prada search-box suggestions. Returns Prada's own search-box typeahead suggestions for a partial query -- a ranked list of suggested search phrases with the live result count each one would return. Pass a suggestion straight through to prada-search's own q parameter for product results. A query with no genuine matches returns a well-formed empty result rather than an error.
+
+### `pristine_auction_categories`
+
+Discover Pristine Auction's search enum values. Returns the whole value space for pristine-auction-search's category, auction_type, sort, and status params. categories[] is fetched live (with a current listing count per category, refreshed on every call); auction_types[], sort[], and statuses[] are pristineauction.com's own fixed, small search-form value sets.
+
+### `pristine_auction_lot`
+
+Get a Pristine Auction lot's full detail. Returns one pristineauction.com lot's full detail: title, description, image gallery, price (current high bid, or realized/sold price once the auction has ended), auction end time, sport/collectible category, auction type, no-reserve flag, and view/watch/bid counts. lot_number comes from pristine-auction-search's results[].lot_number. Credential-free public data -- see the endpoint markdown for the transport used.
+
+### `pristine_auction_search`
+
+Search Pristine Auction's live auction inventory. Browses or searches pristineauction.com's current sports card and memorabilia auction lots. term or category is required, matching pristineauction.com's own search form. All enum values (category, auction_type, sort, status) come from pristine-auction-categories. status=completed browses ended/sold lots (a prices-realized view); the default (all statuses) mirrors the site's own default. Every filter is optional and combines with AND semantics. Credential-free public data -- see the endpoint markdown for the transport used.
+
+### `pristine_marketplace_collection_products`
+
+List Pristine Marketplace collection products. Returns normalized products from one Pristine Marketplace (https://www.pristinemarketplace.com) collection. The storefront URL is fixed server-side; 'handle' is the collection's URL slug (typically a player, team, or memorabilia-type collection, e.g. 'pop-culture').
+
+### `pristine_marketplace_collections`
+
+List Pristine Marketplace collections. Returns normalized collections from Pristine Marketplace (https://www.pristinemarketplace.com). The storefront URL is fixed server-side. Valid empty result pages return '200' with an empty collections array.
+
+### `pristine_marketplace_page`
+
+Get a Pristine Marketplace static page. Returns normalized static page detail for one Pristine Marketplace (https://www.pristinemarketplace.com) page handle. The storefront URL is fixed server-side. The "Shop by Sport" nav landing pages are reachable here as handles 'nfl', 'mlb', 'nba', 'nhl', and 'nascar'.
+
+### `pristine_marketplace_pages`
+
+List Pristine Marketplace static pages. Returns normalized static pages from Pristine Marketplace (https://www.pristinemarketplace.com). The storefront URL is fixed server-side. The storefront's "Shop by Sport" navigation (NFL, MLB, NBA, NHL, NASCAR) resolves to pages here (handles 'nfl', 'mlb', 'nba', 'nhl', 'nascar'), not to a separate collections-style resource -- each is a landing page linking into many player/team collections.
+
+### `pristine_marketplace_product`
+
+Get a Pristine Marketplace product. Returns normalized product detail for one Pristine Marketplace (https://www.pristinemarketplace.com) product handle. The storefront URL is fixed server-side; 'handle' is the product's URL slug.
+
+### `pristine_marketplace_product_recommendations`
+
+List Pristine Marketplace product recommendations. Returns normalized recommended products for one Pristine Marketplace (https://www.pristinemarketplace.com) product handle. The route handle is resolved to a Shopify product id before fetching recommendations. The storefront URL is fixed server-side.
+
+### `pristine_marketplace_products`
+
+List Pristine Marketplace products. Returns normalized products from Pristine Marketplace's (https://www.pristinemarketplace.com) public product catalog. The storefront URL is fixed server-side. Valid empty result pages return '200' with an empty products array.
+
+### `pristine_marketplace_reviews`
+
+List Pristine Marketplace store reviews. Returns one page of Pristine Marketplace's (https://www.pristinemarketplace.com) public Judge.me store review feed. This is a store-wide, most-recent-first feed, not a per-product one: confirmed live, the storefront's own on-page review widget draws from and displays this same feed (labeled "Reviews for other products" on an individual product page), and no product/handle filter parameter narrows it. The storefront URL is fixed server-side. Judge.me fixes 5 reviews per upstream page regardless of any requested size, so this endpoint has no 'limit' parameter -- 'page' maps 1:1 onto Judge.me's own pagination.
+
+### `pristine_marketplace_search`
+
+Search Pristine Marketplace products. Returns normalized products from Pristine Marketplace's (https://www.pristinemarketplace.com) own native full-text search results page, distinct from '/pristine-marketplace/search/suggest''s predictive suggestions. The storefront URL is fixed server-side. Per-page size is fixed by the storefront's own theme (16 products per page) and is not adjustable; 'limit' is honored only as an upper bound on the returned page.
+
+### `pristine_marketplace_search_suggest`
+
+Get Pristine Marketplace search suggestions. Returns products, collections, and query suggestions from Pristine Marketplace's (https://www.pristinemarketplace.com) credential-free predictive search Ajax endpoint. The storefront URL is fixed server-side.
+
+### `pristine_marketplace_sitemap_urls`
+
+List Pristine Marketplace sitemap URLs. Returns capped URL entries from Pristine Marketplace's (https://www.pristinemarketplace.com) child sitemaps matching the requested type. The storefront URL is fixed server-side.
+
+### `pristine_marketplace_sitemaps`
+
+List Pristine Marketplace sitemaps. Returns child sitemap URLs from Pristine Marketplace's (https://www.pristinemarketplace.com) '/sitemap.xml' index with inferred sitemap types. The storefront URL is fixed server-side.
+
+### `pristine_marketplace_store`
+
+Get Pristine Marketplace store metadata. Returns normalized storefront metadata for Pristine Marketplace (https://www.pristinemarketplace.com), sourced from credential-free storefront JSON. This endpoint is a brand-pinned wrapper around the generic Shopify store family: the storefront URL is fixed server-side, so no 'url' parameter is accepted. If the vanity domain blocks '/products.json', the service may fall back to a public '*.myshopify.com' domain discovered from the storefront page, or to the storefront's own embedded page data for storefronts that expose neither.
+
 ### `producthunt_about`
 
 Retrieve Product Hunt product about page. Returns the richer Product Hunt about-page payload, including launch, forum, review tags, and media data.
@@ -5183,6 +6003,126 @@ Retrieve Product Hunt product detailed reviews. Returns detailed review items fo
 ### `producthunt_search`
 
 Search for products, users, or launches on Product Hunt. Performs a full-text Product Hunt search and returns matching products, users, or launches.
+
+### `psa_autographfacts_categories`
+
+List PSA AutographFacts categories. PSA AutographFacts' full subject-category list -- the discovery endpoint for the category_id parameter used to browse subjects. Categories span far beyond sports: Baseball, Basketball, Football, Boxing, Golf, Hockey, Soccer, Tennis, MMA, Miscellaneous Sports, Cycling, Olympics, Motorsports, Entertainment, Music, Writers/Authors/Artists, Space Exploration, U.S. Presidents, and Historical & Political Figures.
+
+### `psa_autographfacts_gallery`
+
+Get a PSA AutographFacts subject's exemplar image gallery. One autograph subject's full exemplar image gallery: real, captioned examples of authenticated signed items PSA keeps on file for this subject (signed photos, cards, baseballs, letters, contracts, and more), used as authentication reference material. subject_id is the numeric id from a psa-autographfacts-subjects result.
+
+### `psa_autographfacts_subject`
+
+Get a PSA AutographFacts subject's profile and price guide. One autograph subject's full public reference page: PSA's own authentication notes (signing habits, forgery risk, signature evolution), a general biography, and a per-item-type price guide (e.g. 3x5/AP card, photo, check, letter, single-signed ball -- item types vary by subject). subject_id is the numeric id from a psa-autographfacts-subjects result.
+
+### `psa_autographfacts_subjects`
+
+List PSA AutographFacts subjects in a category. Every autograph subject PSA AutographFacts lists for one category, each with the numeric subject_id to pass to psa-autographfacts-subject for that subject's full profile and price guide.
+
+### `psa_cardfacts_categories`
+
+List PSA CardFacts categories. PSA CardFacts' full category list -- the discovery endpoint for the category_id parameter used to browse sets. Nine categories: Baseball, Basketball, Boxing, Football, Golf, Hockey, Misc Sports, Multi-Sport, and Non-Sports/TCG.
+
+### `psa_cardfacts_checklist`
+
+Get a PSA CardFacts set's card checklist. One set's full card checklist: every card's name and printed number (number is empty for sets PSA lists without one, e.g. many autograph/player-only card sets). set_id is the numeric id from a psa-cardfacts-sets result.
+
+### `psa_cardfacts_sets`
+
+List PSA CardFacts sets in a category. Every card set PSA CardFacts lists for one category, each with the numeric set_id to pass to psa-cardfacts-checklist for that set's full card checklist.
+
+### `psa_cert_lookup`
+
+Verify a PSA certification number. Looks up PSA's own public Cert Verification record for one PSA-graded card by its certification number: item title, grade, label type, reverse cert/barcode flag, year, brand/title, subject, card number, category, PSA's own price estimate, and this-cert's-own population figures (population for this exact card+grade, and pop-higher). Scoped to PSA's trading-card department; a cert number issued under a different PSA division (autographs, tickets) returns a not-found error. PSA's full Population Report and Auction Prices Realized both require a PSA/Collectors account login and are not available through this endpoint.
+
+### `psa_price_guide_categories`
+
+List PSA Price Guide categories. PSA Price Guide's full category list -- the discovery endpoint for the category_path parameter used to browse or fetch a set's price table. Every category is a distinct collectible type (Baseball Cards, Basketball Cards, Boxing Cards, Football Cards, Golf Cards, Hockey Cards, Soccer Cards, Non-Sports/TCG Cards, Racing Cards, Sports Tickets, Tennis, Unopened Packs, Presidential Autographs, Sports Autographs, Professional Model/Game-Used Bats, Graded Baseballs).
+
+### `psa_price_guide_search`
+
+Search PSA Price Guide. Searches PSA Price Guide by free text (a player/subject name or set name), matching PSA's own site search box. Each result is a matching set with the query's matching cards/items inside it; use a result's category_path, set_path and set_id as the input to psa-price-guide-set to fetch that set's full price table.
+
+### `psa_price_guide_set`
+
+Get a PSA Price Guide set's price table. Fetches one PSA Price Guide set's full grade-by-grade price table: every card in the set with PSA's own formatted price per grade column (the set's own grade columns vary -- a vintage set may carry more/lower grade tiers than a modern one). category_path, set_path and set_id together identify the set; use the matching fields from a psa-price-guide-search result, or category_path from psa-price-guide-categories combined with a set_path/set_id found by browsing PSA's own category page.
+
+### `psa_probatfacts_categories`
+
+List PSA ProBatFacts categories. PSA ProBatFacts' full player-category list -- the discovery endpoint for the category_id parameter used to browse players. Baseball-bat authentication only, split by Hall of Fame status: Hall of Fame Players, Star Players.
+
+### `psa_probatfacts_gallery`
+
+Get a PSA ProBatFacts player's exemplar image gallery. One player's full exemplar image gallery: real, captioned examples of authenticated bats PSA keeps on file for this player, used as authentication reference material. subject_id is the numeric id from a psa-probatfacts-subjects result.
+
+### `psa_probatfacts_subject`
+
+Get a PSA ProBatFacts player's bat-authentication reference page. One player's full public reference page: PSA's own bat-authentication notes (professional models used, signature placement) and a general player biography. Unlike psa-autographfacts-subject, this carries no price guide. subject_id is the numeric id from a psa-probatfacts-subjects result.
+
+### `psa_probatfacts_subjects`
+
+List PSA ProBatFacts subjects in a category. Every player PSA ProBatFacts lists for one category, each with the numeric subject_id to pass to psa-probatfacts-subject for that player's full bat-authentication reference page.
+
+### `psa_ticketfacts_categories`
+
+List PSA TicketFacts categories. PSA TicketFacts' full event-category list -- the discovery endpoint for the category_id parameter used to browse events. Spans NFL, MLB and NBA historic events: Super Bowl, World Series, MLB All Star Game, Historic Baseball Events, and Historic Basketball Events.
+
+### `psa_ticketfacts_gallery`
+
+Get a PSA TicketFacts event's exemplar image gallery. One event's full exemplar image gallery: real, captioned examples of authenticated tickets from this event PSA keeps on file, used as authentication reference material. subject_id is the numeric id from a psa-ticketfacts-subjects result.
+
+### `psa_ticketfacts_subject`
+
+Get a PSA TicketFacts event's ticket reference page. One event's full public ticket reference page: PSA's own historical writeup of the event and the ticket(s) involved. Unlike psa-autographfacts-subject, this carries no price guide. subject_id is the numeric id from a psa-ticketfacts-subjects result.
+
+### `psa_ticketfacts_subjects`
+
+List PSA TicketFacts subjects in a category. Every event PSA TicketFacts lists for one category, each with the numeric subject_id to pass to psa-ticketfacts-subject for that event's full ticket reference page.
+
+### `psastore_collection_products`
+
+List PSA Store collection products. Returns normalized products from one PSA Team Store (https://store.psacard.com) collection. The storefront URL is fixed server-side; 'handle' is the collection's URL slug.
+
+### `psastore_collections`
+
+List PSA Store collections. Returns normalized collections from the PSA Team Store (https://store.psacard.com). The storefront URL is fixed server-side. Valid empty result pages return '200' with an empty collections array.
+
+### `psastore_page`
+
+Get a PSA Store static page. Returns normalized static page detail for one PSA Team Store (https://store.psacard.com) page handle. The storefront URL is fixed server-side.
+
+### `psastore_pages`
+
+List PSA Store static pages. Returns normalized static pages from the PSA Team Store (https://store.psacard.com). The storefront URL is fixed server-side.
+
+### `psastore_product`
+
+Get a PSA Store product. Returns normalized product detail for one PSA Team Store (https://store.psacard.com) product handle. The storefront URL is fixed server-side; 'handle' is the product's URL slug.
+
+### `psastore_product_recommendations`
+
+List PSA Store product recommendations. Returns normalized recommended products for one PSA Team Store (https://store.psacard.com) product handle. The route handle is resolved to a Shopify product id before fetching recommendations. The storefront URL is fixed server-side.
+
+### `psastore_products`
+
+List PSA Store products. Returns normalized products from the PSA Team Store's (https://store.psacard.com) public product catalog. The storefront URL is fixed server-side. Valid empty result pages return '200' with an empty products array.
+
+### `psastore_search_suggest`
+
+Get PSA Store search suggestions. Returns products, collections, and query suggestions from the PSA Team Store's (https://store.psacard.com) credential-free predictive search Ajax endpoint. The storefront URL is fixed server-side.
+
+### `psastore_sitemap_urls`
+
+List PSA Store sitemap URLs. Returns capped URL entries from the PSA Team Store's (https://store.psacard.com) child sitemaps matching the requested type. The storefront URL is fixed server-side.
+
+### `psastore_sitemaps`
+
+List PSA Store sitemaps. Returns child sitemap URLs from the PSA Team Store's (https://store.psacard.com) '/sitemap.xml' index with inferred sitemap types. The storefront URL is fixed server-side.
+
+### `psastore_store`
+
+Get PSA Store store metadata. Returns normalized storefront metadata for the PSA Team Store (https://store.psacard.com), sourced from credential-free storefront JSON. This endpoint is a brand-pinned wrapper around the generic Shopify store family: the storefront URL is fixed server-side, so no 'url' parameter is accepted. If the vanity domain blocks '/products.json', the service may fall back to a public '*.myshopify.com' domain discovered from the storefront page, or to the storefront's own embedded page data for storefronts that expose neither.
 
 ### `quince_categories`
 
@@ -5243,6 +6183,54 @@ Browse Raising Cane's promotions index. Returns Raising Cane's full promotions i
 ### `raisingcanes_store`
 
 Get one Raising Cane's store's detail. Returns one Raising Cane's store: name, full postal address, phone, coordinates, its general weekly hours plus separately published dine-in and drive-thru hours, Raising Cane's own per-store amenity labels (e.g. DRIVE_THRU, CURBSIDE_PICKUP), which pickup/delivery services it offers, and its Google Place id. Store paths come from GET /raisingcanes/directory entries whose is_store is true. Passing a directory path here returns a 404 rather than a hollow record.
+
+### `rebag_collection_products`
+
+List Rebag collection products. Returns normalized products from one Rebag (https://shop.rebag.com) collection. The storefront URL is fixed server-side; 'handle' is the collection's URL slug.
+
+### `rebag_collections`
+
+List Rebag collections. Returns normalized collections from Rebag (https://shop.rebag.com). The storefront URL is fixed server-side. Valid empty result pages return '200' with an empty collections array.
+
+### `rebag_page`
+
+Get a Rebag static page. Returns normalized static page detail for one Rebag (https://shop.rebag.com) page handle. The storefront URL is fixed server-side.
+
+### `rebag_pages`
+
+List Rebag static pages. Returns normalized static pages from Rebag (https://shop.rebag.com). The storefront URL is fixed server-side.
+
+### `rebag_product`
+
+Get a Rebag product. Returns normalized product detail for one Rebag (https://shop.rebag.com) product handle. The storefront URL is fixed server-side; 'handle' is the product's URL slug.
+
+### `rebag_product_recommendations`
+
+List Rebag product recommendations. Returns normalized recommended products for one Rebag (https://shop.rebag.com) product handle. The route handle is resolved to a Shopify product id before fetching recommendations. The storefront URL is fixed server-side.
+
+### `rebag_products`
+
+List Rebag products. Returns normalized products from Rebag's (https://shop.rebag.com) public product catalog. The storefront URL is fixed server-side. Valid empty result pages return '200' with an empty products array.
+
+### `rebag_search`
+
+Search Rebag products. Returns normalized, ranked products from Rebag's (https://shop.rebag.com) own full-text product search (Shopify's Storefront API), including a best-effort condition grade and colour derived from the product's own catalog tags -- attributes not available from the classic catalog JSON endpoints in this family. The storefront URL is fixed server-side.
+
+### `rebag_search_suggest`
+
+Get Rebag search suggestions. Returns products, collections, and query suggestions from Rebag's (https://shop.rebag.com) credential-free predictive search Ajax endpoint. The storefront URL is fixed server-side.
+
+### `rebag_sitemap_urls`
+
+List Rebag sitemap URLs. Returns capped URL entries from Rebag's (https://shop.rebag.com) child sitemaps matching the requested type. The storefront URL is fixed server-side.
+
+### `rebag_sitemaps`
+
+List Rebag sitemaps. Returns child sitemap URLs from Rebag's (https://shop.rebag.com) '/sitemap.xml' index with inferred sitemap types. The storefront URL is fixed server-side.
+
+### `rebag_store`
+
+Get Rebag store metadata. Returns normalized storefront metadata for Rebag (https://shop.rebag.com), sourced from credential-free storefront JSON. This endpoint is a brand-pinned wrapper around the generic Shopify store family: the storefront URL is fixed server-side, so no 'url' parameter is accepted. If the vanity domain blocks '/products.json', the service may fall back to a public '*.myshopify.com' domain discovered from the storefront page, or to the storefront's own embedded page data for storefronts that expose neither.
 
 ### `reddit_comments`
 
@@ -5311,6 +6299,54 @@ Search Redfin listings. Returns normalized Redfin public listing search results 
 ### `redfin_similar`
 
 Get Redfin comparable listings. Returns Redfin's comparable ("similar") listings for a property as normalized listing rows. Faithful pass-through of Redfin's public similars resource.
+
+### `resy_availability`
+
+Get a Resy restaurant's bookable reservation timeslots. Returns the bookable reservation timeslots Resy currently shows for a restaurant, date, and party size -- the same read-only availability an anonymous visitor sees before signing in. This is discovery only; it does not create, hold, modify, or cancel a reservation.
+
+### `resy_cuisines`
+
+Get the cuisines present in a Resy location. Returns the cuisines present among restaurants in a Resy location. Location is a short city code or numeric location id -- both already returned inline as location_code on resy-search and resy-restaurant results; there is no separate closed list of every valid location on Resy's own API, so this value always comes from a prior search/restaurant response rather than a guessed input.
+
+### `resy_event_detail`
+
+Get a Resy ticketed dining event's full description and ticket packages. Returns a ticketed dining event's full description, event-day instructions, and per-ticket-tier package breakdown (price, what's included, live ticket availability). All three identifiers come from a prior resy-events result: event_url_slug is that result's url_slug, restaurant_url_slug is its restaurant_url_slug, and location is the same city identifier resy-events was called with. Credential-free, read-only discovery -- does not purchase a ticket.
+
+### `resy_events`
+
+Get ticketed dining events in a Resy location. Returns ticketed dining events (fixed-price, fixed-capacity experiences a restaurant hosts and sells tickets for, distinct from a regular reservation) in a Resy location. Credential-free, read-only discovery -- does not create, hold, or purchase a ticket.
+
+### `resy_locations`
+
+List Resy's operating locations (cities). Returns Resy's full list of operating locations (cities), optionally filtered by a free-text substring and/or country. This is the discovery source for the location value used throughout the rest of this family (resy-search's/resy-restaurant's location_code, resy-cuisines'/resy-events'/resy-event-detail's location). Credential-free.
+
+### `resy_restaurant`
+
+Get a Resy restaurant's profile. Returns a restaurant's profile: name, cuisine, price tier, rating/review count, address/neighborhood, contact info, and description text. Credential-free.
+
+### `resy_search`
+
+Search Resy restaurants near a location. Searches restaurants by free-text term (name, cuisine, or neighborhood) near a latitude/longitude, optionally including live bookable-timeslot availability for a given date and party size. Credential-free.
+
+### `reuters_article`
+
+Get a Reuters article's content. Returns one normal Reuters article's public metadata and body paragraphs from a canonical article URL. Live blogs, video and podcast pages, and subscriber-only or bot-challenged responses are not supported.
+
+### `reuters_articles`
+
+Get recent Reuters articles. Returns a page of recent Reuters articles: title, canonical URL, update time, and the lead image URL when available. The index covers the most recent 10,000 articles.
+
+### `reuters_news`
+
+Get fresh Reuters headlines. Returns fresh Reuters headlines with title, canonical URL, publication and update times, and the lead image when Reuters publishes one. Covers the most recent stories from Reuters' public news feed.
+
+### `reuters_section`
+
+Get recent articles in a Reuters section. Returns a page of one top-level Reuters section's recent articles: canonical URL, update time, lead image URL, and image caption. This feed does not publish titles; use /reuters/articles for a title-bearing index.
+
+### `reuters_sections`
+
+List Reuters sections. Lists every top-level Reuters section accepted by /reuters/section, with its slug, display name, and landing-page URL.
 
 ### `rightmove_agent_branch`
 
@@ -5476,6 +6512,50 @@ Get a Sam's Club product's full detail. Returns one Sam's Club product's full de
 
 Get a Sam's Club product's related items. Returns the related-item carousels shown on a Sam's Club product page, each a named shelf (e.g. "Members also considered", "Items you may like") of normalized products with pricing, rating, and image. id is the numeric product id from a Sam's Club product page's /ip/ URL. This upstream source does not distinguish an unrecognized id from a known one -- an unrecognized id still returns generic fallback shelves rather than an error.
 
+### `seatgeek_categories`
+
+List SeatGeek's event categories. Returns SeatGeek's full event-category tree (e.g. Sports > Baseball > MLB, Concerts, Theater), root and leaf nodes together. Each category's id is the value seatgeek-events-by-category's taxonomy_id parameter accepts.
+
+### `seatgeek_cities`
+
+List SeatGeek's curated metro areas. Returns SeatGeek's own curated "browse by city" directory (87 metro areas as of 2026-09-15): id, name, state, country, coordinates, and which verticals (concerts/sports/theater) it supports. Each city's lat/lon pairs directly with GET /seatgeek/events-near.
+
+### `seatgeek_event`
+
+Get a SeatGeek event's detail. Returns one SeatGeek event's full detail: title, timing, venue, performers, category taxonomy, and SeatGeek's own live secondary-market pricing snapshot (listing/ticket counts, average/median/lowest/highest price). id is SeatGeek's own numeric event id, obtained from a search or performer-events result. Pricing is an aggregate snapshot only -- no per-seat listing rows and no checkout/purchase flow.
+
+### `seatgeek_events_by_category`
+
+Browse SeatGeek events by category. Returns one page of SeatGeek events under a category/taxonomy, soonest first. taxonomy_id is a SeatGeek category id from GET /seatgeek/categories, e.g. 1010100 for MLB.
+
+### `seatgeek_events_near`
+
+Browse SeatGeek events near a coordinate. Returns one page of SeatGeek events near a coordinate, soonest first -- the same call its city pages and homepage location-based sections make. Pair with GET /seatgeek/cities for a curated list of coordinates, or pass any coordinate directly.
+
+### `seatgeek_performer`
+
+Get a SeatGeek performer's detail. Returns one SeatGeek performer's (sports team, artist, or show) full detail by direct id lookup: name, type, image, popularity, home venue id, upcoming-event counts, and category taxonomy. id is SeatGeek's own numeric performer id, obtained from a search result. Use this when you already have a bare performer id and want to skip a search round-trip; seatgeek-search returns the same fields for a query.
+
+### `seatgeek_performer_events`
+
+Get a SeatGeek performer's event schedule. Returns one page of a SeatGeek performer's (sports team, artist, or show) upcoming event schedule, soonest first. performer_id is SeatGeek's own numeric performer id, obtained from a search result (e.g. 1 for the Los Angeles Dodgers).
+
+### `seatgeek_search`
+
+Search SeatGeek events, performers, and venues. Free-text search across SeatGeek's own catalog of events, performers (sports teams, artists, and shows), and venues -- the same call the site's own search box and search-results page use. Any of the three result lists may come back empty for a query with no matches in that type.
+
+### `seatgeek_trending`
+
+Get SeatGeek's trending-near-you events. Returns SeatGeek's own geo-personalized "trending near you" event feed for a coordinate -- the same list its homepage renders.
+
+### `seatgeek_venue`
+
+Get a SeatGeek venue's detail. Returns one SeatGeek venue's full detail: address, city/state/country, timezone, capacity, coordinates, and upcoming-event counts. id is SeatGeek's own numeric venue id, obtained from a search or event result.
+
+### `seatgeek_venue_events`
+
+Get a SeatGeek venue's event schedule. Returns one page of a SeatGeek venue's upcoming event schedule, soonest first. venue_id is SeatGeek's own numeric venue id, obtained from a search or event result (e.g. 1 for UNIQLO Field at Dodger Stadium).
+
 ### `sec_company_intelligence`
 
 Company 360 overview from SEC data. Aggregates a company's profile, a latest-annual financial snapshot, the latest 10-K/10-Q/8-K, and recent material events into one call. Provide cik or ticker. Optionally fuse live cross-source data with enrich (a comma list of market, news, hiring): market and news are keyed on the ticker; hiring needs ats plus that ATS's careers slug (or tenant/datacenter/site for Workday). Enrichment is best-effort — requested-but-unavailable sources are listed under degraded and never fail the SEC-native response. Credential-free public data.
@@ -5515,6 +6595,14 @@ Insider transactions (Forms 3/4/5). Returns a company's recent insider transacti
 ### `sec_institutional_holdings`
 
 Institutional holdings (13F-HR). Returns the latest 13F-HR holdings for an institutional manager (by CIK): issuer, value, shares, sorted by value. Credential-free public SEC data.
+
+### `sephora_brands`
+
+Sephora brand directory. Returns Sephora's full brand directory (373 brands at time of writing), sourced from the site's own A-Z brand list page. Each brand's 'name' is the exact string GET /sephora/search and GET /sephora/category's repeatable 'brand' filter parameter expect.
+
+### `sephora_categories`
+
+Sephora storefront categories. Returns Sephora's own live storefront category navigation (department, group, name, and slug for each), sourced from the site's own "Shop" mega-nav. Each entry's slug is directly usable as GET /sephora/category's own 'slug' query parameter.
 
 ### `sephora_category`
 
@@ -5710,7 +6798,7 @@ Suggest Shop.app searches. Returns Shop.app autocomplete suggestions. Limit defa
 
 ### `shopify_collection_products`
 
-List Shopify collection products. Returns normalized products from a public Shopify collection '/products.json' endpoint. 'sortBy' and dynamic facet-filter query params (e.g. 'fit', 'canonicalColour') only take effect for headless storefronts served via the embedded-SSR-JSON fallback transport ('transport_mode: "ssr_embedded"') and return an invalid-param error if supplied against a classic-transport store, since Shopify's classic public catalog JSON has no server-side sort or filter support.
+List Shopify collection products. Returns normalized products from a public Shopify collection '/products.json' endpoint. 'sortBy' and dynamic facet-filter query params (e.g. 'fit', 'canonicalColour') only take effect for headless storefronts served via the embedded-SSR-JSON fallback transport ('transport_mode: "ssr_embedded"') and return an invalid-param error if supplied against a classic-transport store, since Shopify's classic public catalog JSON has no server-side sort or filter support. 'sort_by', 'min_price', 'max_price', 'product_type', 'in_stock_only', and 'option_'-prefixed params (e.g. 'option_size=Small,Medium') drive a separate, independent mechanism -- Shopify's own native Storefront Filtering collection-page feature ('transport_mode: "storefront_filtered"') -- which works for both classic- and SSR-fallback-transport stores; supplying any of these takes precedence over sortBy/dynamic facet filters.
 
 ### `shopify_collections`
 
@@ -5734,7 +6822,7 @@ List Shopify product recommendations. Returns normalized recommended products fr
 
 ### `shopify_products`
 
-List Shopify products. Returns normalized products from a public Shopify '/products.json' endpoint. Valid empty result pages return '200' with an empty products array. 'sortBy' and dynamic facet-filter query params (e.g. 'fit', 'canonicalColour') only take effect for headless storefronts served via the embedded-SSR-JSON fallback transport ('transport_mode: "ssr_embedded"') and return an invalid-param error if supplied against a classic-transport store, since Shopify's classic public catalog JSON has no server-side sort or filter support.
+List Shopify products. Returns normalized products from a public Shopify '/products.json' endpoint. Valid empty result pages return '200' with an empty products array. 'sortBy' and dynamic facet-filter query params (e.g. 'fit', 'canonicalColour') only take effect for headless storefronts served via the embedded-SSR-JSON fallback transport ('transport_mode: "ssr_embedded"') and return an invalid-param error if supplied against a classic-transport store, since Shopify's classic public catalog JSON has no server-side sort or filter support. 'sort_by', 'min_price', 'max_price', 'product_type', 'in_stock_only', and 'option_'-prefixed params (e.g. 'option_size=Small,Medium') drive a separate, independent mechanism -- Shopify's own native Storefront Filtering collection-page feature ('transport_mode: "storefront_filtered"') -- which works for both classic- and SSR-fallback-transport stores; supplying any of these takes precedence over sortBy/dynamic facet filters.
 
 ### `shopify_search_suggest`
 
@@ -5803,6 +6891,50 @@ List SKIMS sitemaps. Returns child sitemap URLs from SKIMS's (https://skims.com)
 ### `skims_store`
 
 Get SKIMS store metadata. Returns normalized storefront metadata for SKIMS (https://skims.com), sourced from credential-free storefront JSON. This endpoint is a brand-pinned wrapper around the generic Shopify store family: the storefront URL is fixed server-side, so no 'url' parameter is accepted. If the vanity domain blocks '/products.json', the service may fall back to a public '*.myshopify.com' domain discovered from the storefront page, or to the storefront's own embedded page data for storefronts that expose neither.
+
+### `slickdeals_categories`
+
+List every Slickdeals deal category/tag. Returns Slickdeals' own full category/tag list -- the discovery endpoint for GET /slickdeals/category's slug parameter. This is a separate taxonomy from the category/sub_category fields GET /slickdeals/deal returns for an individual deal (Slickdeals maintains multiple parallel category/tag id spaces, not one) -- these slugs are the ones GET /slickdeals/category's own browse pages accept. The list is refreshed from Slickdeals' own site periodically; an optional q parameter narrows it to a substring match.
+
+### `slickdeals_category`
+
+Browse current deals in one Slickdeals category/tag. Returns the current deal listing for one Slickdeals category/tag (e.g. "laptop-bag", "apparel"): for each deal, title, price, list price, store, community vote score, comment count, the public username who posted it, and status flags (is_popular, is_expired, is_new, is_frontpage). slug must be one of the values from GET /slickdeals/categories -- an unrecognized slug returns a typed invalid-parameter error rather than being sent upstream. Pair a result's thread_id or url with GET /slickdeals/deal for the full detail record (description, full taxonomy).
+
+### `slickdeals_comments`
+
+Get one Slickdeals deal thread's comments. Returns one Slickdeals deal thread's full comment thread: for each comment, the public username who posted it (with their forum rank/title and total post count -- the same public-forum-post attribution class this repo already exposes for Reddit), the comment content (as HTML and as cleaned plain text), when it was posted, a permalink, and reaction counts (like, funny, helpful, not helpful). Give either url (the exact value returned by GET /slickdeals/search or GET /slickdeals/deal) or thread_id; at least one is required. has_more indicates whether Slickdeals' own page truncated the reply list (no further pagination is currently exposed by this endpoint).
+
+### `slickdeals_deal`
+
+Get one Slickdeals deal thread's full detail. Returns one Slickdeals deal thread's full detail: title, store, final/list price, community vote score, comment count, whether the deal is marked expired, the deal's product category and taxonomy (category/sub_category/category_paths, and separately the legacy forum/forum_id the thread was posted under), the public Slickdeals username who posted it ("found by" attribution, the same public-forum-post class this repo already exposes for Reddit) with a public community-standing summary (reputation, join date, deals posted, total votes/comments), a related_deals sidebar (Slickdeals' own Popular/Trending picks), the outbound merchant link, and the deal's own description. Give either url (the exact value returned by GET /slickdeals/search) or thread_id (Slickdeals' own numeric thread id, e.g. from a deal's URL path /f/{thread_id}-...); at least one is required. An unknown or removed deal returns 404.
+
+### `slickdeals_deal_types`
+
+List every Slickdeals deal-type tag. Returns Slickdeals' own deal-type tag list (Coupon, Free / Freebie, Giveaway, Gift Card, Mail In Rebate, Online Only, YMMV, ...) -- the discovery endpoint for GET /slickdeals/search's deal_type_id parameter. Confirmed identical across multiple Slickdeals sub-forums, unlike the broader interest-tag space it is drawn from, which was not found to be reliably enumerable. An optional q parameter narrows it to a substring match on name.
+
+### `slickdeals_forums`
+
+List every Slickdeals legacy sub-forum. Returns Slickdeals' own full legacy sub-forum list (e.g. Hot Deals, Coupons, Freebies) -- the discovery endpoint for GET /slickdeals/search's forum_id parameter. A separate, coarser-grained taxonomy from GET /slickdeals/categories' 421-entry tag list: this is the classification GET /slickdeals/deal, /slickdeals/search/advanced, and /slickdeals/frontpage already surface as forum_id, with this endpoint as the way to resolve an id to a name or filter search results by it. The list is refreshed from Slickdeals' own site periodically; an optional q parameter narrows it to a substring match on name.
+
+### `slickdeals_frontpage`
+
+Browse Slickdeals' own homepage deal feed. Returns one page of Slickdeals' own homepage deal listing -- the deals Slickdeals itself is currently featuring, distinct from a keyword search or a single category/tag's own listing. Each deal carries the same fields as GET /slickdeals/search/advanced's results (real integer vote/comment/view counts, store id, discount, status flags), plus is_fire_deal and has_rebate flags this feed's cards carry. Pagination is next-page-only (has_next_page), since the page itself exposes no total page count.
+
+### `slickdeals_primary_categories`
+
+List Slickdeals' featured primary-category landing pages. Returns Slickdeals' small, curated set of "featured" primary-category landing pages (e.g. laptop-deals, tv-deals) -- the discovery endpoint for GET /slickdeals/primary-category's slug parameter. This is a separate taxonomy from GET /slickdeals/categories' 421-entry tag list and from GET /slickdeals/deal's own category/sub_category fields -- Slickdeals maintains multiple parallel category/tag id spaces, not one. Unlike /slickdeals/categories, no single live page enumerates this set; it is maintained as periodically-refreshed reference data.
+
+### `slickdeals_primary_category`
+
+Browse current deals in one Slickdeals featured primary category. Returns the current deal listing for one Slickdeals featured primary-category landing page (e.g. laptop-deals, tv-deals): for each deal, title, price, list price, store, community vote score, comment count, found-by username, and status flags. slug must be one of the values from GET /slickdeals/primary-categories -- an unrecognized slug (including a valid GET /slickdeals/categories tag slug, which is a different taxonomy) returns a typed invalid-parameter error rather than being sent upstream.
+
+### `slickdeals_search`
+
+Search Slickdeals community-submitted deals by keyword. Searches Slickdeals (slickdeals.net), a community deal/coupon aggregator, for deal threads matching a free-text keyword query -- the same search this repo already exposes for Reddit, applied to Slickdeals' own deal-posting community. Each result is one community-submitted deal thread with its title (which conventionally embeds the deal price), a best-effort price extracted from that title, the merchant domain, the community vote ("thumb") score, the public Slickdeals username who posted it, and when it was posted. Pair a result's thread_id or url with GET /slickdeals/deal for the full detail record, including comment count and category. An optional forum_id restricts results to one Slickdeals legacy sub-forum (e.g. Hot Deals, Coupons) -- obtain a value from GET /slickdeals/forums, a closed enum validated before the request reaches upstream. An optional deal_type_id restricts results to one Slickdeals deal-type tag (e.g. Coupon, Free / Freebie, YMMV) -- obtain a value from GET /slickdeals/deal-types, also a closed enum validated before the request reaches upstream; composes with forum_id.
+
+### `slickdeals_search_advanced`
+
+Search Slickdeals with real pagination, counts, and facets. Searches Slickdeals' modern search surface -- a richer alternative to GET /slickdeals/search's keyword-only RSS feed. Returns real pagination (page/total_pages/per_page/result_count), integer vote/comment/view counts read directly from the page's own data (not parsed from free text), a fuller per-deal record (store id, discount percent, status flags), and facets -- Categories, Stores, and Brands available for the current query, each option carrying a value usable as category_id/brand_id/store_id. Facet values and counts are scoped to the current query, not a site-wide enumeration -- category_id/brand_id/store_id are passthrough filters (obtain a value from a prior response's own facets), not validated against a closed enum. sort defaults to relevance; other values are passed through unvalidated since no server-side enumeration of the full accepted set was found.
 
 ### `sofascore_event`
 
@@ -6284,6 +7416,110 @@ A single Strava route's detail page. Returns a single Strava route's detail: typ
 
 Strava route-index listing for a sport, country, and region. Returns a page of Strava's public route recommendations for a sport, country, and region (state, or state/city). 'sport' values: 'hiking', 'road-biking', 'mountain-biking', 'trail-running', 'gravel-biking'. Public data, sourced from Strava's own server-rendered route pages.
 
+### `stubhub_categories`
+
+List StubHub's own category and subcategory taxonomy. Lists StubHub's top-level verticals (Concerts, Sports, Theater) and their subcategories/leagues (NFL, NBA, ...), each with the lowest currently-listed ticket price for that category within the date range at the given location. Use this to discover valid category ids and names before browsing a specific one.
+
+### `stubhub_category_events`
+
+List StubHub events in one category near a location. Lists paginated events in a single StubHub category (a sport league, team, or a top-level vertical -- use stubhub-categories to discover category ids) filtered by location, radius, and date range. A zero count with an empty events list is a valid no-results response.
+
+### `stubhub_explore`
+
+Discover StubHub events near a location. Discovers events near a location within a date range, optionally bounded by ticket price and by category. A zero count with an empty events list is a valid no-results response.
+
+### `stubhub_performer_events`
+
+List a StubHub performer or team's upcoming events. Lists a performer or team's own upcoming schedule (event name, date, venue, starting price) scraped from their StubHub page. Obtain a real performer_slug+performer_id pair from stubhub-trending's url field (e.g. https://www.stubhub.com/kansas-city-chiefs-tickets/performer/6063 -- slug "kansas-city-chiefs-tickets", id 6063). A zero count with an empty events list is a valid no-upcoming-events response.
+
+### `stubhub_trending`
+
+List StubHub's currently-featured trending performers. Lists the performers/teams StubHub itself is currently featuring on its homepage hero rotation, each with a follower/favorites count and its upcoming event date range. A zero count with an empty performers list is a valid no-results response.
+
+### `stubhub_trending_events`
+
+List StubHub's currently-trending individual events. Lists a paginated global feed of StubHub's currently-trending individual events (name, date, venue, canonical URL), optionally filtered to one top-level category vertical. Distinct from stubhub-trending, which rotates featured performers/teams rather than individual events. A zero count with an empty events list is a valid no-results response.
+
+### `stubhub_venue_events`
+
+List a StubHub venue's upcoming events. Lists a venue's own upcoming event calendar (event name, date, starting price) scraped from its StubHub page. Obtain a real venue_slug+venue_id pair from another endpoint's event url field (e.g. https://www.stubhub.com/geha-field-at-arrowhead-stadium-tickets/venue/4467/ -- slug "geha-field-at-arrowhead-stadium-tickets", id 4467). A zero count with an empty events list is a valid no-upcoming-events response.
+
+### `substack_categories`
+
+List Substack categories. Returns every public Substack category, with the category id required by /substack/category. Ids span two spaces: 32 categories use a numeric id and one uses the string id 'podcast'. Both are accepted by /substack/category.
+
+### `substack_category`
+
+List the publications ranked in one Substack category. Returns one page of a category's public publication leaderboard. Each row carries the publication's subscriber signals and its full subscription offering (web plans with multi-currency pricing, App Store plans, and per-tier benefits). Subscriber totals are published to roughly three significant figures and are opt-in per writer; paid subscriber figures are only ever buckets. Upstream serves 25 publications per page and accepts pages 0-26, so at most 675 publications are reachable per category and type.
+
+### `substack_explore`
+
+Browse the public Substack Explore surface. Returns one page of Substack's Explore surface. Explore is a feed of heterogeneous modules rather than a flat list, so each page returns the modules it contains and every module names its own type. Known module types are 'trendingTopicsExplore' (trending topics and suggested searches), 'trendingPostsExplore', 'newBestsellersExplore', 'videoSuggestionsExplore', 'categoryLeaderboard', 'comment' (a single Note) and 'post' (a single post). Only the collections a module actually carries are populated. Pagination is cursor-based; early pages are curated shelves and later pages are individual Notes and posts.
+
+### `substack_leaderboard`
+
+List a Substack category's bestseller leaderboard. Returns one page of a category's bestseller leaderboard, pairing each ranked publication with its author. This is a different surface from /substack/category: it exposes the trending ranking (the site's "Rising" tab), validates its ranking values rather than silently defaulting, accepts the extra cross-category id 'bestseller', and returns the author alongside the publication. Use a category_id from /substack/categories whose in_leaderboard is true. Upstream serves 25 rows per page and accepts pages 0-25.
+
+### `substack_note`
+
+Get one public Substack Note. Returns one public Note with its author, engagement counts, and the post it links to when it has one. Notes are Substack's short-form social posts. note_id is the numeric id from a Note URL: in '/@handle/note/c-316240438' it is '316240438'.
+
+### `substack_note_replies`
+
+List replies to a Substack Note. Returns one page of public replies to a Note, each in the same shape as /substack/note. Pagination is cursor-based: pass the previous response's next_cursor back as cursor.
+
+### `substack_note_restacks`
+
+List the Notes that restacked a Substack Note. Returns one page of the Notes that restacked a given Note, each in the same shape as the single-Note endpoint. A restack may carry its own commentary in 'body' or be a bare reshare with an empty body. Pagination is cursor-based.
+
+### `substack_notes`
+
+Browse the public Substack Notes feed. Returns one page of the public Notes feed for one tab. tab and type come as a pair from the Notes feed tabs endpoint. Pagination is cursor-based: pass the previous response's next_cursor back as cursor. Post-only rows in the upstream feed are omitted; every returned row is a Note.
+
+### `substack_notes_tabs`
+
+List the Substack feed tabs. Returns every selectable tab for one surface. The two surfaces expose different tab sets: 'feed' has 34 tabs (the main feed, the bestseller feed, and one per category) and 'explore' has 33. Each row's id and type must be passed together to the matching feed endpoint, which rejects a tab whose type does not match.
+
+### `substack_post`
+
+Get one public Substack post. Returns one public post with the extended metadata the archive listing omits, including word count, every credited byline, and podcast audio details where the post has them. Post bodies are not returned.
+
+### `substack_publication`
+
+Get a Substack publication and its subscription offering. Returns a publication's public profile and its complete subscription offering: every purchasable web plan with per-currency pricing, the separately priced App Store plans, per-tier benefit copy, and the toggles governing which tiers are sold. Identify the publication by name (a subdomain such as semianalysis, or a custom domain such as www.thefp.com) or by numeric publication_id -- exactly one is required. Prefer publication_id when you have it: it reads a compact document, while resolving by name has to parse the publication's full homepage.
+
+### `substack_publication_contributors`
+
+List a Substack publication's public contributors. Returns one page of the writers credited on a publication, ranked as Substack ranks them. Rows include each writer's handle, profile URL, and bestseller badge tier, so a publication can be fanned out into individual /substack/user lookups. Large publications return several hundred contributors on the first page.
+
+### `substack_publication_posts`
+
+List a Substack publication's public post archive. Returns one page of a publication's public post archive with title, subtitle, canonical URL, publish date, engagement counts, and whether each post is paywalled. search filters the publication's own posts full-text; a query with no matches returns an empty list rather than the unfiltered archive.
+
+### `substack_publication_recommendations`
+
+List the publications one Substack publication recommends. Returns the publications a given publication recommends to its own readers, as a publication-to-publication graph. Useful for discovering publications beyond the 675-per-category ceiling on /substack/category. publication_id is the numeric id returned by /substack/publication, /substack/category, or /substack/user.
+
+### `substack_search`
+
+Search posts and publications across Substack. Searches posts across all of Substack and returns the publications that also matched, unlike /substack/publication/posts which searches within a single publication. Set focus_publication_id to additionally receive that one publication's own matching posts in focused_posts alongside the site-wide results.
+
+### `substack_user`
+
+Get a public Substack writer profile. Returns one public Substack profile: identity, the publications the writer contributes to, their publicly visible subscriptions, and every subscriber signal Substack publishes. total is opt-in per writer and rounded to roughly three significant figures; when a writer hides it, total_hidden is true and total is 0, which must not be read as zero subscribers. paid_rough, paid_rough_int, and paid_tier are buckets - no exact paid subscriber count is published anywhere. follower_count is exact but counts followers, not subscribers.
+
+### `substack_user_activity`
+
+List a Substack user's public activity. Returns one page of a user's public activity: the notes they wrote, posts they published, and items they liked, replied to, or restacked. types is an optional comma-separated filter accepting 'note', 'post', 'like', 'replies' and 'restack'; omit it for the default mixed feed. Each item's kind is the upstream's own finer-grained label, so filtering on 'restack' returns both 'comment_restack' and 'post_restack' items. Pagination is cursor-based.
+
+### `substack_user_connections`
+
+List a Substack user's followers, following, or subscribers. Returns one of a user's public connection lists. Each entry is a full profile in the same shape as /substack/user, subscriber signals included. user_id is the numeric id returned by /substack/user. The upstream returns a bounded preview of each list rather than the complete membership.
+
+### `substack_user_search`
+
+Search public Substack writer profiles. Searches public Substack profiles by name or handle. Each result carries the same subscriber signals as /substack/user, so a search enumerates writers without a second lookup per profile. Returns 20 profiles per page; use has_more rather than assuming a fixed depth, since result counts vary by query.
+
 ### `subway_available_times`
 
 Get one Subway store's available pickup times. Returns one Subway store's forward-looking pickup schedule -- every time slot the store is currently accepting orders for, as RFC3339 UTC instants, earliest first. Slots begin at the store's next orderable time (roughly half an hour out, not immediately) and run through closing, so the list reflects real remaining capacity for today rather than the store's advertised opening hours. Store IDs come from a GET /subway/store or GET /subway/nearby result's store_id field. A store that is closed or past its last slot for the day returns an empty slots array, which is a valid answer rather than an error. interval_minutes reports the spacing between consecutive slots as measured from the response itself.
@@ -6384,6 +7620,10 @@ List Target product reviews. Returns paginated written reviews for a Target item
 
 Search Target products. Searches Target products and returns normalized products plus every filter group and option available for the current result set. Pass option ids back through filter_ids as a comma-separated list. A zero total with an empty products list is a valid no-results response. The sort enum accepts 'relevance', 'featured', 'price-low', 'price-high', 'rating', 'bestselling', and 'newest'.
 
+### `target_stores`
+
+Find Target stores near a location. Returns Target's physical stores near a ZIP code, a free-text "city, state", or a "latitude,longitude" pair, including each store's store_id, status, distance, phone, address, service list, time zone, and two weeks of daily opening hours. Use the returned store_id values with the store_id parameter on target-search, target-category-products, target-filter-options, and target-product.
+
 ### `tes_job_detail`
 
 Get a Tes teaching job. Returns normalized detail for one job posting by its numeric id (the id field returned by tes-job-search): employer, location, salary, contract terms/types, dates, and application contact/URL, plus a short excerpt of the listing description rather than the full long-form HTML copy.
@@ -6463,6 +7703,50 @@ List The Body Shop sitemaps. Returns child sitemap URLs from The Body Shop's (ht
 ### `thebodyshop_store`
 
 Get The Body Shop store metadata. Returns normalized storefront metadata for The Body Shop (https://www.thebodyshop.com), sourced from credential-free storefront JSON. This endpoint is a brand-pinned wrapper around the generic Shopify store family: the storefront URL is fixed server-side, so no 'url' parameter is accepted. If the vanity domain blocks '/products.json', the service may fall back to a public '*.myshopify.com' domain discovered from the storefront page, or to the storefront's own embedded page data for storefronts that expose neither.
+
+### `therealreal_autocomplete`
+
+Get The RealReal search-box suggestions. Returns The RealReal's own search-box typeahead suggestions for a partial query. Credential-free public data sourced from The RealReal's own first-party catalog API.
+
+### `therealreal_categories`
+
+Get The RealReal category browse taxonomy. Returns The RealReal's full category (taxon) browse taxonomy: every department, category, and subcategory, nested, with each entry's id (usable directly against search's category_id), permalink (usable directly against the category endpoint's path), and live matching item count. This is reference data that changes rarely, so responses are cached. Credential-free public data sourced from The RealReal's own server-rendered category page.
+
+### `therealreal_category`
+
+Browse The RealReal listings by category. Returns a page of normalized The RealReal listings browsed by category (taxon) permalink path, e.g. women/handbags. Pass a previous response's next_after back as after to fetch the next page. Credential-free public data sourced from The RealReal's own server-rendered category page.
+
+### `therealreal_collection`
+
+Browse The RealReal listings by curated collection. Returns a page of normalized The RealReal listings browsed by curated collection slug, e.g. on-sale-now -- sale campaigns, editor's picks, and similar merchandising collections distinct from category/designer browsing. Pass a previous response's next_after back as after to fetch the next page. Credential-free public data sourced from The RealReal's own server-rendered collection page.
+
+### `therealreal_collections`
+
+Get The RealReal curated collection slugs. Returns The RealReal's full published set of curated editorial and sale-campaign collection slugs (e.g. on-sale-now, hermes-birkin-bag), each usable directly against the collection endpoint's own slug field. This is reference data that changes rarely, so responses are cached. Credential-free public data sourced from The RealReal's own published sitemap.
+
+### `therealreal_conditions`
+
+Get The RealReal condition-grading value space. Returns The RealReal's full authentication condition-grading scale: the closed 6-tier set (Pristine, Excellent, Very Good, Good, Fair, As Is) it defines, each with an id (usable directly against search's condition_id) and live matching item count. This is reference data that changes rarely, so responses are cached. Credential-free public data sourced from The RealReal's own server-rendered category page.
+
+### `therealreal_designer`
+
+Browse The RealReal listings by designer. Returns a page of normalized The RealReal listings browsed by designer slug, e.g. gucci. Pass a previous response's next_after back as after to fetch the next page. Credential-free public data sourced from The RealReal's own server-rendered designer page.
+
+### `therealreal_designers`
+
+Get The RealReal designer directory. Returns every designer The RealReal recognizes in one department (not just designers with currently active listings), each with an id (usable directly against search's designer_id) and slug (usable directly against the designer endpoint). The directory is segmented by department -- pass category to select one; the response's categories field lists every accepted value. This is reference data that changes rarely, so responses are cached. Credential-free public data sourced from The RealReal's own server-rendered designer directory page.
+
+### `therealreal_listing`
+
+Get a The RealReal listing detail. Returns a single normalized The RealReal listing: description, condition detail, category context, and measurements, plus the shared summary fields (name, designer, condition, price, images). Looked up by the listing's full product URL, as returned in a search/category/designer response's url field. Credential-free public data sourced from The RealReal's own server-rendered listing page.
+
+### `therealreal_search`
+
+Search The RealReal luxury consignment listings. Searches The RealReal's authenticated luxury resale catalog by keyword, optionally combined with category, designer, condition-grade, and price-range filters, returning normalized listing summaries (name, designer, condition, price, images) plus the total matching count and an opaque pagination cursor. Pass a previous response's next_after back as after to fetch the next page. Credential-free public data sourced from The RealReal's own server-rendered search page.
+
+### `therealreal_similar`
+
+Get The RealReal similar-item recommendations. Returns The RealReal's own "Similar Items" visual-similarity recommendations for one product, looked up by the product's numeric id (from any other The RealReal endpoint's listing response id field). Credential-free public data sourced from The RealReal's own first-party catalog API.
 
 ### `threads_post`
 
@@ -6555,6 +7839,38 @@ Search TicketWeb events. Searches TicketWeb events by artist, event, or venue. A
 ### `ticketweb_venue`
 
 Get a TicketWeb venue. Returns one TicketWeb venue's detail (name, address) plus one page of its upcoming events. A zero count with an empty events list on page 1 is a valid "no upcoming events" response.
+
+### `tiffany_categories`
+
+List Tiffany & Co. categories. Lists every category id Tiffany & Co.'s own product catalog accepts, each with a human-readable label, a kind (category for a real navigable department/subcategory, curated_shop for a curated gift/merchandising shelf), and a live product count. Each id is exactly what tiffany-category's own category parameter accepts -- resolves the category-discovery gap that parameter would otherwise leave as "find one from a storefront URL".
+
+### `tiffany_category`
+
+Browse a Tiffany & Co. category. Returns one page of a Tiffany & Co. category/browse listing. category is a category id from tiffany-categories's own id field (e.g. ecommerce_us_jewelry_necklaces_and_pendants). sort selects recommended (default), price_asc, price_desc, or newest. material, gemstone, color, product_type, gender, and designer are optional single-value filters -- see tiffany-filters for the live covered value space for each. A hub-level or emptied-out category id, or a filter combination with no matches, returns a well-formed empty result rather than an error.
+
+### `tiffany_content_search`
+
+Search Tiffany & Co. editorial content. Searches Tiffany & Co.'s own editorial pages -- style guides, gift guides, and other "World of Tiffany" articles -- by free-text keyword. Not product data: no price, stock, or item id fields. A genuine non-matching keyword returns a well-formed empty result (zero total_results).
+
+### `tiffany_filters`
+
+List Tiffany & Co. search/category filter values. Lists every value tiffany-search's and tiffany-category's material, gemstone, color, product_type, gender, and designer filter parameters accept, each with a live product count -- resolves the discovery gap those parameters would otherwise leave as "find one on the live site's own filter sidebar".
+
+### `tiffany_product`
+
+Get a Tiffany & Co. product. Returns full product detail for one item: name, description, brand, collection, designer, material, gemstone, USD price, live stock status, category tree, every color/style variation, and images. product_id is Tiffany & Co.'s own item id, as returned by tiffany-search's or tiffany-category's own products[].id field.
+
+### `tiffany_search`
+
+Search Tiffany & Co. products. Searches Tiffany & Co.'s product catalog by free-text keyword. Returns normalized product summaries with USD pricing, live stock status, material, gemstone, collection, and designer. sort selects recommended (default), price_asc, price_desc, or newest. material, gemstone, color, product_type, gender, and designer are optional single-value filters -- see tiffany-filters for the live covered value space for each. A genuine non-matching keyword, or a filter combination with no matches, returns a well-formed empty result (zero total_products).
+
+### `tiffany_stores`
+
+Find Tiffany & Co. store locations. Finds Tiffany & Co. physical stores, boutiques, and cafes near a coordinate, ordered by distance. Each result includes address, phone, opening hours, in-store services and specialities, and live open/closed status.
+
+### `tiffany_suggest`
+
+Get Tiffany & Co. search-box suggestions. Returns Tiffany & Co.'s own search-box suggestions (typeahead) for a partial query -- a flat list of suggested search phrases, each with its own live total result count on the product catalog. Not product data.
 
 ### `tiktok_category`
 
@@ -6656,6 +7972,14 @@ Retrieve TikTok Top Ads suggestions. Returns Top Ads search suggestions from Tik
 
 Retrieve TikTok trending posts. Returns the current TikTok trending feed.
 
+### `tmdb_collection`
+
+Get a TMDB collection. Returns a normalized TMDB collection (franchise grouping), including its overview and server-rendered member movies. Credential-free public TMDB data.
+
+### `tmdb_genres`
+
+List TMDB browse genres. Returns every genre ID advertised by TMDB's public movie and TV browse pages. Use movie values only with movie list filters and TV values only with TV list filters. Credential-free public TMDB data.
+
 ### `tmdb_movie`
 
 Get a TMDB movie. Returns a normalized TMDB movie: overview, tagline, genres, countries, runtime, budget/revenue, top-billed cast, top crew (director/writer), and aggregate rating. Credential-free public TMDB data (themoviedb.org) — not the official api.themoviedb.org, which requires an API key.
@@ -6674,7 +7998,7 @@ List popular people on TMDB. Returns one page from TMDB's Popular People directo
 
 ### `tmdb_search`
 
-Search TMDB. Searches TMDB movies, TV shows, and people. An unscoped query interleaves results across all three types rather than returning whichever type happens to rank first upstream. Credential-free public TMDB data.
+Search TMDB. Searches TMDB movies, TV shows, people, and collections. An unscoped query interleaves results across all four types rather than returning whichever type happens to rank first upstream. Credential-free public TMDB data.
 
 ### `tmdb_tv`
 
@@ -6932,6 +8256,38 @@ Fetch a document's full bibliographic data, abstract, description, and claims. F
 
 Search USPTO's own patent full-text search index. Searches USPTO Patent Public Search's full-text index of granted patents and published applications, returning normalized bibliographic results (title, applicant/assignee, inventors, filing and publication dates, application number, IPC/CPC classifications, page count). q accepts USPTO's full Advanced Search query syntax -- field-specific search (e.g. battery.ti., Microsoft.as.), date ranges (@pd>=20200101<=20241231), boolean and proximity operators, and wildcards -- see the markdown doc for the full field-code table and syntax reference. Public data, sourced from USPTO's own official search tool.
 
+### `vestiaire_brands`
+
+Vestiaire Collective's full brand directory. Returns Vestiaire Collective's full brand directory (id, name, url), not just brands with active listings for a given search -- resolves search's otherwise-opaque brand_id filter, and a search response's facets.brands, to the complete set of valid ids. Public data, sourced from Vestiaire Collective's own brand-directory page.
+
+### `vestiaire_categories`
+
+Vestiaire Collective category taxonomy. Returns the full Vestiaire Collective category taxonomy: universes (Women, Men, Kids) at the root, with up to three nested category levels beneath each. Every id returned here is accepted by /vestiaire/search's category_id filter.
+
+### `vestiaire_conditions`
+
+Vestiaire Collective condition values. Returns the fixed set of condition ids accepted by /vestiaire/search's condition_id filter, with each id's display name and current listing count.
+
+### `vestiaire_product`
+
+Vestiaire Collective listing detail. Returns a single Vestiaire Collective listing's public detail: price, brand, category, condition, material, color, size, seller summary, and photos. 'path' is the listing's URL or site-relative path, as returned by /vestiaire/search's 'url' field -- the numeric id alone cannot be resolved to a page. Public data, sourced from Vestiaire Collective's own listing page.
+
+### `vestiaire_search`
+
+Vestiaire Collective listing search. Searches Vestiaire Collective's public pre-owned luxury resale catalog by keyword, category, brand, and condition, with sort and pagination. 'sort' values: 'relevance', 'price_asc', 'price_desc', 'recency'. 'category_id' and 'condition_id' come from /vestiaire/categories and /vestiaire/conditions. 'page' * 'per_page' cannot exceed an offset of 1000 (the upstream service's own pagination limit) -- narrow the query instead of paging deeper. Public data, sourced from Vestiaire Collective's own search service.
+
+### `vestiaire_search_sellers`
+
+Search Vestiaire Collective sellers by name. Finds Vestiaire Collective sellers by username or first name. A matched result's id can be passed directly to GET /vestiaire/seller for that seller's full public storefront profile. Public data, sourced from Vestiaire Collective's own member-search service.
+
+### `vestiaire_seller`
+
+Vestiaire Collective seller profile. Returns a Vestiaire Collective seller's public storefront profile: username, country, segment, aggregate sold/listed/bought counts, and follower/following counts. 'id' is the numeric seller id, as returned by /vestiaire/search's 'seller_id' field or /vestiaire/product's 'seller.id'. Public data, sourced from Vestiaire Collective's own seller profile page.
+
+### `vestiaire_suggest`
+
+Vestiaire Collective search-box autocomplete. Returns Vestiaire Collective's own search-box autocomplete suggestions for a partial query: matching brands plus completed search phrases. Public data, sourced from Vestiaire Collective's own search-suggestions service.
+
 ### `vinted_brand`
 
 Vinted listings for a brand. Returns Vinted listings for a specific brand, with optional price filtering and sort order. 'order' values: 'relevance', 'newest_first', 'price_high_to_low', 'price_low_to_high'. Public data, sourced from Vinted's own server-rendered brand page.
@@ -6975,6 +8331,18 @@ Get Walmart product reviews. Returns the reviews snapshot embedded in a Walmart 
 ### `walmart_search`
 
 Search Walmart products. Returns Walmart search results: item id, title, brand, price, image, availability, seller, and rating per product. Credential-free public Walmart data, rendered from the search page through proxied browser renderers.
+
+### `wapo_article`
+
+Get a Washington Post article's content. Returns one public Washington Post article's metadata and body paragraphs from a canonical article URL. Metered articles that the site truncates are not available.
+
+### `wapo_headlines`
+
+Get the latest stories in a Washington Post section. Returns the first page of a Washington Post section front: each story's title, canonical URL, description, section, publication time, and lead image. Section must be a path returned by /wapo/sections.
+
+### `wapo_sections`
+
+List Washington Post sections. Lists every Washington Post section accepted by /wapo/headlines, with its path slug, display name, and landing-page URL.
 
 ### `wayfair_categories`
 
@@ -7540,6 +8908,22 @@ Geocode a free-form address. Resolves a free-form address into structured locati
 
 Search Yelp businesses. Searches Yelp's real Android app business-search backend for a term and location. Credential-free: no login, no API key, no cookie required from the caller.
 
+### `yoox_categories`
+
+List YOOX categories. Returns department-scoped category slugs discovered from YOOX navigation. Every returned slug is valid for yoox-search.
+
+### `yoox_designers`
+
+List YOOX designers. Returns the department-scoped designer slugs discovered from YOOX navigation. Every returned slug is valid for yoox-search.
+
+### `yoox_product`
+
+Get a YOOX product. Returns the public product detail identified by a YOOX product URL.
+
+### `yoox_search`
+
+Search YOOX products. Searches or browses YOOX's public catalog with department, category, designer, color, size, price, sale, sort, and page filters.
+
 ### `youtube_captions`
 
 Retrieve auto-generated or human captions. Returns the caption cues for a specific YouTube video.
@@ -7574,7 +8958,7 @@ Retrieve channel profile. Returns full profile details for a YouTube channel.
 
 ### `youtube_search`
 
-Search YouTube. Returns normalized YouTube search results using YouTube's InnerTube search API. Pass 'continuation_token' from a previous response to retrieve the next page. Use 'q' as the primary query parameter; 'search_query' is accepted as an alias.
+Search YouTube. Returns normalized YouTube search results using YouTube's InnerTube search API. Pass 'continuation_token' from a previous response to retrieve the next page. Use 'q' as the primary query parameter; 'search_query' is accepted as an alias. 'hl' and 'gl' localize ranking and result context; they default to 'en' and 'US'. Named filters cover the public web search filters. Account-only chips such as Watched and Unwatched are not exposed.
 
 ### `youtube_tag`
 
@@ -7582,7 +8966,7 @@ Retrieve YouTube videos by tag. Returns normalized videos from the public YouTub
 
 ### `youtube_transcript`
 
-Retrieve transcript for a YouTube video. Returns transcript segments for a YouTube video using YouTube's native player captions. Set 'format=text', 'format=srt', or 'format=vtt' to receive plain-text output instead of the standard response envelope.
+Retrieve transcript for a YouTube video. Returns transcript segments for a YouTube video using YouTube's native player captions. Set 'format=text', 'format=srt', or 'format=vtt' to receive plain-text output instead of the standard response envelope. Returns '404' when the video currently has no transcript/captions available in any language — this is a normal, non-retryable result, not an error condition. Returns '503' when the request is temporarily blocked or rate-limited; retrying after a short delay may succeed.
 
 ### `youtube_transcript_languages`
 
@@ -7592,9 +8976,13 @@ List transcript languages for a YouTube video. Returns the transcript languages 
 
 Retrieve video metadata & captions. Returns title, description, stats, and captions for a YouTube video ID.
 
+### `zalando_categories`
+
+List a Zalando market's top-level category navigation. Returns a Zalando country storefront's live top-level category navigation, department by department, scraped directly from that department's own storefront nav tab bar. This is the discovery source for zalando-category's category parameter — category slugs are market-specific (each storefront uses its own local-language slug), so there is no fixed value space to hardcode; this endpoint asks the upstream live instead. market is required (there is no default storefront) and accepts 25 country storefronts — see zalando-markets for the full current list with domains. department optionally restricts the response to one of women, men, or kids; omitting it returns all three. Scope note: only the top-level nav tabs (e.g. Clothing, Shoes, Sports) are returned, not each tab's own hover-revealed mega-menu of sub-categories — that panel is not present in the page's initial HTML and cannot be reached without executing JavaScript, which this endpoint's transport does not do.
+
 ### `zalando_category`
 
-Browse a Zalando category or brand. Browses a Zalando category or brand listing by URL slug (e.g. shoes, womens-dresses, on-running) and returns the same normalized result cards as zalando-search, plus the category's upstream total_count. Category slugs are market-specific (each storefront uses its own local-language slug, e.g. "shoes" on de/gb, "chaussures" on fr, "scarpe" on it) — take them from that market's own site navigation or a product's url field. market is required (there is no default storefront) and accepts 25 country storefronts — see zalando-markets for the full current list with domains.
+Browse a Zalando category or brand. Browses a Zalando category or brand listing by URL slug (e.g. shoes, womens-dresses, on-running) and returns the same normalized result cards as zalando-search, plus the category's upstream total_count. Category slugs are market-specific (each storefront uses its own local-language slug, e.g. "shoes" on de/gb, "chaussures" on fr, "scarpe" on it) — use zalando-categories to discover a market's live top-level slugs, or take one from a product's url field. market is required (there is no default storefront) and accepts 25 country storefronts — see zalando-markets for the full current list with domains.
 
 ### `zalando_markets`
 
@@ -7680,6 +9068,10 @@ Get Zillow property. Returns normalized Zillow public property details using Zil
 
 Search Zillow listings. Returns normalized Zillow public listing search results. Callers must pass complete map bounds from autocomplete when available, or a region id fallback.
 
+### `zomato_cities`
+
+List Zomato's curated directory of major cities. Returns Zomato's own curated directory of major Indian cities -- the discovery source for the city value used by zomato-search, zomato-restaurant, zomato-restaurant-menu, zomato-collections, and zomato-collection. This is Zomato's own "popular locations" directory, not an exhaustive list of every city Zomato serves -- some smaller markets resolve to a real Zomato city page without appearing here. A city slug from a caller's own prior knowledge (a restaurant URL's first path segment) can still be valid even if this endpoint does not return it. Credential-free.
+
 ### `zomato_collection`
 
 Get one Zomato curated collection's restaurant list. Returns one Zomato curated collection's restaurant list (name, cuisines, locality, rating, and headline review count where Zomato's own response includes them). Reads the same underlying page-render source as /zomato/restaurant and /zomato/restaurant/menu, pointed at the collection's own page instead of a restaurant's.
@@ -7702,7 +9094,7 @@ Search Zomato restaurants in a city. Returns restaurants in a Zomato city, optio
 
 <!-- END MCP.SO TOOLS -->
 
-## What you can call (1873 tools / 12 categories)
+## What you can call (2221 tools / 12 categories)
 
 See [`tools.json`](./tools.json) or your MCP client UI for exact schemas. Below is a overview by category:
 
@@ -7723,7 +9115,7 @@ See [`tools.json`](./tools.json) or your MCP client UI for exact schemas. Below 
 
 ## Why Crawlora MCP?
 
-- **One key, 1873 tools** — search, commerce, social, gaming, finance, and more behind a single MCP endpoint.
+- **One key, 2221 tools** — search, commerce, social, gaming, finance, and more behind a single MCP endpoint.
 
 A good alternative to stitching together SerpApi, Firecrawl, ScraperAPI, or ScrapingBee.
 
