@@ -62,11 +62,11 @@ account-gated, lack a stable public listing endpoint, or are currently paused:
 
 1. [MCP Servers.org](https://mcpservers.org/servers/crawlora-net-mcp): an
    update request has been submitted. Recheck the listing after the maintainer
-   refreshes it and confirm it shows the current `1,873` tools / `215` platform
+   refreshes it and confirm it shows the current `3,093` tools / `420` platform
    groups.
 2. [GoodFirms](https://www.goodfirms.co/software/crawlora): the claimed page
    was still showing `549` hosted MCP tools. Sign in to the vendor account and
-   update the profile to the current `1,873` tools / `215` platform groups.
+   update the profile to the current `3,093` tools / `420` platform groups.
 3. [StackShare search](https://stackshare.io/?q=crawlora): no Crawlora listing
    was found. Creating a new listing is a separate account-authorized action,
    not a refresh of an existing page.
