@@ -7,7 +7,7 @@
 [![crawlora-mcp MCP server](https://glama.ai/mcp/servers/Crawlora-org/crawlora-mcp/badges/score.svg)](https://glama.ai/mcp/servers/Crawlora-org/crawlora-mcp)
 
 **Crawlora MCP** is a **hosted** Model Context Protocol server that gives AI clients and
-agents **3094 structured public‑web‑data tools** across 420 platform groups — search, maps,
+agents **3099 structured public‑web‑data tools** across 420 platform groups — search, maps,
 e‑commerce, social, finance, travel, app stores, media, and reviews — each returning clean,
 normalized **JSON** instead of HTML to parse.
 
@@ -155,7 +155,7 @@ Any client that speaks **Streamable HTTP** can use the generic config in
 
 ## Run it locally (open‑source server)
 
-This repo also ships a small **stdio** MCP server (`index.mjs`) that exposes the same **3094
+This repo also ships a small **stdio** MCP server (`index.mjs`) that exposes the same **3099
 tools**, each wrapping the Crawlora REST API (`https://api.crawlora.net/api/v1`) with your
 `CRAWLORA_API_KEY`. Useful if you'd rather run the server yourself than use the hosted endpoint.
 
@@ -8924,13 +8924,25 @@ List Rothy's sitemaps. Returns child sitemap URLs from Rothy's's (https://www.ro
 
 Get Rothy's store metadata. Returns normalized storefront metadata for Rothy's (https://www.rothys.com), sourced from credential-free storefront JSON. This endpoint is a brand-pinned wrapper around the generic Shopify store family: the storefront URL is fixed server-side, so no 'url' parameter is accepted. If the vanity domain blocks '/products.json', the service may fall back to a public '*.myshopify.com' domain discovered from the storefront page, or to the storefront's own embedded page data for storefronts that expose neither.
 
+### `rottentomatoes_browse_filters`
+
+Rotten Tomatoes browse filter discovery. Returns every filter and accepted value exposed by the selected live Rotten Tomatoes browse page. Call this before building filtered movie or TV browse requests; values differ by list and update with the site's menus.
+
 ### `rottentomatoes_browse_movies`
 
-Rotten Tomatoes movie discovery rows. Returns normalized movie rows from Rotten Tomatoes public browse pages using credential-free JSON-LD ItemList data. Supported 'list' values are 'movies_in_theaters', 'movies_at_home', and 'movies_coming_soon'. Supported 'sort' values are 'popular', 'newest', and 'top_box_office'; 'top_box_office' is only valid with 'movies_in_theaters'.
+Rotten Tomatoes movie discovery rows. Returns normalized movie rows from Rotten Tomatoes' public browse JSON route. Use '/rottentomatoes/browse/filters' to discover current values for each list. Filters accept comma-separated values; pagination uses the opaque 'after' cursor from the previous response.
 
 ### `rottentomatoes_browse_tv`
 
-Rotten Tomatoes TV discovery rows. Returns normalized TV series rows from Rotten Tomatoes public browse pages using credential-free JSON-LD ItemList data. Supported 'list' value is 'tv_series_browse'. Supported 'sort' values are 'popular' and 'newest'.
+Rotten Tomatoes TV discovery rows. Returns normalized TV series rows from Rotten Tomatoes' public browse JSON route. Use '/rottentomatoes/browse/filters?list=tv_series_browse' to discover current filters; pagination uses the opaque 'after' cursor from the previous response.
+
+### `rottentomatoes_critics_authors`
+
+Rotten Tomatoes critic directory. Returns current or inactive critics from Rotten Tomatoes' public author directory. Browse one letter or search by name; use 'next_cursor' as 'after' or 'previous_cursor' as 'before', as indicated by the corresponding page flag. The letter values come from the live directory controls.
+
+### `rottentomatoes_editorial_search`
+
+Rotten Tomatoes editorial search. Searches public Rotten Tomatoes editorial content, including articles and guides. Results come from its anonymous WordPress REST search endpoint and include content subtype plus total-page metadata.
 
 ### `rottentomatoes_episode`
 
@@ -8959,6 +8971,14 @@ Rotten Tomatoes season detail. Returns normalized Rotten Tomatoes TV season meta
 ### `rottentomatoes_series`
 
 Rotten Tomatoes series detail. Returns normalized Rotten Tomatoes TV series metadata and scorecard data from a credential-free public series page. Pass exactly one of 'path' or 'url'.
+
+### `rottentomatoes_sitemap_urls`
+
+Rotten Tomatoes sitemap URL page. Returns a page of URLs from one child sitemap. Discover valid 'name' values with 'rottentomatoes-sitemaps'; use offset/limit to page through the complete sitemap.
+
+### `rottentomatoes_sitemaps`
+
+Rotten Tomatoes sitemap discovery. Returns the live sitemap index and every named child sitemap, including movie, TV series, season, episode, person, critic, publication, browse-list, and static route inventories.
 
 ### `rover_sitter_profile`
 
@@ -12586,7 +12606,7 @@ Search Zomato restaurants in a city. Returns restaurants in a Zomato city, optio
 
 <!-- END MCP.SO TOOLS -->
 
-## What you can call (3094 tools / 12 categories)
+## What you can call (3099 tools / 12 categories)
 
 See [`tools.json`](./tools.json) or your MCP client UI for exact schemas. Below is a overview by category:
 
@@ -12607,7 +12627,7 @@ See [`tools.json`](./tools.json) or your MCP client UI for exact schemas. Below 
 
 ## Why Crawlora MCP?
 
-- **One key, 3094 tools** — search, commerce, social, gaming, finance, and more behind a single MCP endpoint.
+- **One key, 3099 tools** — search, commerce, social, gaming, finance, and more behind a single MCP endpoint.
 
 A good alternative to stitching together SerpApi, Firecrawl, ScraperAPI, or ScrapingBee.
 
