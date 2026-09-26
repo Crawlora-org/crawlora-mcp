@@ -90,21 +90,27 @@ jobs:
             -private-key "$MCP_PRIVATE_KEY"
           "$RUNNER_TEMP/mcp-publisher" validate
           package_version=$(node -p "require('./package.json').version")
-          latest_version=$(curl -fsSL --retry 3 \
+          registry_versions=$(curl -fsSL --retry 3 \
             'https://registry.modelcontextprotocol.io/v0/servers?search=net.crawlora%2Fcrawlora-mcp' \
             | node --input-type=module -e '
               let input = "";
               process.stdin.on("data", (chunk) => input += chunk);
               process.stdin.on("end", () => {
                 const payload = JSON.parse(input);
-                const latest = (payload.servers ?? []).find((entry) =>
-                  entry._meta?.["io.modelcontextprotocol.registry/official"]?.isLatest,
-                );
-                process.stdout.write(latest?.server?.version ?? "");
+                process.stdout.write(JSON.stringify((payload.servers ?? [])
+                  .map((entry) => entry.server?.version)
+                  .filter(Boolean)));
               });
             ')
-          if [ "$latest_version" = "$package_version" ]; then
-            echo "Official MCP Registry already points to $package_version; verifying instead of republishing"
+          if printf '%s' "$registry_versions" | PACKAGE_VERSION="$package_version" node -e '
+            let input = "";
+            process.stdin.on("data", (chunk) => input += chunk);
+            process.stdin.on("end", () => {
+              const versions = JSON.parse(input);
+              process.stdout.write(versions.includes(process.env.PACKAGE_VERSION) ? "yes" : "no");
+            });
+          ' | grep -q '^yes$'; then
+            echo "Official MCP Registry already contains $package_version; verifying instead of republishing"
           else
             "$RUNNER_TEMP/mcp-publisher" publish
           fi
