@@ -44,6 +44,10 @@ export const DIRECTORIES = [
   {
     name: "Smithery",
     url: "https://smithery.ai/servers/crawlora/crawlora",
+    // Smithery scans require a maintainer-provided API key and releases are
+    // refreshed through its signed-in publisher UI. Report stale snapshots,
+    // but do not fail package publication or the scheduled drift monitor.
+    blocking: false,
     check: (body, expected) => {
       const marker = `${expected.toolCount} structured web-data tools across ${expected.groupCount} platform groups`;
       if (!body.includes(marker)) {

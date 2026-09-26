@@ -1,8 +1,11 @@
 # Crawlora MCP release checklist
 
-The GitHub release workflow is the source of truth for publication. A release
-is complete only when the automated job is green and the manual directory
-surfaces below show the same version and catalog counts.
+The GitHub release workflow is the source of truth for npm and official MCP
+Registry publication. Its automated job blocks on those authoritative
+publication checks; account-managed and bot-protected directories remain visible
+as warnings. The cross-directory sync is complete only after the manual
+surfaces below show the current version and catalog counts, or have a recorded
+current blocker and next action.
 
 ## Automated gates
 
@@ -16,9 +19,11 @@ surfaces below show the same version and catalog counts.
 - The official MCP Registry is published with the DNS-authenticated
   `MCP_PRIVATE_KEY` secret and verified by its `isLatest` entry.
 - `node scripts/verify-published.mjs` checks npm, the official registry,
-  Glama, Smithery, and MCP.so. Registry and metadata failures block the job;
-  account-managed or bot-protected public listings are reported as `WARN` and
-  written to the GitHub Actions summary until they can be refreshed manually.
+  Glama, Smithery, and MCP.so. npm and official-registry publication failures
+  block the job; account-managed or bot-protected public listings are reported
+  as `WARN` and written to the GitHub Actions summary until they can be
+  refreshed manually. Smithery's private scan/API-key requirement makes its
+  public snapshot advisory in CI; a stale listing still requires manual refresh.
 - The same verification summary lists the additional directory surfaces below
   with an explicit status, so account-gated, unlisted, or paused directories
   cannot disappear silently from the release process.
@@ -52,7 +57,9 @@ affected listing before rerunning the job:
    `## Tools` section is the source for the tool catalog. Use **Edit** and save
    the public description/overview with the current counts, then confirm the
    public page shows a non-empty Tools section (not “No tools detected”).
-4. Rerun **MCP directory drift** and confirm all four directory checks pass.
+4. Rerun **MCP directory drift**. Confirm the official registry passes, review
+   each directory warning, and refresh any account-managed listing before
+   reporting the directory sync complete.
 
 ## Additional directory surfaces
 
@@ -62,11 +69,11 @@ account-gated, lack a stable public listing endpoint, or are currently paused:
 
 1. [MCP Servers.org](https://mcpservers.org/servers/crawlora-net-mcp): an
    update request has been submitted. Recheck the listing after the maintainer
-   refreshes it and confirm it shows the current `3,093` tools / `420` platform
-   groups.
+   refreshes it and confirm it shows the current tool and platform-group counts
+   derived from `tools.json`.
 2. [GoodFirms](https://www.goodfirms.co/software/crawlora): the claimed page
    was still showing `549` hosted MCP tools. Sign in to the vendor account and
-   update the profile to the current `3,093` tools / `420` platform groups.
+   update the profile to the current counts derived from `tools.json`.
 3. [StackShare search](https://stackshare.io/?q=crawlora): no Crawlora listing
    was found. Creating a new listing is a separate account-authorized action,
    not a refresh of an existing page.
