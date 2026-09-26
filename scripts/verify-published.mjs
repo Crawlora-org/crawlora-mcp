@@ -67,7 +67,7 @@ async function verifyPublished() {
   const expected = expectedFacts({ packageJSON, serverJSON, tools });
   const checks = [];
 
-  checks.push({ name: "npm", detail: await verifyNpm(packageJSON) });
+  checks.push({ name: "npm", detail: await verifyNpm(packageJSON), ok: true, blocking: true });
 
   const directories = await verifyDirectories({ expected, fetchImpl: fetchDirectoryPage });
   for (const result of directories.results) {

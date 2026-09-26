@@ -104,6 +104,21 @@ test("reports non-blocking directory drift as a warning", async () => {
   assert.equal(results[0].blocking, false);
 });
 
+test("keeps account-managed Smithery drift visible without blocking CI", async () => {
+  const smithery = DIRECTORIES.find((directory) => directory.name === "Smithery");
+  assert.equal(smithery.blocking, false);
+  const { failures, warnings, results } = await verifyDirectories({
+    expected,
+    directories: [smithery],
+    fetchImpl: async () => new Response("Stale listing description", { status: 200 }),
+  });
+  assert.deepEqual(failures, []);
+  assert.deepEqual(warnings, [
+    "Smithery: page description does not contain 2 structured web-data tools across 2 platform groups",
+  ]);
+  assert.equal(results[0].blocking, false);
+});
+
 test("fails when MCP.so still shows an empty Tools section", () => {
   const mcpSo = DIRECTORIES.find((directory) => directory.name === "MCP.so");
   assert.throws(
