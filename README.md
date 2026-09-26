@@ -7,7 +7,7 @@
 [![crawlora-mcp MCP server](https://glama.ai/mcp/servers/Crawlora-org/crawlora-mcp/badges/score.svg)](https://glama.ai/mcp/servers/Crawlora-org/crawlora-mcp)
 
 **Crawlora MCP** is a **hosted** Model Context Protocol server that gives AI clients and
-agents **3093 structured public‑web‑data tools** across 420 platform groups — search, maps,
+agents **3094 structured public‑web‑data tools** across 420 platform groups — search, maps,
 e‑commerce, social, finance, travel, app stores, media, and reviews — each returning clean,
 normalized **JSON** instead of HTML to parse.
 
@@ -155,7 +155,7 @@ Any client that speaks **Streamable HTTP** can use the generic config in
 
 ## Run it locally (open‑source server)
 
-This repo also ships a small **stdio** MCP server (`index.mjs`) that exposes the same **3093
+This repo also ships a small **stdio** MCP server (`index.mjs`) that exposes the same **3094
 tools**, each wrapping the Crawlora REST API (`https://api.crawlora.net/api/v1`) with your
 `CRAWLORA_API_KEY`. Useful if you'd rather run the server yourself than use the hosted endpoint.
 
@@ -4314,7 +4314,7 @@ List GDELT Television 2.0 AI stations. Return GDELT's own current list of Televi
 
 ### `gdelt_tv_timeline`
 
-Airtime volume over time for US television news coverage. Return how much airtime a query's matching US television.
+Airtime volume over time for US television news coverage. Returns the amount of US television news airtime matching the supplied query over time, using GDELT Television 2.0 AI timeline-volume data. A station is required. Supports the same caption, transcript, concept, and visual match operators as gdelt-tv-search; coverage and processing-delay caveats are documented there.
 
 ### `gdelt_tv_visual_entities`
 
@@ -4598,7 +4598,7 @@ Google Finance company data. Returns normalized company information from Google 
 
 ### `google_finance_context`
 
-Google Finance context search. Returns normalized Google Finance context search results.
+Find Google Finance instruments by query. Searches Google Finance for instruments matching a company name or ticker query and returns normalized results with ticker, exchange, name, price, currency, and change data. Use a returned ticker with quote, company, chart, or news endpoints.
 
 ### `google_finance_financials`
 
@@ -6370,7 +6370,11 @@ LiveScore news categories. Returns all current public news routes from LiveScore
 
 ### `livescore_news_feed`
 
-LiveScore global RSS news feed. Returns latest public news item metadata from LiveScore's global RSS feed. The source feed may include multiple sports and has no verified category filter.
+LiveScore global RSS news feed. Returns latest public news items from LiveScore's global RSS feed. The source feed may include multiple sports and has no verified category filter. Set include_content=true to include each RSS item's full content:encoded body.
+
+### `livescore_news_publishers`
+
+LiveScore news publisher directory. Returns the current public publisher directory linked from LiveScore News, including publisher names, logos, websites, contact links, and telephone numbers.
 
 ### `livescore_player`
 
@@ -12582,7 +12586,7 @@ Search Zomato restaurants in a city. Returns restaurants in a Zomato city, optio
 
 <!-- END MCP.SO TOOLS -->
 
-## What you can call (3093 tools / 12 categories)
+## What you can call (3094 tools / 12 categories)
 
 See [`tools.json`](./tools.json) or your MCP client UI for exact schemas. Below is a overview by category:
 
@@ -12603,7 +12607,7 @@ See [`tools.json`](./tools.json) or your MCP client UI for exact schemas. Below 
 
 ## Why Crawlora MCP?
 
-- **One key, 3093 tools** — search, commerce, social, gaming, finance, and more behind a single MCP endpoint.
+- **One key, 3094 tools** — search, commerce, social, gaming, finance, and more behind a single MCP endpoint.
 
 A good alternative to stitching together SerpApi, Firecrawl, ScraperAPI, or ScrapingBee.
 
