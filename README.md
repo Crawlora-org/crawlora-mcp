@@ -208,6 +208,46 @@ Every account includes **2,000 free credits / month** with no credit card requir
 The complete tool catalog is generated from [`tools.json`](./tools.json) so MCP directories can index it.
 
 <!-- BEGIN MCP.SO TOOLS: generated from tools.json; do not edit manually -->
+### `abcau_article`
+
+Get ABC News Australia article content. Returns public ABC News Australia article metadata and body paragraphs from a canonical article URL.
+
+### `abcau_author`
+
+Get an ABC News Australia author profile. Returns an ABC News Australia author's byline metadata, biography, and recent articles from a canonical author URL.
+
+### `abcau_headlines`
+
+Get ABC News Australia section headlines. Returns fresh headlines from one public ABC News Australia section.
+
+### `abcau_news`
+
+Get ABC News Australia top stories. Returns fresh ABC News Australia top stories from its public RSS feed.
+
+### `abcau_sections`
+
+Get ABC News Australia sections. Returns the public ABC News Australia section inventory used by the headlines endpoint.
+
+### `abcnews_article`
+
+Get ABC News article content. Returns public ABC News article metadata and body paragraphs from a canonical article URL. Accepts both the "story?id=..." and "wireStory/..." canonical URL shapes.
+
+### `abcnews_author`
+
+Get an ABC News author profile. Returns an ABC News author's profile: name, job title/biography when the page carries one, and social links, from a canonical author URL. Does NOT include a list of the author's recent articles -- unlike this repo's other news-author endpoints, ABC News only exposes that list through an internal endpoint disallowed for every crawler in abcnews.com's robots.txt (a generic "Disallow: /proxy/*" rule, not limited to AI-training bots), so it is out of scope for this endpoint.
+
+### `abcnews_headlines`
+
+Get ABC News section headlines. Returns fresh headlines from one ABC News section's public hub page.
+
+### `abcnews_news`
+
+Get ABC News top stories. Returns fresh ABC News top stories from its public news sitemap feed.
+
+### `abcnews_sections`
+
+Get ABC News sections. Returns the ABC News section inventory: the 8 core news sections accepted by abcnews-headlines.
+
 ### `accor_amenities`
 
 Accor amenity reference catalog. Returns the anonymous public Accor amenity catalog with stable amenity codes, labels, categories, and display ordering. It is reference data for interpreting hotel search facets; booking, rates, rooms, reviews, and account data are excluded.
@@ -331,6 +371,10 @@ Search Airbnb stays. Returns normalized Airbnb public web search results.
 ### `aljazeera_article`
 
 Get Al Jazeera article content. Returns a public Al Jazeera article's metadata and body paragraphs from a canonical article URL.
+
+### `aljazeera_author`
+
+Get an Al Jazeera author's profile and recent articles. Returns one Al Jazeera author's public profile (name, job title, bio when available) and one page of their recent articles, identified by an author slug or a canonical author URL.
 
 ### `aljazeera_categories`
 
@@ -456,6 +500,22 @@ Search Amazon products. Returns normalized Amazon search result cards for 'amazo
 
 Retrieve Amazon search suggestions. Returns typeahead keyword suggestions from Amazon's public suggestion API for 'amazon.com'.
 
+### `androidauthority_article`
+
+Get Android Authority article content. Returns public Android Authority article metadata and body paragraphs from a canonical article URL.
+
+### `androidauthority_headlines`
+
+Get Android Authority section headlines. Returns fresh headlines from one public Android Authority section page.
+
+### `androidauthority_news`
+
+Get Android Authority top stories. Returns the latest Android Authority stories from the public site-wide feed.
+
+### `androidauthority_sections`
+
+Get Android Authority sections. Returns the public Android Authority section inventory accepted by the headlines endpoint.
+
 ### `anime_airing_schedule`
 
 Upcoming anime airing schedule. Returns upcoming anime episode broadcasts (episode number, air time, countdown, and the normalized title), soonest first, paginated. Credential-free public AniList data.
@@ -507,6 +567,30 @@ Submit an APK for static teardown analysis. Uploads a single .apk/.xapk file (up
 ### `apk_teardown_timeline`
 
 Build a version timeline across 2+ apk-teardown jobs. Compares 2+ completed jobs the caller asserts are versions of the same app and returns the consecutive pairwise diff for each version transition, sorted by version code.
+
+### `apnews_article`
+
+Get AP News article content. Returns public AP News article metadata and body paragraphs. The service uses the configured production browser fleet when ordinary HTTP transport encounters AP's edge challenge; it does not bypass authentication or access controls. Billing is 2 credits for an HTTP-profile success and 10 credits when browser rendering is required.
+
+### `apnews_author`
+
+Get an AP News author profile. Returns an AP News author's byline metadata, biography, and recent articles from a canonical author URL. The service uses the configured production browser fleet when ordinary HTTP transport encounters AP's edge challenge; it does not bypass authentication or access controls. Billing is 1 credit for an HTTP-profile success and 5 credits when browser rendering is required.
+
+### `apnews_fact_check`
+
+Get AP News fact checks. Returns current headlines from AP News' public Fact Check page. The service uses the configured production browser fleet when ordinary HTTP transport encounters AP's edge challenge; it does not bypass authentication or access controls. Billing is 1 credit for an HTTP-profile success and 5 credits when browser rendering is required.
+
+### `apnews_headlines`
+
+Get AP News section headlines. Returns AP News headlines from a public editorial hub. The service uses the configured production browser fleet when ordinary HTTP transport encounters AP's edge challenge; it does not bypass authentication or access controls. Billing is 1 credit for an HTTP-profile success and 5 credits when browser rendering is required.
+
+### `apnews_news`
+
+Get AP News top stories. Returns AP News top stories from the public AP News Top News hub. The service uses the configured production browser fleet when ordinary HTTP transport encounters AP's edge challenge; it does not bypass authentication or access controls. Billing is 1 credit for an HTTP-profile success and 5 credits when browser rendering is required.
+
+### `apnews_sections`
+
+Get AP News sections. Returns the AP News editorial hub inventory used by apnews-headlines.
 
 ### `apple_books_audiobook`
 
@@ -748,6 +832,26 @@ Find Arby's restaurants near a coordinate. Returns Arby's restaurants within a r
 
 List one Arby's menu category's items with full nutrition and price. Returns the items in one Arby's menu category, each with its stable product code, name, description, image, tags, availability, a full per-serving nutrition panel (calories, total and saturated fat, trans fat, cholesterol, sodium, carbohydrate, fiber, sugar, protein and serving weight), and a price when store_id resolves to a priced catalog. Category slugs come from GET /arbys/categories. store_id (optional, default 0) is Arby's own priceless national reference catalog; pass a store_id you already know to get that store's pricing instead -- there is no location-lookup endpoint in this family, so store_id is a passthrough value, not something this API can look up for you. A price of exactly 0 on an item is a genuine free add-on, distinct from the default catalog's complete absence of pricing.
 
+### `arstechnica_article`
+
+Get Ars Technica article content. Returns public Ars Technica article metadata and body paragraphs from a canonical article URL. The service uses the configured production browser fleet when ordinary HTTP transport encounters Ars Technica's bot-verification challenge; it does not bypass authentication or access controls.
+
+### `arstechnica_author`
+
+Get an Ars Technica contributor profile. Returns an Ars Technica contributor's byline metadata (name, job title, headshot, contact email), biography, and recent articles from a canonical author URL. The service uses the configured production browser fleet when ordinary HTTP transport encounters Ars Technica's bot-verification challenge; it does not bypass authentication or access controls.
+
+### `arstechnica_headlines`
+
+Get Ars Technica section headlines. Returns fresh headlines from one Ars Technica section's public RSS feed.
+
+### `arstechnica_news`
+
+Get Ars Technica top stories. Returns fresh Ars Technica stories from its public RSS feed.
+
+### `arstechnica_sections`
+
+Get Ars Technica sections. Returns the Ars Technica section inventory: the site's own current navigation and RSS-feed-directory sections (AI, Gadgets, Science, Security, Space, and others), each linking to its public RSS feed.
+
 ### `audible_author_charts`
 
 Get Audible's top-author chart. Returns one page of Audible's public ranked author chart. This is a people-shaped HTML surface and exposes only rank, author identity, image metadata when available, and a canonical author URI; author detail remains outside the credential-free public surface.
@@ -844,6 +948,22 @@ List Balenciaga store-locator countries. Returns every country code accepted by 
 
 List Balenciaga stores. Returns Balenciaga's public physical-store directory for one country, including addresses, coordinates, phone numbers, opening hours, and store-service flags. Use balenciaga-store-countries to discover the complete accepted country enum.
 
+### `barrons_article`
+
+Get a Barron's article's content. Returns one Barron's article's title, byline, section, publication time, word count, and body paragraphs, recovered from a public web-archive snapshot of the article. Barron's serves only the first paragraphs of an article at the origin, so an article is returned only when a full-text archive snapshot exists; an article without one returns 404.
+
+### `barrons_headlines`
+
+Get the latest stories in a Barron's topic. Returns one page of a Barron's topic's headlines: each story's title, canonical URL, summary, publication time, authors, and lead image. Section must be a slug returned by /barrons/topics.
+
+### `barrons_news`
+
+Get the latest Barron's stories. Returns Barron's current cross-section news feed: the newest stories across every section, each with its title, canonical URL, and publication time.
+
+### `barrons_topics`
+
+List Barron's topics. Lists every Barron's editorial topic accepted by /barrons/headlines' section parameter, with each topic's slug, display name, and landing-page URL.
+
 ### `bbb_business`
 
 Get a Better Business Bureau business profile. Returns a normalized bbb.org business profile: BBB rating letter grade and reasons, accreditation status and since-date, years in business, BBB file/incorporation dates, entity type, contact info, business categories, social media, and a short latest-reviews preview. Credential-free public Better Business Bureau data.
@@ -883,6 +1003,10 @@ Search Better Business Bureau businesses. Searches bbb.org for businesses by nam
 ### `bbc_article`
 
 Get BBC News article content. Returns a BBC News article's public metadata and body paragraphs from a canonical article URL. Live pages are not supported.
+
+### `bbc_author`
+
+Get a BBC News correspondent's profile. Returns a BBC News correspondent's public profile: name, short bio, and their recent articles.
 
 ### `bbc_headlines`
 
@@ -984,6 +1108,26 @@ Get Bilibili documentary, movie, TV, or variety home sections. Returns stable se
 
 Get a Bilibili weekly selected-video issue. Returns one issue from Bilibili's weekly selected-video archive. Omit number to resolve and return the latest issue.
 
+### `billboard_article`
+
+Get Billboard article content. Returns public Billboard article metadata and body paragraphs from a canonical article URL. Billboard Pro articles are returned in full when the public page serves the full body; a teaser-only page is flagged paywalled.
+
+### `billboard_author`
+
+Get a Billboard author profile. Returns a Billboard author's byline metadata, biography, and recent articles (sourced from the author's own public RSS feed) from a canonical author URL.
+
+### `billboard_headlines`
+
+Get Billboard section headlines. Returns fresh headlines from one public Billboard section.
+
+### `billboard_news`
+
+Get Billboard top stories. Returns fresh Billboard top stories from its public RSS feed.
+
+### `billboard_sections`
+
+Get Billboard sections. Returns the public Billboard section inventory: every music, business, culture, media and Spanish-language category plus Billboard Pro, each linking to its public RSS feed.
+
 ### `bing_images`
 
 Search Bing image results. Returns normalized Bing image search results for a query string. Locale defaults to country=us and lang=en-us. Results are fetched from public Bing image HTML/async pages and return 503 when Bing serves a challenge page or unusable HTML.
@@ -1004,13 +1148,69 @@ Suggest Bing search queries. Returns Bing autosuggest query completions for a qu
 
 Search Bing video results. Returns normalized Bing video search results for a query string. Locale defaults to country=us and lang=en-us. Results are fetched from public Bing video HTML/async pages and return 503 when Bing serves a challenge page or unusable HTML.
 
+### `birminghammail_article`
+
+Get Birmingham Mail article content. Returns public Birmingham Mail article metadata (including the section) and body paragraphs from a canonical article URL. Photo-gallery URLs are rejected.
+
+### `birminghammail_author`
+
+Get a Birmingham Mail author profile. Returns one Birmingham Mail author's public profile: name, job title, bio, email, X/Twitter handle, and one page of their recent articles.
+
+### `birminghammail_headlines`
+
+Get Birmingham Mail section headlines. Returns fresh headlines from one public Birmingham Mail section. Photo galleries are omitted because they have no readable article body.
+
+### `birminghammail_news`
+
+Get Birmingham Mail top stories. Returns fresh Birmingham Mail top stories from the public home RSS feed. Photo galleries are omitted because they have no readable article body.
+
+### `birminghammail_sections`
+
+Get Birmingham Mail sections. Returns the public Birmingham Mail editorial section inventory used by birminghammail-headlines.
+
+### `bleacherreport_article`
+
+Get Bleacher Report article content. Returns public Bleacher Report article metadata and body paragraphs from a canonical article URL. Bleacher Report serves full articles to anonymous readers, so no article is paywalled.
+
+### `bleacherreport_author`
+
+Get a Bleacher Report writer profile. Returns one Bleacher Report writer's public profile: name, role, biography, photo, and the latest stories listed on the page.
+
+### `bleacherreport_headlines`
+
+Get Bleacher Report section headlines. Returns current Bleacher Report headlines from one public league or league sub-hub page.
+
+### `bleacherreport_news`
+
+Get Bleacher Report top stories. Returns fresh Bleacher Report top sports stories from the public news sitemap.
+
+### `bleacherreport_sections`
+
+Get Bleacher Report sections. Returns the public Bleacher Report league and league sub-hub sections accepted by the headlines endpoint.
+
 ### `bloomberg_article`
 
 Get a Bloomberg article's content. Returns one public Bloomberg article's metadata and body paragraphs from a canonical article URL. Subscriber-only articles are not available.
 
+### `bloomberg_author`
+
+Get a Bloomberg author's profile. Returns one public Bloomberg author's profile (name, title, bio) and their recent-content feed from a canonical author URL.
+
+### `bloomberg_categories`
+
+List Bloomberg editorial categories. Lists Bloomberg's public editorial navigation categories discovered from its embedded navigation state. Each returned section slug is accepted by /bloomberg/headlines; product, account, newsletter, and sponsored-content links are excluded.
+
+### `bloomberg_headlines`
+
+Get the latest stories in a Bloomberg section. Returns Bloomberg story cards from one editorial section. Section must be a slug returned by /bloomberg/categories.
+
 ### `bloomberg_news`
 
 Get the latest Bloomberg stories. Returns Bloomberg's current news feed: the newest stories across all sections, each with its title, canonical URL, and publication time.
+
+### `bloomberg_news_sitemaps`
+
+List Bloomberg monthly news sitemaps. Returns Bloomberg's public monthly news-sitemap index so callers can discover historical news feeds beyond the rolling latest feed.
 
 ### `bluesky_author_feed`
 
@@ -1224,6 +1424,26 @@ Suggest Brave search queries. Returns Brave autosuggest query completions for a 
 
 Search Brave video results. Returns normalized Brave video search results for a query string. Locale defaults to country=us and lang=en-us. Results are fetched from public Brave Search video HTML and return 503 when Brave serves a challenge page or unusable HTML.
 
+### `breitbart_article`
+
+Get Breitbart article content. Returns public Breitbart article metadata and body paragraphs from a canonical article URL.
+
+### `breitbart_author`
+
+Get a Breitbart author profile. Returns one Breitbart author/contributor's public profile: name, a short bio/role line when the page carries one, and their recent articles.
+
+### `breitbart_headlines`
+
+Get Breitbart section headlines. Returns fresh headlines from one public Breitbart section hub page.
+
+### `breitbart_news`
+
+Get Breitbart top stories. Returns fresh Breitbart top stories from its public RSS feed.
+
+### `breitbart_sections`
+
+Get Breitbart sections. Returns the live-verified public Breitbart editorial section inventory used by the headlines endpoint.
+
 ### `brooklinen_collection_products`
 
 List Brooklinen collection products. Returns normalized products from one Brooklinen (https://www.brooklinen.com) collection. The storefront URL is fixed server-side; 'handle' is the collection's URL slug.
@@ -1308,6 +1528,46 @@ Get one Burger King restaurant's full priced menu. Returns one restaurant's full
 
 Get one Burger King item, combo, or picker's full detail and customization tree. Returns one menu entry's full detail (name, description, price, image, nutrition, allergens) plus its customization tree, when it has one -- a combo's courses and their swappable entree/side/drink choices, a picker's size/variant choices, or a customizable item's ingredient toggle groups (e.g. "Bacon": no/regular/extra) and their price deltas. Options recurses through the full upstream structure, so a combo's entree choice carries its own ingredient toggles too, not just the combo's own top-level courses. A plain, non-customizable item returns an empty options list.
 
+### `businessinsider_article`
+
+Get Business Insider article content. Returns public Business Insider article metadata and body paragraphs from a canonical article URL.
+
+### `businessinsider_author`
+
+Get a Business Insider author profile. Returns one Business Insider author's public profile: name, job title, bio, social accounts, and their recent articles.
+
+### `businessinsider_headlines`
+
+Get Business Insider section headlines. Returns fresh headlines from one public Business Insider section.
+
+### `businessinsider_news`
+
+Get Business Insider top stories. Returns fresh Business Insider stories from the public RSS feed.
+
+### `businessinsider_sections`
+
+Get Business Insider sections. Returns the public Business Insider editorial section inventory.
+
+### `businessstandard_article`
+
+Get Business Standard article content. Returns public Business Standard article metadata and body paragraphs from a canonical article URL. A story Business Standard marks premium (subscriber-only) returns a permission error instead of a body.
+
+### `businessstandard_author`
+
+Get a Business Standard author profile. Returns a Business Standard author's byline metadata, biography, social links, and recent stories from a canonical author profile URL.
+
+### `businessstandard_headlines`
+
+Get Business Standard section headlines. Returns fresh headlines from one public Business Standard section.
+
+### `businessstandard_news`
+
+Get Business Standard top stories. Returns fresh Business Standard (business-standard.com) top stories from its public home-page feed.
+
+### `businessstandard_sections`
+
+Get Business Standard sections. Returns the public Business Standard section inventory used by the headlines endpoint.
+
 ### `capterra_product`
 
 Get a Capterra product. Returns a normalized Capterra product profile: name, description, category, and aggregate rating. Credential-free public Capterra data, rendered from the product page through proxied browser renderers.
@@ -1355,6 +1615,86 @@ Search Cars.com vehicle listings. Searches Cars.com for new and used car listing
 ### `carsdotcom_vehicle`
 
 Get Cars.com vehicle listing detail. Returns a normalized Cars.com vehicle listing: full vehicle spec (make, model, trim, mileage, colors, engine, transmission, fuel economy, a key-specs table), Cars.com's own deal-fairness rating and predicted fair price, categorized equipment features, an AutoCheck-derived vehicle history report, Cars.com's own price-change history, the seller's notes, dealer detail (name, rating, address, website, phones, hours) or private-seller detail for a for-sale-by-owner listing, and certified-pre-owned/manufacturer-program detail when applicable. Credential-free public data sourced directly from Cars.com's own public GraphQL API.
+
+### `cbc_article`
+
+Get CBC News article content. Returns public CBC News or CBC Sports story metadata and body paragraphs from a canonical story URL. Live-updates pages are not supported.
+
+### `cbc_author`
+
+Get a CBC journalist profile. Returns one CBC journalist's public profile: name, job title, biography, photo, profile links, and their most recent articles.
+
+### `cbc_headlines`
+
+Get CBC News section headlines. Returns fresh CBC News or CBC Sports headlines from one public section RSS feed. Video, radio, and live-updates links are omitted.
+
+### `cbc_news`
+
+Get CBC News top stories. Returns fresh CBC News top stories from CBC's public Top Stories RSS feed. Live-updates pages are omitted.
+
+### `cbc_sections`
+
+Get CBC News sections. Returns the CBC News sections accepted by the headlines endpoint: national desks, regional newsrooms, and CBC Sports feeds.
+
+### `cbr_article`
+
+Get CBR article content. Returns public CBR article metadata and body paragraphs from a canonical article URL.
+
+### `cbr_author`
+
+Get a CBR author profile. Returns a CBR author's byline metadata, biography, social links, and recent articles from a canonical author URL.
+
+### `cbr_headlines`
+
+Get CBR section headlines. Returns fresh headlines from one public CBR RSS section. Video pages, if a section ever returns them, have type video and are not readable through the article endpoint.
+
+### `cbr_news`
+
+Get CBR top stories. Returns fresh CBR top stories from its public RSS feed.
+
+### `cbr_sections`
+
+Get CBR RSS sections. Returns the public CBR RSS section inventory used by the headlines endpoint.
+
+### `cbsnews_article`
+
+Get CBS News article content. Returns public CBS News article metadata and body paragraphs from a canonical article URL.
+
+### `cbsnews_author`
+
+Get a CBS News author profile. Returns one CBS News author's public team-page profile: name, biography, coverage topics, headshot (when the page has one), social links, and their recent articles.
+
+### `cbsnews_headlines`
+
+Get CBS News section headlines. Returns fresh headlines from one public CBS News RSS section.
+
+### `cbsnews_news`
+
+Get CBS News top stories. Returns fresh CBS News top stories from its public RSS feed.
+
+### `cbsnews_sections`
+
+Get CBS News sections. Returns the live-verified public CBS News RSS section inventory used by cbsnews-headlines.
+
+### `cbssports_article`
+
+Get CBS Sports article content. Returns public CBS Sports article metadata and body paragraphs from a canonical cbssports.com/<sport>/news/<slug> URL.
+
+### `cbssports_author`
+
+Get a CBS Sports writer profile. Returns one CBS Sports writer's public profile: name, title, headshot, bio, X/Twitter link, and their recent articles.
+
+### `cbssports_headlines`
+
+Get CBS Sports section headlines. Returns fresh headlines from one public CBS Sports per-sport RSS feed.
+
+### `cbssports_news`
+
+Get CBS Sports top stories. Returns fresh CBS Sports top stories from its public headlines RSS feed.
+
+### `cbssports_sections`
+
+Get CBS Sports sections. Returns the live-verified public CBS Sports per-sport RSS feed inventory used by cbssports-headlines.
 
 ### `chewy_brands`
 
@@ -1411,6 +1751,26 @@ Chewy search-box typeahead suggestions. Returns Chewy's own search-box typeahead
 ### `chewy_variants`
 
 List every size/flavor variant of a Chewy product. Returns the full roster of purchasable variants for the product a given item belongs to -- every size, flavor, or color Chewy sells it in -- with each variant's own part number, price, Autoship price, stock, images, and the defining option that distinguishes it (e.g. Size = Medium). id is the numeric id from any chewy.com PDP URL; passing any one variant's id returns that variant's whole family, and the variant you asked for is flagged with is_requested. This answers a question chewy_product cannot: chewy_product describes only the single variant it was given and names its parent, but never lists the siblings or their prices. Only the defining option is returned, not the full attribute table -- use chewy_item_attributes for that.
+
+### `chicagotribune_article`
+
+Get Chicago Tribune article content. Returns public Chicago Tribune article metadata and body paragraphs from a canonical article URL. For subscriber-only articles the response carries the free lead-in with paywalled set to true.
+
+### `chicagotribune_author`
+
+Get a Chicago Tribune author profile. Returns one Chicago Tribune author's public profile: name, job title when listed, bio, public email and X/Twitter handle, and their recent articles.
+
+### `chicagotribune_headlines`
+
+Get Chicago Tribune section headlines. Returns fresh headlines from one public Chicago Tribune section page.
+
+### `chicagotribune_news`
+
+Get Chicago Tribune top stories. Returns the current Chicago Tribune top stories from the public homepage.
+
+### `chicagotribune_sections`
+
+Get Chicago Tribune sections. Returns the public Chicago Tribune editorial section inventory.
 
 ### `chick_fil_a_content`
 
@@ -1556,9 +1916,69 @@ List Chrono24 models for a brand. Returns every model/collection Chrono24 lists 
 
 Search Chrono24 watch listings. Searches Chrono24's luxury-watch marketplace by free-text keyword, or browses one brand's (optionally narrowed to one model's) current listings, returning normalized result cards: title, price with currency, seller type, seller country, promotional badge, image, and the listing URL to pass to chrono24-listing. At least one of query or brand is required. Optional advanced-search filters (condition, used_or_new, case_material, dial_color, bracelet_material, movement_type, gender, watch_type, stock_info) narrow results further; each filter's accepted values are discoverable from chrono24-facets and echoed back in the response's filters field.
 
+### `cna_article`
+
+Get CNA article content. Returns public CNA article metadata and body paragraphs from a canonical article URL.
+
+### `cna_author`
+
+Get a CNA author profile. Returns one CNA correspondent's or contributor's public profile: name, job title, biography, contact email, and their recent bylined articles.
+
+### `cna_headlines`
+
+Get CNA section headlines. Returns fresh headlines from one public CNA section.
+
+### `cna_news`
+
+Get CNA top stories. Returns fresh CNA (Channel NewsAsia) top stories from its public RSS feed.
+
+### `cna_sections`
+
+Get CNA sections. Returns the public CNA editorial section inventory used by the headlines endpoint.
+
+### `cnbc_article`
+
+CNBC article content. Returns public CNBC article metadata and server-rendered body paragraphs. Provide a canonical dated cnbc.com article URL; account-gated content is not bypassed.
+
+### `cnbc_author`
+
+CNBC author profile. Returns one CNBC author's public bio page: name, job title, biography, social links, and their most recent articles. Provide either the author's slug (the last path segment of their cnbc.com bio page) or the full bio page URL.
+
+### `cnbc_categories`
+
+CNBC editorial sections. Lists the public CNBC editorial sections accepted by /cnbc/headlines, including market, investing, business, technology, and policy subsections, with each section's slug, display name, and landing-page URL.
+
+### `cnbc_headlines`
+
+CNBC section headlines. Returns current server-rendered CNBC headlines for one public editorial section, including title, article URL, and card metadata when available. Use /cnbc/categories to discover the supported section slugs.
+
+### `cnet_article`
+
+Get CNET article content. Returns public CNET article metadata and body paragraphs from a canonical article URL. CNET articles are freely readable; video-only pages and pages without an article body are reported as upstream errors rather than returned empty.
+
+### `cnet_author`
+
+Get a CNET author profile. Returns one CNET author's public profile: name, role, biography, areas of expertise, social links, and one page of their recent articles.
+
+### `cnet_headlines`
+
+Get CNET section headlines. Returns fresh CNET headlines from one public topic feed.
+
+### `cnet_news`
+
+Get CNET top stories. Returns fresh CNET top stories from the public news feed.
+
+### `cnet_sections`
+
+Get CNET sections. Returns the public CNET topic taxonomy accepted by the headlines endpoint.
+
 ### `cnn_article`
 
 CNN article content. Returns a CNN article's headline, description, author, publication and update times, section, image, and body paragraphs. Provide a canonical cnn.com article URL.
+
+### `cnn_author`
+
+CNN profile page. Returns one CNN profile's byline metadata (name and title), bio paragraphs, social accounts, and recent articles/videos. Provide either a profile slug or a canonical cnn.com/profiles/<slug> URL.
 
 ### `cnn_headlines`
 
@@ -1695,6 +2115,26 @@ List Cole Haan sitemaps. Returns child sitemap URLs from Cole Haan's (https://ww
 ### `colehaan_store`
 
 Get Cole Haan store metadata. Returns normalized storefront metadata for Cole Haan (https://www.colehaan.com), sourced from credential-free storefront JSON. This endpoint is a brand-pinned wrapper around the generic Shopify store family: the storefront URL is fixed server-side, so no 'url' parameter is accepted. If the vanity domain blocks '/products.json', the service may fall back to a public '*.myshopify.com' domain discovered from the storefront page, or to the storefront's own embedded page data for storefronts that expose neither.
+
+### `collider_article`
+
+Get Collider article content. Returns public Collider article metadata and body paragraphs from a canonical article URL.
+
+### `collider_author`
+
+Get a Collider author profile. Returns a Collider author's byline metadata, biography, social links, and recent articles from a canonical author URL.
+
+### `collider_headlines`
+
+Get Collider section headlines. Returns fresh headlines from one public Collider RSS section. Items from video categories have type video and are not readable through the article endpoint.
+
+### `collider_news`
+
+Get Collider top stories. Returns fresh Collider top stories from its public RSS feed.
+
+### `collider_sections`
+
+Get Collider RSS sections. Returns the public Collider RSS section inventory used by the headlines endpoint.
 
 ### `comc_categories`
 
@@ -1840,6 +2280,26 @@ Get matches at a Cricinfo venue. Returns upcoming fixtures and recent results li
 
 Get Cricinfo videos. Returns a bounded snapshot of Cricinfo's public video hub, including curated, trending, and genre-associated video metadata. Media files are not downloaded by the endpoint.
 
+### `ctvnews_article`
+
+Get CTV News article content. Returns public CTV News article metadata and body paragraphs from a canonical story URL (https://www.ctvnews.ca/<section>/article/<slug>/). Video, photo-gallery and live-stream pages are not article pages.
+
+### `ctvnews_author`
+
+Get a CTV News author profile. Returns a CTV News byline profile from a canonical author URL: name, role, biography, photo, public contact address, and recent stories.
+
+### `ctvnews_headlines`
+
+Get CTV News section headlines. Returns the current stories listed on one public CTV News section page, newest first, with headline, summary, byline, publication time and image.
+
+### `ctvnews_news`
+
+Get CTV News top stories. Returns the newest CTV News stories (about the last 24 hours, newest first) from its public news sitemap, each with headline, publication time and lead image.
+
+### `ctvnews_sections`
+
+Get CTV News sections. Returns the public CTV News section inventory (national topic sections and local newsroom sections) used by the headlines endpoint.
+
 ### `culvers_calendar`
 
 Get one Culver's restaurant's flavor-of-the-day and daily soup schedule. Returns the full published schedule for one Culver's restaurant: the flavor of the day for every upcoming calendar date, plus the soups served on each date. Culver's publishes roughly a two-month forward window, and the schedule is genuinely per-restaurant -- two restaurants on the same date routinely feature different soups. slug comes from GET /culvers/directory. GET /culvers/store returns only today's and tomorrow's flavor; use this endpoint for the whole calendar.
@@ -1895,6 +2355,126 @@ Search CVS OTC products by keyword. Performs a keyword search across CVS.com's n
 ### `cvs_store_locator`
 
 CVS store locator. Returns nearby CVS store locations for a ZIP code, a free-text address/city/state, or a latitude/longitude pair: address, phone, fax, distance, and retail store hours, plus a has_pharmacy existence flag and a list of general service indicators (e.g. photo, ATM, same-day delivery). Covers general store info only -- this does not return pharmacy hours, pharmacy phone, prescription data, or any patient-specific information. zip is a 5-digit US ZIP code; alternatively supply address (a free-text location such as a city, state, or street address) or latitude and longitude together. When more than one is supplied, zip wins, then address, then latitude/longitude. Optionally narrow results to stores carrying one specific service via the service param (the same code vocabulary the response's services field uses); only one service value is accepted per request. CVS.com is only available from US/US-territory egress; a request from an unsupported region returns an upstream error rather than an empty result.
+
+### `dailycaller_article`
+
+Get The Daily Caller article content. Returns public The Daily Caller article metadata and body paragraphs from a canonical article URL. Patriots-only (premium) articles expose only a public teaser and are flagged paywalled.
+
+### `dailycaller_author`
+
+Get a The Daily Caller author profile. Returns a The Daily Caller author's byline metadata, job title, optional biography, contact links, and newest articles from a canonical author URL.
+
+### `dailycaller_headlines`
+
+Get The Daily Caller section headlines. Returns the newest headlines listed on one public The Daily Caller section page.
+
+### `dailycaller_news`
+
+Get The Daily Caller top stories. Returns fresh The Daily Caller top stories from its public RSS feed.
+
+### `dailycaller_sections`
+
+Get The Daily Caller sections. Returns the live-verified The Daily Caller section inventory used by the headlines endpoint.
+
+### `dailyexpress_article`
+
+Get Daily Express article content. Returns public Daily Express article metadata and body paragraphs from a canonical article URL.
+
+### `dailyexpress_author`
+
+Get a Daily Express journalist profile. Returns one Daily Express journalist's public profile: name, job title, bio, and their recent articles, from a canonical journalist URL.
+
+### `dailyexpress_headlines`
+
+Get Daily Express section headlines. Returns fresh headlines from one public Daily Express RSS section.
+
+### `dailyexpress_news`
+
+Get Daily Express top stories. Returns fresh Daily Express stories from the public News RSS feed.
+
+### `dailyexpress_sections`
+
+Get Daily Express sections. Returns the live public Daily Express RSS section inventory.
+
+### `dailymail_article`
+
+Get Daily Mail article content. Returns public Daily Mail article metadata and body paragraphs from a canonical article URL.
+
+### `dailymail_author`
+
+Get a Daily Mail author profile. Returns one Daily Mail author's public profile: name, job title, bio, social accounts, and one page of their recent articles.
+
+### `dailymail_headlines`
+
+Get Daily Mail section headlines. Returns fresh headlines from one public Daily Mail RSS section.
+
+### `dailymail_news`
+
+Get Daily Mail top stories. Returns fresh Daily Mail top stories from its public RSS feed.
+
+### `dailymail_sections`
+
+Get Daily Mail RSS sections. Returns the live-verified public Daily Mail RSS section inventory.
+
+### `dailyrecord_article`
+
+Get Daily Record article content. Returns public Daily Record article metadata and body paragraphs from a canonical article URL.
+
+### `dailyrecord_author`
+
+Get a Daily Record author profile. Returns one Daily Record author's public profile: name, job title, bio, email, X/Twitter handle, and their recent articles.
+
+### `dailyrecord_headlines`
+
+Get Daily Record section headlines. Returns fresh headlines from one public Daily Record section.
+
+### `dailyrecord_news`
+
+Get Daily Record top stories. Returns fresh Daily Record stories from the public News RSS feed.
+
+### `dailyrecord_sections`
+
+Get Daily Record sections. Returns the public Daily Record editorial section inventory.
+
+### `dailystaruk_article`
+
+Get Daily Star (UK) article content. Returns public Daily Star (UK) article metadata (including the section) and body paragraphs from a canonical article URL. Photo-gallery and sponsored partner-story URLs are rejected.
+
+### `dailystaruk_author`
+
+Get a Daily Star (UK) author profile. Returns one Daily Star (UK) author's public profile (name and, when published, job title, bio, email and X/Twitter handle) and one page of their recent articles.
+
+### `dailystaruk_headlines`
+
+Get Daily Star (UK) section headlines. Returns fresh headlines from one public Daily Star (UK) section. Photo galleries are omitted because they have no readable article body.
+
+### `dailystaruk_news`
+
+Get Daily Star (UK) top stories. Returns fresh Daily Star (UK) top stories from the public home RSS feed. Photo galleries are omitted because they have no readable article body.
+
+### `dailystaruk_sections`
+
+Get Daily Star (UK) sections. Returns the public Daily Star (UK) editorial section inventory used by dailystaruk-headlines.
+
+### `dailywire_article`
+
+Get Daily Wire article content. Returns public Daily Wire article metadata and body paragraphs from an article URL under any of the site's content-vertical prefixes.
+
+### `dailywire_author`
+
+Get a Daily Wire author profile. Returns one Daily Wire staff writer or contributor's public profile: name, headshot, social handles when present, biography, and their recent articles.
+
+### `dailywire_headlines`
+
+Get Daily Wire section headlines. Returns current Daily Wire headlines for one content-vertical section, sourced from the site's own homepage feed.
+
+### `dailywire_news`
+
+Get Daily Wire top stories. Returns fresh Daily Wire top stories from its public RSS feed.
+
+### `dailywire_sections`
+
+Get Daily Wire content-vertical sections. Returns the live-sampled public Daily Wire content-vertical inventory used by the headlines endpoint.
 
 ### `datasets_airbnb_facets`
 
@@ -2110,7 +2690,7 @@ Search the jobs dataset (all companies' live postings). Full-text + faceted sear
 
 ### `datasets_journalists_facets`
 
-Facet the journalists dataset. Returns distribution counts over the journalists index (dataset id enum value 'journalists'), honoring the same filters as search. Facet enum: 'outlet', 'vertical', 'topic', 'contact_type', 'record_type', 'role_type', 'email_kind', 'outreach_readiness_band'.
+Facet the journalists dataset. Returns distribution counts over the journalists index (dataset id enum value 'journalists'), honoring the same filters as search. Facet enum: 'outlet', 'vertical', 'topic', 'contact_type', 'record_type', 'role_type', 'email_kind', 'outreach_readiness_band'. 'facet=outlet' returns every outlet (up to 1000) in one response; other facets return their top 50 values. Facets are not paginated: 'page' and 'page_size' are ignored.
 
 ### `datasets_journalists_item`
 
@@ -2118,7 +2698,7 @@ Get a journalist from the journalists dataset. Returns one journalist by outlet 
 
 ### `datasets_journalists_search`
 
-Search the journalists dataset. Searches the journalists index (dataset id enum value 'journalists') — public journalist and reporter records crawled from news outlets' own staff/author pages, for PR outreach. Each record carries the outlet, title, best-effort beat topics, and any public contact info found on that outlet's own page, plus deterministic record_type, role_type, email_kind, and outreach-readiness quality signals. There is no cross-outlet upstream search; this dataset is built by crawling a curated roster of outlets ourselves. vertical enum: 'tech', 'crypto', 'marketing', 'consumer_tech', 'consumer_policy', 'cybersecurity', 'health', 'gaming', 'climate', 'business', 'entertainment', 'sports', 'legal', 'science', 'politics', 'real_estate', 'automotive', 'travel', 'food', 'education', 'design', 'film_tv', 'fashion', 'music', 'personal_finance', 'tech_independent', 'culture_independent', 'local_news', 'construction', 'banking', 'retail', 'aerospace_defense', 'energy', 'agriculture', 'local_business'. contact_type enum: 'email', 'social', 'none'. record_type enum: 'person', 'house_account', 'desk', 'organization', 'syndicated_byline', 'unknown'. role_type enum: 'staff', 'editor', 'reporter', 'contributor', 'freelancer', 'columnist', 'executive', 'non_editorial', 'unknown'. email_kind enum: 'individual_work', 'individual_personal_public', 'shared_desk', 'tips_or_submissions', 'outlet_generic', 'unknown'. sort enum: 'relevance', 'name_asc', 'outlet_asc', 'crawled_desc', 'readiness_desc'.
+Search the journalists dataset. Searches the journalists index (dataset id enum value 'journalists') — public journalist and reporter records crawled from news outlets' own staff/author pages, for PR outreach. Each record carries the outlet, title, best-effort beat topics, and any public contact info found on that outlet's own page, plus deterministic record_type, role_type, email_kind, and outreach-readiness quality signals. There is no cross-outlet upstream search; this dataset is built by crawling a curated roster of outlets ourselves. vertical enum: 'tech', 'crypto', 'marketing', 'consumer_tech', 'consumer_policy', 'cybersecurity', 'health', 'gaming', 'climate', 'business', 'entertainment', 'sports', 'legal', 'science', 'politics', 'real_estate', 'automotive', 'travel', 'food', 'education', 'design', 'film_tv', 'fashion', 'music', 'personal_finance', 'tech_independent', 'culture_independent', 'local_news', 'construction', 'banking', 'retail', 'aerospace_defense', 'energy', 'agriculture', 'local_business'. contact_type enum: 'email', 'social', 'none'. record_type enum: 'person', 'desk', 'organization', 'syndicated_byline', 'unknown'. role_type enum: 'staff', 'editor', 'reporter', 'contributor', 'freelancer', 'columnist', 'non_editorial', 'unknown'. email_kind enum: 'individual_work', 'individual_personal_public', 'shared_desk', 'tips_or_submissions', 'outlet_generic', 'unknown'. sort enum: 'relevance', 'name_asc', 'outlet_asc', 'crawled_desc', 'readiness_desc'.
 
 ### `datasets_list`
 
@@ -2400,6 +2980,46 @@ Get a YouTube creator from the dataset. Returns one YouTube channel record by ch
 
 Search the YouTube creators dataset. Searches public YouTube channel profiles stored in a search index — subscriber, video and view counts, region, bio and links, discovered via Common Crawl and Wikidata and hydrated from each channel's public About page. Sort enum: 'relevance', 'followers_desc', 'followers_asc', 'views_desc', 'videos_desc', 'hydrated_at_desc', 'hydrated_at_asc'. Some channels hide their subscriber, video, or view count; the '_available' flags on each item distinguish a hidden count (stored as '0', '*_available: false') from a genuine '0'.
 
+### `dawn_article`
+
+Get Dawn article content. Returns public Dawn article metadata and body paragraphs from a canonical article URL.
+
+### `dawn_author`
+
+Get a Dawn author profile. Returns one Dawn byline's public profile (name and biography, when Dawn publishes one) and their recent articles from a canonical author URL.
+
+### `dawn_headlines`
+
+Get Dawn section headlines. Returns fresh headlines from one public Dawn section.
+
+### `dawn_news`
+
+Get Dawn top stories. Returns fresh Dawn (Pakistan) stories from the public RSS feed.
+
+### `dawn_sections`
+
+Get Dawn sections. Returns the complete public Dawn section inventory (Pakistan provinces, World, Business, Sport, Opinion, Technology, Newspaper, Magazines, and Prism) accepted by /dawn/headlines.
+
+### `deadline_article`
+
+Get Deadline article content. Returns public Deadline article metadata (title, author(s), published/updated dates, section, lead image) and body paragraphs from a canonical article URL.
+
+### `deadline_author`
+
+Get a Deadline author profile. Returns one Deadline staff writer or contributor's public profile: name, job title, headshot, biography, social/contact links, and one page of their recent articles.
+
+### `deadline_headlines`
+
+Get Deadline section headlines. Returns fresh headlines from one public Deadline section or vertical feed.
+
+### `deadline_news`
+
+Get Deadline top stories. Returns fresh Deadline Hollywood Entertainment top stories from its public RSS feed.
+
+### `deadline_sections`
+
+Get Deadline sections. Returns the complete public section inventory accepted by /api/v1/deadline/headlines (both Deadline's editorial categories and its verticals).
+
 ### `deliveroo_fulfillment_times`
 
 Get Deliveroo's live delivery and pickup scheduling windows for a location. Returns the exact same "Choose a day" / "Choose a time" scheduled-ordering data the real site's own order-ahead picker shows for a location, for both delivery and pickup: an ASAP option plus every day currently open for a scheduled order, each with its real time slots and UNIX timestamps.
@@ -2644,6 +3264,26 @@ Find Dunkin stores near a coordinate, nearest first. Returns Dunkin restaurants 
 
 Get one Dunkin store's detail. Returns one Dunkin store: name, full postal address, phone, coordinates, opening hours for every day of the week, whether it's permanently closed, amenities (curbside pickup, drive-thru, wifi, kosher, turbo oven, K-Cup pods), Dunkin's own free-text feature labels, accepted payment methods, pickup/delivery service types, which third-party delivery platforms are active, the Google Place id, and the store's website/menu/order URLs. path is a store id -- from a /dunkin/directory child with is_store true, a /dunkin/nearby result's path, or the trailing digits of a dunkindonuts.com store URL. An unknown id returns a 404.
 
+### `dw_article`
+
+Get DW article content. Returns public Deutsche Welle article metadata and body paragraphs from a canonical article URL.
+
+### `dw_author`
+
+Get a DW author profile. Returns one Deutsche Welle correspondent's public profile (name, expertise, biography) and their recent articles from a canonical person-profile URL. Many DW breaking-news items are bylined to the "Deutsche Welle" editorial organization rather than a named person; those articles have no person-profile URL to look up.
+
+### `dw_headlines`
+
+Get DW section headlines. Returns fresh headlines from one public Deutsche Welle section.
+
+### `dw_news`
+
+Get DW top stories. Returns fresh Deutsche Welle stories from the public RSS feed.
+
+### `dw_sections`
+
+Get DW sections. Returns the complete public Deutsche Welle English-edition section inventory (regions, topics, and categories) accepted by /dw/headlines.
+
 ### `ebay_item`
 
 Get eBay item details. Returns normalized details for a public eBay item listing.
@@ -2683,6 +3323,66 @@ Get eBay seller feedback. Returns normalized seller feedback summary, detailed r
 ### `ebay_seller_shop`
 
 Get eBay seller shop listings. Returns normalized listings from the public eBay seller shop tab, with pagination backed by the store odtRefresh response.
+
+### `economictimes_article`
+
+Get Economic Times article content. Returns public Economic Times article metadata (title, author(s), published/updated dates, section, lead image) and body paragraphs from a canonical article URL. An ETPrime subscription-gated story returns a permission error instead of a truncated or fabricated body.
+
+### `economictimes_author`
+
+Get an Economic Times author profile. Returns one Economic Times reporter's public profile: name, job title, biography, headshot, and their recent articles.
+
+### `economictimes_headlines`
+
+Get The Economic Times section headlines. Returns fresh headlines from one public Economic Times section feed.
+
+### `economictimes_news`
+
+Get The Economic Times top stories. Returns fresh Economic Times top-stories headline metadata from its public RSS feed.
+
+### `economictimes_sections`
+
+Get The Economic Times sections. Returns the complete public section inventory accepted by /api/v1/economictimes/headlines: business/markets verticals, industry, tech, wealth, mutual funds, small business, NRI, careers, opinion, astrology, and ETPrime (subscription-gated) sections.
+
+### `engadget_article`
+
+Get Engadget article content. Returns public Engadget article metadata and body paragraphs from a canonical article URL. Engadget articles are free to read, so the full body is returned.
+
+### `engadget_author`
+
+Get an Engadget author profile. Returns one Engadget author's public profile: name, biography, expertise, social links, and the latest stories listed on their page (a single fixed batch; the page has no further pagination).
+
+### `engadget_headlines`
+
+Get Engadget section headlines. Returns fresh Engadget headlines from one public category feed.
+
+### `engadget_news`
+
+Get Engadget top stories. Returns fresh Engadget technology news from the public homepage feed. Engadget articles are free to read.
+
+### `engadget_sections`
+
+Get Engadget sections. Returns the public Engadget category taxonomy (48 categories) accepted by the headlines endpoint.
+
+### `eonline_article`
+
+Get E! News article content. Returns public E! News article metadata, byline and body paragraphs from a canonical article URL.
+
+### `eonline_author`
+
+Get an E! News author page. Returns an E! News writer's name and the articles listed on their author page, from a canonical author URL.
+
+### `eonline_headlines`
+
+Get E! News section headlines. Returns fresh headlines from one E! News section feed.
+
+### `eonline_news`
+
+Get E! News top stories. Returns fresh E! News (US edition) top stories from its public RSS feed.
+
+### `eonline_sections`
+
+Get E! News sections. Returns the E! News section inventory used by the headlines endpoint.
 
 ### `espn_athlete`
 
@@ -2748,6 +3448,26 @@ Get Etsy shop reviews. Returns buyer reviews for an Etsy shop. Accepts a numeric
 
 Search Etsy shops. Returns Etsy shops matching a keyword.
 
+### `euronews_article`
+
+Get Euronews article content. Returns public Euronews article metadata and body paragraphs from a canonical English-edition article URL.
+
+### `euronews_author`
+
+Get a Euronews author profile. Returns a Euronews author's byline metadata and recent articles from a canonical profile URL.
+
+### `euronews_headlines`
+
+Get Euronews section headlines. Returns fresh headlines from one public Euronews English-edition section.
+
+### `euronews_news`
+
+Get Euronews top stories. Returns fresh Euronews English-edition top stories from its public RSS feed.
+
+### `euronews_sections`
+
+Get Euronews sections. Returns the public Euronews English-edition section inventory used by the headlines endpoint.
+
 ### `everlane_collection_products`
 
 List Everlane collection products. Returns normalized products from one Everlane (https://www.everlane.com) collection. The storefront URL is fixed server-side; 'handle' is the collection's URL slug.
@@ -2791,6 +3511,26 @@ List Everlane sitemaps. Returns child sitemap URLs from Everlane's (https://www.
 ### `everlane_store`
 
 Get Everlane store metadata. Returns normalized storefront metadata for Everlane (https://www.everlane.com), sourced from credential-free storefront JSON. This endpoint is a brand-pinned wrapper around the generic Shopify store family: the storefront URL is fixed server-side, so no 'url' parameter is accepted. If the vanity domain blocks '/products.json', the service may fall back to a public '*.myshopify.com' domain discovered from the storefront page, or to the storefront's own embedded page data for storefronts that expose neither.
+
+### `ew_article`
+
+Get Entertainment Weekly article content. Returns public Entertainment Weekly article metadata and body paragraphs from a canonical article URL.
+
+### `ew_author`
+
+Get an Entertainment Weekly author profile. Returns one Entertainment Weekly contributor's public profile (name, job title, biography) and their recent articles from a canonical author URL.
+
+### `ew_headlines`
+
+Get Entertainment Weekly section headlines. Returns fresh headlines from one public Entertainment Weekly section.
+
+### `ew_news`
+
+Get Entertainment Weekly top stories. Returns fresh Entertainment Weekly stories from its homepage.
+
+### `ew_sections`
+
+Get Entertainment Weekly sections. Returns the complete public Entertainment Weekly primary-navigation section inventory accepted by /ew/headlines.
 
 ### `expedia_activities_search`
 
@@ -3016,6 +3756,26 @@ List Fashionphile sitemaps. Returns child sitemap URLs from Fashionphile's (http
 
 Get Fashionphile store metadata. Returns normalized storefront metadata for Fashionphile (https://www.fashionphile.com), sourced from credential-free storefront JSON. This endpoint is a brand-pinned wrapper around the generic Shopify store family: the storefront URL is fixed server-side, so no 'url' parameter is accepted. If the vanity domain blocks '/products.json', the service may fall back to a public '*.myshopify.com' domain discovered from the storefront page, or to the storefront's own embedded page data for storefronts that expose neither.
 
+### `fastcompany_article`
+
+Get Fast Company article content. Returns public Fast Company article metadata and body paragraphs from a canonical article URL. The service uses the configured production browser fleet when ordinary HTTP transport encounters Fast Company's bot-verification challenge; it does not bypass authentication or access controls.
+
+### `fastcompany_author`
+
+Get a Fast Company contributor profile. Returns a Fast Company contributor's name, biography, and recent articles from a canonical contributor URL. Recent articles and the contributor's name come from their own public RSS feed; the biography comes from the contributor's profile page and is omitted if that page's bot-verification challenge cannot be cleared. The service uses the configured production browser fleet when ordinary HTTP transport encounters that challenge; it does not bypass authentication or access controls.
+
+### `fastcompany_headlines`
+
+Get Fast Company section headlines. Returns fresh headlines from one Fast Company section or topic's public RSS feed. section accepts any slug returned by GET /fastcompany/sections (78 values, e.g. "technology" or "artificial-intelligence").
+
+### `fastcompany_news`
+
+Get Fast Company top stories. Returns fresh Fast Company stories from its public RSS feed.
+
+### `fastcompany_sections`
+
+Get Fast Company sections. Returns the Fast Company section/topic inventory: the site's six primary verticals (Tech, Work Life, News, Design, Leadership, Impact) plus every topic tag accepted by GET /fastcompany/headlines (78 values total, too many to enumerate inline -- see that endpoint for the full, current, live-verified list), each linking to its public RSS feed.
+
 ### `firstdibs_categories`
 
 List 1stDibs categories and filters. Returns the live handbags category directory, sort keys, price presets, and filter values discovered from 1stDibs. Returned category slugs are valid for firstdibs-search.
@@ -3084,6 +3844,102 @@ Search Fiverr gigs. Searches Fiverr's public gig listings by free-text keyword, 
 
 Get Fiverr seller profile. Returns a normalized Fiverr seller profile: display name, one-liner title, description, country, seller level, verification status, hourly rate, spoken languages, join date, and the seller's gig ids. Public data sourced from Fiverr's own server-rendered seller profile pages via a real browser-rendering backend. Seller level uses the same values on the search, seller and gig endpoints: level_one_seller, level_two_seller, top_rated_seller, or new_seller.
 
+### `flashscore_calendar`
+
+Flashscore season calendar. Returns public tournament calendar entries, dates, winners when available, and competition paths for the current season.
+
+### `flashscore_calendar_categories`
+
+Flashscore season calendar categories. Lists the current ATP, WTA, golf, badminton, and Formula 1 calendar pages.
+
+### `flashscore_competitions`
+
+Flashscore competitions by sport and date. Discovers competitions present in a selected sport's score feed, including the provider competition id, label, region, canonical path, and event count. This is the active feed-date inventory, not an archive of inactive or historical seasons.
+
+### `flashscore_match_h2h`
+
+Flashscore match head-to-head and recent results. Returns Flashscore's public head-to-head and recent-results feed for a match id copied from a Flashscore match URL. The raw upstream feed is preserved as text because its format is not JSON.
+
+### `flashscore_match_highlights`
+
+Flashscore match highlights. Returns public highlight identifiers, metadata, and video links as the provider's raw delimited text. Video content is not fetched or included. Matches without available highlights return not found.
+
+### `flashscore_match_info`
+
+Flashscore match venue and broadcast information. Returns the public match information feed, including available venue, city, capacity, and broadcast listings, as the provider's raw delimited text.
+
+### `flashscore_match_lineups`
+
+Flashscore match lineups and formations. Returns the public starting-lineup and formation feed as the provider's raw delimited text. Matches without published lineups return not found.
+
+### `flashscore_match_news`
+
+Flashscore match news references. Returns article references from the public news layout associated with a match. Article content is not included; use the article id with flashscore-news-article for public metadata.
+
+### `flashscore_match_standings`
+
+Flashscore match league standings. Returns the match-linked table feed. Select overall, home/away, form, over/under, half-time/full-time, live table, or top scorers; the raw provider format is preserved. Defaults to overall.
+
+### `flashscore_match_stats`
+
+Flashscore match statistics. Returns Flashscore's public delimited statistics feed for a match id copied from a Flashscore match URL. The raw upstream feed is preserved as text because its format is not JSON.
+
+### `flashscore_navigation`
+
+Flashscore sport, category, country, and competition navigation. Returns the first-party category hierarchy and competition links for a public Flashscore sport or category page. Start with / or a sport path from flashscore-sports, then follow returned paths to enumerate region, country, category, and competition pages. Country/category lists reflect the current upstream navigation.
+
+### `flashscore_news`
+
+Flashscore News listings by section. Returns article previews from a public Flashscore News section. Use flashscore-news-categories to discover valid category keys. Page numbers follow the site's Show more pagination; article body text is not included.
+
+### `flashscore_news_article`
+
+Flashscore news article metadata. Returns public article metadata and image credits for an article id from a Flashscore match news listing. Article body text is not included.
+
+### `flashscore_news_categories`
+
+Flashscore News categories. Returns the exact currently usable public News section keys, names, and source paths from the live navigation inventory. Olympic Games is excluded because its linked page currently returns 404.
+
+### `flashscore_ranking_categories`
+
+Flashscore ranking categories. Lists the live-verified public ranking categories, including tennis live rankings.
+
+### `flashscore_rankings`
+
+Flashscore rankings. Returns the first-party ranking feed pages for a supported ranking category. When page one is full, page two is included to cover the remaining rows.
+
+### `flashscore_scores`
+
+Flashscore scores and fixtures by sport. Returns the public score feed for one sport and date-picker day offset. The upstream field-delimited text is preserved because field semantics vary by sport. Use flashscore-sports to discover sport keys, flashscore-navigation for the current category/country/competition directory, and flashscore-competitions for competitions on the selected date.
+
+### `flashscore_search`
+
+Flashscore search. Searches the same public entity index used by Flashscore's search box. Results can include teams, players, and tournament templates across supported sports.
+
+### `flashscore_sports`
+
+Flashscore sports and live category counts. Returns every sport category visible in Flashscore's score navigation, with sport id, caller key, page path, and current event/competition counts. Counts are a live snapshot and may be zero when the sport has no fixtures in the current feed window.
+
+### `flashscore_top_search`
+
+Flashscore top search entities. Returns the ten-or-fewer public team, player, and tournament results shown in Flashscore's search overlay. This is a changing curated list, not a complete entity directory.
+
+### `flashscore_tournament_events`
+
+Flashscore tournament season results or fixtures. Returns a page of the public results or fixtures feed for any supported sport and competition path. Page 1 is embedded in the public tournament page; later pages follow its Show more feed sequence. Sum event_count from successive pages until total_events is reached.
+
+### `flashscore_tournament_seasons`
+
+Flashscore tournament archive seasons. Lists the seasons and winners from a public competition archive page. Discover archive paths through flashscore-navigation or flashscore-competitions. Each returned results_path and fixtures_path can be passed to flashscore-tournament-events to retrieve season event feeds.
+
+### `flashscore_tournament_standings`
+
+Flashscore competition standings table. Returns a competition-level table feed independent of a match id. Discover the stage-specific view values with flashscore-tournament-standings-views. Data remains in Flashscore's raw delimited format.
+
+### `flashscore_tournament_standings_views`
+
+Flashscore competition standings view discovery. Returns the table views currently exposed on a public Flashscore competition standings page. The view set varies by competition and stage; use a returned value with flashscore-tournament-standings.
+
 ### `foodpanda_restaurant`
 
 Get one foodpanda restaurant's detail. Returns one foodpanda restaurant's detail by code: name, address, coordinates, budget tier, rating and review count, cuisines, minimum order amount, minimum delivery fee, delivery/pickup availability, timezone, and a hero image. Supplying latitude and longitude only affects the (optional) computed fields the upstream itself returns for that coordinate; it does not filter or reject the lookup.
@@ -3104,9 +3960,37 @@ Search foodpanda restaurants near a location. Returns restaurants delivering to 
 
 Get foodpanda's live cuisine filter catalog for a location. Returns foodpanda's own live cuisine catalog for a latitude/longitude in a foodpanda market -- the exact facet list (with real, live restaurant counts) the site's own search page cuisine filter sidebar is populated from. Every entry's id is a valid value for /foodpanda/search's cuisine_id parameter. Cuisine ids are location- and market-scoped, not a fixed global enum: the same coordinate in a different neighborhood, or a different market, can return a different id/count set entirely, so call this endpoint with the same market/latitude/longitude you intend to search rather than reusing ids captured elsewhere.
 
+### `forbes_article`
+
+Forbes article content. Returns public Forbes article metadata and body content from Forbes's same-host content JSON endpoint. The response preserves rich body HTML, normalized paragraphs, headings, and public embed metadata. Accepts dated /sites/<author>/... and /councils/<council>/... URLs; it does not bypass login, subscription, or bot challenges.
+
+### `forbes_author`
+
+Forbes contributor/staff author profile. Returns one Forbes contributor or staff author's public byline page: name, display type, bio, headshot, and their most recent bylined articles. This is the journalist byline page at forbes.com/sites/<slug>/, distinct from forbes-person, which is a billionaire net-worth profile from Forbes's rich-list data.
+
+### `forbes_billionaires`
+
+Forbes billionaires list. Returns a paginated Forbes billionaires list from the public Forbes JSON feed. The default field set includes ranking, worth, person identity, citizenship, category, industry, organization, image, and biography fields.
+
+### `forbes_categories`
+
+Forbes public editorial sections. Lists the current public Forbes navigation taxonomy, including business, money, innovation, leadership, lifestyle, Forbes Vetted, Advisor, Health, and their public subsections. Article promos, account surfaces, games, video-only links, and external hosts are excluded.
+
+### `forbes_headlines`
+
+Forbes section headlines. Returns current Forbes article-card metadata from a public Forbes navigation path. Use /forbes/categories to discover paths.
+
+### `forbes_person`
+
+Forbes person profile. Returns public Forbes JSON profile data plus the profile page's biography, real-time net-worth display, wealth history, personal facts, editor update, and list-appearance metadata.
+
 ### `foreignaffairs_article`
 
 Extract a Foreign Affairs article. Returns public article metadata and ordered body paragraphs from a canonical Foreign Affairs article URL. Incomplete, truncated, challenge, or contaminated upstream HTML is rejected as an upstream error.
+
+### `foreignaffairs_author`
+
+Get a Foreign Affairs author profile. Returns one Foreign Affairs contributor's public profile: name, bio, and the recent articles listed on their contributor page. Foreign Affairs does not paginate this page; it shows a fixed recent-article list.
 
 ### `foreignaffairs_headlines`
 
@@ -3123,6 +4007,10 @@ List Foreign Affairs topic feeds. Returns the complete research-backed directory
 ### `foreignpolicy_article`
 
 Get Foreign Policy article content. Returns a public Foreign Policy article's metadata and full body paragraphs from a canonical article URL. is_gated reports the site's own content-tier marker; the full body is always returned regardless, since Foreign Policy serves it in full to anonymous requests either way.
+
+### `foreignpolicy_author`
+
+Get a Foreign Policy author profile. Returns one Foreign Policy contributor's public profile: name, bio, and their recent articles. Further articles load behind a client-side control this endpoint does not follow, so this is the author page's initial recent-article list, not the contributor's full history.
 
 ### `foreignpolicy_headlines`
 
@@ -3148,9 +4036,169 @@ List Foreign Policy project hubs. Returns one page of Foreign Policy's live publ
 
 Get Foreign Policy category or tag archive. Returns one page of a public Foreign Policy category or tag archive (newest first). type selects the archive namespace and defaults to category; topic is the slug within it; page is 1-based.
 
+### `fortune_article`
+
+Get Fortune article content. Returns public Fortune article metadata and body paragraphs from a canonical article URL.
+
+### `fortune_author`
+
+Get a Fortune author profile. Returns one Fortune author's public profile: name, bio, email, social accounts, and one page of their recent articles (30 fortune.com/2026-format article dates use "Month D, YYYY"; converted to YYYY-MM-DD here).
+
+### `fortune_companies`
+
+Search the Fortune company directory. Returns companies from Fortune's public company directory (9,000+ companies as of 2026-09-23) with search, filtering, and pagination.
+
+### `fortune_company`
+
+Get a Fortune company profile. Returns one company's public Fortune profile: fact sheet (headquarters, CEO, ticker, revenues, employees, ...), the Fortune rankings it appears on, workplace data tables, earnings report links, and social accounts, recovered from the company's own fortune.com page.
+
+### `fortune_company_filters`
+
+Discover Fortune company directory filters. Returns the complete country, industry, and ranking filter inventory (exact values) and revenue/employee ranges accepted by fortune/companies.
+
+### `fortune_headlines`
+
+Get Fortune section headlines. Returns fresh headlines from one public Fortune section.
+
+### `fortune_news`
+
+Get Fortune top stories. Returns fresh Fortune stories from the public RSS feed.
+
+### `fortune_ranking`
+
+Search a Fortune ranking. Returns rows from a selected Fortune ranking list and year -- the Fortune 500 franchise (including Fortune China 500) or one of Fortune's award/culture rankings. Search, filters, sorting, and pagination are applied against Fortune's public ranking data and validated against that list/year's filter inventory.
+
+### `fortune_ranking_filters`
+
+Discover Fortune ranking filters. Returns the complete list/year-specific filter fields, exact options, and sortable columns from Fortune's public ranking source.
+
+### `fortune_ranking_lists`
+
+List Fortune ranking lists. Returns every public ranking accepted by the other fortune/ranking endpoints -- the Fortune 500 franchise's regional/global variants (including Fortune China 500) plus Fortune's award and culture rankings. Fortune China 500 is parsed from its public server-rendered English list page.
+
+### `fortune_ranking_years`
+
+List Fortune ranking years. Returns every year accepted by Fortune's public ranking source for a selected list, including the 2023-2026 Fortune China 500 editions.
+
+### `fortune_sections`
+
+Get Fortune sections. Returns the public Fortune editorial section inventory.
+
+### `fotmob_league`
+
+FotMob league details and sections. Returns FotMob's public league page payload, including available tabs, overview, table, fixtures, statistics, transfers, and seasons where supplied by the league.
+
+### `fotmob_leagues`
+
+FotMob competition directory. Returns FotMob's full public league directory grouped into popular, international, and country collections. Use league ids with other FotMob endpoints.
+
+### `fotmob_match`
+
+FotMob match details. Returns FotMob's public match-details payload, including available facts, events, statistics, lineups, shot map, momentum, table and head-to-head sections. The data field preserves the upstream JSON shape; individual sections may be absent for a match.
+
+### `fotmob_matches`
+
+FotMob matches for a date. Returns FotMob's public match payload for a calendar date and IANA timezone. The data field preserves the upstream JSON shape.
+
+### `fotmob_news`
+
+FotMob league news. Returns a page of FotMob news items for one league. League ids are discoverable from /fotmob/leagues; start_index is a zero-based offset.
+
+### `fotmob_player`
+
+FotMob player profile. Returns a public FotMob player profile, including current team, injuries, recent matches, career history, trophies, market values, and the player-specific season identifiers needed for deeper statistics. Discover player ids through /fotmob/search. Market values are included by default.
+
+### `fotmob_player_match_stats`
+
+FotMob player match stats. Returns the public per-match stat rows for one player, including the available stat key, value, and translated label. Discover player ids through fotmob/search and match ids through fotmob/match or fotmob/player-matches.
+
+### `fotmob_player_matches`
+
+FotMob player match history. Returns one page of player match history. The player's matchFilters and permitted league/team pairs are discovered from /fotmob/player. For another page, copy the numeric before timestamp from the upstream previous URL.
+
+### `fotmob_player_stats`
+
+FotMob player season statistics. Returns deep statistics, shot map, heatmap, and goalkeeper shot map for one player-specific season entry. Discover valid season_id values and hasDeepStats from /fotmob/player statSeasons; entry ids vary by player and season.
+
+### `fotmob_search`
+
+Search FotMob entities. Returns public search suggestions for FotMob leagues, teams, players, and matches. term must contain 1 to 50 characters. Suggestions preserve the upstream JSON shape.
+
+### `fotmob_stats`
+
+FotMob league player or team statistics. Returns ranked player or team statistics for a stat id discovered from /fotmob/stats-categories. The accepted stat ids vary by league, season, and type. team_id optionally restricts player statistics to one team. position filters player results client-side.
+
+### `fotmob_stats_categories`
+
+FotMob league stat categories and seasons. Returns FotMob's current stat catalog and available seasons for a league. With season_id omitted, the response exposes the season list and initial top-stat choices; pass a returned season id to retrieve that season's full player or team stat catalog.
+
+### `fotmob_table`
+
+FotMob league table. Returns the league standings and the upstream table views, including all, home, away, form, and expected-goals tables. League ids are discoverable from /fotmob/leagues.
+
+### `fotmob_team`
+
+FotMob team details. Returns public team data and the sections currently available for that team, such as overview, table, fixtures, squad, stats, transfers, and history. Team ids can be found with /fotmob/search. The upstream section set varies by team.
+
+### `fotmob_team_news`
+
+FotMob team news. Returns the paginated article feed shown on a public FotMob team news page. Team ids can be found with /fotmob/search or /fotmob/team.
+
+### `fotmob_transfers`
+
+FotMob transfer center. Returns confirmed transfers, rumours, or popular transfers with the public transfer-center filters. Fee values are in EUR. Use fotmob/leagues and fotmob/search to discover league and team ids. The upstream returns 50 rows per page and caps its hit count at 10,000.
+
+### `foxnews_article`
+
+Get Fox News article content. Returns public Fox News article metadata and body paragraphs from a canonical article URL. This does not bypass login, subscription, or other access controls.
+
+### `foxnews_author`
+
+Get Fox News author profile. Returns one Fox News author/personality's public bio page: name, biography, and their most recent articles. Provide either the author's name slug or the full https://www.foxnews.com/person/<letter>/<slug> page URL.
+
+### `foxnews_headlines`
+
+Get Fox News section headlines. Returns fresh headlines from one public Fox News article RSS section. Use foxnews-sections for the current value space.
+
+### `foxnews_news`
+
+Get Fox News top stories. Returns fresh Fox News top stories from the public site-wide RSS feed. The feed is a public headline/body source and does not require credentials.
+
+### `foxnews_search`
+
+Search Fox News public content. Searches Fox News' public credential-free Moxie search surface. Results may include article, video, or slideshow records; use type to restrict the result kind.
+
+### `foxnews_sections`
+
+Get Fox News RSS sections. Returns the exact live-verified Fox News article RSS section slugs accepted by foxnews-headlines. The video-only RSS feed is intentionally excluded.
+
+### `france24_article`
+
+Get France 24 article content. Returns public France 24 English-edition article metadata and body paragraphs from a canonical article URL. Live-blog pages are supported and return their chronological update entries as body paragraphs.
+
+### `france24_author`
+
+Get a France 24 author profile. Returns one France 24 byline's public profile (name, job title, biography) and their recent articles from a canonical author-profile URL. This includes the shared "FRANCE 24" newsroom byline used on many stories, which has no individual biography.
+
+### `france24_headlines`
+
+Get France 24 section headlines. Returns fresh headlines from one public France 24 English-edition section.
+
+### `france24_news`
+
+Get France 24 top stories. Returns fresh France 24 English-edition stories from the public RSS feed.
+
+### `france24_sections`
+
+Get France 24 sections. Returns the complete public France 24 English-edition section inventory (regions, topics, and other public hubs) accepted by /france24/headlines.
+
 ### `ft_article`
 
 Get a Financial Times article's content. Returns one public Financial Times article's metadata and body paragraphs from a canonical article URL. Subscriber-only articles that the FT serves as a subscription page are not available.
+
+### `ft_author`
+
+Get an FT author profile. Returns one Financial Times contributor's public byline profile (name, job title, email, social accounts) plus one page of their recent articles. FT author pages carry no bio paragraph, only this byline metadata.
 
 ### `ft_categories`
 
@@ -3167,6 +4215,66 @@ Get the latest Financial Times stories. Returns the Financial Times' current new
 ### `ft_search`
 
 Search Financial Times articles. Returns one page of Financial Times search results: each story's title, canonical URL, summary, section tag, publication time, and lead image. Results can be ordered by relevance or date and filtered by publication window.
+
+### `gamerant_article`
+
+Get Game Rant article content. Returns public Game Rant article metadata and body paragraphs from a canonical article URL.
+
+### `gamerant_author`
+
+Get a Game Rant author profile. Returns a Game Rant author's byline metadata, biography, social links, and recent articles from a canonical author URL.
+
+### `gamerant_headlines`
+
+Get Game Rant section headlines. Returns fresh headlines from one public Game Rant RSS section. Items from video sections have type video and are not readable through the article endpoint.
+
+### `gamerant_news`
+
+Get Game Rant top stories. Returns fresh Game Rant top stories from its public RSS feed.
+
+### `gamerant_sections`
+
+Get Game Rant RSS sections. Returns the public Game Rant RSS section inventory used by the headlines endpoint.
+
+### `gamesradar_article`
+
+Get GamesRadar+ article content. Returns public GamesRadar+ article metadata and body paragraphs from a canonical article URL.
+
+### `gamesradar_author`
+
+Get a GamesRadar+ author profile. Returns one GamesRadar+ author's public profile: name, job title, biography, social links, and one page of their recent articles.
+
+### `gamesradar_headlines`
+
+Get GamesRadar+ section headlines. Returns fresh GamesRadar+ headlines from one public section hub page.
+
+### `gamesradar_news`
+
+Get GamesRadar+ top stories. Returns fresh GamesRadar+ top stories from the public RSS feed.
+
+### `gamesradar_sections`
+
+Get GamesRadar+ sections. Returns the public GamesRadar+ editorial taxonomy used by the headlines endpoint.
+
+### `gbnews_article`
+
+Get GB News article content. Returns public GB News article metadata and body paragraphs from a canonical story URL.
+
+### `gbnews_author`
+
+Get a GB News author profile. Returns one GB News author's public profile: name, role, biography, image, and their most recent stories (up to 24; older stories are not available).
+
+### `gbnews_headlines`
+
+Get GB News section headlines. Returns fresh GB News headlines from one public section or topic feed.
+
+### `gbnews_news`
+
+Get GB News top stories. Returns fresh GB News top stories from the public news feed.
+
+### `gbnews_sections`
+
+Get GB News sections. Returns the public GB News section and topic taxonomy accepted by the headlines endpoint.
 
 ### `gdelt_context`
 
@@ -3295,6 +4403,82 @@ List a GitHub user's pinned repositories. Returns the repositories a user pinned
 ### `github_user_repos`
 
 List a GitHub user's public repositories. Returns a page of a user's public repositories (tech-stack signal).
+
+### `gizmodo_article`
+
+Get Gizmodo article content. Returns public Gizmodo article metadata and body paragraphs from a canonical article URL. Gizmodo articles are free to read, so the full body is returned.
+
+### `gizmodo_author`
+
+Get a Gizmodo author profile. Returns a Gizmodo author's name, job title, biography, headshot, social links, and most recent articles from a canonical author URL.
+
+### `gizmodo_headlines`
+
+Get Gizmodo section headlines. Returns fresh headlines from one Gizmodo section's public RSS feed.
+
+### `gizmodo_news`
+
+Get Gizmodo top stories. Returns fresh Gizmodo stories from its public RSS feed.
+
+### `gizmodo_sections`
+
+Get Gizmodo sections. Returns the Gizmodo section inventory: its five top-level verticals (Tech, Science, io9, Earther, Reviews), their sub-topics, and Deals, each linking to its public RSS feed. Every slug is accepted by the headlines endpoint.
+
+### `globalnews_article`
+
+Get Global News article content. Returns public Global News article metadata and body paragraphs from a canonical article URL.
+
+### `globalnews_author`
+
+Get a Global News author profile. Returns a Global News author's byline metadata, biography, and recent articles from a canonical author URL.
+
+### `globalnews_headlines`
+
+Get Global News section headlines. Returns fresh headlines from one public Global News RSS section.
+
+### `globalnews_news`
+
+Get Global News top stories. Returns fresh Global News (globalnews.ca) top stories from its public RSS feed.
+
+### `globalnews_sections`
+
+Get Global News RSS sections. Returns the public Global News RSS section inventory used by the headlines endpoint, covering topical sections and every regional/city hub with its own feed.
+
+### `globeandmail_article`
+
+Get a Globe and Mail article's content. Returns one public Globe and Mail article's metadata and full body paragraphs from a canonical article URL. The Globe and Mail runs a metered paywall on most staff-bylined stories; those return a 403 permission error rather than a truncated or fabricated body -- see the endpoint markdown for the exact detection method.
+
+### `globeandmail_author`
+
+Get a Globe and Mail reporter profile. Returns one Globe and Mail reporter's public profile: name, job title, location, biography, headshot, contact/social links, and their recent articles from a canonical author URL.
+
+### `globeandmail_headlines`
+
+Get the latest stories in a Globe and Mail section. Returns the current public feed for one Globe and Mail section: each story's title, canonical URL, summary, author, publication time, and lead image. Section must be one of the slugs returned by /globeandmail/sections: 'canada', 'world', 'business', 'investing', 'personal-finance', 'politics', 'opinion', 'culture', 'sports', 'life', 'real-estate', 'drive'.
+
+### `globeandmail_news`
+
+Get the latest Globe and Mail stories. Returns The Globe and Mail's current public top-stories feed: each story's title, canonical URL, summary, author, publication time, and lead image.
+
+### `globeandmail_sections`
+
+List Globe and Mail sections. Lists every Globe and Mail section accepted by /globeandmail/headlines, with its slug, display name, and landing-page URL. This is the full public, RSS-backed section taxonomy from the site's primary navigation.
+
+### `gmanews_article`
+
+Get GMA News article content. Returns public GMA News Online article metadata and body paragraphs from a canonical article URL. GMA News articles are free to read; no content is paywalled.
+
+### `gmanews_headlines`
+
+Get GMA News section headlines. Returns fresh GMA News Online headlines from one public section RSS feed.
+
+### `gmanews_news`
+
+Get GMA News top stories. Returns fresh GMA News Online top stories from the public top-stories RSS feed, with title, URL, summary, publish time, and thumbnail.
+
+### `gmanews_sections`
+
+Get GMA News sections. Returns the public GMA News Online section feeds accepted by the headlines endpoint.
 
 ### `goat_collection`
 
@@ -3632,6 +4816,26 @@ Retrieve similar Google Play apps. Returns apps from the "Similar apps" cluster 
 
 Retrieve Google Play query suggestions. Returns up to 10 suggestions for a search term.
 
+### `gq_article`
+
+Get GQ article content. Returns public GQ article metadata and body paragraphs from a canonical story URL. A story GQ marks as subscriber-only returns a 403 permission error instead of partial text.
+
+### `gq_author`
+
+Get a GQ contributor profile. Returns one GQ contributor's public profile: name, biography, headshot, social links, and one page of their recent articles.
+
+### `gq_headlines`
+
+Get GQ section headlines. Returns the current story cards from one GQ section page: headline, standfirst, byline, publish date, and image.
+
+### `gq_news`
+
+Get GQ top stories. Returns fresh GQ top stories from the public RSS feed.
+
+### `gq_sections`
+
+Get GQ sections. Returns the GQ section (channel) slugs accepted by the headlines endpoint, each verified to list live stories.
+
 ### `grailed_categories`
 
 List Grailed's facet taxonomy. Returns Grailed's full facet taxonomy for the enum-like parameters grailed-search/grailed-sold-listings accept: department, category, category_path (a more granular subcategory slug), condition, color, and size, each with its own live listing count. department and condition are exhaustive closed sets (2 and 5 values respectively); category/category_path/color/size are the full, exhaustive value space as of the request. Designer is NOT included here (7,363 values, far too large for a facet-count response) -- see grailed-designers for that discovery endpoint.
@@ -3708,6 +4912,10 @@ Get one Grubhub restaurant's future orderable time-slot calendar. Returns every 
 
 Get Guardian article content. Returns a Guardian article's public metadata and body paragraphs from a canonical article URL. Live-blog timelines are not supported.
 
+### `guardian_author`
+
+Get Guardian contributor profile. Returns one Guardian contributor's public profile: name, bio, Twitter handle, byline image, and one page of their recent articles. Provide either the contributor's profile slug or the full profile page URL.
+
 ### `guardian_headlines`
 
 Get Guardian section headlines. Returns fresh headlines from a public Guardian RSS section. section defaults to world.
@@ -3744,6 +4952,10 @@ Gucci product size chart. Returns Gucci's own size-conversion chart for one prod
 
 Get a Gucci store's detail. Returns one Gucci store's full detail: name, phone, address, opening hours, and photos. slug comes from gucci-stores' own slug field.
 
+### `gucci_store_search`
+
+Search Gucci stores in a map viewport. Searches Gucci's public store-map GeoJSON feed for locations inside the requested viewport. market selects the storefront locale and localized labels; it does not filter results by country. The supported, live-verified market values are ca (English), fr (French), jp (Japanese), uk (English), and us (English). Coordinates and viewport bounds determine the returned stores. The Gucci site's text field geocodes in the browser and its name parameter does not filter this feed, so callers must provide bounds and a center (geocode a place before calling). Dateline-crossing bounds are not supported.
+
 ### `gucci_stores`
 
 List Gucci store locations. Returns Gucci's full US store-locator listing: name, address, phone, coordinates, product departments carried, and a link to book an in-store appointment for each location. Filter to stores carrying one department with department (e.g. jewelry, mens_shoes); omit for every store -- see the response's own departments field for the live list of department tags to filter by.
@@ -3751,6 +4963,26 @@ List Gucci store locations. Returns Gucci's full US store-locator listing: name,
 ### `gucci_suggest`
 
 Gucci search-box suggestions. Returns Gucci's own search-box typeahead suggestions for a partial query, each with its own live total result count on the search index. Not product data -- pass a suggestion's own query value straight into gucci-search for results.
+
+### `gulfnews_article`
+
+Get Gulf News article content. Returns public Gulf News article metadata and body paragraphs from a canonical article URL.
+
+### `gulfnews_author`
+
+Get a Gulf News author profile. Returns one Gulf News author's public profile: name, job title, bio, and their recent articles.
+
+### `gulfnews_headlines`
+
+Get Gulf News section headlines. Returns fresh headlines from one public Gulf News section.
+
+### `gulfnews_news`
+
+Get Gulf News top stories. Returns fresh Gulf News stories from the public site-wide RSS feed.
+
+### `gulfnews_sections`
+
+Get Gulf News sections. Returns the public Gulf News editorial section inventory.
 
 ### `gymshark_collection_products`
 
@@ -3840,6 +5072,26 @@ List Hermès stores. Returns Hermès' worldwide store directory: name, street ad
 
 Hermès search suggestions. Returns Hermès' own search-box autocomplete for a partial term: matching categories with the number of items behind each, and matching products. The category codes returned are the same codes hermes-category accepts, so a suggestion feeds straight into a category browse. An empty query is supported and returns Hermès' default suggestions rather than an error.
 
+### `hindustantimes_article`
+
+Get Hindustan Times article content. Returns public Hindustan Times article metadata and body paragraphs from a canonical article URL. A story Hindustan Times marks subscriber-only (chiefly syndicated Wall Street Journal / The Economist partner content) returns a permission error instead of a body.
+
+### `hindustantimes_author`
+
+Get a Hindustan Times author profile. Returns a Hindustan Times author's byline metadata, biography, contact/social links, and their most recent articles (the first page only) from a canonical author URL.
+
+### `hindustantimes_headlines`
+
+Get Hindustan Times section headlines. Returns fresh headlines from one public Hindustan Times section.
+
+### `hindustantimes_news`
+
+Get Hindustan Times top stories. Returns fresh Hindustan Times top stories from its public "Latest News" feed.
+
+### `hindustantimes_sections`
+
+Get Hindustan Times sections. Returns the public Hindustan Times section inventory used by the headlines endpoint.
+
 ### `hm_categories`
 
 Browse H&M's storefront category navigation. Returns H&M's own storefront category navigation, department by department: every direct nav item and subcategory currently shown in the site's own menu, with its display name and storefront URL. Where this build has separately verified the value against hm-listing's own category_id parameter, that id is included too; category_id is omitted for entries not yet verified rather than guessed, since the visible category label is confirmed NOT a reliable way to derive H&M's real listing category ids for every category. department, when given, filters the result to one department.
@@ -3868,6 +5120,26 @@ Get H&M search-box suggestions. Returns H&M's own search-box typeahead suggestio
 
 Find nearby H&M physical stores. Returns H&M physical retail store locations near a point: name, phone, full address, and coordinates. Either search, or both lat and lng, is required. search is a free-text zip code or place name that is first resolved to coordinates; if it does not resolve to any location, a well-formed empty result is returned rather than an error. lat and lng, when given directly, skip that resolution step. radius_meters is optional (1000 to 50000, defaults to 10000). A location with no stores within the radius returns a well-formed empty result rather than an error.
 
+### `hollywoodreporter_article`
+
+Get The Hollywood Reporter article content. Returns public The Hollywood Reporter article metadata (title, author(s), published/updated dates, section, lead image) and body paragraphs from a canonical article URL.
+
+### `hollywoodreporter_author`
+
+Get a Hollywood Reporter author profile. Returns one Hollywood Reporter staff writer or contributor's public profile: name, job title, headshot, biography, social/contact links, and one page of their recent articles.
+
+### `hollywoodreporter_headlines`
+
+Get The Hollywood Reporter section headlines. Returns fresh headlines from one public The Hollywood Reporter section or editorial-vertical feed.
+
+### `hollywoodreporter_news`
+
+Get The Hollywood Reporter top stories. Returns fresh The Hollywood Reporter entertainment-industry top stories from its public RSS feed.
+
+### `hollywoodreporter_sections`
+
+Get The Hollywood Reporter sections. Returns the complete public section inventory accepted by /api/v1/hollywoodreporter/headlines (both The Hollywood Reporter's editorial categories and its named editorial verticals).
+
 ### `homedepot_categories`
 
 Home Depot department taxonomy. Returns Home Depot's top-level department taxonomy (name, path, url) from the homepage's own "All Departments" navigation. Each department's path is directly usable as GET /homedepot/category's path parameter.
@@ -3886,7 +5158,7 @@ Home Depot product questions and answers. Returns the first page (8 questions) o
 
 ### `homedepot_search`
 
-Home Depot keyword search. Returns one page (up to 24 products) of a Home Depot keyword search's product listing: normalized products with title, image, model, current/original price, and rating/review count, plus the search's total result count. q is free-text search keywords, e.g. "impact driver". page is a 1-indexed page number (default 1). An unrecognized/blocked query returns an upstream error rather than an empty result.
+Home Depot keyword search. Returns one page (up to 12 products) of a Home Depot keyword search's product listing: normalized products with title, image, model, current/original price, and rating/review count, plus the search's total result count. q is free-text search keywords, e.g. "impact driver". page is a 1-indexed page number (default 1). An unrecognized/blocked query returns an upstream error rather than an empty result.
 
 ### `homedepot_suggest`
 
@@ -3919,6 +5191,46 @@ List Hotels.com guest reviews. Returns one page of public guest reviews for a Ho
 ### `hotels_search`
 
 Search Hotels.com hotels. Returns a page of date-bound Hotels.com hotel search results for either a free-text destination or a numeric Hotels.com region_id: normalized property cards with per-night and per-stay prices, review score and count, location, thumbnail, amenities, and promotional badges. Provide exactly one of query or region_id; region_id skips destination typeahead resolution. Prices are the live rates Hotels.com shows for the requested check-in and check-out dates.
+
+### `huffpost_article`
+
+Get HuffPost article content. Returns public HuffPost article metadata and body paragraphs from a canonical article URL.
+
+### `huffpost_author`
+
+Get a HuffPost author profile. Returns one HuffPost author or contributor's public profile: name, job title, headshot, biography, social links, and their recent articles.
+
+### `huffpost_headlines`
+
+Get HuffPost section headlines. Returns fresh headlines from one public HuffPost topic hub.
+
+### `huffpost_news`
+
+Get HuffPost top stories. Returns fresh HuffPost top stories from its public homepage.
+
+### `huffpost_sections`
+
+Get HuffPost sections. Returns the live-verified public HuffPost topic-hub inventory used by the headlines endpoint.
+
+### `ign_article`
+
+Get IGN article or review content. Returns public IGN article or review metadata and body paragraphs from a canonical article URL. Only canonical https://www.ign.com/articles/<slug> URLs are accepted; wiki, video, and game/movie/TV hub pages return an invalid-parameter error.
+
+### `ign_author`
+
+Get an IGN author profile. Returns one IGN author's public profile: name, job title, location, biography, social links, and their recent articles.
+
+### `ign_headlines`
+
+Get IGN section headlines. Returns fresh IGN headlines from one public section feed.
+
+### `ign_news`
+
+Get IGN top stories. Returns fresh IGN top stories (gaming and entertainment news) from the public RSS feed.
+
+### `ign_sections`
+
+Get IGN sections. Returns the public IGN section taxonomy used by the headlines endpoint.
 
 ### `ikea_availability`
 
@@ -4096,6 +5408,126 @@ Indeed location suggestions. Returns Indeed's own location-search autocomplete s
 
 Indeed job search. Searches Indeed job postings by keyword and location. Primary transport is Indeed's own credential-free GraphQL API; a page 1, unfiltered-by-date request uses it directly. Requesting page 2+ or the 'fromage' filter (not yet expressible over the primary transport) uses the original web-page transport instead, with the same normalized response shape either way. 'sort' enum: 'relevance' (default), 'date'.
 
+### `independent_article`
+
+Get The Independent article content. Returns public The Independent article metadata and body paragraphs from a canonical article URL.
+
+### `independent_author`
+
+Get an Independent author profile. Returns one Independent author's public profile: name, job title, bio, X/Twitter handle, and their recent articles.
+
+### `independent_headlines`
+
+Get The Independent section headlines. Returns fresh headlines from one public The Independent RSS section.
+
+### `independent_news`
+
+Get The Independent top stories. Returns fresh The Independent top stories from its public RSS feed.
+
+### `independent_sections`
+
+Get The Independent RSS sections. Returns the live-verified public RSS section inventory for The Independent.
+
+### `indianexpress_article`
+
+Get The Indian Express article content. Returns public The Indian Express article metadata and body paragraphs from a canonical article URL. A story gated behind an Express Premium subscription returns a permission error instead of a truncated or paid body.
+
+### `indianexpress_author`
+
+Get a The Indian Express author profile. Returns a The Indian Express author's byline metadata, biography, and recent articles from a canonical author URL.
+
+### `indianexpress_headlines`
+
+Get The Indian Express section headlines. Returns fresh headlines from one public The Indian Express RSS section.
+
+### `indianexpress_news`
+
+Get The Indian Express top stories. Returns fresh The Indian Express top stories from its public RSS feed.
+
+### `indianexpress_sections`
+
+Get The Indian Express RSS sections. Returns the public The Indian Express RSS section inventory used by the headlines endpoint.
+
+### `indiatoday_article`
+
+Get India Today article content. Returns public India Today article metadata and body paragraphs from a canonical story URL. Subscriber-only magazine stories return only the public teaser with paywalled set to true.
+
+### `indiatoday_author`
+
+Get an India Today author profile. Returns an India Today author's name, job title, headshot, biography, and recent stories from a canonical author URL.
+
+### `indiatoday_headlines`
+
+Get India Today section headlines. Returns current headlines from one India Today section hub page.
+
+### `indiatoday_news`
+
+Get India Today top stories. Returns fresh India Today top stories from its public RSS feed (text stories only; video and photo items are omitted).
+
+### `indiatoday_sections`
+
+Get India Today sections. Returns the live-verified India Today section inventory used by the headlines endpoint.
+
+### `indiewire_article`
+
+Get IndieWire article content. Returns public IndieWire article metadata (title, author(s), published/updated dates, section, lead image) and the body paragraphs an anonymous visitor sees, from a canonical article URL. Paywalled content is never bypassed; a gated story would return only its public portion.
+
+### `indiewire_author`
+
+Get an IndieWire author profile. Returns one IndieWire staff writer or contributor's public profile: name, headshot, biography, any listed social/contact links, and one page of their recent articles.
+
+### `indiewire_headlines`
+
+Get IndieWire section headlines. Returns fresh headlines from one public IndieWire section feed. Gallery and list pages are omitted because they are not text articles.
+
+### `indiewire_news`
+
+Get IndieWire top stories. Returns fresh IndieWire independent film, TV and awards top stories from its public RSS feed.
+
+### `indiewire_sections`
+
+Get IndieWire sections. Returns the complete public section inventory accepted by /api/v1/indiewire/headlines (IndieWire's 32 editorial categories).
+
+### `inews_article`
+
+Get i article content. Returns public i article metadata (headline, description, section, authors, publish/update times, lead image) and body paragraphs from a canonical article URL.
+
+### `inews_author`
+
+Get an i author profile. Returns an i author's name, biography, social links, and most recent articles from a canonical author URL.
+
+### `inews_headlines`
+
+Get i section headlines. Returns fresh headlines from one public i section feed. The section must be a slug returned by the sections endpoint.
+
+### `inews_news`
+
+Get i top stories. Returns fresh i (inews.co.uk) top stories from the site's public RSS feed, with summary, author, publish time, and lead image when present.
+
+### `inews_sections`
+
+Get i sections. Returns every i section slug accepted by the headlines endpoint, with its display name and public RSS feed URL.
+
+### `inquirer_article`
+
+Get Philippine Daily Inquirer article content. Returns public Philippine Daily Inquirer article metadata and body paragraphs from a canonical article URL on any of its ten public news subdomains.
+
+### `inquirer_author`
+
+Get a Philippine Daily Inquirer author profile. Returns one Philippine Daily Inquirer byline's public archive page: the contributor's name and their recent articles on that subdomain, from a canonical byline URL. Byline pages are per-subdomain, so an author's articles from a different section require calling this endpoint again with that section's own byline URL.
+
+### `inquirer_headlines`
+
+Get Philippine Daily Inquirer section headlines. Returns fresh headlines from one Philippine Daily Inquirer section's public RSS feed.
+
+### `inquirer_news`
+
+Get Philippine Daily Inquirer top stories. Returns fresh Philippine Daily Inquirer top stories from its public news RSS feed.
+
+### `inquirer_sections`
+
+Get Philippine Daily Inquirer sections. Returns the Philippine Daily Inquirer section inventory: the ten public news subdomains accepted by inquirer-headlines.
+
 ### `instacart_departments`
 
 Get Instacart store department taxonomy. Returns a store's department/category taxonomy (Produce, Dairy & Eggs, Bakery, ...) two levels deep -- department and subcategory. Metadata only, does not return products. Public data sourced from Instacart's own storefront navigation.
@@ -4131,6 +5563,86 @@ Retrieve an Instagram user profile by username. Returns public profile details f
 ### `instagram_reels`
 
 Retrieve Instagram Reels for a user. Returns a feed of Instagram Reels for the specified user ID. Supports pagination via 'max_id'.
+
+### `investopedia_article`
+
+Get Investopedia article content. Returns metadata (title, description, dates, section, authors, image) and body paragraphs for a public Investopedia page that uses the article template: news stories, dictionary terms (/terms/...), explainers and Q&A pages (/articles/..., /ask/answers/..., and similar), and product roundups. Section listing pages and author profiles are rejected with a 400 that names the endpoint to use instead.
+
+### `investopedia_author`
+
+Get an Investopedia author or expert profile. Returns an Investopedia writer, editor, reviewer, or expert contributor's public profile (name, job title, summary, photo, credentials such as education, location, and expertise, personal social links, biography, favorite quote) and their recent articles.
+
+### `investopedia_headlines`
+
+Get Investopedia section headlines. Returns the current story list from one Investopedia section, with title, URL, byline, and image. section accepts any slug returned by GET /investopedia/sections.
+
+### `investopedia_news`
+
+Get Investopedia latest news. Returns the newest Investopedia news stories (markets, companies, earnings, economy, government, crypto, rates, and personal finance news), with title, URL, byline, and image.
+
+### `investopedia_sections`
+
+Get Investopedia sections. Returns the full Investopedia section inventory (43 news, investing, banking, personal finance, economy, and reviews sections), each with a slug, display name, and public listing URL. Use a returned slug as the section parameter on GET /investopedia/headlines.
+
+### `iol_article`
+
+Get IOL article content. Returns public IOL article metadata and body paragraphs from a canonical article URL.
+
+### `iol_author`
+
+Get an IOL author profile. Returns one IOL author's public profile: name, role, photo, and the recent articles listed on their page.
+
+### `iol_headlines`
+
+Get IOL section headlines. Returns fresh headlines from one public IOL section feed.
+
+### `iol_news`
+
+Get IOL top stories. Returns fresh IOL (Independent Online, South Africa) stories from the public news feed.
+
+### `iol_sections`
+
+Get IOL sections. Returns the verified IOL section inventory accepted by the headlines endpoint: news, sport, business, lifestyle, entertainment, technology, motoring, travel and opinion, their sub-sections, provincial news and the sister-title feeds.
+
+### `irishindependent_article`
+
+Get Irish Independent article content. Returns public Irish Independent article metadata (headline, description, section, authors, publish/update times, lead image) and body paragraphs from a canonical article URL. Premium articles are served to anonymous readers as a one-paragraph teaser; those are returned with paywalled set to true and only the teaser paragraph.
+
+### `irishindependent_author`
+
+Get an Irish Independent author profile. Returns an Irish Independent author's name, biography, published email and social links, headshot, and their most recent articles (the first page of the profile's article list) from a canonical author URL.
+
+### `irishindependent_headlines`
+
+Get Irish Independent section headlines. Returns fresh headlines from one public Irish Independent section feed. The section must be a slug returned by the sections endpoint.
+
+### `irishindependent_news`
+
+Get Irish Independent top stories. Returns fresh Irish Independent (independent.ie) top stories from the site's public RSS feed, with summary, author, publish time, and lead image when present. Some stories are premium (subscriber) content; open them with the article endpoint to see the paywalled flag.
+
+### `irishindependent_sections`
+
+Get Irish Independent sections. Returns every Irish Independent section slug accepted by the headlines endpoint (national, regional and county news, sport, business, comment, lifestyle and entertainment), with its display name and public RSS feed URL.
+
+### `irishtimes_article`
+
+Get Irish Times article content. Returns public Irish Times article metadata and body paragraphs from a canonical article URL. A subscriber-only (premium) article returns a permission error instead of its body; metered articles are returned in full.
+
+### `irishtimes_author`
+
+Get an Irish Times author profile. Returns an Irish Times author's name, job title, biography, headshot, contact details, and recent articles from a canonical author URL.
+
+### `irishtimes_headlines`
+
+Get Irish Times section headlines. Returns fresh headlines from one public Irish Times section.
+
+### `irishtimes_news`
+
+Get Irish Times top stories. Returns fresh Irish Times top stories from its public Irish news feed.
+
+### `irishtimes_sections`
+
+Get Irish Times sections. Returns the public Irish Times section inventory used by the headlines endpoint.
 
 ### `jcrew_categories`
 
@@ -4506,7 +6018,7 @@ Look up one KFC promotion by its redemption code or serialized code. Returns one
 
 ### `kfc_promotions`
 
-Get one KFC restaurant's current public promotions. Returns one restaurant's current public promotions -- current deals and offers KFC's storefront marks as public, with each promotion's id, internal and display name, description, and whether it applies automatically or requires a redemption code. A store with no active public promotions returns an empty list rather than an error.
+Get one KFC restaurant's current public promotions. Returns one restaurant's current public promotions -- current deals and offers KFC's storefront marks as public, with each promotion's id, internal and display name, description, whether it applies automatically, and active redemption codes when KFC exposes them. The returned codes can be passed to kfc-promotion. A store with no active public promotions returns an empty list rather than an error.
 
 ### `kfc_store`
 
@@ -4515,6 +6027,26 @@ Get one KFC restaurant by its store number. Returns one KFC restaurant's detail 
 ### `kfc_stores`
 
 Search KFC restaurants by city, state, postal code, name, franchise code, or store number. Returns KFC restaurants matching a city/state/postal code/name/franchise code/store number filter. At least one filter is required -- an unfiltered call would enumerate every US restaurant in one response, which this endpoint intentionally does not expose. Each restaurant carries its store number (the value /kfc/menu and /kfc/promotions take), full address with coordinates, phone, whether it currently accepts online orders, and its timezone. appear_in_store_results (default true) excludes internal/test records KFC's own storefront does not surface in customer-facing search -- confirmed live that a raw filter can otherwise return non-orderable administrative entries alongside real restaurants.
+
+### `khaleejtimes_article`
+
+Get Khaleej Times article content. Returns public Khaleej Times article metadata and body paragraphs from a canonical article URL. Live-blog pages are accepted and return their timestamped update headlines as paragraphs.
+
+### `khaleejtimes_author`
+
+Get a Khaleej Times author profile. Returns a Khaleej Times author's name, photo, biography, and most recent articles (first page) from a canonical author profile URL.
+
+### `khaleejtimes_headlines`
+
+Get Khaleej Times section headlines. Returns fresh headlines from one public Khaleej Times section (top-level sections and sub-sections).
+
+### `khaleejtimes_news`
+
+Get Khaleej Times top stories. Returns fresh Khaleej Times top stories from its public Google News sitemap (the site publishes no RSS feed). Video, partner-content, and section pages are left out.
+
+### `khaleejtimes_sections`
+
+Get Khaleej Times sections. Returns the public Khaleej Times section inventory used by the headlines endpoint. A section slug is its URL path with slashes turned into hyphens (for example business-markets for /business/markets).
 
 ### `kickstarter_comments`
 
@@ -4547,6 +6079,26 @@ Find nearby Kohl's store locations. Returns physical Kohl's store locations near
 ### `kohls_suggest`
 
 Kohl's search-box typeahead suggestions. Returns Kohl's own search-box typeahead result for a partial query: a flat list of suggested search phrases (no product data). A nonsense query returns a genuine, well-formed empty list rather than an error.
+
+### `kotaku_article`
+
+Get Kotaku article content. Returns public Kotaku article metadata and body paragraphs from a canonical article URL. Kotaku articles are free to read, so the full body is returned.
+
+### `kotaku_author`
+
+Get a Kotaku author profile. Returns a Kotaku author's name, biography, headshot, social links, and most recent articles from a canonical author URL.
+
+### `kotaku_headlines`
+
+Get Kotaku section headlines. Returns fresh headlines from one Kotaku section's public RSS feed.
+
+### `kotaku_news`
+
+Get Kotaku top stories. Returns fresh Kotaku gaming stories from its public RSS feed.
+
+### `kotaku_sections`
+
+Get Kotaku sections. Returns the Kotaku section inventory: Entertainment (with its Action, Fantasy, Horror, Sci-Fi, and Superhero sub-topics), Reviews, the Culture umbrella's own sub-topics (News, Retro, Kotaku Game Diary, YouTube, Odds and Ends, Feature, Fine Art), Tips & Guides, Games, and Deals, each linking to its public RSS feed. Every slug is accepted by the headlines endpoint.
 
 ### `kroger_categories`
 
@@ -4636,6 +6188,10 @@ Get Kylie Cosmetics store metadata. Returns normalized storefront metadata for K
 
 Get Los Angeles Times article content. Returns a Los Angeles Times article's public metadata and body paragraphs from a canonical article URL, read from the page's NewsArticle structured data.
 
+### `latimes_author`
+
+Get a Los Angeles Times author profile. Returns a Los Angeles Times author's byline metadata, biography, contact/social links, and recent articles from a canonical author URL.
+
 ### `latimes_headlines`
 
 Get Los Angeles Times section headlines. Returns fresh headlines from a public Los Angeles Times section RSS feed: title, canonical URL, summary, author, publication time, and lead image. section defaults to main.
@@ -4724,6 +6280,118 @@ Search the LinkedIn product directory. Returns one page of LinkedIn's public pro
 
 Get Linkedin Showcase Page Info. Returns detailed information about a LinkedIn showcase page by ID.
 
+### `livemint_article`
+
+Get Mint article content. Returns public Mint article metadata and body paragraphs from a canonical article URL. A story Mint marks "Mint Premium" returns a permission error instead of a body.
+
+### `livemint_author`
+
+Get a Mint author profile. Returns a Mint author's byline metadata, biography, and social links from a canonical author profile URL.
+
+### `livemint_headlines`
+
+Get Mint section headlines. Returns fresh headlines from one public Mint section.
+
+### `livemint_news`
+
+Get Mint top stories. Returns fresh Mint (livemint.com) top stories from its public "news" feed.
+
+### `livemint_sections`
+
+Get Mint sections. Returns the public Mint section inventory used by the headlines endpoint.
+
+### `liverpoolecho_article`
+
+Get Liverpool Echo article content. Returns public Liverpool Echo article metadata (including the section) and body paragraphs from a canonical article URL. Photo-gallery URLs are rejected.
+
+### `liverpoolecho_author`
+
+Get a Liverpool Echo author profile. Returns one Liverpool Echo author's public profile: name, job title, bio, email, X/Twitter handle, and one page of their recent articles.
+
+### `liverpoolecho_headlines`
+
+Get Liverpool Echo section headlines. Returns fresh headlines from one public Liverpool Echo section. Photo galleries are omitted because they have no readable article body.
+
+### `liverpoolecho_news`
+
+Get Liverpool Echo top stories. Returns fresh Liverpool Echo top stories from the public home RSS feed. Photo galleries are omitted because they have no readable article body.
+
+### `liverpoolecho_sections`
+
+Get Liverpool Echo sections. Returns the public Liverpool Echo editorial section inventory used by liverpoolecho-headlines.
+
+### `livescience_article`
+
+Get Live Science article content. Returns public Live Science article metadata and body paragraphs from a canonical article URL.
+
+### `livescience_author`
+
+Get a Live Science author profile. Returns one Live Science author's public profile: name, job title, biography, social links, and one page of their recent articles.
+
+### `livescience_headlines`
+
+Get Live Science section headlines. Returns fresh Live Science headlines from one public section hub page.
+
+### `livescience_news`
+
+Get Live Science top stories. Returns fresh Live Science top stories from the public RSS feed.
+
+### `livescience_sections`
+
+Get Live Science sections. Returns the public Live Science top-level editorial taxonomy used by the headlines endpoint.
+
+### `livescore_competition`
+
+LiveScore competition page and section data. Returns the public page data for a competition route or one of its visible sections. Competition ids and tabs vary by sport; use paths linked from LiveScore's public navigation. This is a route lookup, not a complete competition directory.
+
+### `livescore_live_scores`
+
+LiveScore live scores by sport. Returns current live sections for a supported sport. Empty Sctns is a valid result when there are no live events. Use Nav and the final section Id for cursor paging.
+
+### `livescore_match`
+
+LiveScore match details. Returns the event data embedded in a public LiveScore match page. Data uses LiveScore's event payload shape; available fields vary by event and stage.
+
+### `livescore_match_stats`
+
+LiveScore match statistics. Returns the statistics section for a LiveScore match when the source exposes it. The current Next.js build id is resolved from the public match page at request time.
+
+### `livescore_news`
+
+LiveScore news by category or topic. Returns public article-card metadata for a LiveScore news route. Discover sport, competition, team, tips, and daily-feed paths from /livescore/news-categories.
+
+### `livescore_news_article`
+
+LiveScore news article. Returns the public full article record, including the article's structured content when supplied by LiveScore. Copy the path following /en/news/ from an article slug in /livescore/news.
+
+### `livescore_news_categories`
+
+LiveScore news categories. Returns all current public news routes from LiveScore's own category sitemap files, including sports, competitions, tips, daily team feeds, and teams. The values update with the source sitemap.
+
+### `livescore_news_feed`
+
+LiveScore global RSS news feed. Returns latest public news item metadata from LiveScore's global RSS feed. The source feed may include multiple sports and has no verified category filter.
+
+### `livescore_player`
+
+LiveScore player profile. Returns the public overview profile data for a player linked from a team squad, including player identity, current team/competition, career teams, recent-match context, and player league summary when supplied.
+
+### `livescore_scores`
+
+LiveScore scores and fixtures by sport and date. Returns either the unpaged full-day scoreboard or one cursor-paged UI-style section page for a supported sport and date. The response's Nav values indicate whether another page is available; use the last returned section Id as cursor. Sport ids are discoverable from /livescore/sports.
+
+### `livescore_scores_toc`
+
+LiveScore score date table of contents. Returns the event, player, section, and competition identifiers indexed by a sport and date. These IDs are date-specific and can help callers enumerate score-page sections.
+
+### `livescore_sports`
+
+LiveScore supported sports. Returns the complete five-sport set shown in LiveScore's fixture navigation. Use a sport id with /livescore/scores.
+
+### `livescore_team`
+
+LiveScore team page and section data. Returns a public team page section such as overview, fixtures, results, standings, squad, player stats, or team stats. Tab paths and competition-specific identifiers are supplied by the source page; copy a team tab href from LiveScore.
+
 ### `lululemon_categories`
 
 Browse lululemon's storefront category navigation. Returns lululemon's own storefront category navigation, flattened out of the site's shared header nav: every navigable category with its display name, breadcrumb path, and the exact category/cdp_hash pair lululemon-category's own parameters expect (read directly from the nav's own URL, not guessed from the display label). section, when given, filters the result to one top-level nav section.
@@ -4743,6 +6411,26 @@ Get a lululemon product's full detail. Returns one lululemon product's full deta
 ### `lululemon_stores`
 
 Browse lululemon's physical store directory. Returns lululemon's own complete physical store directory (480 US and 86 Canada locations as of this endpoint's own research), including regular weekly hours and in-store amenities. All filters are optional and applied locally after fetching the full directory -- there is no live geo-search API on a credential-free host for this platform. country and state are free-text equality filters against the values this directory actually carries (2-letter codes, e.g. US/CA, NY/CA), not an enforced enum. lat and lng (both required together) filter to stores within radius_miles (1 to 500, defaults to 50), sorted nearest-first.
+
+### `macrumors_article`
+
+Get MacRumors article content. Returns public MacRumors article metadata and body paragraphs from a canonical news, guide, how-to or review URL.
+
+### `macrumors_author`
+
+Get a MacRumors author profile. Returns one MacRumors author's public profile: name, bio, avatar, and their recent articles.
+
+### `macrumors_headlines`
+
+Get MacRumors section headlines. Returns fresh headlines from one public MacRumors section.
+
+### `macrumors_news`
+
+Get MacRumors top stories. Returns fresh MacRumors Apple news and rumor stories from the public all-stories RSS feed.
+
+### `macrumors_sections`
+
+Get MacRumors sections. Returns the public MacRumors editorial section inventory.
 
 ### `macys_product`
 
@@ -4780,6 +6468,46 @@ List titles recommended alongside a manga. Returns the titles AniList users reco
 
 List a manga's staff credits. Returns the people credited on a manga -- author, artist, assistants, and per-language translation and lettering credits -- with each person's role, occupations and image, paginated. Manga roles carry detail anime credits do not: a long-running series records volume ranges per credit (e.g. "Story & Art (vols 1-41)", "Supervisor (vols 41- )"). An anime id here returns 404 -- use GET /anime/title/{id}/staff for those. Credential-free public AniList data.
 
+### `marketwatch_article`
+
+Get MarketWatch article content. Returns public MarketWatch article metadata and body paragraphs from a canonical article URL.
+
+### `marketwatch_author`
+
+Get a MarketWatch author profile. Returns one MarketWatch author's public profile: name, job title, bio, and their recent articles.
+
+### `marketwatch_headlines`
+
+Get MarketWatch section headlines. Returns fresh headlines from one public MarketWatch section.
+
+### `marketwatch_news`
+
+Get MarketWatch top stories. Returns fresh MarketWatch stories from the public Top Stories RSS feed.
+
+### `marketwatch_sections`
+
+Get MarketWatch sections. Returns the public MarketWatch editorial section inventory.
+
+### `mashable_article`
+
+Get Mashable article content. Returns public Mashable article metadata and body paragraphs from a canonical article URL. Mashable articles are free to read, so the full body is returned.
+
+### `mashable_author`
+
+Get a Mashable author profile. Returns one Mashable author's public profile (name, job title, biography, image, social links) plus one page of their recent articles. Profile fields are only present on page 1.
+
+### `mashable_headlines`
+
+Get Mashable section headlines. Returns fresh Mashable headlines from one public category RSS feed. Sponsored partner posts, shopping roundups, reviews, and video pages are not included.
+
+### `mashable_news`
+
+Get Mashable top stories. Returns fresh Mashable top stories from the public all-stories RSS feed. Mashable articles are free to read; sponsored partner posts, shopping roundups, reviews, and video pages are not included.
+
+### `mashable_sections`
+
+Get Mashable sections. Returns the public Mashable category taxonomy accepted by the headlines endpoint. Only categories that publish a working public RSS feed are listed.
+
 ### `mcdonalds_categories`
 
 List McDonald's menu categories. Returns one market's McDonald's menu categories -- 13 in the United States at time of writing, including breakfast, burgers, chicken-and-fish-sandwiches, mcnuggets-and-mccrispy-strips, snack-wrap, fries-sides, happy-meal, sweets-treats, mccafe-coffees, drinks, sauces-and-condiments and the two value menus; other markets publish their own, from 6 in Switzerland to 17 in Australia. Each entry's slug is the value GET /mcdonalds/menu takes. Slugs are not portable between markets, so pass the same country back. Eight markets publish a reachable menu, fewer than the ten the restaurant locator covers.
@@ -4803,6 +6531,46 @@ Get one McDonald's restaurant's priced menu. Returns one restaurant's full menu 
 ### `mcdonalds_restaurants`
 
 Find McDonald's restaurants near a location. Returns McDonald's restaurants near a latitude/longitude, in any of ten markets. Each restaurant carries its store id, name, street address, city, state, postal code, phone, coordinates, timezone, open status, today's dining and drive-thru hours, the full published week of hours, and McDonald's own amenity codes (for example DRIVETHRU, WIFI, MOBILEOFFERS, GIFTCARDS). A delivery deep link is included where McDonald's publishes one; note it points at a third-party delivery platform. A coordinate with no McDonald's nearby returns an empty list rather than an error. Set country to search outside the United States -- the locator covers more markets than the menu and item endpoints do, so a country valid here is not necessarily valid there.
+
+### `mediaite_article`
+
+Get Mediaite article content. Returns public Mediaite article metadata and body paragraphs from a canonical article URL. Mediaite One Sheet (premium) pages are flagged paywalled.
+
+### `mediaite_author`
+
+Get a Mediaite author profile. Returns one Mediaite author's public profile: name, biography, avatar, email and X/Twitter links, and their recent articles.
+
+### `mediaite_headlines`
+
+Get Mediaite section headlines. Returns fresh Mediaite headlines from one public category feed.
+
+### `mediaite_news`
+
+Get Mediaite top stories. Returns fresh Mediaite top stories from the public news feed.
+
+### `mediaite_sections`
+
+Get Mediaite sections. Returns the public Mediaite category taxonomy accepted by the headlines endpoint.
+
+### `men_article`
+
+Get Manchester Evening News article content. Returns public Manchester Evening News article metadata and body paragraphs from a canonical article URL.
+
+### `men_author`
+
+Get a Manchester Evening News author profile. Returns one Manchester Evening News author's public profile: name, job title, bio, email, X/Twitter handle, and their recent articles.
+
+### `men_headlines`
+
+Get Manchester Evening News section headlines. Returns fresh headlines from one public Manchester Evening News section.
+
+### `men_news`
+
+Get Manchester Evening News top stories. Returns fresh Manchester Evening News top stories from the public News RSS feed.
+
+### `men_sections`
+
+Get Manchester Evening News sections. Returns the public Manchester Evening News editorial section inventory used by men-headlines.
 
 ### `mercari_autocomplete`
 
@@ -4920,6 +6688,102 @@ Metaculus top comments feed. Returns normalized Metaculus question rows for the 
 
 Metaculus tournament questions. Returns normalized Metaculus question rows for one public tournament, filtered by its slug. A slug that does not exist returns 404.
 
+### `metro_article`
+
+Get Metro article content. Returns public Metro article metadata (headline, description, section, authors, publish/update times, lead image) and body paragraphs from a canonical article URL. Metro articles are free to read; live-blog entries are included in the body.
+
+### `metro_author`
+
+Get a Metro author profile. Returns a Metro author's name, job title, biography, topic areas, social links, and most recent articles from a canonical author URL.
+
+### `metro_headlines`
+
+Get Metro section headlines. Returns fresh headlines from one public Metro section feed. The section must be a slug returned by the sections endpoint.
+
+### `metro_news`
+
+Get Metro top stories. Returns fresh Metro (metro.co.uk) top stories from the site's public RSS feed, with summary, author, publish time, and lead image when present.
+
+### `metro_sections`
+
+Get Metro sections. Returns every Metro section slug accepted by the headlines endpoint, with its display name and public RSS feed URL.
+
+### `microsoftstore_categories`
+
+Get the full Microsoft Store category (and subcategory) taxonomy for a department. Returns every accepted category for a department, and -- apps only -- each category's own finer subcategories (e.g. Books & reference -> E-reader, Fiction, Nonfiction, Reference). This is the discovery endpoint for the category/subcategory values accepted by /microsoftstore/search, /microsoftstore/category, and /microsoftstore/charts. Subcategories are apps-only: games categories have none. Credential-free public Microsoft Store data, live-verified and pinned rather than a passthrough call.
+
+### `microsoftstore_category`
+
+Browse a Microsoft Store category without a keyword. Returns a page of a single department+category listing, cursor-paginated, with no search keyword required -- the credential-free way to list an entire category (search requires a non-empty query and returns nothing for an empty one). category is required; the accepted set depends on media_type (see /microsoftstore/search's markdown doc for the full per-department lists). media_type defaults to apps; all is not accepted here since it has no category filter upstream. Credential-free public Microsoft Store data, read directly from the store's own category-filter API.
+
+### `microsoftstore_charts`
+
+Get a curated Microsoft Store chart. Returns a curated Microsoft Store chart (top free, top paid, top grossing, trending, deals, new releases, getting-started picks, or -- apps only -- most popular), optionally scoped to a category/subcategory and, for games, by Xbox Game Pass availability or player count. Some charts (notably NewAndRising) can legitimately return fewer items than page_size even at the first page -- that reflects real upstream sparsity for that chart, not a parsing gap. Credential-free public Microsoft Store data, read directly from the store's own curated-list API.
+
+### `microsoftstore_editorial`
+
+Get a Microsoft Store editorial article by id. Returns a Microsoft Store editorial article (currently only seen in the wild as a per-product Microsoft Store Awards writeup). There is no discovery endpoint for editorial ids: they are only found embedded in a product's own award.editorial_id field, returned by /microsoftstore/search, /microsoftstore/category, /microsoftstore/charts, /microsoftstore/publisher, and /microsoftstore/related when that product carries an award. An unknown/invalid id returns a 503 upstream error, not a clean 404 -- the upstream itself does not distinguish the two. Credential-free public Microsoft Store data, read directly from the store's own editorial-page API.
+
+### `microsoftstore_events`
+
+Get a Microsoft Store department's special-events shelf. Returns a department's "Special events" promotional shelf -- featured/limited-time products, distinct from the ranked charts (/microsoftstore/charts) and the curated home/department spotlight (/microsoftstore/spotlight). Only apps and games have this shelf; any other media_type is rejected. Credential-free public Microsoft Store data, read directly from the store's own promotional-events API.
+
+### `microsoftstore_product`
+
+Get Microsoft Store details for a single product. Returns normalized Microsoft Store listing details for a single product id: title, description, publisher, category, media type, aggregate rating and content-rating breakdown, price and SKU summary, size, supported platforms/languages, capabilities, version/release/update timestamps, feature callouts, and media (icon, poster art, screenshots, trailers). Credential-free public Microsoft Store data, read directly from the store's own page-data API.
+
+### `microsoftstore_publisher`
+
+List a Microsoft Store publisher's full catalog. Returns every product a publisher/developer has listed on the Microsoft Store, cursor-paginated. publisher_name must match the publisher name exactly as shown on a listing (e.g. the publisher field returned by /microsoftstore/product or /microsoftstore/search). Credential-free public Microsoft Store data, read directly from the store's own browse-by-publisher API.
+
+### `microsoftstore_recommended`
+
+Get the Microsoft Store's default recommendation shelf. Returns the store's default, query-less "Recommended for you" shelf -- the same recommendations the search box shows before a caller types anything. No query parameters beyond region/locale. Credential-free public Microsoft Store data, read directly from the store's own zero-state search API.
+
+### `microsoftstore_related`
+
+Get products related to a Microsoft Store product. Returns products related to a seed product id, paginated. product_type must match the seed product's own media type (apps -> Application, games -> Game, passes -> Passes) -- any other value is rejected upstream. Omit product_type to have it resolved automatically from product_id via one extra lightweight lookup; pass it explicitly to skip that lookup. Credential-free public Microsoft Store data, read directly from the store's own recommendation API.
+
+### `microsoftstore_reviews`
+
+Get paginated Microsoft Store reviews for a product. Returns one page of written Microsoft Store reviews for a product id, each with rating, title, text, submission time, helpful-vote counts, and device/OS info. sort controls ordering (MostHelpful or MostRecent -- the only two values the upstream API itself accepts; any other value is rejected). Credential-free public Microsoft Store data, read directly from the store's own review-listing API.
+
+### `microsoftstore_reviews_summary`
+
+Get a Microsoft Store product's aggregate rating summary. Returns a product's aggregate rating: average rating, total review count, a 1-5 star rating distribution, and the upstream-selected most critical and most favorable written reviews. Credential-free public Microsoft Store data, read directly from the store's own review-summary API.
+
+### `microsoftstore_search`
+
+Search the Microsoft Store. Returns a page of Microsoft Store search results (apps, games, devices, and other listings) for a keyword, with cursor-based pagination and per-item publisher, rating, price, and media. media_type selects the department (apps, games, devices, passes, fonts, themes, tencent-android, tencent-mini, or all); category further filters within that department (the accepted set depends on media_type -- see the markdown doc for the full per-department lists). Pass the previous response's next_cursor to fetch the next page. Credential-free public Microsoft Store data, read directly from the store's own web API.
+
+### `microsoftstore_spotlight`
+
+Get the Microsoft Store home page or department spotlight. Returns the curated hero/spotlight shelf shown at the top of the store's home page or one department's landing page (the large featured banners, not the ranked charts or the smaller "Special events" shelf). Only home, apps, and games have a spotlight; any other media_type is rejected. Credential-free public Microsoft Store data, read directly from the store's own promotion-products API.
+
+### `microsoftstore_suggest`
+
+Get Microsoft Store search suggestions for a prefix. Returns typeahead-style Microsoft Store search suggestions for a partial search term: plain-text completions plus a short list of matching products (id, title, icon, department, and store URL). Credential-free public Microsoft Store data, read directly from the store's own autocomplete API.
+
+### `mirror_article`
+
+Get Mirror article content. Returns public Mirror article metadata and body paragraphs from a canonical article URL.
+
+### `mirror_author`
+
+Get a Mirror author profile. Returns one Mirror author's public profile: name, job title, bio, email, X/Twitter handle, and their recent articles.
+
+### `mirror_headlines`
+
+Get Mirror section headlines. Returns fresh headlines from one public Mirror section.
+
+### `mirror_news`
+
+Get Mirror top stories. Returns fresh Mirror top stories from the public News RSS feed.
+
+### `mirror_sections`
+
+Get Mirror sections. Returns the public Mirror editorial section inventory used by mirror-headlines.
+
 ### `mlb_game`
 
 Get an MLB game feed. Returns a compact MLB game feed with status, teams, score, innings, probable pitchers, decisions, and team box-score totals.
@@ -5008,6 +6872,26 @@ List Moncler boutiques. Returns Moncler's full worldwide boutique list: name, co
 
 Get Moncler search-box suggestions. Returns the storefront's own search-box suggestions (typeahead) for a partial query: completed/corrected search terms, suggested full phrases, and matching categories. Not product data.
 
+### `moneycontrol_article`
+
+Get Moneycontrol article content. Returns public Moneycontrol article metadata and body paragraphs from a canonical article URL. Moneycontrol Pro subscriber stories are refused with a 403 permission error because no free content is available. Live blogs return one paragraph per update.
+
+### `moneycontrol_author`
+
+Get a Moneycontrol author profile. Returns a Moneycontrol author's name, job title, biography (when present), social links, and recent articles from a canonical author URL.
+
+### `moneycontrol_headlines`
+
+Get Moneycontrol section headlines. Returns the current headlines of one Moneycontrol news section (25 to 50 stories, without publication times).
+
+### `moneycontrol_news`
+
+Get Moneycontrol latest news. Returns the 50 newest Moneycontrol stories across all sections, newest first, with publication time and image.
+
+### `moneycontrol_sections`
+
+Get Moneycontrol sections. Returns the Moneycontrol news sections accepted by the headlines endpoint.
+
 ### `monitors_checks`
 
 List a monitor's check history. Returns the caller's own monitor's most recent check runs (most recent first, capped at 50), including webhook delivery status per run.
@@ -5031,6 +6915,202 @@ List website-change monitors. Returns the caller's own monitors (most recently c
 ### `monitors_update`
 
 Update a website-change monitor. Partially updates one of the caller's own monitors. Free to call. Changing 'target_type' or 'sitemap' resets the stored diff baseline (fingerprint, snapshot, or URL set), so the next check establishes a fresh baseline instead of comparing against a now-meaningless prior state.
+
+### `nationafrica_article`
+
+Get Nation Africa article content. Returns public Nation Africa article metadata and body paragraphs from a canonical article URL. paywalled is true for a Premium story: the publisher serves an anonymous reader only the opening paragraph(s), so paragraphs is a partial teaser and nothing is bypassed. Video, photo, audio, puzzle and cartoon URLs are rejected with a 400.
+
+### `nationafrica_author`
+
+Get a Nation Africa author profile. Returns one Nation Africa author's public profile: name, bio, portrait and the latest stories the profile page itself lists (a handful; the site loads the full list separately and it is not read).
+
+### `nationafrica_headlines`
+
+Get Nation Africa section headlines. Returns the current story teasers of one public Nation Africa section page. Subscriber-only stories carry type "premium". Teasers show only a relative age, so published_at is omitted.
+
+### `nationafrica_news`
+
+Get Nation Africa top stories. Returns the newest Nation Africa (Daily Nation, Kenya) stories from the site's public news sitemap: headline, publication time and lead image. Video pages are excluded.
+
+### `nationafrica_sections`
+
+Get Nation Africa sections. Returns the public Nation Africa (Kenya edition) editorial section inventory.
+
+### `nationalpost_article`
+
+Get National Post article content. Returns public National Post article metadata and body paragraphs from a canonical article URL. paywalled is true when the publisher marks the story subscriber-only or registration-gated; National Post gates these stories in the reader's browser but still serves the complete text to an anonymous request, so paragraphs is the whole body and nothing is bypassed. Category, tag, author and Sponsored URLs are rejected with a 400.
+
+### `nationalpost_author`
+
+Get a National Post author profile. Returns one National Post author's public profile: name, bio when the author has one, the total number of stories the page attributes to them, and their latest stories (first page).
+
+### `nationalpost_headlines`
+
+Get National Post section headlines. Returns fresh headlines from one public National Post section.
+
+### `nationalpost_news`
+
+Get National Post top stories. Returns fresh National Post stories from the public site-wide RSS feed.
+
+### `nationalpost_sections`
+
+Get National Post sections. Returns the public National Post editorial section inventory (the site's own primary navigation).
+
+### `nbc_article`
+
+Get NBC News article content. Returns public NBC News article metadata and body paragraphs from a canonical article URL. This does not bypass login, subscription, or other access controls.
+
+### `nbc_author`
+
+Get an NBC News author profile. Returns an NBC News author's byline metadata (job title, bio, social links) and their recent articles from a canonical author URL.
+
+### `nbc_headlines`
+
+Get NBC News section headlines. Returns fresh headlines from one public NBC News RSS section. Use nbc-sections for the current value space.
+
+### `nbc_news`
+
+Get NBC News top stories. Returns fresh NBC News top stories from the public site-wide RSS feed.
+
+### `nbc_sections`
+
+Get NBC News RSS sections. Returns the exact live-verified public RSS section slugs accepted by nbc-headlines.
+
+### `ndtv_article`
+
+Get NDTV article content. Returns public NDTV article metadata and body paragraphs from a canonical article URL. premium is true for NDTV Premium stories; paragraphs are always the text NDTV serves on its public page.
+
+### `ndtv_author`
+
+Get an NDTV author profile. Returns an NDTV author's or news agency's byline profile (name, role, biography, image) and their most recent stories from a canonical author URL.
+
+### `ndtv_headlines`
+
+Get NDTV section headlines. Returns the current story cards from one NDTV section page: title, canonical URL, and, where the section shows them, summary, publication time, byline, and image.
+
+### `ndtv_news`
+
+Get NDTV latest stories. Returns the stories NDTV published in roughly the last two days, newest first, from its public news sitemap: title, canonical URL, publication time, keywords, and lead image.
+
+### `ndtv_sections`
+
+Get NDTV sections. Returns every NDTV section slug accepted by the headlines endpoint, with its display name and page URL.
+
+### `news18_article`
+
+Get News18 article content. Returns public News18 article metadata and body paragraphs from a canonical article URL.
+
+### `news18_author`
+
+Get a News18 author profile. Returns a News18 author's byline metadata, biography, social links, and recent articles from a canonical author URL.
+
+### `news18_headlines`
+
+Get News18 section headlines. Returns fresh headlines from one public News18 RSS section.
+
+### `news18_news`
+
+Get News18 top stories. Returns fresh News18 top stories from its public RSS feed.
+
+### `news18_sections`
+
+Get News18 RSS sections. Returns the public News18 RSS section inventory used by the headlines endpoint.
+
+### `news24_article`
+
+Get News24 article content. Returns public News24 article metadata and body paragraphs from a canonical article URL. Subscriber-only articles return the standfirst as the only paragraph with paywalled set to true.
+
+### `news24_headlines`
+
+Get News24 section headlines. Returns fresh News24 headlines from one public section page. Cards that News24 marks subscriber-only carry type "subscriber".
+
+### `news24_news`
+
+Get News24 top stories. Returns fresh News24 top stories from the public homepage. Cards that News24 marks subscriber-only carry type "subscriber".
+
+### `news24_sections`
+
+Get News24 sections. Returns the public News24 section navigation accepted by the headlines endpoint.
+
+### `newscomau_article`
+
+Get News.com.au article content. Returns public News.com.au article metadata and body paragraphs from a canonical article URL.
+
+### `newscomau_author`
+
+Get a News.com.au author profile. Returns a News.com.au staff writer's profile (name, job title, headshot, biography, social links) and recent articles from a canonical author URL.
+
+### `newscomau_headlines`
+
+Get News.com.au section headlines. Returns fresh headlines from one News.com.au section or category listing page. section accepts any slug returned by GET /newscomau/sections (236 values, too many to enumerate inline -- see that endpoint for the full, current list), for example "national" or the nested "national/nsw-act/politics".
+
+### `newscomau_news`
+
+Get News.com.au top stories. Returns fresh News.com.au stories from the public homepage.
+
+### `newscomau_sections`
+
+Get News.com.au sections. Returns the full News.com.au section/category navigation inventory (236 entries as of 2026-09-23), each with a slug, display name, and public listing URL. Use a returned slug as the section parameter on GET /newscomau/headlines.
+
+### `newsmax_article`
+
+Get Newsmax article content. Returns public Newsmax article metadata and body paragraphs from a canonical article URL.
+
+### `newsmax_author`
+
+Get a Newsmax Insiders author profile. Returns a Newsmax Insiders (opinion columnist) author's byline metadata, biography, and recent columns from a canonical author URL.
+
+### `newsmax_headlines`
+
+Get Newsmax section headlines. Returns fresh headlines from one public Newsmax RSS section.
+
+### `newsmax_news`
+
+Get Newsmax top stories. Returns fresh Newsmax top stories from its public RSS feed.
+
+### `newsmax_sections`
+
+Get Newsmax RSS sections. Returns the public Newsmax RSS section inventory used by the headlines endpoint.
+
+### `newsweek_article`
+
+Get Newsweek article content. Returns public Newsweek article metadata and body paragraphs from a canonical article URL.
+
+### `newsweek_author`
+
+Get a Newsweek author profile. Returns one Newsweek author's public profile: name, job title, bio, email, and one page of their recent articles.
+
+### `newsweek_headlines`
+
+Get Newsweek section headlines. Returns fresh Newsweek section headlines from the public category page.
+
+### `newsweek_news`
+
+Get Newsweek top stories. Returns fresh Newsweek top stories from its public RSS feed.
+
+### `newsweek_sections`
+
+Get Newsweek sections. Returns the public Newsweek editorial section inventory used by the headlines endpoint.
+
+### `newyorker_article`
+
+Get The New Yorker article content. Returns public The New Yorker article metadata and body paragraphs from a canonical article URL. The New Yorker uses a metered paywall: when a page marks itself as gated, only the publicly served text is returned and is_truncated is true; is_accessible_for_free reports the page's own access flag.
+
+### `newyorker_author`
+
+Get a The New Yorker contributor profile. Returns a The New Yorker contributor's name, photo, biography, external profile links, and the first page of their recent articles from a canonical contributor URL.
+
+### `newyorker_headlines`
+
+Get The New Yorker section headlines. Returns fresh headlines from one public The New Yorker section feed. Section must be one of the slugs returned by the sections endpoint.
+
+### `newyorker_news`
+
+Get The New Yorker top stories. Returns fresh The New Yorker top stories from its public RSS feed: title, canonical URL, summary, author, publication time, lead image, and the department label (for example "News / The Lede").
+
+### `newyorker_sections`
+
+List The New Yorker sections. Lists every The New Yorker section accepted by the headlines endpoint, with slug, display name, and feed URL. This is the complete set of public text-article feeds the publisher serves; cartoon, podcast, video, and puzzle feeds are not included.
 
 ### `nike_categories`
 
@@ -5068,9 +7148,33 @@ Find nearby Nike stores. Searches Nike's physical retail store locator by coordi
 
 Get Nike search-box suggestions. Returns Nike's own search-box suggestions (typeahead) for a partial query, the same "Top Suggestions" list shown while typing into Nike's search box: a flat list of suggested search phrases, no product data.
 
+### `ninetofivemac_article`
+
+Get 9to5Mac article content. Returns public 9to5Mac article metadata and body paragraphs from a canonical article URL.
+
+### `ninetofivemac_author`
+
+Get a 9to5Mac author profile. Returns a 9to5Mac author's name, avatar, biography, social links, and recent articles from a canonical author URL.
+
+### `ninetofivemac_headlines`
+
+Get 9to5Mac section headlines. Returns fresh headlines from one public 9to5Mac topic guide RSS feed.
+
+### `ninetofivemac_news`
+
+Get 9to5Mac top stories. Returns fresh 9to5Mac (9to5mac.com) Apple news top stories from its public RSS feed.
+
+### `ninetofivemac_sections`
+
+Get 9to5Mac sections. Returns the public 9to5Mac topic guides (each with its own RSS feed) accepted by the headlines endpoint.
+
 ### `npr_article`
 
 Get NPR article content. Returns a public NPR article's metadata and body paragraphs from a canonical article URL.
+
+### `npr_author`
+
+Get an NPR author profile. Returns an NPR author's byline metadata, biography, and recent articles from a canonical author URL.
 
 ### `npr_categories`
 
@@ -5116,9 +7220,77 @@ Get the global Numbeo city ranking for an index family. Returns the global city 
 
 Get the global Numbeo country ranking for an index family. Returns the global country-level ranking for a Numbeo index family. Credential-free public Numbeo data (numbeo.com).
 
+### `nydailynews_article`
+
+Get New York Daily News article content. Returns public New York Daily News article metadata and body paragraphs from a canonical article URL. For subscriber-only articles the response carries the free lead-in with paywalled set to true.
+
+### `nydailynews_author`
+
+Get a New York Daily News author profile. Returns one New York Daily News author's public profile: name, job title, bio, public email and X/Twitter handle, and their recent articles.
+
+### `nydailynews_headlines`
+
+Get New York Daily News section headlines. Returns fresh headlines from one public New York Daily News section page.
+
+### `nydailynews_news`
+
+Get New York Daily News top stories. Returns the current New York Daily News top stories from the public homepage.
+
+### `nydailynews_sections`
+
+Get New York Daily News sections. Returns the public New York Daily News editorial section inventory.
+
+### `nymag_article`
+
+Get New York Magazine article content. Returns public New York Magazine article metadata and body paragraphs from a canonical article URL.
+
+### `nymag_author`
+
+Get a New York Magazine author profile. Returns a New York Magazine author's byline metadata, biography, and recent articles from a canonical author URL.
+
+### `nymag_headlines`
+
+Get New York Magazine section headlines. Returns fresh headlines from one public New York Magazine section.
+
+### `nymag_news`
+
+Get New York Magazine top stories. Returns fresh New York Magazine stories from the public homepage.
+
+### `nymag_sections`
+
+Get New York Magazine sections. Returns the public New York Magazine section inventory.
+
+### `nypost_article`
+
+Get New York Post article content. Returns public New York Post article metadata and body paragraphs from a canonical article URL.
+
+### `nypost_author`
+
+Get a New York Post author profile. Returns a New York Post author's byline metadata, biography, social links, and recent articles from a canonical author URL.
+
+### `nypost_headlines`
+
+Get New York Post section headlines. Returns fresh headlines from one public New York Post RSS section.
+
+### `nypost_news`
+
+Get New York Post top stories. Returns fresh New York Post top stories from its public RSS feed.
+
+### `nypost_sections`
+
+Get New York Post RSS sections. Returns the public New York Post RSS section inventory used by the headlines endpoint.
+
 ### `nyt_article`
 
 Get a New York Times article's content. Returns one public New York Times article's metadata and body paragraphs from a canonical article URL.
+
+### `nyt_author`
+
+Get a New York Times contributor profile. Returns one New York Times contributor's public byline page: name, tagline, About/Contact panels, and their recent articles from a canonical author URL.
+
+### `nyt_categories`
+
+List New York Times navigation categories. Lists the public New York Times editorial navigation taxonomy, including top-level categories and nested destinations. Use /nyt/sections for the separately verified RSS-backed section values accepted by /nyt/headlines; product links, newsletters, and podcasts are not included as article categories.
 
 ### `nyt_headlines`
 
@@ -5127,6 +7299,26 @@ Get the latest stories in a New York Times section. Returns a New York Times sec
 ### `nyt_sections`
 
 List New York Times sections. Lists every New York Times section accepted by /nyt/headlines, with its slug, display name, and public feed URL.
+
+### `nzherald_article`
+
+Get NZ Herald article content. Returns public NZ Herald article metadata and body paragraphs from a canonical article URL. A premium (subscriber-only) article URL returns a permission error instead of a partial or fabricated body.
+
+### `nzherald_author`
+
+Get an NZ Herald author profile. Returns an NZ Herald author's byline metadata, biography, headshot, contact details, and recent articles from a canonical author URL.
+
+### `nzherald_headlines`
+
+Get NZ Herald section headlines. Returns fresh headlines from one public NZ Herald section.
+
+### `nzherald_news`
+
+Get NZ Herald top stories. Returns fresh New Zealand Herald top stories from its public homepage.
+
+### `nzherald_sections`
+
+Get NZ Herald sections. Returns the public NZ Herald section inventory used by the headlines endpoint.
 
 ### `ohpolly_collection_products`
 
@@ -5372,6 +7564,26 @@ Get an Otto.de product. Returns a product's public detail, images, selectable co
 
 Search Otto.de products. Searches Otto.de's public catalogue and returns the server-rendered product cards. offset advances by Otto's fixed 109-card page size; valid values are 0, 109, 218, and so on.
 
+### `pagesix_article`
+
+Get Page Six article content. Returns public Page Six article metadata and body paragraphs from a canonical article URL.
+
+### `pagesix_author`
+
+Get a Page Six author profile. Returns a Page Six author's byline metadata, biography, social links, and recent articles from a canonical author URL.
+
+### `pagesix_headlines`
+
+Get Page Six section headlines. Returns fresh headlines from one public Page Six RSS section.
+
+### `pagesix_news`
+
+Get Page Six top stories. Returns fresh Page Six top stories from its public RSS feed.
+
+### `pagesix_sections`
+
+Get Page Six RSS sections. Returns the public Page Six RSS section inventory used by the headlines endpoint.
+
 ### `pandamart_search`
 
 Search pandamart darkstores near a location. Returns pandamart grocery/convenience darkstores delivering to a latitude/longitude. Each store carries its code (the value the store and products endpoints take), name, address, coordinates, budget tier, chain, minimum order amount and delivery fee, delivery/pickup availability, and a hero image. A location with no coverage returns an empty list rather than an error.
@@ -5556,6 +7768,126 @@ Browse public Patreon creators by topic. Returns Patreon's public curated creato
 
 Get an explicitly public Patreon podcast RSS feed. Returns public podcast channel metadata and episodes from Patreon's canonical public RSS feed. campaign_id and show_id are the numeric IDs in the public feed URL. Private member feeds and authentication URLs are not supported.
 
+### `pcgamer_article`
+
+Get PC Gamer article content. Returns public PC Gamer article metadata and body paragraphs from a canonical article URL.
+
+### `pcgamer_author`
+
+Get a PC Gamer author profile. Returns one PC Gamer author's public profile: name, biography, social links, and one page of their recent articles.
+
+### `pcgamer_headlines`
+
+Get PC Gamer section headlines. Returns fresh PC Gamer headlines from one public section hub page.
+
+### `pcgamer_news`
+
+Get PC Gamer top stories. Returns fresh PC Gamer top stories from the public RSS feed.
+
+### `pcgamer_sections`
+
+Get PC Gamer sections. Returns the public PC Gamer top-level editorial taxonomy used by the headlines endpoint.
+
+### `pcmag_article`
+
+Get PCMag article or review content. Returns public PCMag article or product-review metadata and body paragraphs from a canonical article URL.
+
+### `pcmag_author`
+
+Get a PCMag author profile. Returns one PCMag author's public profile: name, role, biography, areas of expertise, social links, and their recent articles.
+
+### `pcmag_headlines`
+
+Get PCMag section headlines. Returns fresh PCMag headlines from one public topic/category hub.
+
+### `pcmag_news`
+
+Get PCMag top stories. Returns fresh PCMag top stories from the public news feed.
+
+### `pcmag_sections`
+
+Get PCMag sections. Returns the public PCMag product/topic taxonomy accepted by the headlines endpoint.
+
+### `people_article`
+
+Get PEOPLE article content. Returns public PEOPLE article metadata and body paragraphs from a canonical article URL.
+
+### `people_author`
+
+Get a PEOPLE author profile. Returns a PEOPLE staff writer or contributor's public profile (name, job title, structured intro fields, biography, personal social links) and recent articles from a canonical author URL.
+
+### `people_headlines`
+
+Get PEOPLE section headlines. Returns fresh headlines from one PEOPLE section listing page. section accepts any slug returned by GET /people/sections (37 values, too many to enumerate inline -- see that endpoint for the full, current list), for example "celebrity" or "royals".
+
+### `people_news`
+
+Get PEOPLE top stories. Returns fresh PEOPLE celebrity and entertainment stories from the public homepage.
+
+### `people_sections`
+
+Get PEOPLE sections. Returns the full PEOPLE section/category navigation inventory (37 entries as of 2026-09-24), each with a slug, display name, and public listing URL. Use a returned slug as the section parameter on GET /people/headlines.
+
+### `phillyinquirer_article`
+
+Get Philadelphia Inquirer article content. Returns public Philadelphia Inquirer article metadata and body paragraphs from a canonical story URL.
+
+### `phillyinquirer_author`
+
+Get a Philadelphia Inquirer author profile. Returns one Philadelphia Inquirer staff author's public profile: name, role, biography, social links, and their latest listed stories.
+
+### `phillyinquirer_headlines`
+
+Get Philadelphia Inquirer section headlines. Returns fresh Philadelphia Inquirer headlines from one public section feed. Associated Press wire copy is not included.
+
+### `phillyinquirer_news`
+
+Get Philadelphia Inquirer top stories. Returns fresh Philadelphia Inquirer top stories from the public news feed. Associated Press wire copy is not included.
+
+### `phillyinquirer_sections`
+
+Get Philadelphia Inquirer sections. Returns the public Philadelphia Inquirer section taxonomy accepted by the headlines endpoint.
+
+### `philstar_article`
+
+Get Philstar article content. Returns public Philstar article metadata and body paragraphs from a canonical article URL. Philstar serves full stories to anonymous readers, so no paywall flag is needed.
+
+### `philstar_author`
+
+Get a Philstar author archive. Returns one Philstar author's public archive: name, profile photo when set, and the most recent stories on the first page of the archive. Authors are identified by the numeric id in the byline link (philstar.com/authors/<id>/<name>).
+
+### `philstar_headlines`
+
+Get Philstar section headlines. Returns the current headlines from the first page of one public Philstar section page (Philstar publishes no crawlable feeds, so this reads the section page itself).
+
+### `philstar_news`
+
+Get Philstar top stories. Returns the current Philstar (Philippine Star) top stories from the public homepage: the latest, trending and featured stories with summary, byline, thumbnail and the publication date encoded in the story URL.
+
+### `philstar_sections`
+
+Get Philstar sections. Returns the public Philstar editorial section inventory: every English, Filipino (Pilipino Star Ngayon, Pang-Masa) and Cebuano (Banat, The Freeman) section page that lists stories.
+
+### `phonearena_article`
+
+Get PhoneArena article or review content. Returns public PhoneArena news or review metadata and body paragraphs from a canonical article URL. PhoneArena serves pages behind a Cloudflare challenge; when the challenge is not cleared the endpoint returns a 503 error.
+
+### `phonearena_author`
+
+Get a PhoneArena author profile. Returns one PhoneArena staff author's public profile: name, role, biography, image, social links and the recent articles listed on the profile page.
+
+### `phonearena_headlines`
+
+Get PhoneArena section headlines. Returns up to 100 newest PhoneArena stories or reviews from one public listing. For news-month and reviews, titles are reconstructed from the hero-image file name and published_at is the listing's last-modified time.
+
+### `phonearena_news`
+
+Get PhoneArena top stories. Returns PhoneArena's most recent phone news stories (about the last two days) from its public news sitemap, with exact titles and publication times.
+
+### `phonearena_sections`
+
+Get PhoneArena sections. Returns the public PhoneArena listings accepted by the headlines endpoint: recent news, current-month news and current-year reviews.
+
 ### `pinterest_board`
 
 Get a Pinterest board's detail. Returns a Pinterest board's metadata (name, description, cover image, pin/follower counts, owner) plus a page of pins from that board. Public data sourced from Pinterest's own board pages.
@@ -5676,6 +8008,10 @@ Get PlayStation Store search suggestions for a term. Returns typeahead-style Pla
 
 Get Politico article content. Returns a public Politico article's metadata and full body paragraphs from a canonical article URL.
 
+### `politico_author`
+
+Get a Politico staff author profile. Returns one Politico staff author's public profile: name, job title, bio, headshot, and their most recent bylined articles. Politico staff pages expose a fixed-size recent-articles list with no pagination.
+
 ### `politico_categories`
 
 Get Politico section navigation. Returns Politico's full public section navigation tree, grouped the same way the site's own nav menu groups it. Use a section's slug directly as the topic parameter on politico-topic.
@@ -5687,6 +8023,26 @@ Get Politico site-wide headlines. Returns fresh headlines from Politico's public
 ### `politico_topic`
 
 Get Politico section archive. Returns the newest public Politico stories on one section archive page. topic is a section slug -- see politico-categories for the full known value space.
+
+### `polygon_article`
+
+Get Polygon article content. Returns public Polygon article metadata and body paragraphs from a canonical article URL.
+
+### `polygon_author`
+
+Get a Polygon author profile. Returns a Polygon author's byline metadata, biography, social links, and recent articles from a canonical author URL.
+
+### `polygon_headlines`
+
+Get Polygon section headlines. Returns fresh headlines from one public Polygon RSS section.
+
+### `polygon_news`
+
+Get Polygon top stories. Returns fresh Polygon top stories from its public RSS feed.
+
+### `polygon_sections`
+
+Get Polygon RSS sections. Returns the public Polygon RSS section inventory used by the headlines endpoint.
 
 ### `polymarket_activity_trades`
 
@@ -6004,6 +8360,26 @@ Retrieve Product Hunt product detailed reviews. Returns detailed review items fo
 
 Search for products, users, or launches on Product Hunt. Performs a full-text Product Hunt search and returns matching products, users, or launches.
 
+### `propublica_article`
+
+Get ProPublica article content. Returns public ProPublica article metadata (title, author(s), published/updated dates, dek) and body paragraphs from a canonical article URL.
+
+### `propublica_author`
+
+Get a ProPublica staff profile. Returns one ProPublica staff/contributor's public profile: name, bio, contact email and social accounts where published, and one page of their recent bylined stories.
+
+### `propublica_headlines`
+
+Get ProPublica topic headlines. Returns fresh headlines from one public ProPublica topic feed.
+
+### `propublica_news`
+
+Get ProPublica top stories. Returns fresh ProPublica top stories from its public RSS feed.
+
+### `propublica_sections`
+
+Get ProPublica topics. Returns the complete public topic inventory accepted by /api/v1/propublica/headlines.
+
 ### `psa_autographfacts_categories`
 
 List PSA AutographFacts categories. PSA AutographFacts' full subject-category list -- the discovery endpoint for the category_id parameter used to browse subjects. Categories span far beyond sports: Baseball, Basketball, Football, Boxing, Golf, Hockey, Soccer, Tennis, MMA, Miscellaneous Sports, Cycling, Olympics, Motorsports, Entertainment, Music, Writers/Authors/Artists, Space Exploration, U.S. Presidents, and Historical & Political Figures.
@@ -6124,6 +8500,26 @@ List PSA Store sitemaps. Returns child sitemap URLs from the PSA Team Store's (h
 
 Get PSA Store store metadata. Returns normalized storefront metadata for the PSA Team Store (https://store.psacard.com), sourced from credential-free storefront JSON. This endpoint is a brand-pinned wrapper around the generic Shopify store family: the storefront URL is fixed server-side, so no 'url' parameter is accepted. If the vanity domain blocks '/products.json', the service may fall back to a public '*.myshopify.com' domain discovered from the storefront page, or to the storefront's own embedded page data for storefronts that expose neither.
 
+### `punch_article`
+
+Get Punch article content. Returns public Punch article metadata and body paragraphs from a canonical article URL.
+
+### `punch_author`
+
+Get a Punch author archive. Returns a Punch author's byline name and recent articles from a canonical author URL.
+
+### `punch_headlines`
+
+Get Punch section headlines. Returns fresh headlines from one Punch topic page.
+
+### `punch_news`
+
+Get Punch top stories. Returns fresh Punch top stories from its public RSS feed.
+
+### `punch_sections`
+
+Get Punch sections. Returns the live-verified Punch topic (section) inventory used by the headlines endpoint.
+
 ### `quince_categories`
 
 List Quince's product facet taxonomy. Returns Quince's full product facet taxonomy sourced from the same Algolia index quince-search uses: every business department (Women, Men, Kids & Baby, Home, CPG, Emerging), department, category, material, primary color, and size value Quince currently has products for, each with its own live product count. The returned business_departments[].value/categories[].value/materials[].value/colors[].value/sizes[].value values are exactly what quince-search accepts as its own department/category/material/color/size parameters. sizes spans every product type Quince sells (apparel letter sizes, shoe sizes, rug/furniture dimensions, bedding sizes, and more) since it is one index-wide facet.
@@ -6183,6 +8579,46 @@ Browse Raising Cane's promotions index. Returns Raising Cane's full promotions i
 ### `raisingcanes_store`
 
 Get one Raising Cane's store's detail. Returns one Raising Cane's store: name, full postal address, phone, coordinates, its general weekly hours plus separately published dine-in and drive-thru hours, Raising Cane's own per-store amenity labels (e.g. DRIVE_THRU, CURBSIDE_PICKUP), which pickup/delivery services it offers, and its Google Place id. Store paths come from GET /raisingcanes/directory entries whose is_store is true. Passing a directory path here returns a 404 rather than a hollow record.
+
+### `rappler_article`
+
+Get Rappler article content. Returns public Rappler article metadata and body paragraphs from a canonical article URL. Rappler+ member-tier stories are flagged with paywalled.
+
+### `rappler_author`
+
+Get a Rappler author profile. Returns one Rappler author's public profile: name, bio, public social links, and their most recent articles.
+
+### `rappler_headlines`
+
+Get Rappler section headlines. Returns fresh headlines from one public Rappler section feed.
+
+### `rappler_news`
+
+Get Rappler top stories. Returns fresh Rappler stories from the public site-wide RSS feed.
+
+### `rappler_sections`
+
+Get Rappler sections. Returns the public Rappler editorial section inventory: every category the site publishes with a live feed.
+
+### `rawstory_article`
+
+Get Raw Story article content. Returns public Raw Story article metadata and body paragraphs from a canonical article URL.
+
+### `rawstory_author`
+
+Get a Raw Story author profile. Returns one Raw Story author's public profile: name, bio, avatar, public social links, and their 15 most recent stories.
+
+### `rawstory_headlines`
+
+Get Raw Story section headlines. Returns fresh headlines from one public Raw Story section feed.
+
+### `rawstory_news`
+
+Get Raw Story top stories. Returns fresh Raw Story stories from the public site-wide RSS feed.
+
+### `rawstory_sections`
+
+Get Raw Story sections. Returns the public Raw Story section and topic hub inventory: every hub the site publishes with a live feed.
 
 ### `rebag_collection_products`
 
@@ -6336,6 +8772,10 @@ Get a Reuters article's content. Returns one normal Reuters article's public met
 
 Get recent Reuters articles. Returns a page of recent Reuters articles: title, canonical URL, update time, and the lead image URL when available. The index covers the most recent 10,000 articles.
 
+### `reuters_author`
+
+Get a Reuters author profile. Returns a Reuters author's byline metadata, contact/social links, and recent articles from a canonical author URL.
+
 ### `reuters_news`
 
 Get fresh Reuters headlines. Returns fresh Reuters headlines with title, canonical URL, publication and update times, and the lead image when Reuters publishes one. Covers the most recent stories from Reuters' public news feed.
@@ -6354,7 +8794,7 @@ Get Rightmove estate agent branch details. Returns one estate-agent branch profi
 
 ### `rightmove_agents`
 
-List Rightmove estate agents for a location. Lists estate-agent branches from Rightmove's estate-agents directory for a location, with branch display name, brand, address, telephones, sales/lettings flags, logo, and a link to the branch profile. 20 agents per page.
+List Rightmove estate agents for a location. Lists estate-agent branches from Rightmove's estate-agents directory for a location, with branch display name, brand, address, telephones, sales/lettings flags, logo, and a link to the branch profile. Pagination follows Rightmove's current directory pages, whose result counts can vary.
 
 ### `rightmove_autocomplete`
 
@@ -6380,6 +8820,26 @@ Search Rightmove properties. Search for properties on Rightmove with filters for
 
 Search Rightmove student accommodation. Search Rightmove's student-accommodation listings for a location, with monthly-rent, bedroom, and furnishing filters. Prices are monthly rents in whole GBP units.
 
+### `rnz_article`
+
+Get RNZ article content. Returns public RNZ news article metadata and body paragraphs from a canonical rnz.co.nz/news/<section>/<id>/<slug> article URL. RNZ has no paywall, so the full body is returned.
+
+### `rnz_author`
+
+Get an RNZ author profile. Returns one RNZ reporter's public profile: name, role, bio, email, X/Twitter handle, photo, total story count, and the first page of their news stories.
+
+### `rnz_headlines`
+
+Get RNZ section headlines. Returns fresh headlines from one public RNZ section feed.
+
+### `rnz_news`
+
+Get RNZ top stories. Returns fresh RNZ (Radio New Zealand) top stories from the public all-news RSS feed.
+
+### `rnz_sections`
+
+Get RNZ sections. Returns the public RNZ news section inventory (one RSS feed each) accepted by rnz-headlines.
+
 ### `roblox_badges`
 
 List Roblox experience badges. Returns one cursor-paginated page of public badge metadata for a Roblox experience. Pass next_cursor back unchanged as cursor. No user-awarded badge data is returned.
@@ -6395,6 +8855,26 @@ List Roblox game rankings. Returns a public Roblox game shelf. Allowed sort_id v
 ### `roblox_search`
 
 Search Roblox experiences. Searches anonymous public Roblox game experiences. The opaque page_token continues the same search.
+
+### `rollingstone_article`
+
+Get Rolling Stone article content. Returns public Rolling Stone article metadata and body paragraphs from a canonical article URL.
+
+### `rollingstone_author`
+
+Get a Rolling Stone author profile. Returns a Rolling Stone author's byline metadata, biography, and recent articles (sourced from the author's own public RSS feed) from a canonical author URL.
+
+### `rollingstone_headlines`
+
+Get Rolling Stone section headlines. Returns fresh headlines from one public Rolling Stone section.
+
+### `rollingstone_news`
+
+Get Rolling Stone top stories. Returns fresh Rolling Stone top stories from its public RSS feed.
+
+### `rollingstone_sections`
+
+Get Rolling Stone sections. Returns the public Rolling Stone section inventory: every music, politics, TV & movies, and culture subsection plus the site's standalone verticals (Rolling Stone Pro, product recommendations) and tag hubs, each linking to its public RSS feed.
 
 ### `rothys_collection_products`
 
@@ -6492,6 +8972,46 @@ Get Rover dog trainer profile. Returns a normalized Rover dog trainer profile: n
 
 Search Rover dog trainers. Searches Rover's public dog trainer listings by location, returning normalized trainer summaries (name, profile image, headline, experience details, rating, review count, repeat-client count, years of experience, city/state/zip, starting price, training methodology, and skill/behavior tags). Public data sourced from Rover's own server-rendered training search pages.
 
+### `rte_article`
+
+Get RTÉ News article content. Returns public RTÉ News article metadata and body paragraphs from a canonical rte.ie/news article URL. RTÉ News articles are free to read; paywalled is omitted.
+
+### `rte_author`
+
+Get an RTÉ News author profile. Returns an RTÉ News author's byline name, role, headshot and recent articles from a canonical author URL.
+
+### `rte_headlines`
+
+Get RTÉ News section headlines. Returns fresh headlines from one public RTÉ News section.
+
+### `rte_news`
+
+Get RTÉ News top stories. Returns fresh RTÉ News top stories from its public news feed. Scope is RTÉ News (rte.ie/news) only, not the RTÉ Player, radio, sport or entertainment sections.
+
+### `rte_sections`
+
+Get RTÉ News sections. Returns the public RTÉ News section inventory used by the headlines endpoint.
+
+### `salon_article`
+
+Get Salon article content. Returns public Salon article metadata and body paragraphs from a canonical article URL.
+
+### `salon_author`
+
+Get a Salon writer profile. Returns a Salon writer's byline metadata, biography, and recent articles from a canonical writer URL.
+
+### `salon_headlines`
+
+Get Salon section headlines. Returns fresh headlines from one public Salon RSS section.
+
+### `salon_news`
+
+Get Salon top stories. Returns fresh Salon top stories from its public RSS feed.
+
+### `salon_sections`
+
+Get Salon RSS sections. Returns the public Salon RSS section inventory used by the headlines endpoint.
+
 ### `samsclub_category`
 
 Browse a Sam's Club category or collection. Returns a Sam's Club category or collection page's product grid, with real page-based pagination. id accepts a bare numeric category id (from a nav link's /browse/{id} URL) or a full /browse/{slug}/{id} URL copied from samsclub.com -- only the trailing id is used. Returns normalized products with name, brand, pricing, availability, rating, and image. An id samsclub.com does not recognize returns a genuine zero-result response rather than an error, matching upstream's own behavior.
@@ -6511,6 +9031,42 @@ Get a Sam's Club product's full detail. Returns one Sam's Club product's full de
 ### `samsclub_product_related`
 
 Get a Sam's Club product's related items. Returns the related-item carousels shown on a Sam's Club product page, each a named shelf (e.g. "Members also considered", "Items you may like") of normalized products with pricing, rating, and image. id is the numeric product id from a Sam's Club product page's /ip/ URL. This upstream source does not distinguish an unrecognized id from a known one -- an unrecognized id still returns generic fallback shelves rather than an error.
+
+### `scmp_article`
+
+Get an SCMP article's content. Returns one public South China Morning Post article's metadata and body paragraphs from a canonical article URL. 'content_locked' and 'paywall_types' are the upstream's own restricted-access signals for that article, reported exactly as the site returns them; the body returned here is the same one the site's own page serves to an anonymous visitor. An article whose page genuinely withholds its body is reported as a restricted-access error instead of a hollow or truncated response.
+
+### `scmp_author`
+
+Get an SCMP author/reporter profile. Returns one South China Morning Post author/reporter's public profile -- name, role, biography, areas of expertise, languages, location, headshot, and contact/social links -- plus their recent articles, from a canonical author URL.
+
+### `scmp_headlines`
+
+Get the latest stories in an SCMP section. Returns the current article listing for one South China Morning Post section: each story's title, canonical URL, summary, byline, publication time, and lead image. Section must be a slug returned by /scmp/sections.
+
+### `scmp_sections`
+
+List SCMP sections. Lists every South China Morning Post section accepted by /scmp/headlines, with its slug, display name, feed URL, and (for a subsection) its parent section's slug and name. Values: 'news', 'business', 'property', 'tech', 'lifestyle', 'culture', 'sport', 'postmag', 'style', 'this-week-in-asia', 'cooking', 'hong-kong', 'china', 'asia', 'world', 'people-culture', 'china-politics', 'china-diplomacy', 'china-economy', 'hong-kong-politics', 'hong-kong-economy', 'hong-kong-health-environment', 'hong-kong-education', 'world-us-canada', 'world-europe', 'world-middle-east', 'world-americas', 'world-africa', 'world-russia-central-asia', 'asia-australasia', 'asia-diplomacy', 'asia-east-asia', 'asia-southeast-asia', 'asia-south-asia', 'business-companies', 'business-investor-relations', 'business-global-economy', 'business-money-wealth', 'opinion-comment', 'opinion-harrys-view', 'opinion-blogs', 'opinion-polls', 'opinion-letters', 'property-hong-kong-china', 'property-international', 'tech-big-tech', 'tech-enterprises', 'tech-innovation', 'tech-leaders-founders', 'tech-science-research', 'lifestyle-fashion-beauty', 'lifestyle-travel-leisure', 'lifestyle-motoring', 'lifestyle-food-drink', 'lifestyle-health-wellness', 'lifestyle-watches', 'culture-books', 'culture-music', 'culture-film-tv', 'culture-arts', 'sport-hong-kong', 'sport-china', 'sport-golf', 'sport-racing', 'sport-rugby', 'sport-football', 'sport-tennis', 'sport-other', 'sport-boxing', 'sport-hong-kong-sevens', 'postmag-culture', 'postmag-travel', 'postmag-food-drink', 'postmag-passions', 'postmag-wellness', 'postmag-design-interiors', 'style-luxury', 'style-fashion', 'style-beauty', 'style-people', 'style-lifestyle', 'this-week-in-asia-politics', 'this-week-in-asia-geopolitics', 'this-week-in-asia-economics', 'this-week-in-asia-society', 'this-week-in-asia-opinion', 'this-week-in-asia-asia-buzz', 'this-week-in-asia-people'.
+
+### `screenrant_article`
+
+Get ScreenRant article content. Returns public ScreenRant article metadata and body paragraphs from a canonical article URL.
+
+### `screenrant_author`
+
+Get a ScreenRant author profile. Returns a ScreenRant author's byline metadata, biography, social links, and recent articles from a canonical author URL.
+
+### `screenrant_headlines`
+
+Get ScreenRant section headlines. Returns fresh headlines from one public ScreenRant RSS section.
+
+### `screenrant_news`
+
+Get ScreenRant top stories. Returns fresh ScreenRant top stories from its public RSS feed.
+
+### `screenrant_sections`
+
+Get ScreenRant RSS sections. Returns the public ScreenRant RSS section inventory used by the headlines endpoint.
 
 ### `seatgeek_categories`
 
@@ -6555,6 +9111,26 @@ Get a SeatGeek venue's detail. Returns one SeatGeek venue's full detail: address
 ### `seatgeek_venue_events`
 
 Get a SeatGeek venue's event schedule. Returns one page of a SeatGeek venue's upcoming event schedule, soonest first. venue_id is SeatGeek's own numeric venue id, obtained from a search or event result (e.g. 1 for UNIQLO Field at Dodger Stadium).
+
+### `seattletimes_article`
+
+Get Seattle Times article content. Returns public Seattle Times story metadata and body paragraphs from a canonical story URL. The site's metered paywall is a client-side overlay: anonymous requests receive the full body, which is returned as-is.
+
+### `seattletimes_author`
+
+Get a Seattle Times author profile. Returns one Seattle Times author's public profile: name, bio, newsroom-published email and X/Twitter link when listed, and their most recent stories.
+
+### `seattletimes_headlines`
+
+Get Seattle Times section headlines. Returns fresh headlines from one public Seattle Times section feed.
+
+### `seattletimes_news`
+
+Get Seattle Times top stories. Returns fresh Seattle Times stories from the public site-wide RSS feed.
+
+### `seattletimes_sections`
+
+Get Seattle Times sections. Returns the public Seattle Times section inventory: every category in the site's navigation and RSS feed list that publishes a live feed.
 
 ### `sec_company_intelligence`
 
@@ -6632,6 +9208,26 @@ Sephora store locator. Returns Sephora physical store locations near a coordinat
 
 Sephora search suggestions. Returns Sephora's own search-box type-ahead suggestions for a partial keyword: keyword-completion terms, matching products, and trending/related categories. Sephora's own upstream never returns a genuine zero-result state for a nonempty query -- a deliberately nonsense query still returns unrelated product suggestions.
 
+### `sevennewsau_article`
+
+Get 7NEWS Australia article content. Returns public 7NEWS article metadata and body paragraphs from a canonical 7news.com.au article URL. 7NEWS articles are free to read; a non-free content tier, if one ever appears, is flagged as paywalled.
+
+### `sevennewsau_author`
+
+Get a 7NEWS Australia author profile. Returns one 7NEWS journalist's public profile: name, job title, biography, portrait, public social links and the latest stories listed on the profile page.
+
+### `sevennewsau_headlines`
+
+Get 7NEWS Australia section headlines. Returns fresh 7NEWS headlines from one public topic feed (the 100 most recent stories tagged with that topic).
+
+### `sevennewsau_news`
+
+Get 7NEWS Australia top stories. Returns fresh 7NEWS (7news.com.au) top stories from the public site-wide news feed.
+
+### `sevennewsau_sections`
+
+Get 7NEWS Australia sections. Returns the public 7NEWS topic feed inventory accepted by the headlines endpoint: national and city news, sport, politics, business, entertainment, lifestyle and more.
+
 ### `sevennow_catalog`
 
 Get one 7NOW store's live product catalog. Returns one 7NOW store's browsable category list, a paginated item listing per catalog section (each with real per-item pricing, active promotions, calories, UPC and image), and a live active/out-of-stock inventory count for that store. store_id comes from GET /7now/stores; lat and lon are accepted but inert (store_id alone selects the store). The catalog is genuinely store-scoped, not a national price list. skip/limit page every item section uniformly (limit is capped at 50, defaults to 20).
@@ -6683,6 +9279,26 @@ Find 7NOW delivery stores near an address. Resolves a free-text delivery address
 ### `sevennow_suggest`
 
 Get 7NOW search-term suggestions. Returns search-term completions for a partial query, e.g. "chi" -> "chips ahoy", "chips", "chicken". No store is required. q must be at least 3 characters -- shorter values return a typed invalid-param error, matching upstream's own enforced minimum. vertical selects which search index to complete against, and the indexes are materially different rather than variations on one list: for "chi", 'convenience' answers "chips ahoy, chips, chicken wings" while 'restaurant' answers "chipotle, chinese food, chili". 'global' is a sparse cross-vertical index -- many prefixes legitimately return no suggestions there.
+
+### `sfgate_article`
+
+Get SFGate article content. Returns public SFGATE article metadata and body paragraphs from a canonical article URL. Article pages are served through proxied browser renderers; the service does not bypass authentication or access controls, and marks paywalled=true when only a teaser is public.
+
+### `sfgate_author`
+
+Get an SFGate author profile. Returns an SFGATE author's name, job title, biography, headshot, public profile links, and recent articles from a canonical author URL. Author pages are served through proxied browser renderers; the service does not bypass authentication or access controls.
+
+### `sfgate_headlines`
+
+Get SFGate section headlines. Returns fresh headlines from one SFGATE public RSS feed.
+
+### `sfgate_news`
+
+Get SFGate top stories. Returns fresh SFGATE stories from its public "Top News Stories" RSS feed.
+
+### `sfgate_sections`
+
+Get SFGate sections. Returns the SFGATE feed inventory (Top News, Bay Area, Business and Technology, Entertainment, Celebrity, Food and Dining, Travel, Routes, Top Sports, Giants, 49ers, Warriors), each linking to its public RSS feed.
 
 ### `shakeshack_locations`
 
@@ -6892,6 +9508,46 @@ List SKIMS sitemaps. Returns child sitemap URLs from SKIMS's (https://skims.com)
 
 Get SKIMS store metadata. Returns normalized storefront metadata for SKIMS (https://skims.com), sourced from credential-free storefront JSON. This endpoint is a brand-pinned wrapper around the generic Shopify store family: the storefront URL is fixed server-side, so no 'url' parameter is accepted. If the vanity domain blocks '/products.json', the service may fall back to a public '*.myshopify.com' domain discovered from the storefront page, or to the storefront's own embedded page data for storefronts that expose neither.
 
+### `skynews_article`
+
+Get Sky News article content. Returns public Sky News article metadata and body paragraphs from a canonical article URL.
+
+### `skynews_author`
+
+Get a Sky News author profile. Returns a Sky News author's byline metadata, biography, and recent articles from a canonical author URL.
+
+### `skynews_headlines`
+
+Get Sky News section headlines. Returns fresh headlines from one Sky News section, either its official RSS feed or (for the 5 sections with no feed) its public hub page.
+
+### `skynews_news`
+
+Get Sky News top stories. Returns fresh Sky News top stories from its public RSS feed.
+
+### `skynews_sections`
+
+Get Sky News sections. Returns the Sky News section inventory: 9 official RSS feeds plus 5 additional site sections with no RSS feed, listed from their public hub page instead.
+
+### `skynews_video`
+
+Get Sky News video metadata. Returns one Sky News video's public metadata (title, description, thumbnails, duration, embed URL) from a canonical video URL. There is no transcript or article body for a video.
+
+### `skynews_videos`
+
+Get the Sky News videos hub. Returns recent videos from the public Sky News videos hub.
+
+### `slate_article`
+
+Slate article content. Returns public Slate article metadata and server-delivered body paragraphs from a canonical dated Slate URL. It does not log in, use account cookies, or bypass a challenge; is_paywalled reports when Slate marks the delivered page as subscription-gated.
+
+### `slate_categories`
+
+Slate public feed sections. Lists the exact Slate section values accepted by slate-headlines. The set includes all, news-and-politics, culture, technology, business, life, and advice; subsection navigation pages are not RSS feeds and are intentionally not accepted by slate-headlines.
+
+### `slate_headlines`
+
+Slate section headlines. Returns current Slate article-card metadata from one public RSS feed. section must be one of the values returned by slate-categories.
+
 ### `slickdeals_categories`
 
 List every Slickdeals deal category/tag. Returns Slickdeals' own full category/tag list -- the discovery endpoint for GET /slickdeals/category's slug parameter. This is a separate taxonomy from the category/sub_category fields GET /slickdeals/deal returns for an individual deal (Slickdeals maintains multiple parallel category/tag id spaces, not one) -- these slugs are the ones GET /slickdeals/category's own browse pages accept. The list is refreshed from Slickdeals' own site periodically; an optional q parameter narrows it to a substring match.
@@ -6935,6 +9591,46 @@ Search Slickdeals community-submitted deals by keyword. Searches Slickdeals (sli
 ### `slickdeals_search_advanced`
 
 Search Slickdeals with real pagination, counts, and facets. Searches Slickdeals' modern search surface -- a richer alternative to GET /slickdeals/search's keyword-only RSS feed. Returns real pagination (page/total_pages/per_page/result_count), integer vote/comment/view counts read directly from the page's own data (not parsed from free text), a fuller per-deal record (store id, discount percent, status flags), and facets -- Categories, Stores, and Brands available for the current query, each option carrying a value usable as category_id/brand_id/store_id. Facet values and counts are scoped to the current query, not a site-wide enumeration -- category_id/brand_id/store_id are passthrough filters (obtain a value from a prior response's own facets), not validated against a closed enum. sort defaults to relevance; other values are passed through unvalidated since no server-side enumeration of the full accepted set was found.
+
+### `sloanreview_article`
+
+Get MIT Sloan Management Review article content. Returns an MIT Sloan Management Review article's metadata and full body paragraphs from an existing public archive.today snapshot. Sloan Review's origin HTML is paywalled/partial; no login, cookies, or subscription credentials are used. Coverage is partial and an article without a verified full snapshot returns 404.
+
+### `sloanreview_articles`
+
+List MIT Sloan Management Review article URLs. Returns a paginated, sitemap-backed index of all article URLs currently published by MIT Sloan Management Review. Use an item's URL with sloanreview-article to request archive-backed body content; archive availability remains dependent on a public snapshot existing for that article.
+
+### `sloanreview_categories`
+
+Get MIT Sloan Management Review topic taxonomy. Returns the complete public MIT Sloan Management Review topic taxonomy discovered from the site's All Topics page. The returned slugs are the accepted values for sloanreview-topic.
+
+### `sloanreview_headlines`
+
+Get MIT Sloan Management Review headlines. Returns article cards from MIT Sloan Management Review's public homepage feed.
+
+### `sloanreview_topic`
+
+Get an MIT Sloan Management Review topic archive. Returns article cards from one public Sloan Review topic page. Use sloanreview-categories for the complete accepted slug set; this includes the primary navigation topics and the site's child topic pages.
+
+### `smh_article`
+
+Get The Sydney Morning Herald article content. Returns one Sydney Morning Herald article's public metadata and the body paragraphs an anonymous visitor's page request is served, from a canonical article URL. The Sydney Morning Herald runs a metered subscription paywall; the response reports it with is_accessible_for_free (the page's own declaration), paywalled (the page marks the story as subscriber content), and is_truncated (the page served a shortened preview, or no body at all, instead of the full story). Paywalls are never bypassed and body text is never fabricated. Video-only pages are rejected with a 400.
+
+### `smh_author`
+
+Get a Sydney Morning Herald journalist profile. Returns a Sydney Morning Herald journalist's public profile -- name, short biography, headshot, contact email and social links where published -- plus their recent stories, from a canonical https://www.smh.com.au/by/<name>-<id> URL.
+
+### `smh_headlines`
+
+Get The Sydney Morning Herald section headlines. Returns the current stories for one Sydney Morning Herald section: title, canonical URL, summary, author, publication time, and image where the section lists them. section must be one of the slugs returned by /smh/sections; any other value is rejected with a 400 before The Sydney Morning Herald is contacted.
+
+### `smh_news`
+
+Get The Sydney Morning Herald top stories. Returns The Sydney Morning Herald's current "Latest News" public RSS feed: each story's title, canonical URL, summary, author, publication time, and lead image.
+
+### `smh_sections`
+
+Get The Sydney Morning Herald sections. Lists every Sydney Morning Herald section accepted by /smh/headlines (96 sections from the site's own section menu), each with its slug, display name, and public section-front URL.
 
 ### `sofascore_event`
 
@@ -7064,6 +9760,26 @@ Get a SoundCloud track's detail. Returns one track's full metadata: title, artwo
 
 Get a SoundCloud user's own uploaded tracks. Returns a user/artist's own uploaded tracks, most recent first: title, artwork, playback/likes/comment/repost counts. Public data sourced from SoundCloud's own JSON API.
 
+### `space_article`
+
+Get Space.com article content. Returns public Space.com article metadata and body paragraphs from a canonical article URL.
+
+### `space_author`
+
+Get a Space.com author profile. Returns one Space.com author's public profile: name, job title, biography, and their most recent articles.
+
+### `space_headlines`
+
+Get Space.com section headlines. Returns fresh Space.com headlines from one public category hub.
+
+### `space_news`
+
+Get Space.com top stories. Returns fresh Space.com top stories (space, astronomy, and skywatching news) from the site's own latest-news hub.
+
+### `space_sections`
+
+Get Space.com sections. Returns the public Space.com category taxonomy used by the headlines endpoint.
+
 ### `sparkfun_categories`
 
 List SparkFun categories. Lists public SparkFun top-level browse categories with URL keys for sparkfun-category.
@@ -7079,6 +9795,26 @@ Get a SparkFun product. Returns public product metadata, price, stock status, im
 ### `sparkfun_search`
 
 Search SparkFun products. Searches public SparkFun product data with pagination and dynamic facet filters. Each filter must be 'attribute:value'; use values from the response's filters array.
+
+### `sportingnews_article`
+
+Get Sporting News article content. Returns public Sporting News US article metadata and body paragraphs from a canonical article URL.
+
+### `sportingnews_author`
+
+Get a Sporting News author profile. Returns one Sporting News US author's public profile: name, bio, photo, public social links, and their most recent articles.
+
+### `sportingnews_headlines`
+
+Get Sporting News section headlines. Returns fresh headlines from one public Sporting News US sport, league or topic feed.
+
+### `sportingnews_news`
+
+Get Sporting News top stories. Returns fresh top stories from the Sporting News US edition public RSS feed. Only the US edition (sportingnews.com/us) is covered.
+
+### `sportingnews_sections`
+
+Get Sporting News sections. Returns the public Sporting News US sport, league and topic feeds accepted by the headlines endpoint.
 
 ### `spotify_album`
 
@@ -7231,6 +9967,26 @@ Retrieve Spotify track similar albums. Returns normalized albums from the simila
 ### `spotify_tracks_search`
 
 Search Spotify tracks. Returns normalized Spotify Web Player track search results for a search term. The endpoint fetches anonymous Spotify credentials at request time; caller-supplied Spotify bearer or client tokens are not required.
+
+### `standard_article`
+
+Get Evening Standard article content. Returns public Evening Standard article metadata and body paragraphs from a canonical article URL.
+
+### `standard_author`
+
+Get an Evening Standard author profile. Returns one Evening Standard author's public profile: name, job title, bio, X/Twitter handle, and their recent articles.
+
+### `standard_headlines`
+
+Get Evening Standard section headlines. Returns fresh headlines from one public Evening Standard RSS section.
+
+### `standard_news`
+
+Get Evening Standard top stories. Returns fresh Evening Standard top stories from its public RSS feed.
+
+### `standard_sections`
+
+Get Evening Standard RSS sections. Returns the live-verified public RSS section inventory for the Evening Standard.
 
 ### `starbucks_menu`
 
@@ -7400,6 +10156,26 @@ Get StockX upcoming release calendar. Returns a date-ordered page (release date 
 
 Search/browse StockX products. Browses StockX's product catalog by category with optional free-text keyword search and facet filters (gender, brand, color, shoe height, activity, availability), returning normalized product summaries with headline pricing plus the total matching count. Credential-free public data from the same GraphQL API backing StockX's own category browse pages.
 
+### `straitstimes_article`
+
+Get The Straits Times article content. Returns public The Straits Times article metadata and body paragraphs from a canonical article URL. A subscriber-only article returns only its publicly served teaser paragraphs with paywalled set to true.
+
+### `straitstimes_author`
+
+Get a The Straits Times author profile. Returns a The Straits Times author's byline metadata and their recent articles from a canonical author URL.
+
+### `straitstimes_headlines`
+
+Get The Straits Times section headlines. Returns fresh headlines from one public The Straits Times section.
+
+### `straitstimes_news`
+
+Get The Straits Times top stories. Returns fresh The Straits Times top stories from its public top-stories page.
+
+### `straitstimes_sections`
+
+Get The Straits Times sections. Returns the public The Straits Times category/section inventory used by the headlines endpoint.
+
 ### `strava_challenges`
 
 Strava's public challenge gallery. Returns Strava's public challenge gallery: the currently promoted challenge plus every gallery section (partner challenges, and one section per sport such as run/ride), each with its challenges' goal, duration, and cover art. Public data, sourced from Strava's own challenge gallery.
@@ -7416,9 +10192,13 @@ A single Strava route's detail page. Returns a single Strava route's detail: typ
 
 Strava route-index listing for a sport, country, and region. Returns a page of Strava's public route recommendations for a sport, country, and region (state, or state/city). 'sport' values: 'hiking', 'road-biking', 'mountain-biking', 'trail-running', 'gravel-biking'. Public data, sourced from Strava's own server-rendered route pages.
 
+### `stubhub_carousel`
+
+List StubHub performer discovery carousels. Returns the anonymous performer-page alternative, recently viewed, maybe-interested, and trending-event carousel sections. Obtain performer_slug and performer_id from a real StubHub performer URL or another StubHub result. The upstream request uses browser impersonation and requires no cookies or CSRF state.
+
 ### `stubhub_categories`
 
-List StubHub's own category and subcategory taxonomy. Lists StubHub's top-level verticals (Concerts, Sports, Theater) and their subcategories/leagues (NFL, NBA, ...), each with the lowest currently-listed ticket price for that category within the date range at the given location. Use this to discover valid category ids and names before browsing a specific one.
+List StubHub's location-scoped category prices. Lists categories with currently-listed minimum ticket prices for a location and date range. This is a changing location/date-scoped feed, not the complete navigation taxonomy; use stubhub-navigation-categories for the full Theater, Sports, and Concerts tree.
 
 ### `stubhub_category_events`
 
@@ -7428,9 +10208,21 @@ List StubHub events in one category near a location. Lists paginated events in a
 
 Discover StubHub events near a location. Discovers events near a location within a date range, optionally bounded by ticket price and by category. A zero count with an empty events list is a valid no-results response.
 
+### `stubhub_navigation_categories`
+
+List StubHub's complete top-level navigation tree. Lists the nested navigation taxonomy for one StubHub top-level category. The upstream accepts exactly category_id 1 (Theater), 2 (Sports), or 3 (Concerts). Use the returned ids and URLs to discover category and subcategory pages.
+
 ### `stubhub_performer_events`
 
 List a StubHub performer or team's upcoming events. Lists a performer or team's own upcoming schedule (event name, date, venue, starting price) scraped from their StubHub page. Obtain a real performer_slug+performer_id pair from stubhub-trending's url field (e.g. https://www.stubhub.com/kansas-city-chiefs-tickets/performer/6063 -- slug "kansas-city-chiefs-tickets", id 6063). A zero count with an empty events list is a valid no-upcoming-events response.
+
+### `stubhub_search`
+
+Search StubHub for performers, events, and groupings. Searches StubHub's anonymous grouped-search endpoint. Results are returned in StubHub's own performer/grouping/event result groups; the upstream request uses multipart form data and requires no cookies or CSRF token.
+
+### `stubhub_suggested_searches`
+
+List StubHub's current search suggestions. Returns StubHub's short, changing list of performers, groupings, and categories currently suggested by its search UI. The upstream endpoint is a cookie-free GET with no query parameters.
 
 ### `stubhub_trending`
 
@@ -7443,6 +10235,26 @@ List StubHub's currently-trending individual events. Lists a paginated global fe
 ### `stubhub_venue_events`
 
 List a StubHub venue's upcoming events. Lists a venue's own upcoming event calendar (event name, date, starting price) scraped from its StubHub page. Obtain a real venue_slug+venue_id pair from another endpoint's event url field (e.g. https://www.stubhub.com/geha-field-at-arrowhead-stadium-tickets/venue/4467/ -- slug "geha-field-at-arrowhead-stadium-tickets", id 4467). A zero count with an empty events list is a valid no-upcoming-events response.
+
+### `stuff_article`
+
+Get Stuff article content. Returns public Stuff article metadata and body paragraphs from a canonical article URL. A story the publisher marks premium is reported as paywalled, or refused with a permission error when no free text is available.
+
+### `stuff_author`
+
+Get a Stuff author profile. Returns one Stuff author's public profile: name, job title, location, biography, headshot, email, and their recent stories.
+
+### `stuff_headlines`
+
+Get Stuff section headlines. Returns fresh Stuff headlines from one public section feed.
+
+### `stuff_news`
+
+Get Stuff top stories. Returns fresh Stuff (New Zealand) top stories from the public site-wide feed.
+
+### `stuff_sections`
+
+Get Stuff sections. Returns the public Stuff section slugs accepted by the headlines endpoint.
 
 ### `substack_categories`
 
@@ -7544,6 +10356,26 @@ Browse Subway's global store-URL index. Returns one page of Subway's sitemap-dec
 
 Get one Subway store's detail. Returns one Subway store's detail: address, coordinates, phone (display and E.164), opening hours, and the locator's own entity profile -- IANA timezone, Google Place ID and CID for joining to Google Maps data, franchise number, price range, published services and meal types, and explicit online-ordering/catering/drive-through flags. Boolean flags are omitted entirely when the locator does not publish them, so an absent flag is not a false one. open reflects the location's published status (a store flagged closed long-term), which is distinct from whether it is currently within its opening hours. store_id is the value GET /subway/menu and GET /subway/available-times take. Paths come from a GET /subway/sitemap entry.
 
+### `sun_article`
+
+Get The Sun article content. Returns public The Sun article metadata and body paragraphs from a canonical article URL.
+
+### `sun_author`
+
+Get a Sun author profile. Returns a Sun author's byline metadata, biography, and recent articles from a canonical author URL.
+
+### `sun_headlines`
+
+Get The Sun section headlines. Returns fresh headlines from one public The Sun section.
+
+### `sun_news`
+
+Get The Sun top stories. Returns fresh The Sun stories from the public RSS feed.
+
+### `sun_sections`
+
+Get The Sun sections. Returns the public The Sun editorial section inventory.
+
 ### `swiggy_collections`
 
 List Swiggy's curated collections for a location. Returns the curated dish/cuisine collections Swiggy's own homepage surfaces for a latitude/longitude (e.g. "Idli", "Biryani", "Dosa"). Each collection's id is the value /swiggy/search's collection_id param takes to browse restaurants within it. The response also carries is_serviceable, which says whether Swiggy delivers to the requested coordinates at all: false means the coordinates are outside Swiggy's delivery coverage, so the empty collections list is a coverage answer rather than a location that simply has no curated collections.
@@ -7624,6 +10456,66 @@ Search Target products. Searches Target products and returns normalized products
 
 Find Target stores near a location. Returns Target's physical stores near a ZIP code, a free-text "city, state", or a "latitude,longitude" pair, including each store's store_id, status, distance, phone, address, service list, time zone, and two weeks of daily opening hours. Use the returned store_id values with the store_id parameter on target-search, target-category-products, target-filter-options, and target-product.
 
+### `techcrunch_article`
+
+Get TechCrunch article content. Returns public TechCrunch article metadata (title, author(s), published/updated dates, dek, section, lead image) and body paragraphs from a canonical article URL.
+
+### `techcrunch_author`
+
+Get a TechCrunch author profile. Returns one TechCrunch staff writer or contributor's public profile: name, job title, headshot, biography, social links, and one page of their recent articles.
+
+### `techcrunch_headlines`
+
+Get TechCrunch category headlines. Returns fresh headlines from one public TechCrunch category feed.
+
+### `techcrunch_news`
+
+Get TechCrunch top stories. Returns fresh TechCrunch top stories from its public RSS feed.
+
+### `techcrunch_sections`
+
+Get TechCrunch categories. Returns the complete public category inventory accepted by /api/v1/techcrunch/headlines.
+
+### `techradar_article`
+
+Get TechRadar article content. Returns public TechRadar article metadata and body paragraphs from a canonical article URL.
+
+### `techradar_author`
+
+Get a TechRadar author profile. Returns one TechRadar author's public profile: name, biography, social links, and one page of their recent articles.
+
+### `techradar_headlines`
+
+Get TechRadar section headlines. Returns fresh TechRadar headlines from one public section hub page.
+
+### `techradar_news`
+
+Get TechRadar top stories. Returns fresh TechRadar top stories from the public RSS feed.
+
+### `techradar_sections`
+
+Get TechRadar sections. Returns the public TechRadar top-level editorial taxonomy used by the headlines endpoint.
+
+### `telegraph_article`
+
+Get The Telegraph article content. Returns public The Telegraph article metadata and body paragraphs from a canonical article URL.
+
+### `telegraph_author`
+
+Get a Telegraph author profile. Returns a Telegraph author's byline metadata, biography, and recent articles from a canonical author URL.
+
+### `telegraph_headlines`
+
+Get The Telegraph section headlines. Returns fresh headlines from one public The Telegraph section.
+
+### `telegraph_news`
+
+Get The Telegraph top stories. Returns fresh public The Telegraph stories from its RSS feed when the upstream security layer permits the request.
+
+### `telegraph_sections`
+
+Get The Telegraph sections. Returns the public The Telegraph editorial section inventory.
+
 ### `tes_job_detail`
 
 Get a Tes teaching job. Returns normalized detail for one job posting by its numeric id (the id field returned by tes-job-search): employer, location, salary, contract terms/types, dates, and application contact/URL, plus a short excerpt of the listing description rather than the full long-form HTML copy.
@@ -7659,6 +10551,42 @@ Tesla Jobs single posting. Returns one Tesla Careers posting by its numeric job 
 ### `tesla_jobs_list`
 
 Tesla Jobs listing. Searches Tesla's public careers site (tesla.com/careers) via its own careers-state JSON endpoint. Tesla's own endpoint always returns its entire global job dataset regardless of query parameters; this filters and paginates that snapshot server-side. Listings carry identity/department/location metadata only — call the job endpoint for the full description, responsibilities, and requirements.
+
+### `theage_article`
+
+Get The Age article content. Returns one The Age article's public metadata and the body paragraphs an anonymous visitor's page request is served, from a canonical article URL. The Age runs a metered subscription paywall; the response reports it with is_accessible_for_free (the page's own declaration), paywalled (the page marks the story as subscriber content), and is_truncated (the page served a shortened preview, or no body at all, instead of the full story). Paywalls are never bypassed and body text is never fabricated. Video-only pages are rejected with a 400.
+
+### `theage_author`
+
+Get an Age journalist profile. Returns an Age journalist's public profile -- name, short biography, headshot, contact email and social links where published -- plus their recent stories, from a canonical https://www.theage.com.au/by/<name>-<id> URL.
+
+### `theage_headlines`
+
+Get The Age section headlines. Returns the current stories for one The Age section: title, canonical URL, summary, author, publication time, and image where the section lists them. section must be one of the slugs returned by /theage/sections; any other value is rejected with a 400 before The Age is contacted.
+
+### `theage_news`
+
+Get The Age top stories. Returns The Age's current "Latest News" public RSS feed: each story's title, canonical URL, summary, author, publication time, and lead image.
+
+### `theage_sections`
+
+Get The Age sections. Lists every The Age section accepted by /theage/headlines (96 sections from the site's own section menu), each with its slug, display name, and public section-front URL.
+
+### `theatlantic_article`
+
+Get an Atlantic article's content. Returns one public Atlantic article's metadata and body paragraphs from a canonical article URL. 'metered' reflects the site's own soft-paywall flag for that article; the body returned here is the same one the site's own page serves to an anonymous visitor and is never truncated because of it. An article whose page genuinely withholds its body is reported as a restricted-access error instead of a hollow response.
+
+### `theatlantic_author`
+
+Get an Atlantic staff author profile. Returns one Atlantic staff author's public profile -- name, headshot, and biography -- plus their recent articles, from a canonical author URL.
+
+### `theatlantic_headlines`
+
+Get the latest stories in an Atlantic section. Returns the current front-page article cards for one Atlantic section: each story's title, canonical URL, description, byline, publication time, and lead image. Section must be a slug returned by /theatlantic/sections.
+
+### `theatlantic_sections`
+
+List The Atlantic sections. Lists every top-level Atlantic section accepted by /theatlantic/headlines, with its slug, display name, and landing-page URL. Values: 'ideas', 'politics', 'economy', 'international', 'national-security', 'technology', 'science', 'health', 'education', 'culture', 'family', 'books', 'photography'.
 
 ### `thebodyshop_collection_products`
 
@@ -7704,6 +10632,86 @@ List The Body Shop sitemaps. Returns child sitemap URLs from The Body Shop's (ht
 
 Get The Body Shop store metadata. Returns normalized storefront metadata for The Body Shop (https://www.thebodyshop.com), sourced from credential-free storefront JSON. This endpoint is a brand-pinned wrapper around the generic Shopify store family: the storefront URL is fixed server-side, so no 'url' parameter is accepted. If the vanity domain blocks '/products.json', the service may fall back to a public '*.myshopify.com' domain discovered from the storefront page, or to the storefront's own embedded page data for storefronts that expose neither.
 
+### `thedailybeast_article`
+
+Get The Daily Beast article content. Returns public The Daily Beast article metadata and body paragraphs from a canonical article URL.
+
+### `thedailybeast_author`
+
+Get a The Daily Beast author profile. Returns one The Daily Beast reporter's public profile: name, job title, biography, headshot, social link, and their recent articles, from a canonical author URL.
+
+### `thedailybeast_headlines`
+
+Get The Daily Beast section headlines. Returns fresh headlines from one public The Daily Beast category hub.
+
+### `thedailybeast_news`
+
+Get The Daily Beast top stories. Returns fresh The Daily Beast stories from the public outbound RSS feed.
+
+### `thedailybeast_sections`
+
+Get The Daily Beast sections. Returns the live public The Daily Beast category inventory (parent and child sections).
+
+### `thehill_article`
+
+Get The Hill article content. Returns public The Hill article metadata and body paragraphs from a canonical article URL.
+
+### `thehill_author`
+
+Get a The Hill author profile. Returns a The Hill author's byline metadata, biography, and recent articles from a canonical author URL.
+
+### `thehill_headlines`
+
+Get The Hill section headlines. Returns fresh headlines from one public The Hill RSS section.
+
+### `thehill_news`
+
+Get The Hill top stories. Returns fresh The Hill top stories from its public RSS feed.
+
+### `thehill_sections`
+
+Get The Hill RSS sections. Returns the public The Hill RSS section inventory used by the headlines endpoint.
+
+### `thehindu_article`
+
+Get The Hindu article content. Returns public The Hindu article metadata and body paragraphs from a canonical article URL. A story The Hindu marks subscriber-only returns a permission error instead of a body.
+
+### `thehindu_author`
+
+Get a The Hindu author profile. Returns a The Hindu author's byline metadata, biography, contact/social links, and their most recent articles from a canonical author URL.
+
+### `thehindu_headlines`
+
+Get The Hindu section headlines. Returns fresh headlines from one public The Hindu section.
+
+### `thehindu_news`
+
+Get The Hindu top stories. Returns fresh The Hindu top stories from its public "Latest News" feed.
+
+### `thehindu_sections`
+
+Get The Hindu sections. Returns the public The Hindu section inventory used by the headlines endpoint.
+
+### `thejournal_article`
+
+Get TheJournal.ie article content. Returns public TheJournal.ie article metadata and body paragraphs from a canonical article URL. Stories are served in full to anonymous readers, so paywalled is never set.
+
+### `thejournal_author`
+
+Get a TheJournal.ie author page. Returns one TheJournal.ie author's public archive page: name, numeric author id, and the most recent articles the first page lists.
+
+### `thejournal_headlines`
+
+Get TheJournal.ie section headlines. Returns current headlines from one public TheJournal.ie section listing page, with the story type label, summary and image when the page shows them.
+
+### `thejournal_news`
+
+Get TheJournal.ie top stories. Returns fresh TheJournal.ie stories from the public site-wide RSS feed, with real publish times.
+
+### `thejournal_sections`
+
+Get TheJournal.ie sections. Returns the public TheJournal.ie section inventory: the category pages and navigation topic pages this family serves headlines for.
+
 ### `therealreal_autocomplete`
 
 Get The RealReal search-box suggestions. Returns The RealReal's own search-box typeahead suggestions for a partial query. Credential-free public data sourced from The RealReal's own first-party catalog API.
@@ -7747,6 +10755,66 @@ Search The RealReal luxury consignment listings. Searches The RealReal's authent
 ### `therealreal_similar`
 
 Get The RealReal similar-item recommendations. Returns The RealReal's own "Similar Items" visual-similarity recommendations for one product, looked up by the product's numeric id (from any other The RealReal endpoint's listing response id field). Credential-free public data sourced from The RealReal's own first-party catalog API.
+
+### `thestarmy_article`
+
+Get The Star (Malaysia) article content. Returns public The Star (Malaysia) story metadata and body paragraphs from a canonical story URL. Metered and premium stories return only the public teaser paragraphs the server shows anonymous readers, flagged with paywalled; a story with no readable teaser returns a permission error.
+
+### `thestarmy_author`
+
+Get a The Star (Malaysia) author page. Returns one The Star (Malaysia) byline's public author page: display name, the public byline email, and their most recent stories.
+
+### `thestarmy_headlines`
+
+Get The Star (Malaysia) section headlines. Returns the current headlines of one public The Star (Malaysia) section page.
+
+### `thestarmy_news`
+
+Get The Star (Malaysia) top stories. Returns the current The Star (Malaysia) top stories from the public home page.
+
+### `thestarmy_sections`
+
+Get The Star (Malaysia) sections. Returns the public The Star (Malaysia) story-listing sections accepted by the headlines endpoint.
+
+### `theverge_article`
+
+Get The Verge article content. Returns public The Verge article metadata and body paragraphs from a canonical article URL.
+
+### `theverge_author`
+
+Get a The Verge author profile. Returns a The Verge author's byline metadata, biography, and recent articles from a canonical author URL.
+
+### `theverge_headlines`
+
+Get The Verge section headlines. Returns fresh headlines from one public The Verge section.
+
+### `theverge_news`
+
+Get The Verge top stories. Returns fresh public The Verge stories from its RSS feed.
+
+### `theverge_sections`
+
+Get The Verge sections. Returns the public The Verge editorial section inventory.
+
+### `thisismoney_article`
+
+Get This Is Money article content. Returns public This Is Money article metadata and body paragraphs from a canonical article URL.
+
+### `thisismoney_author`
+
+Get a This Is Money author profile. Returns a This Is Money author's byline metadata, biography, coverage topics, and recent articles from a canonical author URL.
+
+### `thisismoney_headlines`
+
+Get This Is Money section headlines. Returns fresh headlines from one public This Is Money RSS section.
+
+### `thisismoney_news`
+
+Get This Is Money top stories. Returns fresh This Is Money stories from the public RSS feed.
+
+### `thisismoney_sections`
+
+Get This Is Money sections. Returns the public This Is Money RSS section inventory.
 
 ### `threads_post`
 
@@ -7972,6 +11040,66 @@ Retrieve TikTok Top Ads suggestions. Returns Top Ads search suggestions from Tik
 
 Retrieve TikTok trending posts. Returns the current TikTok trending feed.
 
+### `time_article`
+
+Get TIME article content. Returns public TIME article metadata and body paragraphs from a canonical article URL.
+
+### `time_author`
+
+Get a TIME author profile. Returns a TIME author's byline metadata, biography, social accounts, and recent articles from a canonical author URL.
+
+### `time_headlines`
+
+Get TIME section headlines. Returns fresh TIME headlines from one public RSS section.
+
+### `time_news`
+
+Get TIME top stories. Returns fresh TIME top stories from its public RSS feed.
+
+### `time_sections`
+
+Get TIME RSS sections. Returns the public TIME RSS section inventory used by the headlines endpoint.
+
+### `timesofindia_article`
+
+Get The Times of India article content. Returns public Times of India article metadata (title, author(s), published/updated dates, section, lead image) and body paragraphs from a canonical article URL. A story gated behind a subscription returns a permission error instead of a truncated or fabricated body.
+
+### `timesofindia_author`
+
+Get a Times of India author profile. Returns one Times of India reporter's public profile: name, job title, headshot, biography, and their recent articles.
+
+### `timesofindia_headlines`
+
+Get The Times of India section headlines. Returns fresh headlines from one public Times of India section or city-edition feed.
+
+### `timesofindia_news`
+
+Get The Times of India top stories. Returns fresh Times of India top-stories headline metadata from its public RSS feed.
+
+### `timesofindia_sections`
+
+Get The Times of India sections. Returns the complete public section inventory accepted by /api/v1/timesofindia/headlines: national and international topical sections, and India city editions.
+
+### `timesofisrael_article`
+
+Get Times of Israel article content. Returns public Times of Israel article metadata and body paragraphs from a canonical article URL. Both regular story pages and individual liveblog-update pages (/liveblog_entry/<slug>/) are accepted.
+
+### `timesofisrael_author`
+
+Get a Times of Israel author profile. Returns a Times of Israel writer's byline metadata, biography, social links, and recent articles from a canonical writer profile URL.
+
+### `timesofisrael_headlines`
+
+Get Times of Israel section headlines. Returns fresh headlines from one public Times of Israel section.
+
+### `timesofisrael_news`
+
+Get Times of Israel top stories. Returns fresh Times of Israel top stories from its public news sitemap.
+
+### `timesofisrael_sections`
+
+Get Times of Israel sections. Returns the public Times of Israel section inventory used by the headlines endpoint.
+
 ### `tmdb_collection`
 
 Get a TMDB collection. Returns a normalized TMDB collection (franchise grouping), including its overview and server-rendered member movies. Credential-free public TMDB data.
@@ -8008,6 +11136,26 @@ Get a TMDB TV show. Returns a normalized TMDB TV show: overview, tagline, genres
 
 Get a TMDB TV chart. Returns a TMDB TV chart (popular, top rated, airing today, or on the air). Credential-free public TMDB data.
 
+### `tmz_article`
+
+Get TMZ article content. Returns public TMZ article metadata and body paragraphs from a canonical article URL.
+
+### `tmz_author`
+
+Get a TMZ person profile. Returns a named person's TMZ profile hub: their name and their most recent TMZ coverage, from a canonical person-hub URL or slug. TMZ credits virtually all of its editorial content to a single "TMZ Staff" byline with no individual journalist profile pages, so this endpoint surfaces TMZ's own public per-person coverage hub (used for both celebrities and other newsmakers TMZ covers) as the closest available "profile + recent articles" surface.
+
+### `tmz_headlines`
+
+Get TMZ section headlines. Returns fresh headlines from one TMZ section's public hub page.
+
+### `tmz_news`
+
+Get TMZ top stories. Returns fresh TMZ celebrity news top stories from the public home feed.
+
+### `tmz_sections`
+
+Get TMZ sections. Returns the TMZ section inventory accepted by tmz-headlines: News (the home feed) and Sports. TMZ's public site has no broader stable editorial-category taxonomy beyond its own small main navigation -- see tmz-headlines for details.
+
 ### `tokopedia_autocomplete`
 
 Autocomplete Tokopedia product searches. Returns current public Tokopedia search suggestions for a partial keyword. Suggestions include canonical product-search URLs and are not product-search results.
@@ -8039,6 +11187,86 @@ Search Tokopedia products. Returns public Tokopedia product cards for a keyword 
 ### `tokopedia_search_filters`
 
 Get Tokopedia search filters and sorts. Returns the live filter tree and supported sort choices for a Tokopedia product search. The response includes categories when the current query exposes them, store type, delivery location, price, rating, offer, condition, recency, shipping, and stock options as applicable.
+
+### `tomsguide_article`
+
+Get Tom's Guide article content. Returns public Tom's Guide article metadata and body paragraphs from a canonical article URL.
+
+### `tomsguide_author`
+
+Get a Tom's Guide author profile. Returns one Tom's Guide author's public profile: name, biography, social links, and one page of their recent articles.
+
+### `tomsguide_headlines`
+
+Get Tom's Guide section headlines. Returns fresh Tom's Guide headlines from one public section hub page.
+
+### `tomsguide_news`
+
+Get Tom's Guide top stories. Returns fresh Tom's Guide top stories from the public RSS feed.
+
+### `tomsguide_sections`
+
+Get Tom's Guide sections. Returns the public Tom's Guide top-level content vertical taxonomy used by the headlines endpoint.
+
+### `tomshardware_article`
+
+Get Tom's Hardware article content. Returns public Tom's Hardware article metadata and body paragraphs from a canonical article URL.
+
+### `tomshardware_author`
+
+Get a Tom's Hardware author profile. Returns one Tom's Hardware author's public profile: name, biography, social links, and one page of their recent articles.
+
+### `tomshardware_headlines`
+
+Get Tom's Hardware section headlines. Returns fresh Tom's Hardware headlines from one public section hub page.
+
+### `tomshardware_news`
+
+Get Tom's Hardware top stories. Returns fresh Tom's Hardware top stories from the public RSS feed.
+
+### `tomshardware_sections`
+
+Get Tom's Hardware sections. Returns the public Tom's Hardware top-level editorial taxonomy used by the headlines endpoint.
+
+### `torontostar_article`
+
+Get Toronto Star article content. Returns public Toronto Star article metadata and the body paragraphs shown to an anonymous reader from a canonical article URL. The Star meters its articles, so paywalled is true and paragraphs holds only the public teaser (typically the first two paragraphs) whenever the page hides the rest from non-subscribers.
+
+### `torontostar_author`
+
+Get a Toronto Star author profile. Returns one Toronto Star author's public profile: name, job title, biography, location and topic focus, avatar, and their recent articles.
+
+### `torontostar_headlines`
+
+Get Toronto Star section headlines. Returns fresh Toronto Star headlines from one public section page, with summary, publish time and image when the page shows them.
+
+### `torontostar_news`
+
+Get Toronto Star top stories. Returns the newest Toronto Star editorial stories (up to 50, newest first) from the public news sitemap. Press-release and sponsored pages are excluded.
+
+### `torontostar_sections`
+
+Get Toronto Star sections. Returns the public Toronto Star section navigation accepted by the headlines endpoint.
+
+### `townhall_article`
+
+Get Townhall article content. Returns public Townhall article metadata and body paragraphs from a canonical news or column URL. VIP stories are flagged with paywalled and return only the free lead paragraphs.
+
+### `townhall_author`
+
+Get a Townhall author profile. Returns one Townhall author's public profile: name, photo, bio, X profile, and their most recent stories.
+
+### `townhall_headlines`
+
+Get Townhall section headlines. Returns fresh headlines from one public Townhall section: the news feed, the columns feed, or a topic hub page.
+
+### `townhall_news`
+
+Get Townhall top stories. Returns fresh Townhall news and column stories from the public site-wide RSS feed.
+
+### `townhall_sections`
+
+Get Townhall sections. Returns the public Townhall section inventory: the site-wide news and column feeds plus the editorial topic hubs the site promotes.
 
 ### `tripadvisor_autocomplete`
 
@@ -8248,6 +11476,46 @@ Get current user's recent API client IPs. Returns recent client IP addresses obs
 
 Get current user's usage timeseries. Returns JWT-authenticated request and credit consumption buckets for chart rendering. Results use UTC buckets.
 
+### `usatoday_article`
+
+Get a USA Today article's content. Returns one normal USA Today article's public metadata and body paragraphs from a canonical article URL. Video, gallery, and other non-article routes are not supported.
+
+### `usatoday_author`
+
+Get a USA Today staff/author profile. Returns one USA Today staff writer's public profile: name, bio, social accounts, and their recent articles, from a canonical staff page URL.
+
+### `usatoday_headlines`
+
+Get USA Today section headlines. Returns the newest items from one top-level USA Today section, filtered from the same public news feed as /usatoday/news.
+
+### `usatoday_news`
+
+Get fresh USA Today headlines. Returns the newest window of USA Today's public news feed: title, canonical URL, publication and update times, and the lead image when USA Today publishes one.
+
+### `usatoday_sections`
+
+List USA Today sections. Lists every top-level USA Today section accepted by /usatoday/headlines, with its slug, display name, and landing-page URL.
+
+### `usmagazine_article`
+
+Get Us Weekly article content. Returns public Us Weekly article metadata and body paragraphs from a canonical article URL. Photo-gallery URLs are not supported.
+
+### `usmagazine_author`
+
+Get a Us Weekly author profile. Returns a Us Weekly author's biography, contact links, and recent articles from a canonical author URL.
+
+### `usmagazine_headlines`
+
+Get Us Weekly section headlines. Returns fresh headlines from one public Us Weekly RSS section. Photo galleries are not included.
+
+### `usmagazine_news`
+
+Get Us Weekly top stories. Returns fresh Us Weekly top stories from its public RSS feed.
+
+### `usmagazine_sections`
+
+Get Us Weekly RSS sections. Returns the public Us Weekly RSS section inventory used by the headlines endpoint.
+
 ### `usptoppubs_detail`
 
 Fetch a document's full bibliographic data, abstract, description, and claims. Fetches a single USPTO Patent Public Search record's full text -- bibliographic data, abstract, description, and claims -- by GUID and source database. guid and source normally come straight from a prior /usptoppubs/search result's guid and database fields. Public data, sourced from USPTO's own official search tool.
@@ -8255,6 +11523,66 @@ Fetch a document's full bibliographic data, abstract, description, and claims. F
 ### `usptoppubs_search`
 
 Search USPTO's own patent full-text search index. Searches USPTO Patent Public Search's full-text index of granted patents and published applications, returning normalized bibliographic results (title, applicant/assignee, inventors, filing and publication dates, application number, IPC/CPC classifications, page count). q accepts USPTO's full Advanced Search query syntax -- field-specific search (e.g. battery.ti., Microsoft.as.), date ranges (@pd>=20200101<=20241231), boolean and proximity operators, and wildcards -- see the markdown doc for the full field-code table and syntax reference. Public data, sourced from USPTO's own official search tool.
+
+### `vanguardng_article`
+
+Get Vanguard article content. Returns public Vanguard article metadata and body paragraphs from a canonical article URL. Vanguard has no paywall.
+
+### `vanguardng_author`
+
+Find recent Vanguard articles by byline. Vanguard publishes no author profile pages, so this returns the recent articles in one public feed (site-wide by default, or one section) credited to a byline, matched on the on-page "By <Name>" line or the site's creator field.
+
+### `vanguardng_headlines`
+
+Get Vanguard section headlines. Returns fresh headlines from one public Vanguard section feed.
+
+### `vanguardng_news`
+
+Get Vanguard top stories. Returns fresh Vanguard (Nigeria) stories from the public site-wide RSS feed.
+
+### `vanguardng_sections`
+
+Get Vanguard sections. Returns the public Vanguard editorial section inventory used by vanguardng-headlines: every category with a live feed.
+
+### `vanityfair_article`
+
+Get Vanity Fair article content. Returns public Vanity Fair article metadata and body paragraphs from a canonical article URL. A story Vanity Fair marks as subscriber-only in its own page metadata is reported as a permission error instead of a partial or fabricated body.
+
+### `vanityfair_author`
+
+Get a Vanity Fair contributor profile. Returns a Vanity Fair contributor's byline metadata, biography, headshot, social links, and recent articles from a canonical contributor URL.
+
+### `vanityfair_headlines`
+
+Get Vanity Fair section headlines. Returns fresh headlines from one Vanity Fair section's public listing page.
+
+### `vanityfair_news`
+
+Get Vanity Fair top stories. Returns fresh Vanity Fair top stories from its public RSS feed.
+
+### `vanityfair_sections`
+
+Get Vanity Fair sections. Returns the Vanity Fair section inventory: Hollywood (plus its Movies, Television, and Award Season sub-verticals), Arts & Culture, Politics, Business, and Style (plus its Beauty, Fashion, and Royals sub-verticals), each linking to its public listing page.
+
+### `variety_article`
+
+Get Variety article content. Returns public Variety article metadata and body paragraphs from a canonical article URL.
+
+### `variety_author`
+
+Get a Variety author profile. Returns one Variety author's public profile: name, biography, social links, and one page of their recent articles.
+
+### `variety_headlines`
+
+Get Variety section headlines. Returns fresh Variety headlines from one public vertical RSS feed.
+
+### `variety_news`
+
+Get Variety top stories. Returns fresh Variety top stories from the public RSS feed.
+
+### `variety_sections`
+
+Get Variety sections. Returns the public Variety vertical taxonomy used by the headlines endpoint.
 
 ### `vestiaire_brands`
 
@@ -8288,6 +11616,26 @@ Vestiaire Collective seller profile. Returns a Vestiaire Collective seller's pub
 
 Vestiaire Collective search-box autocomplete. Returns Vestiaire Collective's own search-box autocomplete suggestions for a partial query: matching brands plus completed search phrases. Public data, sourced from Vestiaire Collective's own search-suggestions service.
 
+### `vice_article`
+
+Get VICE article content. Returns public VICE article metadata and body paragraphs from a canonical article URL.
+
+### `vice_author`
+
+Get a VICE contributor profile. Returns a VICE contributor's byline metadata (name, headshot), biography, and recent articles from a canonical contributor URL.
+
+### `vice_headlines`
+
+Get VICE section headlines. Returns fresh headlines from one VICE section, either its public RSS feed (News, Life, Tech, Music) or its public listing page for the remaining sections.
+
+### `vice_news`
+
+Get VICE top stories. Returns fresh VICE stories from its public RSS feed.
+
+### `vice_sections`
+
+Get VICE sections. Returns the VICE section inventory: the site's own 12 curated sections (News, Life, Tech, Music, and others), each linking to its public listing page.
+
 ### `vinted_brand`
 
 Vinted listings for a brand. Returns Vinted listings for a specific brand, with optional price filtering and sort order. 'order' values: 'relevance', 'newest_first', 'price_high_to_low', 'price_low_to_high'. Public data, sourced from Vinted's own server-rendered brand page.
@@ -8316,6 +11664,46 @@ A single Vinted listing's detail. Returns a single Vinted listing's detail: titl
 
 A Vinted seller's public storefront profile. Returns a Vinted seller's public storefront profile: username, self-disclosed coarse location, rating, and follower/following counts. Deliberately excludes online-presence and activity data (last-seen timestamps, upload-frequency badges) present on the live page. Public data, sourced from Vinted's own server-rendered member page.
 
+### `vox_article`
+
+Get Vox article content. Returns public Vox article metadata and body paragraphs from a canonical article URL.
+
+### `vox_author`
+
+Get a Vox author profile. Returns a Vox author's byline metadata, biography, and recent articles from a canonical author URL.
+
+### `vox_headlines`
+
+Get Vox section headlines. Returns fresh headlines from one public Vox section.
+
+### `vox_news`
+
+Get Vox top stories. Returns fresh public Vox stories from its RSS feed.
+
+### `vox_sections`
+
+Get Vox sections. Returns the public Vox editorial section inventory.
+
+### `walesonline_article`
+
+Get WalesOnline article content. Returns public WalesOnline article metadata (including the section) and body paragraphs from a canonical article URL, including live blogs. Photo-gallery URLs are rejected.
+
+### `walesonline_author`
+
+Get a WalesOnline author profile. Returns one WalesOnline author's public profile (name, plus job title, bio, email and X/Twitter handle when the author lists them) and one page of their recent articles.
+
+### `walesonline_headlines`
+
+Get WalesOnline section headlines. Returns fresh headlines from one public WalesOnline section. Photo galleries are omitted because they have no readable article body.
+
+### `walesonline_news`
+
+Get WalesOnline top stories. Returns fresh WalesOnline top stories from the public home RSS feed. Photo galleries are omitted because they have no readable article body.
+
+### `walesonline_sections`
+
+Get WalesOnline sections. Returns the public WalesOnline editorial section inventory used by walesonline-headlines.
+
 ### `walgreens_stores`
 
 Find nearby Walgreens stores. Returns Walgreens stores near a latitude/longitude or a zip code, nearest first: name, address, phone, hours, and in-store services (pharmacy, clinic, photo, and more) for each. Public data sourced from Walgreens' own store locator.
@@ -8336,9 +11724,17 @@ Search Walmart products. Returns Walmart search results: item id, title, brand, 
 
 Get a Washington Post article's content. Returns one public Washington Post article's metadata and body paragraphs from a canonical article URL. Metered articles that the site truncates are not available.
 
+### `wapo_author`
+
+Get a Washington Post staff author profile. Returns one Washington Post staff author's public profile: byline metadata, bio, contact/social links, and one page of their recent articles.
+
 ### `wapo_headlines`
 
 Get the latest stories in a Washington Post section. Returns the first page of a Washington Post section front: each story's title, canonical URL, description, section, publication time, and lead image. Section must be a path returned by /wapo/sections.
+
+### `wapo_news`
+
+Get the latest Washington Post stories. Returns The Washington Post's current public news-sitemap feed with titles, canonical URLs, publication times, and last-modified times.
 
 ### `wapo_sections`
 
@@ -8448,6 +11844,26 @@ Search Wingstop stores near a coordinate. Returns Wingstop stores within a radiu
 
 Get one Wingstop store's detail. Returns one Wingstop store: name, full postal address, phone, coordinates, its general weekly hours plus a per-channel breakdown (pickup, delivery, takeout, drive-through), which pickup/delivery services it offers, its operating status, price tier and Google Place id. Store paths come from GET /wingstop/directory entries whose is_store is true. Passing a directory path here returns a 404 rather than a hollow record.
 
+### `wired_article`
+
+Get a WIRED article's content. Returns one public WIRED article's metadata and full body paragraphs from a canonical article URL. WIRED marks some stories subscriber-only in the page's own metadata; those return a 403 permission error rather than a truncated or fabricated body -- see the endpoint markdown for the exact detection method.
+
+### `wired_author`
+
+Get a WIRED contributor profile. Returns one WIRED contributor's public profile: name, job title, biography, headshot, social links, and their recent articles from a canonical author URL.
+
+### `wired_headlines`
+
+Get the latest stories in a WIRED section. Returns the current public RSS feed for one WIRED section: each story's title, canonical URL, summary, author, publication time, and lead image. Section must be one of the slugs returned by /wired/sections: 'business', 'culture', 'gear', 'politics', 'science', 'security'.
+
+### `wired_news`
+
+Get the latest WIRED stories. Returns WIRED's current public top-stories RSS feed: each story's title, canonical URL, summary, author, publication time, and lead image.
+
+### `wired_sections`
+
+List WIRED sections. Lists every WIRED section accepted by /wired/headlines, with its slug, display name, and landing-page URL. This is the full public, RSS-backed section taxonomy -- see the endpoint markdown for the one primary-nav link (Big Story) that is excluded and why.
+
 ### `wish_categories`
 
 Get Wish's category and filter navigation tree. Returns Wish's own top navigation/category tree (e.g. "Popular", "Deals Hub", "Fashion", "Gadgets") plus each category's nested filter groups (e.g. Color, Rating) where present. This is a static, site-wide taxonomy -- it takes no input and its result does not vary by search term or category.
@@ -8504,6 +11920,14 @@ Search Wolt restaurants and stores near a coordinate. Returns restaurants and st
 
 Get Wolt's live search category catalog for a location. Returns the current, location-scoped catalog of every value /wolt/search's category parameter accepts, each with a live restaurant count when Wolt's own homepage currently features that category as one of its curated tiles -- the same data Wolt's own search page's cuisine tiles are populated from.
 
+### `wsj_article`
+
+Get a Wall Street Journal article's content. Returns one Wall Street Journal article's title, byline, publication time, word count, and body paragraphs, recovered from a public web-archive snapshot of the article. WSJ serves only the first paragraphs of premium articles at the origin, so an article is returned only when a full-text archive snapshot exists; an article without one returns 404.
+
+### `wsj_author`
+
+Get a Wall Street Journal author's profile and recent articles. Returns one Wall Street Journal author's profile (name, job title, bio, and social links when available) and the recent articles listed on their author page, read directly from the live page. The author page sits behind the same access wall as article pages, so a nonexistent author slug returns 404.
+
 ### `x_post`
 
 Retrieve an X post. Returns a public X post by numeric post id, including author, text, visible metrics, and a quoted post preview when present.
@@ -8515,6 +11939,46 @@ Retrieve an X profile. Returns public profile details for an X username, includi
 ### `x_profile_posts`
 
 List public X profile posts. Returns posts present in the first public profile page payload for an X username. The endpoint does not paginate replies, media-only tabs, or search results.
+
+### `xbox_browse`
+
+Browse the Xbox catalog, with optional sort and filters. Returns one page of the full Xbox storefront catalog (games, add-ons, and subscriptions), optionally sorted and/or filtered. With no sort/filter parameters, returns the store's own default (relevance) order. Multiple values for a repeatable filter (genre, price, platform, subscription, age_rating, multiplayer, technical_features, handheld_compatibility) match ANY of them (logical OR); different filter fields combine as logical AND. Cursor-paginated, fixed at 25 items per page.
+
+### `xbox_collection`
+
+Get one page of a curated Xbox collection. Returns one page of a named, editorially curated Xbox collection (e.g. Top Free Games, Top Paid Games, Optimized for Series X|S, Xbox Play Anywhere) -- the same mechanism that powers xbox.com's own marketing hub pages. Pages forward via an opaque cursor: pass the previous response's next_cursor to fetch the next page. This is a partial, non-exhaustive list of known collection ids -- the upstream exposes no discovery endpoint for the full set. Credential-free public Xbox data, read directly from the store's own named-channel API.
+
+### `xbox_game`
+
+Get Xbox catalog details for a single product. Returns normalized Xbox catalog details for a single product id: title, description, publisher, categories, supported platforms, content rating, price, preorder status, media (box art, poster, hero art), trailers, and which subscriptions (e.g. Game Pass) include it. Credential-free public Xbox data, read directly from the store's own batch product-detail API.
+
+### `xbox_reviews`
+
+Get ratings and reviews for an Xbox catalog product. Returns a product's aggregate star-rating breakdown (average, total, and per-star counts) and up to item_count written reviews, optionally sorted and/or filtered to one star rating. A product with no reviews yet (e.g. a pre-order) returns a null ratings summary and an empty reviews list, not an error.
+
+### `xbox_search`
+
+Search the Xbox catalog, with optional sort and filters. Returns one page of Xbox search results for a keyword, scoped to a category (games, add-ons, or hardware) and optionally sorted/filtered with the same parameters as /xbox/browse. Cursor-paginated. Credential-free public Xbox data, read directly from the store's own per-category search API.
+
+### `xda_article`
+
+Get XDA article content. Returns public XDA article metadata and body paragraphs from a canonical article URL.
+
+### `xda_author`
+
+Get an XDA author profile. Returns an XDA author's byline metadata, biography, social links, and recent articles from a canonical author URL.
+
+### `xda_headlines`
+
+Get XDA section headlines. Returns fresh headlines from one public XDA RSS section.
+
+### `xda_news`
+
+Get XDA top stories. Returns fresh XDA top stories from its public RSS feed.
+
+### `xda_sections`
+
+Get XDA RSS sections. Returns the public XDA RSS section inventory used by the headlines endpoint.
 
 ### `yahoo_autos_article`
 
@@ -8736,6 +12200,10 @@ Yahoo News article comments. Returns a page of an article's top-level comments: 
 
 Yahoo News homepage story stream. Returns Yahoo News's homepage "need to know" story stream: title, destination URL, summary, source, publish time, comment count, and thumbnail images for each story. Sourced from Yahoo News's own server-rendered homepage.
 
+### `yahoo_news_related`
+
+Yahoo News related articles. Returns a page of articles Yahoo recommends alongside a given article -- the "you may also like" strip at the bottom of an article page -- with cursor-based pagination. Sourced from Yahoo's own recommendation gateway.
+
 ### `yahoo_news_suggest`
 
 Yahoo News search autocomplete suggestions. Returns Yahoo News's own search-box autocomplete suggestions for a partial query: a flat list of suggested news search terms.
@@ -8918,7 +12386,7 @@ List YOOX designers. Returns the department-scoped designer slugs discovered fro
 
 ### `yoox_product`
 
-Get a YOOX product. Returns the public product detail identified by a YOOX product URL.
+Get a YOOX product. Returns the public product detail identified by a YOOX item id. The legacy product URL form remains accepted.
 
 ### `yoox_search`
 
@@ -9055,6 +12523,26 @@ Find Zaxby's stores near a coordinate. Returns Zaxby's stores within a radius of
 ### `zaxbys_store`
 
 Get one Zaxby's store's full detail. Returns one Zaxby's store's full detail by its store id: address, phone, coordinates, current open status, per-channel hours, and fulfillment/amenity flags. store_id comes from a GET /zaxbys/nearby result.
+
+### `zdnet_article`
+
+Get ZDNet article or review content. Returns public ZDNet article, review or how-to metadata and body paragraphs from a canonical article URL.
+
+### `zdnet_author`
+
+Get a ZDNet author profile. Returns one ZDNet author's public profile: name, role, biography, education, areas of expertise, join date, article count, and one page of their recent articles.
+
+### `zdnet_headlines`
+
+Get ZDNet section headlines. Returns fresh ZDNet headlines from one public topic or content-type feed.
+
+### `zdnet_news`
+
+Get ZDNet top stories. Returns fresh ZDNet top stories from the public news feed.
+
+### `zdnet_sections`
+
+Get ZDNet sections. Returns the public ZDNet topic and content-type taxonomy accepted by the headlines endpoint.
 
 ### `zillow_autocomplete`
 
