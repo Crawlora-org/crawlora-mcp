@@ -7,7 +7,7 @@
 [![crawlora-mcp MCP server](https://glama.ai/mcp/servers/Crawlora-org/crawlora-mcp/badges/score.svg)](https://glama.ai/mcp/servers/Crawlora-org/crawlora-mcp)
 
 **Crawlora MCP** is a **hosted** Model Context Protocol server that gives AI clients and
-agents **3099 structured public‑web‑data tools** across 420 platform groups — search, maps,
+agents **3122 structured public‑web‑data tools** across 420 platform groups — search, maps,
 e‑commerce, social, finance, travel, app stores, media, and reviews — each returning clean,
 normalized **JSON** instead of HTML to parse.
 
@@ -155,7 +155,7 @@ Any client that speaks **Streamable HTTP** can use the generic config in
 
 ## Run it locally (open‑source server)
 
-This repo also ships a small **stdio** MCP server (`index.mjs`) that exposes the same **3099
+This repo also ships a small **stdio** MCP server (`index.mjs`) that exposes the same **3122
 tools**, each wrapping the Crawlora REST API (`https://api.crawlora.net/api/v1`) with your
 `CRAWLORA_API_KEY`. Useful if you'd rather run the server yourself than use the hosted endpoint.
 
@@ -4084,17 +4084,45 @@ List Fortune ranking years. Returns every year accepted by Fortune's public rank
 
 Get Fortune sections. Returns the public Fortune editorial section inventory.
 
+### `fotmob_audio_matches`
+
+FotMob matches with audio commentary. Returns FotMob's current match-to-audio-language availability index. Match ids are open-ended and can be passed to /fotmob/match. The list is independent of a selected match date and may include matches outside the current fixtures feed.
+
+### `fotmob_fifa_ranking_periods`
+
+FotMob FIFA ranking period directory. Returns every ranking period currently offered by FotMob for the selected gender. Use a returned periodId with /fotmob/fifa-rankings.
+
+### `fotmob_fifa_rankings`
+
+FotMob FIFA national-team rankings. Returns ranked national-team points and rank changes for one period. Discover valid periodId values for the selected gender from /fotmob/fifa-ranking-periods.
+
+### `fotmob_latest_news`
+
+FotMob latest football news. Returns the global English latest-news feed. Items are article previews; the upstream response contains up to 20 items per offset. Use start_index increments of 20 to page without overlap.
+
 ### `fotmob_league`
 
-FotMob league details and sections. Returns FotMob's public league page payload, including available tabs, overview, table, fixtures, statistics, transfers, and seasons where supplied by the league.
+FotMob league details and sections. Returns FotMob's public league page payload, including available tabs, overview, table, fixtures, statistics, transfers, and seasons where supplied by the league. Discover valid season values with /fotmob/seasons. shotmap=true includes the optional, larger overview shot-map payload.
 
 ### `fotmob_leagues`
 
 FotMob competition directory. Returns FotMob's full public league directory grouped into popular, international, and country collections. Use league ids with other FotMob endpoints.
 
+### `fotmob_lineup_builder_players`
+
+FotMob lineup builder player metadata. Returns public metadata for 1 to 11 selected lineup players. Player ids are open-ended and can be discovered through /fotmob/search or /fotmob/lineup-builder-team. Unknown ids without complete public metadata return 404.
+
+### `fotmob_lineup_builder_team`
+
+FotMob lineup builder team data. Returns the public lineup builder's prefilled formation, starting lineup, and squad for a team id. Discover open-ended team ids with /fotmob/search. Some teams legitimately have no squad list.
+
 ### `fotmob_match`
 
 FotMob match details. Returns FotMob's public match-details payload, including available facts, events, statistics, lineups, shot map, momentum, table and head-to-head sections. The data field preserves the upstream JSON shape; individual sections may be absent for a match.
+
+### `fotmob_match_media`
+
+FotMob match videos and media metadata. Returns the public highlight-video and media metadata for one match. The request uses FotMob's English United States variant; unavailable media is represented by null source fields.
 
 ### `fotmob_matches`
 
@@ -4103,6 +4131,10 @@ FotMob matches for a date. Returns FotMob's public match payload for a calendar 
 ### `fotmob_news`
 
 FotMob league news. Returns a page of FotMob news items for one league. League ids are discoverable from /fotmob/leagues; start_index is a zero-based offset.
+
+### `fotmob_news_article`
+
+FotMob full top-news article. Returns the full article body for a FotMob-authored top-news story. Pass the complete id-and-slug value from the public /topnews/<id> URL. News previews from external publishers remain external and are not fetched.
 
 ### `fotmob_player`
 
@@ -4124,6 +4156,10 @@ FotMob player season statistics. Returns deep statistics, shot map, heatmap, and
 
 Search FotMob entities. Returns public search suggestions for FotMob leagues, teams, players, and matches. term must contain 1 to 50 characters. Suggestions preserve the upstream JSON shape.
 
+### `fotmob_seasons`
+
+FotMob league season discovery. Returns the complete list of season values accepted by the FotMob league endpoint for one competition.
+
 ### `fotmob_stats`
 
 FotMob league player or team statistics. Returns ranked player or team statistics for a stat id discovered from /fotmob/stats-categories. The accepted stat ids vary by league, season, and type. team_id optionally restricts player statistics to one team. position filters player results client-side.
@@ -4138,7 +4174,11 @@ FotMob league table. Returns the league standings and the upstream table views, 
 
 ### `fotmob_team`
 
-FotMob team details. Returns public team data and the sections currently available for that team, such as overview, table, fixtures, squad, stats, transfers, and history. Team ids can be found with /fotmob/search. The upstream section set varies by team.
+FotMob team details. Returns public team data and the sections currently available for that team, such as overview, table, fixtures, squad, stats, transfers, and history. Team ids can be found with /fotmob/search. The upstream section set varies by team. For older fixtures, pass fixtures.previousFixturesUrl to /fotmob/team-fixtures.
+
+### `fotmob_team_fixtures`
+
+FotMob paginated team fixtures. Returns one page of older team matches. Start with the fixtures.previousFixturesUrl cursor from /fotmob/team, then pass each response's previous value as cursor until it is empty or null. Team ids are open-ended numeric ids discoverable through /fotmob/search.
 
 ### `fotmob_team_news`
 
@@ -4147,6 +4187,26 @@ FotMob team news. Returns the paginated article feed shown on a public FotMob te
 ### `fotmob_transfers`
 
 FotMob transfer center. Returns confirmed transfers, rumours, or popular transfers with the public transfer-center filters. Fee values are in EUR. Use fotmob/leagues and fotmob/search to discover league and team ids. The upstream returns 50 rows per page and caps its hit count at 10,000.
+
+### `fotmob_trending_news`
+
+FotMob trending football news. Returns the five-story Trending shelf shown on FotMob's public News page. Items are curated previews and may overlap the global latest-news feed; the upstream list is dynamic. No locale or country parameter is exposed because the complete accepted value space is not pinned.
+
+### `fotmob_trending_searches`
+
+FotMob trending search suggestions. Returns FotMob's current grouped trending suggestions for all entities, players, teams, and leagues. The feed is dynamic and may vary by the upstream's inferred region; no region or category parameter is exposed.
+
+### `fotmob_tv_guide`
+
+FotMob football TV guide. Returns the public seven-day football broadcast schedule for a country, with local schedule times. Discover all accepted country codes from /fotmob/tv-guide-countries. Timezone defaults to UTC.
+
+### `fotmob_tv_guide_channels`
+
+FotMob TV guide channels. Discovers channels attached to matches in the selected country's current seven-day public TV guide window. Use the country directory to discover the complete country code set.
+
+### `fotmob_tv_guide_countries`
+
+FotMob TV guide country directory. Lists all country codes exposed by FotMob's public football TV guide country selector.
 
 ### `foxnews_article`
 
@@ -6342,7 +6402,11 @@ Get Live Science sections. Returns the public Live Science top-level editorial t
 
 ### `livescore_competition`
 
-LiveScore competition page and section data. Returns the public page data for a competition route or one of its visible sections. Competition ids and tabs vary by sport; use paths linked from LiveScore's public navigation. This is a route lookup, not a complete competition directory.
+LiveScore competition page and section data. Returns public competition or stage page data and its visible sections. Competition ids and tabs vary by sport; discover English sitemap-listed paths, including cricket stage pages, with /livescore/competitions.
+
+### `livescore_competitions`
+
+LiveScore competition page directory. Returns English competition pages listed in LiveScore's public competition sitemaps plus competition-shaped pages listed in the English cricket sport sitemap. The sitemap index has dedicated competition sitemaps for soccer, hockey, basketball, and tennis; cricket discovery remains partial and dynamic.
 
 ### `livescore_live_scores`
 
@@ -6387,6 +6451,10 @@ LiveScore scores and fixtures by sport and date. Returns either the unpaged full
 ### `livescore_scores_toc`
 
 LiveScore score date table of contents. Returns the event, player, section, and competition identifiers indexed by a sport and date. These IDs are date-specific and can help callers enumerate score-page sections.
+
+### `livescore_search`
+
+Search LiveScore teams, competitions, and regions. Searches the public LiveScore index for a free-text term, or browse its current team, competition-stage, and region-category sections with an empty query. Results are dynamic, limited per section, and are not a complete historical competition directory. Use /livescore/sports to discover all supported sport tokens.
 
 ### `livescore_sports`
 
@@ -8940,9 +9008,33 @@ Rotten Tomatoes TV discovery rows. Returns normalized TV series rows from Rotten
 
 Rotten Tomatoes critic directory. Returns current or inactive critics from Rotten Tomatoes' public author directory. Browse one letter or search by name; use 'next_cursor' as 'after' or 'previous_cursor' as 'before', as indicated by the corresponding page flag. The letter values come from the live directory controls.
 
+### `rottentomatoes_editorial_content`
+
+Rotten Tomatoes editorial content listing. Lists paginated editorial records from the selected public content type. The pages collection lists public editorial section and campaign indexes. Use the editorial types endpoint to discover accepted type values.
+
+### `rottentomatoes_editorial_detail`
+
+Rotten Tomatoes editorial article detail. Returns the public body, paragraphs, headings, links, images, and video embeds from an Editorial article, gallery, guide, on-the-go article, or preview. Discover paths from editorial content collections. The response body_html preserves public Gutenberg/ranked-list markup.
+
 ### `rottentomatoes_editorial_search`
 
 Rotten Tomatoes editorial search. Searches public Rotten Tomatoes editorial content, including articles and guides. Results come from its anonymous WordPress REST search endpoint and include content subtype plus total-page metadata.
+
+### `rottentomatoes_editorial_section`
+
+Rotten Tomatoes editorial section archive. Returns the rendered article cards for a discovered editorial page, RT hub, or hub subpage. Discover paths through editorial content types 'pages', 'rt-hub', and 'hub-subpage'. Static pages use 'articles_page' pagination upstream; hubs use '/page/{n}/'.
+
+### `rottentomatoes_editorial_taxonomies`
+
+Rotten Tomatoes editorial taxonomy discovery. Returns the complete set of public editorial term vocabularies accepted by the term discovery endpoint, with the content types each taxonomy filters.
+
+### `rottentomatoes_editorial_terms`
+
+Rotten Tomatoes editorial taxonomy terms. Pages public terms from one discovered editorial taxonomy. All taxonomy values are listed by '/rottentomatoes/editorial/taxonomies'; 'parent' is accepted only for 'categories', while 'offset' is supported by all other taxonomies.
+
+### `rottentomatoes_editorial_types`
+
+Rotten Tomatoes editorial content types. Returns the complete live-verified set of editorial type values accepted by the editorial content endpoint.
 
 ### `rottentomatoes_episode`
 
@@ -12606,7 +12698,7 @@ Search Zomato restaurants in a city. Returns restaurants in a Zomato city, optio
 
 <!-- END MCP.SO TOOLS -->
 
-## What you can call (3099 tools / 12 categories)
+## What you can call (3122 tools / 12 categories)
 
 See [`tools.json`](./tools.json) or your MCP client UI for exact schemas. Below is a overview by category:
 
@@ -12627,7 +12719,7 @@ See [`tools.json`](./tools.json) or your MCP client UI for exact schemas. Below 
 
 ## Why Crawlora MCP?
 
-- **One key, 3099 tools** — search, commerce, social, gaming, finance, and more behind a single MCP endpoint.
+- **One key, 3122 tools** — search, commerce, social, gaming, finance, and more behind a single MCP endpoint.
 
 A good alternative to stitching together SerpApi, Firecrawl, ScraperAPI, or ScrapingBee.
 
