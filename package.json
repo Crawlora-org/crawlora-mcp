@@ -1,7 +1,7 @@
 {
   "name": "crawlora-mcp",
-  "version": "1.17.6",
-  "description": "Local MCP server for Crawlora \u2014 3122 structured public web-data tools across 420 platform groups (search, maps, commerce, social, finance) wrapping the Crawlora REST API.",
+  "version": "1.17.7",
+  "description": "Local MCP server for Crawlora \u2014 3209 structured public web-data tools across 438 platform groups (search, maps, commerce, social, finance) wrapping the Crawlora REST API.",
   "type": "module",
   "main": "index.mjs",
   "bin": {

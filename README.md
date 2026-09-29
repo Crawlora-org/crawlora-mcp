@@ -7,7 +7,7 @@
 [![crawlora-mcp MCP server](https://glama.ai/mcp/servers/Crawlora-org/crawlora-mcp/badges/score.svg)](https://glama.ai/mcp/servers/Crawlora-org/crawlora-mcp)
 
 **Crawlora MCP** is a **hosted** Model Context Protocol server that gives AI clients and
-agents **3122 structured public‑web‑data tools** across 420 platform groups — search, maps,
+agents **3209 structured public‑web‑data tools** across 438 platform groups — search, maps,
 e‑commerce, social, finance, travel, app stores, media, and reviews — each returning clean,
 normalized **JSON** instead of HTML to parse.
 
@@ -155,7 +155,7 @@ Any client that speaks **Streamable HTTP** can use the generic config in
 
 ## Run it locally (open‑source server)
 
-This repo also ships a small **stdio** MCP server (`index.mjs`) that exposes the same **3122
+This repo also ships a small **stdio** MCP server (`index.mjs`) that exposes the same **3209
 tools**, each wrapping the Crawlora REST API (`https://api.crawlora.net/api/v1`) with your
 `CRAWLORA_API_KEY`. Useful if you'd rather run the server yourself than use the hosted endpoint.
 
@@ -367,6 +367,18 @@ Get Airbnb room reviews. Returns normalized Airbnb public review snippets.
 ### `airbnb_search`
 
 Search Airbnb stays. Returns normalized Airbnb public web search results.
+
+### `alcom_headlines`
+
+Get AL.com section headlines. Returns current headlines from one of AL.com's public Arc RSS section feeds. Summaries are brief publisher teasers, not full article text.
+
+### `alcom_news`
+
+Get AL.com top stories. Returns current AL.com News stories from its public Arc RSS feed. Feed summaries are brief publisher teasers, not full article text.
+
+### `alcom_sections`
+
+Get AL.com editorial sections. Returns the three top-level editorial sections exposed in AL.com's site navigation and accepted by the headlines endpoint.
 
 ### `aljazeera_article`
 
@@ -1316,6 +1328,10 @@ Search Boots UK products and categories. Returns one page of Boots UK's public p
 
 Get Boots UK search-box suggestions. Returns Boots UK's own public typeahead phrases for a partial product query. The suggestions are search terms only; pass one to boots-search's q parameter for product cards and live facets.
 
+### `bostonglobe_news`
+
+Get Boston Globe top stories. Returns recent Boston Globe story metadata and RSS summaries from its public Arc feed. The feed also carries content:encoded article prose, which this endpoint intentionally omits. Article bodies, sections, headlines-by-section, and author profiles are not exposed because the public contracts are not fully verified and some stories require a subscription.
+
 ### `boxofficemojo_brand`
 
 Box Office Mojo brand detail. Returns normalized release rows from a public Box Office Mojo brand page. Pass exactly one of 'id', 'path', or 'url'.
@@ -1915,6 +1931,10 @@ List Chrono24 models for a brand. Returns every model/collection Chrono24 lists 
 ### `chrono24_search`
 
 Search Chrono24 watch listings. Searches Chrono24's luxury-watch marketplace by free-text keyword, or browses one brand's (optionally narrowed to one model's) current listings, returning normalized result cards: title, price with currency, seller type, seller country, promotional badge, image, and the listing URL to pass to chrono24-listing. At least one of query or brand is required. Optional advanced-search filters (condition, used_or_new, case_material, dial_color, bracelet_material, movement_type, gender, watch_type, stock_info) narrow results further; each filter's accepted values are discoverable from chrono24-facets and echoed back in the response's filters field.
+
+### `clevelandcom_news`
+
+Get Cleveland.com top stories. Returns Cleveland.com's 50-item public top-stories RSS feed. Summaries and encoded content are publisher teasers; this endpoint does not claim to return full article text. Editorial section inventory and article pages could not be reliably verified due to upstream DataDome blocking.
 
 ### `cna_article`
 
@@ -4232,6 +4252,22 @@ Search Fox News public content. Searches Fox News' public credential-free Moxie 
 
 Get Fox News RSS sections. Returns the exact live-verified Fox News article RSS section slugs accepted by foxnews-headlines. The video-only RSS feed is intentionally excluded.
 
+### `foxsports_article`
+
+Get FOX Sports article content. Returns public FOX Sports article metadata and body paragraphs from a canonical foxsports.com/stories/<section>/<slug> URL. Public body content stops at the article body container.
+
+### `foxsports_headlines`
+
+Get FOX Sports section headlines. Returns current headlines from one public FOX Sports editorial RSS feed.
+
+### `foxsports_news`
+
+Get FOX Sports top stories. Returns current FOX Sports top stories from the official public All Headlines RSS feed.
+
+### `foxsports_sections`
+
+Get FOX Sports news sections. Returns the live-verified public editorial RSS feed inventory used by foxsports-headlines.
+
 ### `france24_article`
 
 Get France 24 article content. Returns public France 24 English-edition article metadata and body paragraphs from a canonical article URL. Live-blog pages are supported and return their chronological update entries as body paragraphs.
@@ -4251,6 +4287,14 @@ Get France 24 top stories. Returns fresh France 24 English-edition stories from 
 ### `france24_sections`
 
 Get France 24 sections. Returns the complete public France 24 English-edition section inventory (regions, topics, and other public hubs) accepted by /france24/headlines.
+
+### `freemalaysiatoday_news`
+
+Get the latest Free Malaysia Today stories. Returns Free Malaysia Today's current public top-stories RSS feed: each story's title, canonical URL, summary, author, publication time, and lead image.
+
+### `freemalaysiatoday_sections`
+
+List Free Malaysia Today sections. Lists every live-verified primary editorial navigation section, with its slug, display name, and landing-page URL. This is the live-verified primary editorial navigation taxonomy; media, promotional, and duplicate commercial destinations are excluded.
 
 ### `ft_article`
 
@@ -4395,6 +4439,42 @@ Reverse geocode coordinates. Returns the nearest typed Nominatim JSONv2 place fo
 ### `geocoding_search`
 
 Search Nominatim places. Returns typed Nominatim JSONv2 forward geocoding results. Use either q or structured fields, not both.
+
+### `ghanaweb_archive`
+
+List GhanaWeb archive article URLs. Returns paginated canonical article URLs from one month sitemap. Discover accepted month values from ghanaweb-archive-months; the service only fetches child sitemap URLs derived from that official index.
+
+### `ghanaweb_archive_months`
+
+Discover GhanaWeb archive months. Returns every YYYYMM month currently advertised by GhanaWeb's official article-sitemap index. Use one of these values with ghanaweb-archive.
+
+### `ghanaweb_article`
+
+Get GhanaWeb article content. Returns public article metadata and readable body paragraphs. GhanaWeb's JSON-LD identifies the publisher rather than person authors, so authors are omitted.
+
+### `ghanaweb_headlines`
+
+Get GhanaWeb section headlines. Returns article cards from a verified GhanaWeb section page.
+
+### `ghanaweb_news`
+
+Get GhanaWeb latest stories. Returns GhanaWeb's current public stories from its Google News sitemap, including canonical URL, headline, and publication time.
+
+### `ghanaweb_sections`
+
+Get GhanaWeb article sections. Returns the complete verified article-bearing section set accepted by ghanaweb-headlines. Static, media, and non-article destinations are excluded.
+
+### `ghanaweb_video`
+
+Get GhanaWeb TV video metadata. Returns public GhanaWeb TV metadata and the page's YouTube embed URL. The media itself is not retrieved.
+
+### `ghanaweb_video_sections`
+
+Get GhanaWeb TV video sections. Returns the complete four-value video category set accepted by ghanaweb-videos.
+
+### `ghanaweb_videos`
+
+List GhanaWeb TV videos. Returns current public video cards for one GhanaWeb TV category, including metadata and a canonical detail URL. This endpoint does not retrieve video media.
 
 ### `github_org`
 
@@ -5252,6 +5332,10 @@ List Hotels.com guest reviews. Returns one page of public guest reviews for a Ho
 
 Search Hotels.com hotels. Returns a page of date-bound Hotels.com hotel search results for either a free-text destination or a numeric Hotels.com region_id: normalized property cards with per-night and per-stay prices, review score and count, location, thumbnail, amenities, and promotional badges. Provide exactly one of query or region_id; region_id skips destination typeahead resolution. Prices are the live rates Hotels.com shows for the requested check-in and check-out dates.
 
+### `howtogeek_news`
+
+Get How-To Geek top stories. Returns current stories from How-To Geek's public RSS feed. Summaries are publisher teasers, not full article text. This feed-only route does not claim a complete section taxonomy or retrieve article bodies.
+
 ### `huffpost_article`
 
 Get HuffPost article content. Returns public HuffPost article metadata and body paragraphs from a canonical article URL.
@@ -5735,6 +5819,30 @@ Find J.Crew or J.Crew Factory store locations. Returns one storefront's full ope
 ### `jcrew_suggest`
 
 Get J.Crew or J.Crew Factory search-box suggestions. Returns the storefront's own search-box suggestions (typeahead) for a partial query -- a flat list of suggested search phrases, each with its own live total result count on the search index. Select the storefront with site (default jcrew). Not product data.
+
+### `jerusalempost_article`
+
+Get Jerusalem Post article content. Returns public Jerusalem Post article metadata and free body paragraphs. If isAccessibleForFree is false, paywalled is true and body paragraphs are omitted; paid article text is not represented by feed snippets.
+
+### `jerusalempost_author`
+
+Get Jerusalem Post author profile. Returns a public author or blogger profile and article cards from its first-party profile page.
+
+### `jerusalempost_authors`
+
+List Jerusalem Post author profiles. Returns the current author and blogger profile URLs discovered from the site's public Experts sitemap. This dynamic roster is intentionally exposed as a discovery endpoint.
+
+### `jerusalempost_headlines`
+
+Get Jerusalem Post section headlines. Returns fresh non-premium stories from one public Jerusalem Post RSS section. Premium feed snippets are omitted.
+
+### `jerusalempost_news`
+
+Get Jerusalem Post top stories. Returns fresh non-premium Jerusalem Post stories from its public front-page RSS feed. Premium feed snippets are omitted.
+
+### `jerusalempost_sections`
+
+Get Jerusalem Post section inventory. Returns the live-verified public RSS sections accepted by jerusalempost-headlines.
 
 ### `jimmy_johns_menu`
 
@@ -6624,6 +6732,26 @@ Get Mediaite top stories. Returns fresh Mediaite top stories from the public new
 
 Get Mediaite sections. Returns the public Mediaite category taxonomy accepted by the headlines endpoint.
 
+### `medicalnewstoday_article`
+
+Get a Medical News Today article. Returns public article metadata and body paragraphs. No login or paywall is bypassed. URLs under the robots-disallowed /articles/mnt-* path are rejected.
+
+### `medicalnewstoday_author`
+
+Get a Medical News Today author profile. Returns an author's public profile and recent articles. Supply either the author slug or profile URL.
+
+### `medicalnewstoday_headlines`
+
+Get Medical News Today section headlines. Returns dated article cards from the dedicated Health News stream.
+
+### `medicalnewstoday_news`
+
+Get Medical News Today latest health news. Returns current stories from the site's dedicated Health News listing.
+
+### `medicalnewstoday_sections`
+
+Get Medical News Today newsroom sections. Returns the exact public editorial news-section value accepted by medicalnewstoday-headlines. Health Topics and Health Hubs are educational resources, not newsroom sections.
+
 ### `men_article`
 
 Get Manchester Evening News article content. Returns public Manchester Evening News article metadata and body paragraphs from a canonical article URL.
@@ -6856,6 +6984,14 @@ Get Mirror top stories. Returns fresh Mirror top stories from the public News RS
 
 Get Mirror sections. Returns the public Mirror editorial section inventory used by mirror-headlines.
 
+### `mlb_discovery`
+
+Discover MLB sections and Stats API values. Returns MLB.com's live navigation tree, including hidden nodes labeled with visibility, and the MLB-only value sets for leagues, divisions, game types, roster types, standings types, stat groups, supported stat types, leader categories, MLB Pipeline prospect filters, league-stats hitter positions and player pools, and the observed Baseball Savant leaderboard categories and filters including Expected Statistics and Outs Above Average. Use these values to discover sections and supported filters before calling MLB endpoints.
+
+### `mlb_editorial_feed`
+
+Get an MLB.com editorial feed. Returns a paginated first-party MLB.com news, video, or selection feed. Slugs are dynamic and not a complete closed topic catalog; discover current topic suggestions with mlb-search and sections with mlb-discovery. Feed items retain upstream Article, ShortContent, VSMContent, or Video fields.
+
 ### `mlb_game`
 
 Get an MLB game feed. Returns a compact MLB game feed with status, teams, score, innings, probable pitchers, decisions, and team box-score totals.
@@ -6868,9 +7004,13 @@ Get an MLB player boxscore. Returns both teams' player batting, pitching, and fi
 
 Get MLB game play-by-play. Returns every at-bat and pitch/event record for an MLB game.
 
+### `mlb_league_leaders`
+
+Get MLB league leaders. Returns ranked MLB leader entries for one or more validated categories. Use mlb-discovery for all accepted categories, groups, and game type codes.
+
 ### `mlb_league_stats`
 
-Get ranked MLB league statistics. Returns ranked MLB season stat splits across both leagues. The group enum accepts 'hitting', 'pitching', and 'fielding'.
+Get ranked MLB league statistics. Returns ranked MLB season stat splits across both leagues. The group enum accepts every value returned by mlb_discovery.
 
 ### `mlb_player`
 
@@ -6878,23 +7018,43 @@ Get an MLB player. Returns an MLB player's identity, biographical information, p
 
 ### `mlb_player_stats`
 
-Get MLB player season statistics. Returns one player's MLB season statistics. The group enum accepts 'hitting', 'pitching', and 'fielding'.
+Get MLB player season statistics. Returns one player's MLB season statistics. The group enum accepts every value returned by mlb_discovery.
+
+### `mlb_prospect_stats`
+
+Get MLB Pipeline prospect statistics and rankings. Returns MLB Pipeline prospect stats from the anonymous first-party prospect tables. Supports the Top 100, all-prospect, or one-team list; batter/pitcher views; validated date periods and minimum thresholds; and local name/position filters. Use mlb_discovery for date periods, minimum thresholds, and positions. Team ids come from mlb_teams.
 
 ### `mlb_schedule`
 
 Get the MLB schedule and scores. Returns MLB games, teams, scores, status, probable pitchers, venue, and series information for one date or date range, optionally filtered to a team.
 
+### `mlb_search`
+
+Search MLB players, teams, and content topics. Returns the same anonymous MLB typeahead categories used by MLB.com: player suggestions, team suggestions, content topics, and search terms. Queries need at least three characters.
+
 ### `mlb_standings`
 
-Get MLB standings. Returns American League and National League standings grouped by division. The type enum accepts 'regularSeason', 'wildCard', and 'springTraining'.
+Get MLB standings. Returns American League and National League standings using any supported standings type returned by mlb_discovery.
+
+### `mlb_statcast`
+
+Get Baseball Savant Statcast leaderboard data. Returns the standard anonymous Baseball Savant Statcast leaderboard for batters, pitchers, teams, or pitcher teams. Supports the page's season, team, batter position, minimum batted-ball event, and sortable metric filters, plus local pagination. Use mlb_discovery for exact filter sets. Other Baseball Savant leaderboard pages are listed there but are not represented by this route.
+
+### `mlb_statcast_expected`
+
+Get Baseball Savant Expected Statistics. Returns the separate Expected Statistics leaderboard with batter, pitcher, and team views; season, team, batter-position, BIP/PA qualifier and threshold filters; local metric sorting; and pagination. League-average values are returned separately.
+
+### `mlb_statcast_oaa`
+
+Get Baseball Savant Outs Above Average. Returns the separate Outs Above Average leaderboard for fielders, fielding teams, batters, batting teams, or pitchers. Supports season range, split years, team, monthly range, attempts, position, detailed fielder roles, local sorting, and pagination.
 
 ### `mlb_team_roster`
 
-Get an MLB team roster. Returns a team's players, jersey numbers, positions, and roster status. The roster_type enum accepts 'active', '40Man', and 'fullSeason'.
+Get an MLB team roster. Returns a team's players, jersey numbers, positions, and roster status. The roster_type parameter accepts every value in the live MLB value set returned by mlb_discovery.
 
 ### `mlb_team_stats`
 
-Get MLB team season statistics. Returns one team's season statistics. Group accepts 'hitting', 'pitching', and 'fielding'.
+Get MLB team season statistics. Returns one team's season statistics. Group accepts every value returned by mlb_discovery.
 
 ### `mlb_teams`
 
@@ -6903,6 +7063,10 @@ List MLB teams. Returns the 30 MLB clubs for a season with league, division, ven
 ### `mlb_transactions`
 
 List MLB transactions. Lists signings, trades, options, assignments, injured-list moves, and other MLB transactions for a date range.
+
+### `mlive_news`
+
+Get MLive top stories. Returns current MLive top stories from its anonymous Arc RSS feed, including title, canonical URL, brief summary, author, publication time, and image where available. Article pages are currently blocked by DataDome; category endpoints are deferred because the full accepted section set could not be verified.
 
 ### `modaoperandi_categories`
 
@@ -6988,6 +7152,26 @@ List website-change monitors. Returns the caller's own monitors (most recently c
 
 Update a website-change monitor. Partially updates one of the caller's own monitors. Free to call. Changing 'target_type' or 'sitemap' resets the stored diff baseline (fingerprint, snapshot, or URL set), so the next check establishes a fresh baseline instead of comparing against a now-meaningless prior state.
 
+### `motleyfool_article`
+
+Get a Motley Fool article. Returns public metadata and body paragraphs from a canonical Fool investing article URL.
+
+### `motleyfool_author`
+
+Get a Motley Fool author profile. Returns a public Fool author's name, biography, image, and recent articles from a canonical author URL.
+
+### `motleyfool_headlines`
+
+Get The Motley Fool section headlines. Returns article headlines from one live-verified public Fool investing-news section.
+
+### `motleyfool_news`
+
+Get The Motley Fool top investing stories. Returns recent public investing stories from The Motley Fool's news sitemap.
+
+### `motleyfool_sections`
+
+List The Motley Fool news sections. Returns the complete article-bearing Stock Market News section set accepted by motleyfool_headlines.
+
 ### `nationafrica_article`
 
 Get Nation Africa article content. Returns public Nation Africa article metadata and body paragraphs from a canonical article URL. paywalled is true for a Premium story: the publisher serves an anonymous reader only the opening paragraph(s), so paragraphs is a partial teaser and nothing is bypassed. Video, photo, audio, puzzle and cartoon URLs are rejected with a 400.
@@ -7063,6 +7247,10 @@ Get NDTV section headlines. Returns the current story cards from one NDTV sectio
 ### `ndtv_news`
 
 Get NDTV latest stories. Returns the stories NDTV published in roughly the last two days, newest first, from its public news sitemap: title, canonical URL, publication time, keywords, and lead image.
+
+### `ndtv_search`
+
+Search NDTV news stories. Returns one page of NDTV's public news topic results (15 story cards per page). Unknown topics return 404. The result page supports no sort or filter parameters.
 
 ### `ndtv_sections`
 
@@ -7239,6 +7427,10 @@ Get 9to5Mac top stories. Returns fresh 9to5Mac (9to5mac.com) Apple news top stor
 ### `ninetofivemac_sections`
 
 Get 9to5Mac sections. Returns the public 9to5Mac topic guides (each with its own RSS feed) accepted by the headlines endpoint.
+
+### `njcom_news`
+
+Get NJ.com top stories. Returns current NJ.com top stories from its anonymous Arc RSS feed, including title, canonical URL, short feed summary, author, publication time, and image where available. Category discovery and section headlines are deferred because the complete accepted feed taxonomy could not be verified; article and author routes remain unverified behind the site's DataDome challenge.
 
 ### `npr_article`
 
@@ -8268,6 +8460,10 @@ List Popeyes Rewards' loyalty-challenge catalog. Returns a page of Popeyes Rewar
 
 List Popeyes Rewards' points-redemption catalog. Returns a page of Popeyes Rewards' points-redemption catalog -- menu items and combos a member can redeem directly for a fixed number of loyalty points (e.g. "600 points for Cheese Bites"), distinct from /popeyes/offers (priced deals), /popeyes/quests (challenges) and /popeyes/promotions (bonus-points campaigns). This is public CMS content, not a signed-in member's own points balance or redemption history. points is the loyalty points cost to redeem; other per-account/per-order redemption restrictions Popeyes may publish on a reward are not exposed by this endpoint.
 
+### `popularmechanics_news`
+
+Get Popular Mechanics top stories. Returns current stories from Popular Mechanics' public all-stories RSS feed. Summaries are publisher teasers, not full article text. This feed-only route does not claim a complete section taxonomy or retrieve article bodies.
+
 ### `poshmark_brand`
 
 Browse Poshmark listings by brand. Returns a page of normalized Poshmark listings for a given brand name (e.g. Nike), the same browsing view as Poshmark's own brand pages. Pass a previous response's next_max_id back as max_id to fetch the next page. Credential-free public data sourced from Poshmark's own server-rendered brand page and, for pages past the first, Poshmark's own JSON pagination API.
@@ -9148,6 +9344,46 @@ Get a Sam's Club product's full detail. Returns one Sam's Club product's full de
 
 Get a Sam's Club product's related items. Returns the related-item carousels shown on a Sam's Club product page, each a named shelf (e.g. "Members also considered", "Items you may like") of normalized products with pricing, rating, and image. id is the numeric product id from a Sam's Club product page's /ip/ URL. This upstream source does not distinguish an unrecognized id from a known one -- an unrecognized id still returns generic fallback shelves rather than an error.
 
+### `sbsnews_article`
+
+Get SBS News article content. Returns public SBS News article metadata and body paragraphs from a canonical article URL, including standard, Insight, and Dateline stories.
+
+### `sbsnews_author`
+
+Get an SBS News author profile. Returns a public SBS News byline collection with author name, profile image, biography, pagination state, and recent articles.
+
+### `sbsnews_headlines`
+
+Get SBS News section headlines. Returns current SBS News headlines for a supported navigation or featured topic section.
+
+### `sbsnews_news`
+
+Get SBS News top stories. Returns current SBS News Top Stories from its public RSS feed.
+
+### `sbsnews_sections`
+
+Get SBS News sections. Returns the SBS News navigation and featured public topic/collection pages accepted by sbsnews-headlines.
+
+### `sciencealert_article`
+
+Get ScienceAlert article content. Returns public article metadata and body paragraphs from a canonical ScienceAlert article URL.
+
+### `sciencealert_author`
+
+Get a ScienceAlert author profile. Returns a journalist's public profile, biography, social links, and one page of recent articles.
+
+### `sciencealert_headlines`
+
+Get ScienceAlert section headlines. Returns headlines from one public ScienceAlert section.
+
+### `sciencealert_news`
+
+Get ScienceAlert top stories. Returns fresh ScienceAlert top stories from its public RSS feed.
+
+### `sciencealert_sections`
+
+Get ScienceAlert sections. Returns the complete public top-level ScienceAlert taxonomy used by headlines.
+
 ### `scmp_article`
 
 Get an SCMP article's content. Returns one public South China Morning Post article's metadata and body paragraphs from a canonical article URL. 'content_locked' and 'paywall_types' are the upstream's own restricted-access signals for that article, reported exactly as the site returns them; the body returned here is the same one the site's own page serves to an anonymous visitor. An article whose page genuinely withholds its body is reported as a restricted-access error instead of a hollow or truncated response.
@@ -9652,6 +9888,26 @@ Get Sky News video metadata. Returns one Sky News video's public metadata (title
 
 Get the Sky News videos hub. Returns recent videos from the public Sky News videos hub.
 
+### `skysports_article`
+
+Get a Sky Sports article. Returns public Sky Sports article metadata and body paragraphs from a canonical article URL.
+
+### `skysports_author`
+
+Get a Sky Sports author profile. Returns public author metadata, biography, and recent articles from a canonical author URL.
+
+### `skysports_headlines`
+
+Get Sky Sports section headlines. Returns current headlines from one live Sky Sports section page.
+
+### `skysports_news`
+
+Get Sky Sports top stories. Returns the latest Sky Sports top stories from its public RSS feed.
+
+### `skysports_sections`
+
+Get Sky Sports sections. Returns the 22 currently reachable sections in the live Sky Sports sports navigation.
+
 ### `slate_article`
 
 Slate article content. Returns public Slate article metadata and server-delivered body paragraphs from a canonical dated Slate URL. It does not log in, use account cookies, or bypass a challenge; is_paywalled reports when Slate marks the delivered page as subscription-gated.
@@ -9932,6 +10188,90 @@ Get Sporting News top stories. Returns fresh top stories from the Sporting News 
 
 Get Sporting News sections. Returns the public Sporting News US sport, league and topic feeds accepted by the headlines endpoint.
 
+### `sportskeeda_article`
+
+Get a Sportskeeda article. Returns public article metadata and body paragraphs for a Sportskeeda article slug. Discovered slugs may contain case-preserving percent-encoded characters. A canonical Sportskeeda URL remains accepted for existing clients. Provide exactly one of slug or url; use /sportskeeda/sections and /sportskeeda/sitemaps for topic discovery.
+
+### `sportskeeda_author`
+
+Get a Sportskeeda author profile. Returns one public Sportskeeda author's name and recent article links from the canonical author profile.
+
+### `sportskeeda_depth_chart`
+
+Get the NFL depth chart for all teams. Returns every team and listed position/player from the live NFL depth chart. Players and team detail pages include slugs when Sportskeeda links them.
+
+### `sportskeeda_feed`
+
+Get articles from a Sportskeeda section or topic. Fetches the public article cards for a Sportskeeda section, event, team-news, or player-news slug. Page pagination is accepted only when the source advertises it.
+
+### `sportskeeda_football_data`
+
+Get football fixtures and standings. Returns first-party football widget fixtures and standings. Event and optional matchday must be offered by football-options. Omit matchday for the widget's selected round. Scores and standings reflect upstream data, which may be stale.
+
+### `sportskeeda_football_options`
+
+Discover football tournaments and matchdays. Lists the live football widget's tournament selector. With event, follows the full previous/next matchday chain and returns every currently offered round slug. The discovered values feed sportskeeda-football-data.
+
+### `sportskeeda_news`
+
+Get Sportskeeda's latest news. Returns the current public Sportskeeda news sitemap entries. Use /sportskeeda/sections to discover all navigation groups and sports landing pages, and /sportskeeda/taxonomy-search to search categories, events, teams, players, wiki pages, and wiki tags.
+
+### `sportskeeda_page_data`
+
+Get Sportskeeda structured sports tables. Returns server-rendered team, player, roster, leaderboard, ranking, depth, and playoff tables. Season and type are accepted only if offered by the selected page; discover their values with page-options. The trade value chart uses its public JSON asset and has a separate endpoint. A page with no structured tables returns an upstream error.
+
+### `sportskeeda_page_options`
+
+Discover Sportskeeda page menus and filters. Returns the page's live contextual menus, team and ranking links, tabs, schedule views, and every currently offered select-filter value. Leaderboard category and metric values carry their destination slugs.
+
+### `sportskeeda_player_stats`
+
+Get NFL or NBA player season stats across event phases. Reads the anonymous season-stats JSON embedded in an NFL or NBA player stats page. Without event_type, returns all event phases offered by that page's selector. NBA source data may contain extra internal phases that the page does not offer; these are excluded. Discover the current event_type values with sportskeeda-page-options for the same slug.
+
+### `sportskeeda_profile`
+
+Get a Sportskeeda player or team profile. Returns facts and available news cards from a public player or team profile path, including sport-specific slugs.
+
+### `sportskeeda_schedule`
+
+Get Sportskeeda fixtures and results. Parses public cricket and football match cards or sport-specific schedule tables. A genuine no-matches widget returns status no_matches.
+
+### `sportskeeda_sections`
+
+Discover Sportskeeda sections and topics. Returns the live parent/child navigation tree, including external destinations marked explicitly, plus every public sports landing URL from Sportskeeda's sports sitemap.
+
+### `sportskeeda_sitemap_items`
+
+Page through a Sportskeeda sitemap. Returns canonical URLs and host-free path slugs from one sitemap discovered by /sportskeeda/sitemaps. Returned path slugs preserve case and percent-encode unusual characters. A sitemap_url remains accepted for existing callers. Provide exactly one; the source is checked against the live index and robots sitemap list on each call.
+
+### `sportskeeda_sitemaps`
+
+Discover Sportskeeda sitemap sources. Returns current public sitemaps from Sportskeeda's sitemap index and robots.txt. Pass a returned slug to /sportskeeda/sitemap-items to page through its complete URL set.
+
+### `sportskeeda_standings`
+
+Get Sportskeeda standings or rankings. Parses current standings tables. College basketball supports a live-discovered season value; its unpopulated current season returns status no_data.
+
+### `sportskeeda_standings_options`
+
+Discover Sportskeeda college standings seasons and conferences. Returns all live-offered college basketball season years and the conference slugs for the selected season.
+
+### `sportskeeda_taxonomy_search`
+
+Search Sportskeeda categories and entities. Calls Sportskeeda's anonymous frontend taxonomy search across categories, events, teams, players, wiki pages, and wiki tags. The upstream UI always searches all six types; the q phrase is sanitized and capped at 100 characters just like the site.
+
+### `sportskeeda_trade_values`
+
+Get NFL redraft or dynasty trade values. Reads the same anonymous JSON asset as the public chart. Returns source update time, ranks, values, and linked player slugs. The All position includes all source rows, including positions not displayed as chart sections. Discover current chart and filter choices with page-options.
+
+### `sportskeeda_video`
+
+Get Sportskeeda video metadata. Returns the public video player's ID, title, poster, and stream URL for a video page slug.
+
+### `sportskeeda_videos`
+
+List Sportskeeda videos and channels. Lists public video cards from the main video library or a sport/event video listing.
+
 ### `spotify_album`
 
 Retrieve Spotify album details. Returns normalized Spotify Web Player album metadata and tracks from private Pathfinder responses.
@@ -10123,6 +10463,10 @@ Get one Starbucks product with nutrition. Returns one Starbucks product's full d
 ### `starbucks_stores`
 
 Find nearby Starbucks stores worldwide. Returns Starbucks store locations near a point: store number, name, phone, full address, coordinates, weekly opening hours, amenities, and pick-up options. Either place, or both lat and lng, is required. place is free-text (city, address, or postal code) and is geocoded by Starbucks itself, so it works worldwide. market selects which Starbucks country site answers, one of us or ca, defaulting to us; this is not cosmetic even for stores, because the same store reports different operational data depending on the host. There is no filter parameter: Starbucks' own API accepts a features amenity filter but silently ignores it, so it is deliberately not offered here; filter on each store's returned amenities instead. A place Starbucks cannot resolve returns a well-formed empty result with place_not_found set to true rather than an error. The upstream returns at most 50 stores per request and supports no pagination; result_capped is true when that ceiling was reached. Store discovery works worldwide, but hours, amenities, and phone numbers are populated per market and may be absent outside the US and UK.
+
+### `startribune_news`
+
+Get Minnesota Star Tribune top stories. Returns the public Star Tribune RSS feed with current story titles and canonical URLs; publisher summaries and publication dates are included when supplied by the feed. Optional bylines and images are returned only when present. Summaries are publisher teasers, not full article text. This feed-only route does not claim a complete section taxonomy or retrieve article bodies; use attribution when republishing feed content.
 
 ### `steam_achievements`
 
@@ -11936,6 +12280,10 @@ Get Whatnot's category list. Returns Whatnot's full top-level category list (e.g
 
 Get a Whatnot live show's current shop feed. Returns a Whatnot live show's current shop feed: every product, auction, and giveaway listing currently visible in the show, each with its seller's rating. Public data sourced from Whatnot's own GraphQL API.
 
+### `whatnot_seller`
+
+Get a Whatnot seller profile and shows. Returns public seller profile details and one page of the seller's livestreams. Use next_cursor as cursor to continue while has_more is true. The endpoint does not include shop products.
+
 ### `wingstop_delivery_store`
 
 Find the Wingstop store that delivers to an address. Given a delivery address, returns the single Wingstop store that will deliver there, plus its drive time. Returns 404 when no Wingstop store delivers to that address. The returned slug can be passed directly as GET /wingstop/menu's path with service_mode=delivery.
@@ -12698,7 +13046,7 @@ Search Zomato restaurants in a city. Returns restaurants in a Zomato city, optio
 
 <!-- END MCP.SO TOOLS -->
 
-## What you can call (3122 tools / 12 categories)
+## What you can call (3209 tools / 12 categories)
 
 See [`tools.json`](./tools.json) or your MCP client UI for exact schemas. Below is a overview by category:
 
@@ -12719,7 +13067,7 @@ See [`tools.json`](./tools.json) or your MCP client UI for exact schemas. Below 
 
 ## Why Crawlora MCP?
 
-- **One key, 3122 tools** — search, commerce, social, gaming, finance, and more behind a single MCP endpoint.
+- **One key, 3209 tools** — search, commerce, social, gaming, finance, and more behind a single MCP endpoint.
 
 A good alternative to stitching together SerpApi, Firecrawl, ScraperAPI, or ScrapingBee.
 
