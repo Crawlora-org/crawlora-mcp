@@ -103,3 +103,44 @@ complete:
 
 Do not mark the batch complete from a successful npm publish alone. The public
 pages and registry metadata are the acceptance checks.
+
+## 2026-09-29 public listing status
+
+The `crawlora-mcp@1.17.7` release is published with npm provenance, and the
+official MCP Registry reports `1.17.7` / 3,209 tools. The post-publish checker
+passed npm and the official registry. It warned that the Glama, Smithery, and
+MCP.so listings omit the current 3,209 tools / 438 platform groups.
+
+Live page review found:
+
+- [Glama](https://glama.ai/mcp/servers/Crawlora-org/crawlora-mcp): the public
+  listing did not expose the current structured tool count to the checker. The
+  authenticated TDQS scan was not available in this run. Sync the server from
+  its admin profile, then review the 87 added news/sports tools and six changed
+  MLB schemas as recorded in the API release checklist.
+- [Smithery](https://smithery.ai/servers/crawlora/crawlora): the public page
+  still says 3,099 tools / 420 groups and shows the last publication as June 5,
+  2026. Its account-managed scan requires the private capability-scan
+  credential; do not put that key in this repository or public metadata.
+- [MCP.so](https://mcp.so/servers/crawlora-mcp): the public description says
+  319 tools, the overview still says 1,873 tools / 215 groups, and the Tools
+  section says “No tools detected.” Sign in, save the current overview, and
+  refresh the README-derived Tools index; recheck the public page afterward.
+- [MCP Servers.org](https://mcpservers.org/servers/crawlora-net-mcp): the
+  public page still describes “300+” tools and offers “Request update”; the
+  previously submitted request has not produced a current listing. Wait for the
+  maintainer update, then verify the exact counts.
+- [GoodFirms](https://www.goodfirms.co/software/crawlora): the claimed profile
+  still says 549 MCP tools and 578 endpoints. A vendor-account sign-in is
+  required to edit it; update after account access, then verify the public page.
+- [StackShare search](https://stackshare.io/?q=crawlora): the public search and
+  direct page could not be fetched by the available reader, so current listing
+  status is unverified. Do not create a new listing; retry a read-only lookup
+  when the public page is accessible.
+- [PulseMCP](https://www.pulsemcp.com/): the live home page still says new
+  server submissions and listing changes are paused. Retry when the flow
+  reopens.
+
+These account-gated or externally paused surfaces remain open follow-ups. The
+successful registry and npm checks do not establish that the third-party pages
+have refreshed.
