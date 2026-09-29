@@ -144,3 +144,33 @@ Live page review found:
 These account-gated or externally paused surfaces remain open follow-ups. The
 successful registry and npm checks do not establish that the third-party pages
 have refreshed.
+
+### 2026-09-29 directory follow-up
+
+Rechecked with `node scripts/verify-directory-drift.mjs` under the installed
+Node 22 runtime. The Official MCP Registry passes at `1.17.7` / 3,209 tools;
+Glama, Smithery, and MCP.so remain warnings because their public pages do not
+show the current 3,209 tools / 438 platform groups. MCP.so still says 319 tools
+in its description, 1,873 tools / 215 groups in its overview, and “No tools
+detected” in its README-derived Tools section. Its editor is behind Sign In.
+Glama's admin profile is unavailable in the signed-out browser. Smithery's
+release flow remains account-managed and needs the private capability-scan
+credential; no credential was available in this session, so no scan/release
+was attempted.
+
+Additional directory checks on the same date:
+
+- **MCP Servers.org:** still describes “300+” tools and exposes “Request
+  update.” The existing request remains unresolved; do not file a duplicate.
+- **GoodFirms:** still claims 549 MCP tools across 578 endpoints. Its profile
+  is marked claimed and vendor account sign-in is required to edit it.
+- **StackShare:** public lookup remains inaccessible to the available reader;
+  listing state is unverified. Do not create a new listing as part of refresh.
+- **PulseMCP:** the live home page says new server submissions and listing
+  changes are still paused.
+
+The public listing pages were reviewed anonymously; the available browser
+session had no authenticated directory accounts. Resume these refreshes when
+the existing owner sessions or MCP Servers.org response are available. These
+are external access/review blockers, not publication failures in npm or the
+official registry release.
