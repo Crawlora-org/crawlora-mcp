@@ -7,7 +7,7 @@
 [![crawlora-mcp MCP server](https://glama.ai/mcp/servers/Crawlora-org/crawlora-mcp/badges/score.svg)](https://glama.ai/mcp/servers/Crawlora-org/crawlora-mcp)
 
 **Crawlora MCP** is a **hosted** Model Context Protocol server that gives AI clients and
-agents **3209 structured public‑web‑data tools** across 438 platform groups — search, maps,
+agents **3465 structured public‑web‑data tools** across 464 platform groups — search, maps,
 e‑commerce, social, finance, travel, app stores, media, and reviews — each returning clean,
 normalized **JSON** instead of HTML to parse.
 
@@ -155,9 +155,14 @@ Any client that speaks **Streamable HTTP** can use the generic config in
 
 ## Run it locally (open‑source server)
 
-This repo also ships a small **stdio** MCP server (`index.mjs`) that exposes the same **3209
+This repo also ships a small **stdio** MCP server (`index.mjs`) that exposes the same **3465
 tools**, each wrapping the Crawlora REST API (`https://api.crawlora.net/api/v1`) with your
 `CRAWLORA_API_KEY`. Useful if you'd rather run the server yourself than use the hosted endpoint.
+
+The counts above describe this repository’s current source catalog. The npm
+package used by `npx crawlora-mcp` may contain the previous catalog until a tagged
+release is published. To use this source snapshot, clone the repository and
+follow the local setup instructions below.
 
 ```bash
 # Node 20+ (no install)
@@ -380,6 +385,18 @@ Get AL.com top stories. Returns current AL.com News stories from its public Arc 
 
 Get AL.com editorial sections. Returns the three top-level editorial sections exposed in AL.com's site navigation and accepted by the headlines endpoint.
 
+### `aliexpress_reviews`
+
+Get AliExpress product reviews. Returns one page of public reviews and rating statistics for a numeric AliExpress product id. AliExpress currently returns up to 20 review records per page.
+
+### `aliexpress_search`
+
+Search AliExpress products. Returns one page (up to 60 products) of public keyword search results with product ids, titles, links, images, prices, ratings, sold text, discount, SKU id, ship-from country, and store name when AliExpress lists them. Results can be sorted and filtered by price, free shipping, the Choice program, and product attributes; list the attribute values for a keyword with the search-filters endpoint. The search uses the anonymous US English/USD locale. Product-detail pages are currently unavailable through the supported HTTP profiles.
+
+### `aliexpress_search_filters`
+
+List AliExpress search filters. Returns every sort value and boolean filter the search endpoint accepts, plus the product-attribute filters (brand, color, style, and so on) AliExpress offers for the keyword, as ready-to-use attr values. Attribute filters differ per keyword, so call this with the same q as the search.
+
 ### `aljazeera_article`
 
 Get Al Jazeera article content. Returns a public Al Jazeera article's metadata and body paragraphs from a canonical article URL.
@@ -528,6 +545,26 @@ Get Android Authority top stories. Returns the latest Android Authority stories 
 
 Get Android Authority sections. Returns the public Android Authority section inventory accepted by the headlines endpoint.
 
+### `androidpolice_article`
+
+Get Android Police article content. Returns public Android Police article metadata and readable body paragraphs from a canonical article URL.
+
+### `androidpolice_author`
+
+Get an Android Police author profile. Returns a public author's byline metadata, biography, social links, and recent articles from a canonical author URL. Only the first page is covered because author pagination is disallowed by robots.txt.
+
+### `androidpolice_headlines`
+
+Get Android Police section headlines. Returns recent headlines from one of the 18 live-verified primary navigation RSS feeds.
+
+### `androidpolice_news`
+
+Get Android Police top stories. Returns current Android Police top stories from its public RSS feed.
+
+### `androidpolice_sections`
+
+Get Android Police sections. Returns the complete live-verified Android Police primary navigation feed inventory.
+
 ### `anime_airing_schedule`
 
 Upcoming anime airing schedule. Returns upcoming anime episode broadcasts (episode number, air time, countdown, and the normalized title), soonest first, paginated. Credential-free public AniList data.
@@ -568,9 +605,17 @@ List an anime's staff. Returns the people credited on an anime (name, production
 
 Compare two apk-teardown jobs for evidence of common ownership. Compares two DIFFERENT completed jobs (not versions of the same app) for signals of common ownership -- shared signing certificate, SDK/analytics identifiers, and more.
 
+### `apk_teardown_delete_job`
+
+Delete an apk-teardown job. Purges a job's metadata/result before its normal retention window expires. The uploaded binary is already gone by the time any job reaches a terminal state, so this only ever deletes job metadata, never a binary.
+
 ### `apk_teardown_diff`
 
 Diff two completed apk-teardown jobs. Compares two already-completed jobs -- typically two versions of the same app -- and returns what changed (permissions, signing, SDKs, size, and more).
+
+### `apk_teardown_job_status`
+
+Poll an apk-teardown job's status/result. Returns the current status (queued, processing, done, failed, or lost) of a submitted job, and its full result once done.
 
 ### `apk_teardown_submit`
 
@@ -779,6 +824,14 @@ Retrieve full App Store app details. Returns normalized app metadata from the Ap
 ### `appstore_categories`
 
 Retrieve App Store chart categories and collections. Returns every category ID and chart collection accepted by '/appstore/list', including Games and Magazines & Newspapers subgenres with their parent ID. Collections carry their device platform ('phone', 'pad', 'mac'), chart type ('top_free', 'top_paid', 'top_grossing', 'top', 'new'), and whether the feed currently returns entries.
+
+### `appstore_collection`
+
+Retrieve apps in one App Store collection. Returns app items embedded in an Apple room or EDS collection page. Discover IDs with 'appstore_collections'. 'platform' enum: 'iphone', 'ipad', 'mac', 'vision', 'watch', 'tv'. 'collection_id' must be a numeric room ID or 'eds.UUID' ID returned by the discovery endpoint.
+
+### `appstore_collections`
+
+Discover App Store editorial collections. Returns the room and EDS collection links embedded in Apple's browse page for one device. 'platform' enum: 'iphone', 'ipad', 'mac', 'vision', 'watch', 'tv'. Pass a returned 'id' and the same platform to 'appstore_collection' to retrieve the collection's apps.
 
 ### `appstore_developer`
 
@@ -1031,6 +1084,26 @@ Get a BBC News live-page text snapshot. Returns the current server-rendered text
 ### `bbc_search`
 
 Search public BBC pages. Returns a bounded page of public BBC search-result metadata: title, URL, standfirst summary, display date, and a type of article, video, audio, live, topic, or page. Topic items are BBC topic hub pages rather than articles and carry no published_at. Media entries link only to their BBC landing pages; streams, downloads, and transcripts are not returned.
+
+### `benzinga_article`
+
+Get a Benzinga article. Returns metadata and anonymous body paragraphs from a canonical dated Benzinga editorial article URL.
+
+### `benzinga_headlines`
+
+Get Benzinga section headlines. Returns public story cards from one verified Benzinga news section; section must come from benzinga_sections.
+
+### `benzinga_news`
+
+Get Benzinga top stories. Returns current Benzinga stories and teaser summaries from its public RSS feed.
+
+### `benzinga_search`
+
+Search Benzinga article suggestions. Returns up to five public news-article suggestions from Benzinga's anonymous search typeahead. Ticker-only suggestions are omitted; this is not a paginated archive search.
+
+### `benzinga_sections`
+
+List Benzinga news sections. Returns the four menu-verified Benzinga editorial sections accepted by benzinga_headlines.
 
 ### `bestbuy_brands`
 
@@ -1459,6 +1532,26 @@ Get Breitbart top stories. Returns fresh Breitbart top stories from its public R
 ### `breitbart_sections`
 
 Get Breitbart sections. Returns the live-verified public Breitbart editorial section inventory used by the headlines endpoint.
+
+### `brisbanetimes_article`
+
+Get Brisbane Times article content. Returns one Brisbane Times article's metadata and the exact body paragraphs served by one anonymous page request, with the publisher's is_accessible_for_free, paywalled, and is_truncated flags. No paywall is bypassed or hidden content fetched.
+
+### `brisbanetimes_author`
+
+Get a Brisbane Times journalist profile. Returns one public Brisbane Times '/by/<name>-<id>' profile with its name, biography, headshot, contact links, and recent story cards.
+
+### `brisbanetimes_headlines`
+
+Get Brisbane Times section or topic headlines. Returns current story cards from one observed Brisbane Times server-rendered section or populated topic page. 'section' must be one of the exact slugs from '/brisbanetimes/sections'; unsupported and unresolved linkless paths are rejected before an upstream request. Off-brand story links on Traveller are omitted.
+
+### `brisbanetimes_news`
+
+Get Brisbane Times top stories. Returns Brisbane Times's current public Latest News RSS feed: story title, canonical URL, summary, author, publication time, and lead image.
+
+### `brisbanetimes_sections`
+
+Get Brisbane Times editorial sections. Lists the 104 accepted Brisbane Times editorial surfaces (95 article-bearing section pages and nine populated topic hubs), each with its exact path slug, menu label, and requested Brisbane Times URL. Three linkless surfaces with no explicit empty-state marker are excluded.
 
 ### `brooklinen_collection_products`
 
@@ -2416,6 +2509,22 @@ Get Daily Express top stories. Returns fresh Daily Express stories from the publ
 
 Get Daily Express sections. Returns the live public Daily Express RSS section inventory.
 
+### `dailykos_article`
+
+Get a Daily Kos staff article. Returns metadata and text paragraphs from a canonical staff-authored Daily Kos /news/ story. Community stories and photographer-owned images are not included.
+
+### `dailykos_headlines`
+
+Get Daily Kos category headlines. Returns current stories from one verified Daily Kos category feed. Use dailykos-sections to discover the complete accepted category set.
+
+### `dailykos_news`
+
+Get Daily Kos top stories. Returns current staff-authored Daily Kos stories from its public RSS feed.
+
+### `dailykos_sections`
+
+List Daily Kos categories. Returns the 24 live-verified public WordPress categories accepted by dailykos-headlines.
+
 ### `dailymail_article`
 
 Get Daily Mail article content. Returns public Daily Mail article metadata and body paragraphs from a canonical article URL.
@@ -2435,6 +2544,22 @@ Get Daily Mail top stories. Returns fresh Daily Mail top stories from its public
 ### `dailymail_sections`
 
 Get Daily Mail RSS sections. Returns the live-verified public Daily Mail RSS section inventory.
+
+### `dailymaverick_article`
+
+Get a Daily Maverick article. Extracts the public article metadata and body paragraphs Daily Maverick serves to an anonymous visitor. The paywalled flag is set only when the page exposes the publisher's access-control marker.
+
+### `dailymaverick_headlines`
+
+Get headlines from one Daily Maverick section. Returns up to 21 current article cards from the public category JSON endpoint. Use dailymaverick-sections to discover valid slugs.
+
+### `dailymaverick_news`
+
+Get current Daily Maverick stories. Returns current article and opinionista links from Daily Maverick's public news sitemap.
+
+### `dailymaverick_sections`
+
+List Daily Maverick sections. Lists all 51 live-verified article-bearing categories accepted by dailymaverick-headlines.
 
 ### `dailyrecord_article`
 
@@ -2591,6 +2716,22 @@ Get trending Chrome Web Store items. Returns stored Chrome Web Store items ranke
 ### `datasets_creators_search`
 
 Search the TikTok creators dataset. Searches TikTok creators stored in a search index (one document per creator), with follower counts, verified status, niche, and engagement. Deleted and private accounts are excluded by default; set 'include_inactive=true' to include them for historical lookups. Sort enum: 'followers_desc', 'engagement_desc', 'engagement_qualified_desc', 'likes_desc', 'relevance'. Coverage note: 'followers_desc', 'likes_desc', and 'relevance' are backed by profile fields present across the full dataset; the post-level engagement metrics ('engagement_rate', 'avg_views', and the nested 'post_stats' object) and the 'engagement_desc'/'engagement_qualified_desc' sorts are currently populated for a growing subset of creators, prioritizing the highest-reach accounts. Creators without these metrics are still returned but sort last under 'engagement_desc' and omit those fields; 'engagement_qualified_desc' excludes them outright (they cannot clear its floors). 'engagement_desc' ranks by raw 'engagement_rate' with no eligibility floor — it surfaces a real stale-record + ratio-by-design trap: an account whose last real post was years ago can still carry an unrealistic rate computed from a handful of old posts. 'engagement_qualified_desc' is the same metric restricted to creators with a recent post ('last_post_at' within 90 days), a minimum reach ('avg_views >= 10000') and sample size ('post_stats.sampled_posts >= 10'), and a sanity ceiling ('engagement_rate <= 50%') — use this, not the raw sort, for a "best engagement" leaderboard. Sound fields: 'post_stats.top_sounds' holds only a creator's FIVE most-used sounds from the sampled posts, ranked by use count with ties broken by lowest 'music_id', so it is a top-5 view and not the creator's full sound list; 'post_stats.distinct_sounds' gives the true number of different sounds the sample used. Use each sound's 'original' boolean to tell TikTok-generated original audio from catalogue tracks - do NOT infer it from the title, because TikTok localizes the original-audio label ('sonido original', 'som original', 'оригинальный звук', and at least fifteen more), so a title match silently reclassifies original audio as named tracks.
+
+### `datasets_doordash_stores_facets`
+
+Facet stored DoorDash stores. Returns terms aggregation counts for the DoorDash store directory. Facet enum: 'country', 'state', 'city', 'tags', 'display_status', 'price_range', 'dash_pass_eligible'. Accepts the same filter parameters as search to scope the aggregation. Use 'facet=tags' to discover the marketplace tag values accepted by the 'tag' filter.
+
+### `datasets_doordash_stores_item`
+
+Get a stored DoorDash store. Returns one stored DoorDash store by its DoorDash store id (digits only, e.g. '297068') from dataset id 'doordash-stores'. A store discovered but not yet hydrated may have an empty 'address'/'phone' and no 'location'. 'display_status', 'asap_available', and 'pickup_available' are a point-in-time pickup observation at crawl time, not a durable capability.
+
+### `datasets_doordash_stores_nearby`
+
+Find nearby stored DoorDash stores. Returns stored DoorDash stores within a radius of a point, nearest first, from dataset id 'doordash-stores'. lat, lon, and radius_m are required. Unlike the live /doordash/search endpoint (which is a proximity search capped at roughly five stores), this queries the stored directory, so it can return every discovered store in the radius. Coverage is best-effort rather than provably exhaustive: a store DoorDash never surfaced, or one not yet hydrated with coordinates, will not appear.
+
+### `datasets_doordash_stores_search`
+
+Search the DoorDash store directory. Searches the DoorDash merchant-location directory (dataset id 'doordash-stores'), built by grid-tiling the anonymous guest Explore feed and hydrating every discovered store. Identity and marketplace fields (name, marketplace tags, price range, ratings, DashPass eligibility) come from Explore; contact, address, and coordinates come from the hydration pass, so a store that has not been hydrated yet can appear without them. 'display_status', 'display_asap_time', 'asap_available', and 'pickup_available' are a point-in-time observation of the PICKUP surface at crawl time, not a durable capability. Geographic coverage is best-effort: Explore caps at 40 stores per call with no pagination, so the census saturates a tile rather than draining it. Supports full-text 'q', 'country'/'state'/'city'/'tag' filters, 'dash_pass_only', 'min_price'/'max_price'/'min_rating', 'lat'/'lon'/'radius_m' radius filtering, and 'sort' (relevance, rating, distance, distance_asc). 'sort=relevance' ranks by text-match score when 'q' is supplied; without 'q' it sorts by store name. Use 'pagination=cursor' and the returned 'next_cursor' to enumerate beyond the 10,000-result offset window against a point-in-time snapshot.
 
 ### `datasets_facebook_pages_facets`
 
@@ -3059,6 +3200,26 @@ Search Deliveroo restaurants, groceries, or shopping stores near a location. Ret
 ### `deliveroo_search_filters`
 
 Get Deliveroo's live search filter and sort catalog for a location. Returns the exact same sort and filter catalog -- every cuisine, dietary tag, dish, delivery-time tier, delivery-fee tier, star-rating tier, and offer flag, each with a live result count for this location -- that the real search page's own filter dropdowns are populated from. Every option's query_param/query_value pair is the literal query string /deliveroo/search accepts for that filter.
+
+### `denverpost_article`
+
+Get a Denver Post article. Returns article metadata and paragraphs present in the public HTML response. Subscriber-only pages may expose only an anonymous preview; this service does not bypass access controls.
+
+### `denverpost_author`
+
+Get a Denver Post author archive. Returns one author's public profile and the articles listed on its first page.
+
+### `denverpost_headlines`
+
+Get Denver Post section headlines. Returns current headlines from one public editorial section or topic archive.
+
+### `denverpost_news`
+
+Get Denver Post top stories. Returns current top stories from the public Denver Post homepage.
+
+### `denverpost_sections`
+
+Get Denver Post section and topic inventory. Returns the live-verified public editorial section and topic archive values accepted by headlines.
 
 ### `depop_brands`
 
@@ -3579,6 +3740,26 @@ Expedia Stays property guest reviews. Returns a hotel's overall rating and highl
 ### `expedia_properties_search`
 
 Search Expedia Stays properties. Returns normalized Expedia Stays (hotel) search results for a free-text destination and date range. Promotional banners and sponsored ad slots are dropped, so every returned property has an id and name.
+
+### `expresstribune_article`
+
+Get The Express Tribune article content. Returns public story metadata and body paragraphs from a canonical tribune.com.pk/story/<id>/<slug> URL.
+
+### `expresstribune_author`
+
+Get an Express Tribune author's public archive. Returns one page of story cards from a canonical public author archive. Page is 1-based; the publisher's Next link indicates another page.
+
+### `expresstribune_headlines`
+
+Get The Express Tribune section headlines. Returns headlines from one public RSS section. Some directory feeds are historical or infrequently updated; their publisher timestamps are preserved.
+
+### `expresstribune_news`
+
+Get The Express Tribune top stories. Returns current top stories from The Express Tribune's public RSS feed. Feed dates and publisher teasers are returned as published.
+
+### `expresstribune_sections`
+
+Get The Express Tribune sections. Returns every usable feed section listed in the publisher's RSS directory. talko is omitted because its official endpoint currently returns an empty response.
 
 ### `extract`
 
@@ -4720,6 +4901,86 @@ List curated Goodreads Listopia lists. Returns a catalog of well-known Goodreads
 
 Search Goodreads books. Searches Goodreads books by title/author. Credential-free public Goodreads data via the autocomplete endpoint (book results only).
 
+### `goodrx_answer`
+
+Get a GoodRx health question and answer. Returns one GoodRx health question with its short answer, supporting paragraphs, the source article, the drug it is about, more questions about that drug, related articles, and related medications. Use a slug from /goodrx/answers.
+
+### `goodrx_answers`
+
+List GoodRx health questions. Returns GoodRx's medication and health questions: the index's top questions and every question with its slug, grouped by drug where GoodRx's index groups it (questions GoodRx lists only in its sitemap carry just their slug). Use a slug with /goodrx/answer.
+
+### `goodrx_brands`
+
+List GoodRx featured brand-name drugs. Returns the brand-name medications GoodRx features on its brand-name drugs page, with price-page slugs.
+
+### `goodrx_class`
+
+List drugs in a GoodRx drug class. Returns the drugs GoodRx lists for one drug class, with each drug's lowest displayed price and summary. Use a slug from /goodrx/classes.
+
+### `goodrx_classes`
+
+List GoodRx drug classes. Returns every drug class in GoodRx's class directory with slugs for /goodrx/class.
+
+### `goodrx_comparison`
+
+Get a GoodRx drug comparison. Returns a GoodRx head-to-head drug comparison's key takeaways and the two drugs compared, with their price-page and information slugs. Use a slug from /goodrx/comparisons or /goodrx/drug-info alternatives.
+
+### `goodrx_comparisons`
+
+List GoodRx drug comparisons. Returns GoodRx's head-to-head drug comparisons grouped by health topic, with slugs for /goodrx/comparison.
+
+### `goodrx_condition`
+
+Get a GoodRx health condition overview. Returns a health condition's GoodRx overview article as titled sections (definition, types, causes, symptoms, diagnosis, medications, treatments, prevention, references), with the condition's alternate name, authors, publish and modified dates, the medications-list URL, and related articles. Use a slug from /goodrx/conditions.
+
+### `goodrx_condition_drugs`
+
+List GoodRx medications for a condition. Returns the medications GoodRx lists for one health condition, with each drug's lowest displayed price and summary. Use a slug from /goodrx/conditions whose has_medications is true.
+
+### `goodrx_conditions`
+
+List GoodRx health conditions. Returns every health condition in GoodRx's conditions directory, with slugs and whether GoodRx publishes a medications list for /goodrx/condition-drugs.
+
+### `goodrx_drug_guide`
+
+Get a GoodRx drug guide. Returns one dedicated GoodRx drug guide. side-effects: common and less common side effects with reported frequencies, serious and reported side effects, and the label source. dosage: coupon price per dosage and quantity for each dosage form, and typical dosing. interactions: interacting drugs grouped by severity (not_recommended, usually_not_recommended, increased_risk), with GoodRx slugs where linked. Includes reviewer, last-reviewed date, and related guides. Use pairs from /goodrx/drug-guides; a drug without that guide returns 404. Requests use US egress because GoodRx is US-only.
+
+### `goodrx_drug_guides`
+
+List GoodRx drug guides. Returns GoodRx's dedicated drug guide pages (side effects, dosage, and interactions) as drug slug and topic pairs with last-modified dates, optionally filtered by topic and by the first character of the drug slug. Use the pairs with /goodrx/drug-guide.
+
+### `goodrx_drug_info`
+
+Get GoodRx drug information. Returns a drug's GoodRx information page as titled sections (uses, side effects, pros and cons, pharmacist tips, risks and warnings, dosage, interactions, contraindications, alternatives, pill images, references, and common questions), plus authors, publish and review dates, FAQs, and comparison links to alternatives. With audience=pets it returns the drug's cat and dog page (veterinary uses, side effects, and dosing) for drugs listed by /goodrx/pet-medications; other drugs return 404. Requests use US egress because GoodRx is US-only.
+
+### `goodrx_drug_options`
+
+List a GoodRx drug's prescription options. Returns every brand and generic label, dosage form, strength, and quantity GoodRx prices for one drug, with GoodRx's default prescription. Use these values for /goodrx/drug-prices.
+
+### `goodrx_drug_prices`
+
+Get GoodRx drug prices by pharmacy. Returns GoodRx coupon, membership, and mail-order prices by pharmacy for one drug and prescription (brand/generic label, form, dosage, quantity), plus the drug summary, the priced configuration, the location prices were computed for, and every available label/form/dosage/quantity. Omit label/form/dosage/quantity for GoodRx's default prescription; values must come from /goodrx/drug-options. Pass latitude and longitude (optionally zip_code and state) to price at a US location; otherwise prices reflect a US location chosen by GoodRx. Requests use US egress because GoodRx is US-only.
+
+### `goodrx_drugs`
+
+List GoodRx drugs by letter. Returns every drug in one letter of GoodRx's A-Z drug directory, with the price-page slug and drug-information URL.
+
+### `goodrx_health_article`
+
+Get a GoodRx Health article. Returns one GoodRx Health article: headline, description, authors, medical reviewers, published and modified dates, category tag, key takeaways, the body as headed sections of paragraphs and lists, FAQs, references, and related medications. Requests use US egress because GoodRx is US-only.
+
+### `goodrx_health_articles`
+
+List GoodRx Health articles. Returns one page of GoodRx Health articles in a section, optionally one topic, most recently modified first: each article's path, section, topic, URL, and last-modified date, with total and total pages. Use a path with /goodrx/health-article.
+
+### `goodrx_health_topics`
+
+List GoodRx Health article topics. Returns every GoodRx Health article topic as section and topic pairs with article counts and last-modified dates, optionally for one section. Sections: conditions, health-topic, well-being, pet-health, insurance, classes, drugs, healthcare-access, corporate, hcp (clinician resources), and drug (articles about one drug; the topic is the drug slug). Use the pairs with /goodrx/health-articles.
+
+### `goodrx_pet_medications`
+
+List GoodRx pet medications. Returns the drugs that have a GoodRx cat and dog information page, with slugs for /goodrx/drug-info with audience=pets.
+
 ### `google_finance_analyst_articles`
 
 Google Finance analyst articles. Returns normalized analyst article results for a quote.
@@ -5020,6 +5281,42 @@ Search Grailed sold listings (sale price history). Searches Grailed's SOLD-listi
 
 Grailed search-box typeahead suggestions. Returns Grailed's own search-box typeahead suggestions for a partial query -- a flat list of suggested search phrases with a popularity score and live active-listing match count, no listing data. Pass a suggestion straight through to grailed-search/grailed-sold-listings' own q parameter. A query with no genuine matches returns a well-formed empty result rather than an error.
 
+### `greystar_article`
+
+Get a Greystar renter guide or blog post. Retrieves one Greystar renter guide or blog post: title, description, category, publish date (blog posts), lead image, and the body as ordered heading, paragraph, and list blocks. Get section and slug values from /greystar/articles.
+
+### `greystar_articles`
+
+List Greystar renter guides and blog posts. Lists Greystar's renter guides (applying and leasing, general guides, moving) and blog posts from its public sitemap, newest first. Entries carry the section, slug, URL and last-modified date; fetch /greystar/articles/{section}/{slug} for the title and body.
+
+### `greystar_location`
+
+Get a Greystar rental hub page. Retrieves one Greystar state, city, or neighborhood rental hub: title, description, editorial guide text as ordered blocks, child locations with summaries, communities listed on the page (id, name, address, and price text when shown), and FAQs. State, city, and neighborhood slugs must come from /greystar/locations; unknown values return 400.
+
+### `greystar_locations`
+
+List Greystar rental hub locations. Lists Greystar's state, city, and neighborhood rental hub pages (the site's own location tree) with slugs and URLs. Use the slugs with /greystar/location for a hub's editorial content, child locations, listed communities, and FAQs.
+
+### `greystar_markets`
+
+List Greystar markets, neighborhoods, cities, and states. Returns every value accepted by the /greystar/search market_area, neighborhood, city, state, and country_code filters, each with the number of communities currently published. Derived from the full live community list, so it is the complete value space.
+
+### `greystar_newsroom`
+
+List Greystar newsroom releases. Lists Greystar corporate newsroom releases and news articles from its public sitemap, newest first, with slug, URL and last-modified date. Fetch /greystar/newsroom/{slug} for the title, date, and body.
+
+### `greystar_newsroom_article`
+
+Get a Greystar newsroom release. Retrieves one Greystar newsroom release: title, type (for example Press Release), publish date, lead image, and body paragraphs. Older news stubs carry only a title and date, so the body can be empty. Get slugs from /greystar/newsroom.
+
+### `greystar_property`
+
+Get a Greystar apartment community. Retrieves a public Greystar community profile by its numeric property id: location, description, amenities, office hours, walk scores, tours, floor plans, published fees, and currently available units with starting prices and available dates. Get ids from /greystar/search.
+
+### `greystar_search`
+
+Search Greystar apartment communities. Lists Greystar communities published on greystar.com, optionally filtered by market area, neighborhood, city, state, country, starting rent, or free text. Filter values must come from /greystar/markets; an unknown value returns 400. Starting prices reflect each community's published minimum and are null when none is published. Results come from a snapshot refreshed every few minutes.
+
 ### `grubhub_availability`
 
 Check ordering availability for a batch of Grubhub restaurants. Returns current ordering state for up to 20 restaurants in one call, relative to a diner location. Each entry reports whether the restaurant is open overall and per channel (these can differ), whether delivery and pickup are offered at all as distinct from open right now, whether it delivers to the supplied coordinate, blackout and overloaded flags, distance, delivery and pickup time estimates, delivery fee, order minimum, cuisines, and the next time an order can be sent per channel -- useful when a restaurant is currently closed. The response echoes the requested ids so a caller can tell which ones Grubhub returned nothing for.
@@ -5180,6 +5477,70 @@ Get Harvard Business Review latest headlines. Returns fresh entries from Harvard
 
 Get Harvard Business Review topic archive. Returns the newest public Harvard Business Review articles on one topic archive page. topic is a "<group>/<slug>" value -- see hbr-categories for the full known value space.
 
+### `healthgrades_autocomplete`
+
+Get Healthgrades search suggestions. Returns dynamic provider, specialty, condition, procedure, and other suggestions for a free-text query. Group categories vary with the query and are returned as data, not accepted as a closed enum.
+
+### `healthgrades_facilities_filters`
+
+List Healthgrades facility search filters. Returns the sorts and filters for a Healthgrades facility search: distance values and, for hospitals, every specialty rating and award value accepted by /healthgrades/facilities/search.
+
+### `healthgrades_facilities_search`
+
+Search Healthgrades hospitals, pharmacies, group practices, and urgent care. Returns one page of Healthgrades facility search results near a location for one facility type (hospital, pharmacy, group practice, or urgent care), with name, address, phone, distance, profile URL, affiliated provider and rating counts, hospital awards, and the filters available for the search. Requests use US egress because Healthgrades restricts content by region.
+
+### `healthgrades_facility`
+
+Get a Healthgrades pharmacy, urgent care, or group practice profile. Returns one Healthgrades pharmacy, urgent care center, or group practice profile; the type (pharmacy, urgent_care, or group_practice) is inferred from the URL. Pharmacies: opening hours, services (for example compounding, immunizations, Medicare), and nearby pharmacies. Urgent care centers: opening hours and aggregated visitor answers to amenity questions. Group practices: specialties, providers with specialty and rating, medical services offered, language services, office locations with phones and coordinates, FAQs, and nearby offices. All types include name, address, and phone. Patient-authored reviews are not returned. Requests use US egress because Healthgrades restricts content by region.
+
+### `healthgrades_health_article`
+
+Get a Healthgrades Health A-Z article. Returns one Healthgrades Health A-Z or drug article: headline, description, authors, medical reviewers, published and modified dates, image, the conditions the article is tagged with, and the article body as headed sections of paragraphs and lists. Works for standard, chaptered, and slideshow articles. Requests use US egress because Healthgrades restricts content by region.
+
+### `healthgrades_health_articles`
+
+List Healthgrades Health A-Z articles in a topic. Returns one page of a Healthgrades Health A-Z topic's articles (slug, URL, and last-modified date), most recently modified first, with total and total pages. Use topic=drugs for drug articles. Use an article URL with /healthgrades/health-article.
+
+### `healthgrades_health_topics`
+
+List Healthgrades Health A-Z topics. Returns every topic of Healthgrades' Health A-Z library (conditions, body systems, treatments, and wellness topics) with its article count, last-modified date, and topic hub URL where one exists, plus the drugs topic for Healthgrades' drug articles. Use a slug with /healthgrades/health-articles.
+
+### `healthgrades_hospital`
+
+Get a Healthgrades hospital profile. Returns one Healthgrades hospital profile: hospital-wide and specialty awards with years, clinical outcome ratings by service line (procedure or condition, measure, outcome rating, and 1-5 stars), patient-experience measures with national comparisons, address, and phone. Patient-authored reviews are not returned. Requests use US egress because Healthgrades restricts content by region.
+
+### `healthgrades_hospital_award_filters`
+
+List Healthgrades hospital award filters. Returns the filter values Healthgrades offers for one hospital award list: list sizes, specialty codes, Ob-Gyn award types, award years, states with recipients, and (with a state) cities with recipient counts, plus the sort options. Each group's param names the /healthgrades/hospital-awards parameter that accepts its values.
+
+### `healthgrades_hospital_awards`
+
+List Healthgrades hospital award recipients. Returns one page (20 hospitals) of a Healthgrades hospital quality award list: America's Best Hospitals (top 50, 100, or 250), Specialty Excellence (by specialty, top 50 or 100), Patient Safety Excellence, Outstanding Patient Experience, Ob-Gyn Care, or Specialty State Rankings. Filter by year, state, city, specialty, and Ob-Gyn award type; sort by name or, with latitude and longitude, by distance. Each hospital includes its profile URL (for /healthgrades/hospital), address, coordinates, phone, and every award it holds with years. Read accepted filter values from /healthgrades/hospital-awards/filters. Requests use US egress because Healthgrades restricts content by region.
+
+### `healthgrades_locations`
+
+Get Healthgrades location suggestions. Returns location autocomplete suggestions for a city, state, ZIP code, or other free-text location. Private upstream metadata and coordinates are omitted.
+
+### `healthgrades_physician`
+
+Get a Healthgrades physician profile. Returns public professional profile fields and practice locations for one Healthgrades physician. Patient-authored review text is not returned. Requests use US egress because Healthgrades restricts some content by region.
+
+### `healthgrades_physicians_filters`
+
+List Healthgrades physician search filters. Returns every filter available for a Healthgrades provider search at a location, with accepted values, labels, and result counts: insurers (with plan IDs), gender, distance, age, availability, language, patient rating, clinical focus, affiliated hospitals, practicing specialties, and affirming care. Insurer, language, clinical focus, hospital, and specialty values depend on the query and location. Each group's param names the /healthgrades/physicians/search parameter that accepts its values.
+
+### `healthgrades_physicians_search`
+
+Search Healthgrades physicians. Returns one page of Healthgrades provider search results for a specialty, condition, procedure, or provider name near a location, with each provider's NPI, specialty, office, aggregate patient rating, accepted insurers, and profile URL, plus the filters available for the search. Closed-set filters accept the listed values; insurance, insurance_plan, language, clinical_focus, affiliated_hospital, and specialty accept values returned in the filters for the same query/where. List filters take comma-separated values. Requests use US egress because Healthgrades restricts content by region. Patient review text is not returned.
+
+### `healthgrades_specialties`
+
+List Healthgrades physician specialties. Returns every specialty name and directory URL shown on Healthgrades' public A-Z specialty directory. Requests use US egress and Safari browser impersonation because the site restricts some content by region.
+
+### `healthgrades_top_searches`
+
+List popular Healthgrades searches. Returns Healthgrades' current popular specialty search suggestions.
+
 ### `hermes_categories`
 
 List Hermès category codes. Returns every browsable Hermès category for a market: the category code hermes-category accepts, its display name, its page path and absolute URL, its parent code and its depth in the tree. This is the discovery endpoint for hermes-category's category parameter, so every accepted value is obtainable from this API rather than by reading the website. Editorial and story tiles that carry no browsable category page are excluded, so every code returned is one hermes-category will accept.
@@ -5331,6 +5692,26 @@ List Hotels.com guest reviews. Returns one page of public guest reviews for a Ho
 ### `hotels_search`
 
 Search Hotels.com hotels. Returns a page of date-bound Hotels.com hotel search results for either a free-text destination or a numeric Hotels.com region_id: normalized property cards with per-night and per-stay prices, review score and count, location, thumbnail, amenities, and promotional badges. Provide exactly one of query or region_id; region_id skips destination typeahead resolution. Prices are the live rates Hotels.com shows for the requested check-in and check-out dates.
+
+### `houston_chronicle_article`
+
+Get Houston Chronicle article content. Returns public Houston Chronicle article metadata and the body available in the anonymous response. Premium stories are flagged from the publisher's content-tier and JSON-LD markers; the service does not authenticate or bypass access controls.
+
+### `houston_chronicle_author`
+
+Get a Houston Chronicle author profile. Returns an author's public profile and recent story cards from a canonical Houston Chronicle author URL.
+
+### `houston_chronicle_headlines`
+
+Get Houston Chronicle section headlines. Returns current public headlines from a verified Houston Chronicle editorial section. Pages that return Hearst's Client Challenge are retried through configured rendering backends; the service does not solve or bypass access controls.
+
+### `houston_chronicle_news`
+
+Get Houston Chronicle top stories. Returns current public Houston Chronicle homepage stories. The public RSS endpoint returned no usable items; this uses the credential-free homepage and preserves publisher premium markers on article responses.
+
+### `houston_chronicle_sections`
+
+Get Houston Chronicle sections. Returns every live-verified public editorial section accepted by the Houston Chronicle headlines endpoint. Newsletter, games, audio-only, external marketplace and interactive project/tool links are excluded.
 
 ### `howtogeek_news`
 
@@ -5698,7 +6079,7 @@ Get Instacart trending search terms near a postal code. Returns Instacart's own 
 
 ### `instagram_post`
 
-Retrieve a specific Instagram post by user ID and post ID. Returns the media details of a specific post from an Instagram user.
+Retrieve a specific Instagram post by URL shortcode. Returns media details for an Instagram URL shortcode. Use media.code from the reels response or shortcode from a public post URL; numeric media IDs are rejected.
 
 ### `instagram_profile`
 
@@ -5787,6 +6168,26 @@ Get Irish Times top stories. Returns fresh Irish Times top stories from its publ
 ### `irishtimes_sections`
 
 Get Irish Times sections. Returns the public Irish Times section inventory used by the headlines endpoint.
+
+### `japantimes_article`
+
+Get a The Japan Times article. Returns public article metadata. If the page marks its body as blurred for anonymous visitors, paywalled is true and hidden subscriber text is omitted.
+
+### `japantimes_author`
+
+Get a The Japan Times author profile. Returns a public author name and linked article cards. Pagination paths are excluded because robots.txt disallows */page/*.
+
+### `japantimes_headlines`
+
+Get The Japan Times section headlines. Returns public article cards from one canonical section page. This site's section pages are HTML; only the top stories surface has a verified RSS feed.
+
+### `japantimes_news`
+
+Get The Japan Times top stories. Returns current top stories from the public RSS feed. RSS descriptions are short publisher-provided teasers.
+
+### `japantimes_sections`
+
+Get The Japan Times sections. Returns the complete 60-link editorial navigation inventory used by japantimes-headlines.
 
 ### `jcrew_categories`
 
@@ -6624,6 +7025,42 @@ Get a Macy's product's customer reviews. Returns one page of a Macy's product's 
 
 Get Macy's search-box suggestions. Returns Macy's own search-box suggestions (typeahead) for a partial query: a flat list of suggested search phrases, no product data. A partial query with no real matches returns a normal, empty result rather than an error.
 
+### `makeuseof_article`
+
+Get MakeUseOf article content. Returns public MakeUseOf article metadata and readable body paragraphs from a canonical article URL.
+
+### `makeuseof_author`
+
+Get a MakeUseOf author profile. Returns an author's public byline metadata, biography, social links, and recent stories from a canonical author URL. Only the first page is covered.
+
+### `makeuseof_headlines`
+
+Get MakeUseOf section headlines. Returns current headlines from one of the 14 public MakeUseOf category RSS feeds. Use a slug from makeuseof_sections.
+
+### `makeuseof_news`
+
+Get MakeUseOf top stories. Returns current MakeUseOf top stories from its public RSS feed.
+
+### `makeuseof_sections`
+
+Get MakeUseOf RSS sections. Returns all 14 live-verified MakeUseOf primary-navigation sections accepted by the headlines endpoint.
+
+### `malaymail_article`
+
+Get a Malay Mail article. Extracts public article metadata and readable body paragraphs from a canonical Malay Mail story URL.
+
+### `malaymail_headlines`
+
+Get Malay Mail section headlines. Returns current headline cards for one of Malay Mail's public News sections.
+
+### `malaymail_news`
+
+Get Malay Mail top stories. Returns up to 50 current stories from Malay Mail's public all-stories RSS feed. Summaries are publisher teasers, not full article text. Use the sections, headlines, and article routes for verified public archives and story pages.
+
+### `malaymail_sections`
+
+Get Malay Mail sections. Returns the verified public Malay Mail News navigation sections accepted by malaymail-headlines.
+
 ### `manga_rankings`
 
 Rank manga. Returns a filterable, sorted manga ranking. Credential-free public AniList data. Filter by format, genre, and status.
@@ -6986,7 +7423,7 @@ Get Mirror sections. Returns the public Mirror editorial section inventory used 
 
 ### `mlb_discovery`
 
-Discover MLB sections and Stats API values. Returns MLB.com's live navigation tree, including hidden nodes labeled with visibility, and the MLB-only value sets for leagues, divisions, game types, roster types, standings types, stat groups, supported stat types, leader categories, MLB Pipeline prospect filters, league-stats hitter positions and player pools, and the observed Baseball Savant leaderboard categories and filters including Expected Statistics and Outs Above Average. Use these values to discover sections and supported filters before calling MLB endpoints.
+Discover MLB sections and Stats API values. Returns MLB.com's live navigation tree, including hidden nodes labeled with visibility, and the MLB-only value sets for leagues, divisions, game types, roster types, standings types, stat groups, supported stat types, leader categories, MLB Pipeline prospect filters, league-stats hitter positions and player pools, and observed Baseball Savant leaderboard categories and filters including Top Performers, ABS Challenges, Expected Statistics, Outs Above Average, Arm Strength, Arm Value, Home Runs, Percentile Rankings, Pitch Movement, Rolling Windows, Pitcher Arm Angle, Year-to-Year Changes, Catcher Blocking, Catcher Framing, Catcher Throwing, First Base Receiving, and Fielding Run Value. Use these values to discover sections and supported filters before calling MLB endpoints.
 
 ### `mlb_editorial_feed`
 
@@ -7020,6 +7457,10 @@ Get an MLB player. Returns an MLB player's identity, biographical information, p
 
 Get MLB player season statistics. Returns one player's MLB season statistics. The group enum accepts every value returned by mlb_discovery.
 
+### `mlb_prospect_rankings`
+
+Get MLB Pipeline curated prospect rankings. Returns MLB Pipeline's curated Top 100, Top 30 by Team, Top 10 by Position, Draft Top 200, or International Top 50 ranking. The anonymous first-party page embeds full ranked data. Search, sort, team filtering on Top 100, and pagination are applied to the extracted rows. Use mlb_discovery for the exact view, year, team, position, and sort values.
+
 ### `mlb_prospect_stats`
 
 Get MLB Pipeline prospect statistics and rankings. Returns MLB Pipeline prospect stats from the anonymous first-party prospect tables. Supports the Top 100, all-prospect, or one-team list; batter/pitcher views; validated date periods and minimum thresholds; and local name/position filters. Use mlb_discovery for date periods, minimum thresholds, and positions. Team ids come from mlb_teams.
@@ -7034,19 +7475,199 @@ Search MLB players, teams, and content topics. Returns the same anonymous MLB ty
 
 ### `mlb_standings`
 
-Get MLB standings. Returns American League and National League standings using any supported standings type returned by mlb_discovery.
+Get MLB standings. Returns American League and National League standings, including source-provided expected, home/away, last-ten, ranking, and elimination fields when available, using any supported standings type returned by mlb_discovery.
 
 ### `mlb_statcast`
 
 Get Baseball Savant Statcast leaderboard data. Returns the standard anonymous Baseball Savant Statcast leaderboard for batters, pitchers, teams, or pitcher teams. Supports the page's season, team, batter position, minimum batted-ball event, and sortable metric filters, plus local pagination. Use mlb_discovery for exact filter sets. Other Baseball Savant leaderboard pages are listed there but are not represented by this route.
 
+### `mlb_statcast_abs_challenges`
+
+Get Baseball Savant ABS challenge rankings. Returns Baseball Savant's ABS challenge table with repeated season, game type, split, challenging-team, opponent-team, pitch-type, and shadow-zone filters, plus challenger type, level, thresholds, leverage, pitch location, breakeven, and split-year controls. Filter values are live-verified and listed by /mlb/discovery. The entire filtered table is returned; UI-only drawer details and client-side sorting are not separate source filters.
+
+### `mlb_statcast_active_spin`
+
+Get Baseball Savant Active Spin rows. Returns pitcher Active Spin table rows for the selected season/calculation method, minimum pitch count, and throwing hand. Table sorting and pagination are applied locally. The player search only highlights pitchers in the first-party SVG visualization; the SVG chart and CSV download remain outside this JSON table contract.
+
+### `mlb_statcast_arm_angle`
+
+Get Baseball Savant Pitcher Arm Angle rows. Returns Pitcher Arm Angle table rows and the matching MLB-average reference. Supports season, team, game type, pitch type, hand, batter side, pitch-count thresholds, date range, and up to four group-by selectors. Table sorting and pagination run locally. Visualization-only controls, animation, and CSV output are separate formats.
+
+### `mlb_statcast_arm_strength`
+
+Get Baseball Savant Arm Strength leaderboard data. Returns the player or team Arm Strength leaderboard with verified year, team, position metric, minimum throws, local sort, and pagination filters. The player detail route returns individual throw records.
+
+### `mlb_statcast_arm_strength_player`
+
+Get Baseball Savant player throw details. Returns the player's individual Arm Strength throw records for a verified season or all years.
+
+### `mlb_statcast_arm_value`
+
+Get Baseball Savant Extra Bases Run Value leaderboard data. Returns the Arm Value section's complete embedded table, including its Run, Fld, Pit, team, and league views, filters, local sorting, and pagination. Expanded player rows are available from mlb-statcast-arm-value-details. The JSON rows contain the same selected records as the upstream CSV export.
+
+### `mlb_statcast_arm_value_details`
+
+Get expanded Baseball Savant Arm Value player plays. Returns the game-level play details displayed when expanding a Run, Fld, or Pit player row in the Arm Value leaderboard. Pass the leaderboard filters used to produce the selected row.
+
+### `mlb_statcast_baserunning`
+
+Get Baseball Savant baserunning leaderboard tables. Returns Baseball Savant Baserunning Run Value, Basestealing, or Extra Bases Taken tables. All filter value sets were read from the live first-party controls; rows are embedded in the page response and searched, sorted, and paged locally. Use mlb_discovery.statcast_baserunning_filters for board-specific groups, thresholds, and sort fields. CSV and visual expansion modes are excluded; this returns the underlying JSON table rows.
+
+### `mlb_statcast_bat_tracking`
+
+Get Baseball Savant bat-tracking rows. Returns batter, batting-team, pitcher, pitching-team, or league bat-tracking rows with the live page's season, game type, swing threshold, date, side, contact, attack zone, team, pitch, count, and grouping filters. Use mlb_discovery for the same complete value sets. Multi-value filters are passed as repeated query parameters.
+
+### `mlb_statcast_batted_ball`
+
+Get Baseball Savant Batted Ball Profile rows. Returns the Batted Ball Profile table for batters, batting teams, pitchers, pitching teams, or league totals. Supports first-party season, game type, split, team, date, side, hand, pitch type, event threshold, and split-group threshold filters. The All-Star A game type is accepted by the live page query although its checkbox is hidden. Sorting and pagination are local. The league-average reference row is returned separately when requested; CSV and visualization controls are outside this JSON contract.
+
+### `mlb_statcast_birthday_index`
+
+Get Baseball Savant Sarah Langs Birthday Index rows. Returns today's birthday tables for batters and pitchers plus the selected upcoming-birthday table. Type and minimum-games are first-party filters; date must fall inside the live page's season date range. The active-player toggle, sorting, and pagination are applied locally. The MLB Terms of Use notes a private, non-commercial-use boundary and restrictions on redistribution; this endpoint exposes statistical rows only and excludes media, graphics, and CSV.
+
+### `mlb_statcast_catcher_blocking`
+
+Get Baseball Savant Catcher Blocking leaderboard rows. Returns catcher, pitcher, catching-team, or league Catcher Blocking rows. Filters cover game type, season range, minimum opportunities, team/stint, and local table sorting. Use mlb_discovery for the exact filter sets. Row detail events are available from mlb-statcast-catcher-blocking-details; chart playback and CSV export controls are not data rows.
+
+### `mlb_statcast_catcher_blocking_details`
+
+Get Baseball Savant Catcher Blocking play details. Expands a Catcher Blocking Cat, Pit, or Pitching Team table row into paginated play-location events. entity_id must come from the matching leaderboard rows and other filters must match that row query. League rows have no detail feed.
+
+### `mlb_statcast_catcher_framing`
+
+Get Baseball Savant Catcher Framing leaderboard rows. Returns the Catcher Framing table for catcher, catching-team, batter, batting-team, pitcher, or league groups. Supports observed game, season, one-team, pitch/result minimum, date, bat-side, pitch-hand, pitch-type, ball/strike, and call-model filters, plus local sort and pagination. Use mlb_discovery for exact enum values; chart-only groupings and player comparison controls are excluded.
+
+### `mlb_statcast_catcher_framing_details`
+
+Get Baseball Savant Catcher Framing pitch-event details. Returns paginated pitch events for a Catcher Framing entity_id. Repeat the leaderboard filters used to obtain the entity; league aggregate rows have no detail feed. The upstream detail response may be large, so use limit and offset.
+
+### `mlb_statcast_catcher_pop_time`
+
+Get Baseball Savant Catcher Pop Time leaderboard. Returns catchers ranked by pop-time metrics, filtered by season, team, and minimum steal attempts to second or third. Sort and pagination are applied locally.
+
+### `mlb_statcast_catcher_stance`
+
+Get Baseball Savant Catcher Stance rows. Returns the public Catcher Stance table for catchers, catching teams, batters, batting teams, pitchers, or league totals. Supports the live year, game, date, threshold, team, pitch type, batter/pitcher hand, knee posture, grouping, sorting, and pagination controls. Grouping accepts up to four values. Use mlb_discovery for exact value sets. Chart series and page-local search/column toggles are not included.
+
+### `mlb_statcast_catcher_throwing`
+
+Get Baseball Savant Catcher Throwing leaderboard rows. Returns catcher, catching-team, or league caught-stealing and throw-quality rows with the public season, game, attempt-threshold, target-base, split-years, team, and roster-membership filters. Table sorting and pagination are applied locally. Catcher rows can be expanded with mlb-statcast-catcher-throwing-details. CSV, charts, and page-local display controls are excluded.
+
+### `mlb_statcast_catcher_throwing_details`
+
+Get Catcher Throwing attempt details. Returns per-attempt play records expanded from a Catcher Throwing catcher row. Supply the entity_id from a Cat row and the row's year/team when it represents a season or team stint. Details are ungrouped source attempts, paginated locally.
+
 ### `mlb_statcast_expected`
 
 Get Baseball Savant Expected Statistics. Returns the separate Expected Statistics leaderboard with batter, pitcher, and team views; season, team, batter-position, BIP/PA qualifier and threshold filters; local metric sorting; and pagination. League-average values are returned separately.
 
+### `mlb_statcast_fielding_run_value`
+
+Get Baseball Savant Fielding Run Value rows. Returns fielding run value for fielder, fielding-team, batter, batting-team, or pitcher views. Dates and grouping dimensions follow the first-party leaderboard. Minimum 0.1 is available only for fielder and fielding-team views; the batting/pitching views omit it. Sorting and pagination are applied locally. CSV and player-page visualizations are outside this table contract.
+
+### `mlb_statcast_first_base_receiving`
+
+Get Baseball Savant First Base Receiving leaderboards. Returns first baseman, throwing fielder, fielding team, batting team, or league receiving rows. Includes season/game selections, threshold and group filters, team/date/hand/height/outcome filters, and validated page-local split filters and sorting. Per-play source records are available through mlb-statcast-first-base-receiving-details. 3D trajectory visualizations are not included.
+
+### `mlb_statcast_first_base_receiving_details`
+
+Get a player's First Base Receiving play records. Returns per-play records backing an individual first-base receiving leaderboard row, including game/play ids, outcome codes, receiving OAA, expected out rate, timing, and field coordinates. This is tabular JSON; the separate 3D skeletal visualization route is excluded.
+
+### `mlb_statcast_home_runs`
+
+Get Baseball Savant Home Runs Tracking. Returns Batter or Pitcher Home Runs Tracking rows. Year, team id, minimum home runs, and Standard/Adjusted mode are first-party filters. The first-party table sorts client-side; this endpoint applies a named local sort and pagination. Use mlb_discovery for the exact filter sets. Per-player home-run plays are available from mlb-statcast-home-runs-details; trajectory images, video media, and CSV downloads are separate representations.
+
+### `mlb_statcast_home_runs_details`
+
+Get Baseball Savant Home Runs play details. Returns the home-run plays expanded from one batter or pitcher leaderboard row, with event measurements and park outcomes. Provide the exact player id, player type, year, and mode from the row. Play identifiers and source links are returned; trajectory images, video media, and CSV output are not included.
+
 ### `mlb_statcast_oaa`
 
 Get Baseball Savant Outs Above Average. Returns the separate Outs Above Average leaderboard for fielders, fielding teams, batters, batting teams, or pitchers. Supports season range, split years, team, monthly range, attempts, position, detailed fielder roles, local sorting, and pagination.
+
+### `mlb_statcast_park_factors`
+
+Get Baseball Savant Statcast Park Factors rows. Returns season, venue, distance, distance-all, raw, or dimensions rows from Baseball Savant. Query filters are conditional on type and are live-echo validated; local sorting and pagination are applied to returned rows. The fence-stat and allDiffs controls only change display columns and do not change row data; CSV and linked venue detail pages are separate surfaces.
+
+### `mlb_statcast_percentile`
+
+Get Baseball Savant Percentile Rankings. Returns batter or pitcher percentile rankings. Type, season, and team are first-party table filters. Repeated pctl filters, table sorting, and pagination are applied locally to the embedded rows. Use mlb_discovery for exact type-specific fields, comparators, seasons, and team ids. CSV is a separate download.
+
+### `mlb_statcast_pitch_arsenal`
+
+Get Baseball Savant Pitch Arsenal Stats. Returns pitcher or batter pitch-level arsenal leaderboards. Season, team, pitch type, minimum PA, and minimum-pitch qualification filters are replayed against the anonymous first-party table; sorting and pagination are applied locally. Use mlb_discovery for the full selector set. Player rows can be expanded with mlb-statcast-pitch-arsenal-details.
+
+### `mlb_statcast_pitch_arsenal_details`
+
+Get Baseball Savant Pitch Arsenal play details. Returns game-level pitches expanded from one batter or pitcher pitch-arsenal row. Supply player_id, player_type, year, and the row's pitch_type. The upstream's min_ab request parameter is ignored, so it is not exposed. Rows include play_id values used by Baseball Savant's video pages; this endpoint returns play data and identifiers, not video media.
+
+### `mlb_statcast_pitch_arsenals`
+
+Get Baseball Savant Pitch Arsenals. Returns pitcher pitch speed, percentage, or spin rankings by pitch class. Year, minimum-pitch threshold, and hand are first-party filters. Team filtering and table sorting are applied locally because the page JavaScript applies them after receiving the embedded rows. Use mlb_discovery for exact values. CSV and pitch movement visualizations remain separate representations.
+
+### `mlb_statcast_pitch_movement`
+
+Get Baseball Savant Pitch Movement rows. Returns pitcher-level pitch movement table rows for the selected season, pitch type, throwing hand, and minimum pitch count. Sorting and pagination are applied locally. The page's X/Z visualization axes and CSV download are separate presentation formats and are not returned by this JSON table contract.
+
+### `mlb_statcast_pitch_tempo`
+
+Get Baseball Savant Pitch Tempo rows. Returns pitcher, batter, pitching-team, batting-team, or league tempo rows. Season, game type, minimum pitch, team, year comparison, and team membership options mirror the live first-party controls; q and sorting are applied locally before pagination. Use mlb_discovery for exact value sets.
+
+### `mlb_statcast_pitch_tempo_player`
+
+Get a player's Pitch Tempo detail rows. Returns game-level time buckets for the selected pitcher or batter. Use entity_id from an mlb_statcast_pitch_tempo result.
+
+### `mlb_statcast_pitch_timer`
+
+Get Baseball Savant Pitch Timer infraction rows. Returns the Pitch Timer Infractions table for pitchers, batters, catchers, teams, or opposing teams. Filters for type, season, minimum pitches, and zero-infraction rows are upstream-backed; entity search, table sorting, and pagination are applied locally. The chart ordering is included as view metadata; the endpoint returns table rows, not the SVG chart.
+
+### `mlb_statcast_player_details`
+
+Get expanded standard Baseball Savant Statcast player plays. Returns the game-level pitch or batted-ball rows shown when expanding a batter or pitcher row in the standard Statcast leaderboard, including matchup, date, event, exit velocity, launch angle, distance, play id, and video availability.
+
+### `mlb_statcast_rolling`
+
+Get Baseball Savant Rolling Windows rows. Returns the six embedded Batter/Pitcher rolling-window tables, filtered by metric, role, and plate-appearance window. Each group is sorted by the selected metric delta in the same direction as the first-party page and paginated independently. The upstream page has no season, team, or game-type filters.
+
+### `mlb_statcast_run_value`
+
+Get Baseball Savant Run Value rows. Returns batting or pitching Run Value rows from the Swing-Take leaderboard. Filters are cold-replay verified; sorting and pagination are applied locally. The Bat-side R/L selector was verified to leave the embedded rows byte-identical and is omitted. The page's visual charts and CSV export are separate formats.
+
+### `mlb_statcast_running_game`
+
+Get Baseball Savant Running Game leaderboards. Returns the Running Game table for pitchers, pitching teams, or league. Season/game, hand, runner movement, target base, prior pickoff count, minimum opportunities, team, and team-stint controls are live-verified; named sorting, player/team search, and pagination are applied locally. Per-play records are available from mlb-statcast-running-game-details. The expanded-column toggle returns the same source fields, and the first-party CSV download is not a separate JSON response mode.
+
+### `mlb_statcast_running_game_details`
+
+Get Baseball Savant Running Game play details. Returns individual attempted-running plays expanded from a pitcher or pitching-team Running Game row. Pass its entity_id and repeat the same table filters. For team-stint rows, pass that row's team id; League rows do not expose a detail feed.
+
+### `mlb_statcast_sprint_speed`
+
+Get Baseball Savant Sprint Speed player rows. Returns player Sprint Speed rows from the Baseball Savant leaderboard. The source filters season range, position, and minimum competitive runs; team filtering and sorting are applied locally. Use mlb_discovery for every closed value set.
+
+### `mlb_statcast_sprint_speed_teams`
+
+Get Baseball Savant Sprint Speed team rows. Returns team-level Sprint Speed rows. Season is selected upstream; team filtering and sorting are applied locally because the first-party page embeds every team before its client-side filter. Use mlb_discovery for all accepted seasons, teams, and sort fields.
+
+### `mlb_statcast_swing_path`
+
+Get Baseball Savant Swing Path and Attack Angle rows. Returns batter, batting-team, or league Swing Path and Attack Angle rows with the first-party season, game, swing, team, date, side, contact, hard-hit, attack-zone, and pitcher-hand filters. Use mlb_discovery for exact values.
+
+### `mlb_statcast_swing_timing`
+
+Get Baseball Savant Swing Timing and Miss Distance rows. Returns batter, batting-team, pitcher, pitching-team, or league rows with the page's season, game type, pitch-group, split, team, date, swing, contact, zone, pitch hand/type, count, timing-axis, and timing-flag filters. Sorting is local. Use mlb_discovery for exact values.
+
+### `mlb_statcast_swing_timing_details`
+
+Get Baseball Savant Swing Timing player details. Returns the four anonymous per-swing detail arrays expanded from a batter or pitcher Swing Timing row. Pass the row_id uniqueId from mlb-statcast-swing-timing and repeat its type and table filters so split values can be mapped to the upstream detail query.
+
+### `mlb_statcast_top_performers`
+
+Get Baseball Savant Top Performers. Returns every current Top Performers card for the selected season, including batter and pitcher rankings across batting, batted-ball, expected-stat, fielding, catching, running, and pitch-metric views. The page exposes a season selector but no per-card filters; use the specialist Statcast endpoints for complete filtered leaderboards.
+
+### `mlb_statcast_year_to_year`
+
+Get Baseball Savant Year-to-Year Changes. Returns one of Baseball Savant's Year-to-Year Changes tables for batters, pitchers, batting teams, or pitching teams. Select one of the live statistic types and comparison start years; the page data contains available yearly values and differences. Table sorting and pagination are applied locally. Use mlb_discovery for all accepted group, type, and year values.
 
 ### `mlb_team_roster`
 
@@ -7192,6 +7813,26 @@ Get Nation Africa top stories. Returns the newest Nation Africa (Daily Nation, K
 
 Get Nation Africa sections. Returns the public Nation Africa (Kenya edition) editorial section inventory.
 
+### `national_article`
+
+Get The National article content. Returns article metadata and the body served to an anonymous visitor for one canonical The National story URL. The endpoint does not bypass subscriber or access gates and reports paywalled when the page marks content as restricted.
+
+### `national_author`
+
+Get a The National author profile. Returns one public author topic page, its name, optional author image and the latest article cards listed on that page.
+
+### `national_headlines`
+
+Get The National section headlines. Returns current The National stories from a public Arc category RSS feed. Pass one of the editorial section slugs from national_sections. A valid category with no current stories returns an empty items list.
+
+### `national_news`
+
+Get The National top stories. Returns current The National UAE stories from its public Arc RSS feed. Article and section extraction uses anonymous public responses.
+
+### `national_sections`
+
+Get The National sections. Returns all 57 editorial categories in The National's Arc section sitemap taxonomy that are accepted by national_headlines. Podcast, newsletter, puzzle, partner and promotional surfaces are excluded.
+
 ### `nationalpost_article`
 
 Get National Post article content. Returns public National Post article metadata and body paragraphs from a canonical article URL. paywalled is true when the publisher marks the story subscriber-only or registration-gated; National Post gates these stories in the reader's browser but still serves the complete text to an anonymous request, so paragraphs is the whole body and nothing is bypassed. Category, tag, author and Sponsored URLs are rejected with a 400.
@@ -7238,11 +7879,23 @@ Get NDTV article content. Returns public NDTV article metadata and body paragrap
 
 ### `ndtv_author`
 
-Get an NDTV author profile. Returns an NDTV author's or news agency's byline profile (name, role, biography, image) and their most recent stories from a canonical author URL.
+Get an NDTV author profile. Returns an NDTV author's or news agency's byline profile (name, role, biography, image) and one page of authored news stories from a canonical author URL. Request sequential pages until articles is empty; NDTV does not expose a total count.
 
 ### `ndtv_headlines`
 
 Get NDTV section headlines. Returns the current story cards from one NDTV section page: title, canonical URL, and, where the section shows them, summary, publication time, byline, and image.
+
+### `ndtv_latest_videos`
+
+Get NDTV latest videos. Returns one page from NDTV's separate latest-videos feed. This feed is not a category slug; use page sequentially. Results contain metadata only, with no media bytes or player URLs.
+
+### `ndtv_live_blog`
+
+Get structured updates from an NDTV live blog. Returns live-blog metadata and the ordered BlogPosting updates embedded in NDTV's public LiveBlogPosting JSON-LD. Regular article URLs are rejected.
+
+### `ndtv_live_blogs`
+
+Get NDTV live-blog index. Returns one page of public NDTV live-blog cards. Pages include only www.ndtv.com live blogs; sister-site cards are excluded. NDTV does not expose a total count or continuation marker; request sequential pages until the upstream reports not found.
 
 ### `ndtv_news`
 
@@ -7255,6 +7908,18 @@ Search NDTV news stories. Returns one page of NDTV's public news topic results (
 ### `ndtv_sections`
 
 Get NDTV sections. Returns every NDTV section slug accepted by the headlines endpoint, with its display name and page URL.
+
+### `ndtv_video`
+
+Get NDTV video metadata. Returns title, description, publication time, duration, and thumbnail metadata from one canonical NDTV video page. It does not fetch or return video media or player URLs.
+
+### `ndtv_video_categories`
+
+Get NDTV video categories. Returns the live-verified NDTV-hosted category slugs accepted by ndtv-videos. Categories hosted on sister domains, Shorts, and unavailable Faith are excluded.
+
+### `ndtv_videos`
+
+Get videos from an NDTV category. Returns one page of metadata cards from a supported NDTV-hosted video category. Use ndtv-video-categories to discover the complete supported category set; request pages sequentially. This returns no media bytes or player URLs.
 
 ### `news18_article`
 
@@ -7407,6 +8072,26 @@ Find nearby Nike stores. Searches Nike's physical retail store locator by coordi
 ### `nike_suggest`
 
 Get Nike search-box suggestions. Returns Nike's own search-box suggestions (typeahead) for a partial query, the same "Top Suggestions" list shown while typing into Nike's search box: a flat list of suggested search phrases, no product data.
+
+### `ninetofivegoogle_article`
+
+Get a 9to5Google article. Returns public 9to5Google article metadata and readable body paragraphs from a canonical dated article URL. Audio-first podcast archive slugs are excluded from the sections list; podcast episodes that appear in the main feed can still be read when their page exposes metadata and paragraphs.
+
+### `ninetofivegoogle_author`
+
+Get a 9to5Google author profile. Returns a 9to5Google author's name, avatar, biography, social links, and recent articles from a canonical author URL.
+
+### `ninetofivegoogle_headlines`
+
+Get 9to5Google section headlines. Returns current headlines from one public guide or editorial archive RSS feed.
+
+### `ninetofivegoogle_news`
+
+Get 9to5Google top stories. Returns recent 9to5Google story metadata and short summaries from its public RSS feed.
+
+### `ninetofivegoogle_sections`
+
+Discover 9to5Google sections. Returns the 58 topic guides linked by the current first-party Guides directory and five separately navigable editorial feeds. Use each slug with the headlines endpoint.
 
 ### `ninetofivemac_article`
 
@@ -8151,6 +8836,22 @@ Get PhoneArena top stories. Returns PhoneArena's most recent phone news stories 
 ### `phonearena_sections`
 
 Get PhoneArena sections. Returns the public PhoneArena listings accepted by the headlines endpoint: recent news, current-month news and current-year reviews.
+
+### `physorg_article`
+
+Get a Phys.org article. Returns public Phys.org article metadata and readable body paragraphs from a canonical dated news URL. The service tries proxied HTTP first and uses the production browser fleet when the article edge challenges HTTP. Billing is 2 credits for an HTTP-profile success and 10 credits when browser rendering is required. No author-profile route was verified.
+
+### `physorg_headlines`
+
+Get Phys.org section headlines. Returns current stories from one verified public Phys.org RSS feed. The accepted values are the seven Topics menu feeds plus the Breaking and Editorials feeds. Search and tag feeds are excluded because their paths are disallowed in robots.txt.
+
+### `physorg_news`
+
+Get Phys.org top stories. Returns current stories from Phys.org's public all-stories RSS feed. Summaries are publisher-provided teasers. Use physorg-sections to discover the topic and editorial RSS feeds accepted by physorg-headlines.
+
+### `physorg_sections`
+
+List Phys.org RSS sections. Lists the seven topic feeds in Phys.org's Topics menu and its two additional public Breaking and Editorials feeds. Every returned slug is accepted by physorg-headlines. Search and tag feeds are excluded because their paths are disallowed in robots.txt.
 
 ### `pinterest_board`
 
@@ -8938,51 +9639,51 @@ Get Rebag store metadata. Returns normalized storefront metadata for Rebag (http
 
 ### `reddit_comments`
 
-Get Reddit post comments. Returns a Reddit post with its public comments. The default 1-credit mode uses RSS. Set 'include_metrics=true' to use the anonymous HTML post page as the sole content request and return the server-rendered comments with public net score and award count plus post engagement metrics for 3 credits. Large threads may expose only an initial comment subset in anonymous HTML. Reddit does not expose per-comment upvote ratios or exact upvote/downvote totals anonymously. A post that exists but has no comments yet returns a 200 response with an empty comments list; a post that does not exist returns 404, and a temporary block or upstream failure returns 503 (retryable) rather than 404.
+Get Reddit post comments. Returns a Reddit post with its public comments. The default 1-credit mode uses RSS. Set 'include_metrics=true' to use the anonymous HTML post page as the sole content request and return the server-rendered comments with public net score and award count plus post engagement metrics for 3 credits. Large threads may expose only an initial comment subset in anonymous HTML. Reddit does not expose per-comment upvote ratios or exact upvote/downvote totals anonymously. A post that exists but has no comments yet returns a 200 response with an empty comments list; a post that does not exist returns 404, and a temporary block or upstream failure returns 503 (retryable) rather than 404. Native-source failures can use the internal Redlib fallback; source.type is redlib and public fields/credit weights are preserved.
 
 ### `reddit_domain_posts`
 
-List Reddit domain posts. Returns normalized public posts submitted from a linked domain. A '503' with a 'Retry-After' header means Reddit is temporarily throttling the request; wait that many seconds and retry.
+List Reddit domain posts. Returns normalized public posts submitted from a linked domain. A '503' with a 'Retry-After' header means Reddit is temporarily throttling the request; wait that many seconds and retry. Native-source failures can use the internal Redlib fallback; source.type is redlib and public fields/credit weights are preserved.
 
 ### `reddit_leads`
 
-Find Reddit buying-intent leads. Scans a Reddit search page for people actively asking for a product or service, scores each post 0-10 for buying intent, and returns them ranked highest-first with the signals that fired. Self-promotion, hiring posts, freelancer service adverts, revenue-milestone posts, duplicate reposts, and Title Case article headlines are filtered out before scoring. A deterministic prefilter always runs; when 'classifier' resolves to 'llm' the surviving candidates are additionally refined in one batched model call. A '503' with a 'Retry-After' header means Reddit is temporarily throttling the request; wait that many seconds and retry.
+Find Reddit buying-intent leads. Scans a Reddit search page for people actively asking for a product or service, scores each post 0-10 for buying intent, and returns them ranked highest-first with the signals that fired. Self-promotion, hiring posts, freelancer service adverts, revenue-milestone posts, duplicate reposts, and Title Case article headlines are filtered out before scoring. A deterministic prefilter always runs; when 'classifier' resolves to 'llm' the surviving candidates are additionally refined in one batched model call. A '503' with a 'Retry-After' header means Reddit is temporarily throttling the request; wait that many seconds and retry. Native Reddit search failures can use the internal Redlib provider while the existing lead-response fields and credit weights are preserved.
 
 ### `reddit_post`
 
-Get Reddit post. Returns a normalized public Reddit post. The default 1-credit mode uses RSS. Set 'include_metrics=true' to use the anonymous HTML post page as the sole content request and return public net score, upvote ratio, comment count, award count, and estimated upvote/downvote totals for 3 credits. Reddit fuzzes voting data, so estimates are approximate; share, repost/crosspost, and view counts are not exposed anonymously.
+Get Reddit post. Returns a normalized public Reddit post. The default 1-credit mode uses RSS. Set 'include_metrics=true' to use the anonymous HTML post page as the sole content request and return public net score, upvote ratio, comment count, award count, and estimated upvote/downvote totals for 3 credits. Reddit fuzzes voting data, so estimates are approximate; share, repost/crosspost, and view counts are not exposed anonymously. Native-source failures can use the internal Redlib fallback; source.type is redlib and public fields/credit weights are preserved.
 
 ### `reddit_search`
 
-Search Reddit posts. Searches public Reddit content and returns normalized public post entries. A '503' with a 'Retry-After' header means Reddit is temporarily throttling the request; wait that many seconds and retry.
+Search Reddit posts. Searches public Reddit content and returns normalized public post entries. A '503' with a 'Retry-After' header means Reddit is temporarily throttling the request; wait that many seconds and retry. Native-source failures can use the internal Redlib fallback; source.type is redlib and public fields/credit weights are preserved.
 
 ### `reddit_subreddit_about`
 
-Get Reddit subreddit metadata. Returns public metadata and sample posts for a subreddit. Subscriber counts, icons, and banners are omitted because they are not available on anonymous Reddit pages. A '503' with a 'Retry-After' header means Reddit is temporarily throttling the request; wait that many seconds and retry.
+Get Reddit subreddit metadata. Returns public metadata and sample posts for a subreddit. Subscriber counts, icons, and banners are omitted because they are not available on anonymous Reddit pages. A '503' with a 'Retry-After' header means Reddit is temporarily throttling the request; wait that many seconds and retry. Native-source failures can use the internal Redlib fallback; source.type is redlib and public fields/credit weights are preserved.
 
 ### `reddit_subreddit_comments`
 
-List Reddit subreddit comments. Returns flat public comment entries from a subreddit latest-comments feed. A '503' with a 'Retry-After' header means Reddit is temporarily throttling the request; wait that many seconds and retry.
+List Reddit subreddit comments. Returns flat public comment entries from a subreddit latest-comments feed. A '503' with a 'Retry-After' header means Reddit is temporarily throttling the request; wait that many seconds and retry. Native-source failures can use the internal Redlib fallback; source.type is redlib and public fields/credit weights are preserved.
 
 ### `reddit_subreddit_posts`
 
-List Reddit subreddit posts. Returns normalized public posts from a subreddit. A '503' with a 'Retry-After' header means Reddit is temporarily throttling the request; wait that many seconds and retry.
+List Reddit subreddit posts. Returns normalized public posts from a subreddit. A '503' with a 'Retry-After' header means Reddit is temporarily throttling the request; wait that many seconds and retry. Native-source failures can use the internal Redlib fallback; source.type is redlib and public fields/credit weights are preserved.
 
 ### `reddit_subreddits_posts`
 
-List Reddit multi-subreddit posts. Returns normalized public posts from a combined multi-subreddit feed. A '503' with a 'Retry-After' header means Reddit is temporarily throttling the request; wait that many seconds and retry.
+List Reddit multi-subreddit posts. Returns normalized public posts from a combined multi-subreddit feed. A '503' with a 'Retry-After' header means Reddit is temporarily throttling the request; wait that many seconds and retry. Native-source failures can use the internal Redlib fallback; source.type is redlib and public fields/credit weights are preserved.
 
 ### `reddit_trends`
 
-List Reddit trends. Returns normalized public posts from broad Reddit hot, new, rising, or top feeds. For subreddit-specific trends, use '/reddit/subreddit/{subreddit}/posts' with 'sort=hot', 'sort=new', 'sort=rising', or 'sort=top'. A '503' with a 'Retry-After' header means Reddit is temporarily throttling the request; wait that many seconds and retry.
+List Reddit trends. Returns normalized public posts from broad Reddit hot, new, rising, or top feeds. For subreddit-specific trends, use '/reddit/subreddit/{subreddit}/posts' with 'sort=hot', 'sort=new', 'sort=rising', or 'sort=top'. A '503' with a 'Retry-After' header means Reddit is temporarily throttling the request; wait that many seconds and retry. Native-source failures can use the internal Redlib fallback; source.type is redlib and public fields/credit weights are preserved.
 
 ### `reddit_user_comments`
 
-List Reddit user comments. Returns flat public comment entries from a public Reddit user's comments feed. A '503' with a 'Retry-After' header means Reddit is temporarily throttling the request; wait that many seconds and retry.
+List Reddit user comments. Returns flat public comment entries from a public Reddit user's comments feed. A '503' with a 'Retry-After' header means Reddit is temporarily throttling the request; wait that many seconds and retry. Native-source failures can use the internal Redlib fallback; source.type is redlib and public fields/credit weights are preserved.
 
 ### `reddit_user_posts`
 
-List Reddit user posts. Returns normalized public posts from a public Reddit user's submitted feed. A '503' with a 'Retry-After' header means Reddit is temporarily throttling the request; wait that many seconds and retry.
+List Reddit user posts. Returns normalized public posts from a public Reddit user's submitted feed. A '503' with a 'Retry-After' header means Reddit is temporarily throttling the request; wait that many seconds and retry. Native-source failures can use the internal Redlib fallback; source.type is redlib and public fields/credit weights are preserved.
 
 ### `redfin_estimate`
 
@@ -9031,6 +9732,58 @@ Get a Resy restaurant's profile. Returns a restaurant's profile: name, cuisine, 
 ### `resy_search`
 
 Search Resy restaurants near a location. Searches restaurants by free-text term (name, cuisine, or neighborhood) near a latitude/longitude, optionally including live bookable-timeslot availability for a given date and party size. Credential-free.
+
+### `retailmenot_autocomplete`
+
+Get RetailMeNot search suggestions. Returns RetailMeNot's search-box suggestions for a free-text term: matching stores (with domains usable with /retailmenot/store) and cash-back offers. Group names are returned as data.
+
+### `retailmenot_blog_categories`
+
+List RetailMeNot blog categories. Returns every category of RetailMeNot's shopping and savings blog with its slug, post count, description, and URL. Use a slug as the category filter of /retailmenot/blog-posts.
+
+### `retailmenot_blog_post`
+
+Get a RetailMeNot blog post. Returns one RetailMeNot blog post: metadata (title, author, dates, description, image, categories, tags), the article text as headed sections of paragraphs and lists, and the RetailMeNot stores and coupon categories the article links to (usable with /retailmenot/store and /retailmenot/category).
+
+### `retailmenot_blog_posts`
+
+List RetailMeNot blog posts. Returns one page of RetailMeNot blog posts (title, slug, URL, excerpt, description, author, published and modified dates, image, categories, and tags) with total and total pages, newest first by default. Filter by category slug, tag slug, and/or a search query; order by date, modified, title, or relevance (relevance requires query). A page past the end returns an empty list.
+
+### `retailmenot_blog_tags`
+
+List RetailMeNot blog tags. Returns one page of RetailMeNot blog tags ordered by post count, with slug, name, post count, and URL, plus total and total pages; optionally only tags matching a query. Use a slug as the tag filter of /retailmenot/blog-posts.
+
+### `retailmenot_cashback`
+
+List RetailMeNot cash-back offers. Returns the cash-back offers on RetailMeNot's cash-back hub (featured, top, and all cash-back offers) with each store's cash-back rate.
+
+### `retailmenot_categories`
+
+List RetailMeNot coupon categories. Returns RetailMeNot's full three-level coupon category tree (parent, child, and grandchild categories) with slugs for /retailmenot/category.
+
+### `retailmenot_category`
+
+Get a RetailMeNot category's offers. Returns one page of a RetailMeNot category landing page: the featured offers across stores (24 per page, with page and total_pages), offer counts, and similar stores. Use a slug from /retailmenot/categories; a page past the end returns an empty offer list.
+
+### `retailmenot_deal_event`
+
+Get a RetailMeNot deal event's offers. Returns one seasonal deal event page's offers grouped into the page's sections (top deals and per-category sections). Use a slug from /retailmenot/deal-events.
+
+### `retailmenot_deal_events`
+
+List RetailMeNot seasonal deal events. Returns RetailMeNot's seasonal and holiday deal events (for example Black Friday, Cyber Monday, Back-to-School) with slugs for /retailmenot/deal-event.
+
+### `retailmenot_home`
+
+Get RetailMeNot's homepage offers. Returns RetailMeNot's homepage: featured offer sections (cash-back stores with rates, seasonal savings deals with store, offer type, discount, and title), today's top product deals (title, discount, image, and retailer product URL), and the help FAQ.
+
+### `retailmenot_store`
+
+Get a RetailMeNot store's coupons and offers. Returns a store's RetailMeNot page: store details, shopper rating, category, offer counts, every listed coupon, sale, cash-back, and in-store offer (including the offers behind the page's "show more" button), similar stores, and FAQs. Coupon codes are only revealed on RetailMeNot after a click and are not returned. Set market=ca for a RetailMeNot Canada store page.
+
+### `retailmenot_stores`
+
+List RetailMeNot stores by letter. Returns every store in one letter of RetailMeNot's A-Z store directory, or of RetailMeNot Canada's store list with market=ca, with the domain to pass to /retailmenot/store (with the same market).
 
 ### `reuters_article`
 
@@ -10090,7 +10843,7 @@ Complete an address into coordinates for Sonic Drive-In store search. Completes 
 
 ### `sonic_locations`
 
-List Sonic Drive-In restaurants with ready-made store paths. Returns Sonic Drive-In's restaurant listing one page at a time, each entry already split into its country, state, city and address parts plus a ready-made path value that GET /sonic/store takes -- so enumerating restaurants needs no path parsing. Filter by state and/or city to narrow the list; city slugs come from GET /sonic/directory. Results are sorted by path so paging is reproducible. This listing covers more store pages than GET /sonic/directory counts, since the directory counts listed restaurants while this enumerates every published store page; a filter that matches nothing returns an empty locations array with total 0, not an error.
+List Sonic Drive-In restaurants with ready-made store paths. Returns Sonic Drive-In's restaurant listing one page at a time, each entry already split into its country, state, city and address parts plus a ready-made path value that GET /sonic/store takes -- so enumerating restaurants needs no path parsing. Filter by state and/or city to narrow the list; city slugs come from GET /sonic/directory. Results are sorted by path so paging is reproducible. This listing covers more store pages than GET /sonic/directory counts, since the directory counts listed restaurants while this enumerates every published store page; a filter that matches nothing returns an empty locations array with total 0, not an error. If Sonic's live store-locator service refuses the request, the list is built from Sonic's public store sitemap instead (same entry shape; it can omit stores without a published page, and source_url shows which source answered).
 
 ### `sonic_menu`
 
@@ -10196,9 +10949,41 @@ Get a Sportskeeda article. Returns public article metadata and body paragraphs f
 
 Get a Sportskeeda author profile. Returns one public Sportskeeda author's name and recent article links from the canonical author profile.
 
+### `sportskeeda_college_basketball_schedule`
+
+Get Sportskeeda college basketball games for a date. Returns all games and published scores for the requested date and season from Sportskeeda's first-party JSON feed. Discover valid season values with college-basketball-schedule-options. The upstream conference filter is currently unreliable and this endpoint does not accept it.
+
+### `sportskeeda_college_basketball_schedule_options`
+
+Discover college basketball schedule seasons and date window. Reads Sportskeeda's current college basketball schedule configuration. It returns every season from the published minimum through the current schedule season and the date-picker window. The conference selector is shown by the site, but its current-season feed metadata is incomplete.
+
+### `sportskeeda_cricket_commentary`
+
+Get Sportskeeda cricket ball-by-ball commentary. Returns the current commentary feed. To page to older events, pass a 24-character lowercase hexadecimal cursor from an event in /sportskeeda/cricket-match's commentary field (the full feed may contain zero-filled IDs); language then selects an upstream language. The match page's commentary selector offers en, hi, ta, te, and bho. Language without cursor is rejected because the upstream feed ignores it.
+
+### `sportskeeda_cricket_match`
+
+Get a Sportskeeda cricket match center. Returns the public scorecard, innings, teams, squads, player data, and latest commentary for a cricket match slug discovered from /sportskeeda/schedule. Betting fields are excluded.
+
 ### `sportskeeda_depth_chart`
 
 Get the NFL depth chart for all teams. Returns every team and listed position/player from the live NFL depth chart. Players and team detail pages include slugs when Sportskeeda links them.
+
+### `sportskeeda_draft_picks`
+
+Get all historical NFL team draft picks from Sportskeeda. Reads the complete public draft JSON asset, not only the rows initially visible on the page. Filter by year, round, position or player name. Discover each team's exact filter values with draft-picks-options. Source history and latest available year are published by Sportskeeda and may lag the current season.
+
+### `sportskeeda_draft_picks_options`
+
+Discover an NFL team's complete Sportskeeda draft filters. Reads the public draft JSON asset named by the team page and returns every available year, round and position, including historical special rounds. Team page slugs are discoverable from page-options on an NFL team overview.
+
+### `sportskeeda_event_calendar`
+
+Get Sportskeeda regional sports calendar events. Returns all events from the embedded Sports Calendar, optionally filtered by an offered region-specific sport, one or more offered months, or an inclusive date range. Discover the current region, sport, and month values through /sportskeeda/event-calendar-options.
+
+### `sportskeeda_event_calendar_options`
+
+Discover Sportskeeda calendar regions, sports, and months. Returns the live region-specific sport and month filters from Sportskeeda's embedded event calendar feed. Use these values with /sportskeeda/event-calendar.
 
 ### `sportskeeda_feed`
 
@@ -10212,17 +10997,33 @@ Get football fixtures and standings. Returns first-party football widget fixture
 
 Discover football tournaments and matchdays. Lists the live football widget's tournament selector. With event, follows the full previous/next matchday chain and returns every currently offered round slug. The discovered values feed sportskeeda-football-data.
 
+### `sportskeeda_guessing_game`
+
+Get a Sportskeeda daily guessing-game puzzle. Returns the public clues and image metadata for a discovered player-guessing game and ISO date. The answer is omitted so the endpoint does not reveal the active puzzle solution.
+
+### `sportskeeda_guessing_game_entities`
+
+List players for a Sportskeeda guessing game. Returns the live public entity list used by a discovered player-guessing game, including the game-specific team, position, and profile fields.
+
+### `sportskeeda_guessing_games`
+
+List Sportskeeda player-guessing games. Discovers every currently linked player-guessing game and returns its host-free page slug for the daily instance and entity endpoints.
+
+### `sportskeeda_nba_queries`
+
+List Sportskeeda NBA player query pages. Pages through the server-rendered questions on Sportskeeda's Top NBA Queries page. Slugs are host-free and can be passed to sportskeeda_page_data for the linked player stats table. The live category directory is returned on every page.
+
 ### `sportskeeda_news`
 
 Get Sportskeeda's latest news. Returns the current public Sportskeeda news sitemap entries. Use /sportskeeda/sections to discover all navigation groups and sports landing pages, and /sportskeeda/taxonomy-search to search categories, events, teams, players, wiki pages, and wiki tags.
 
 ### `sportskeeda_page_data`
 
-Get Sportskeeda structured sports tables. Returns server-rendered team, player, roster, leaderboard, ranking, depth, and playoff tables. Season and type are accepted only if offered by the selected page; discover their values with page-options. The trade value chart uses its public JSON asset and has a separate endpoint. A page with no structured tables returns an upstream error.
+Get Sportskeeda structured sports tables. Returns server-rendered team, player, roster, leaderboard, ranking, depth, playoff, and game-log tables. NFL team stats include team-leader cards, player-category tables, and Basic, Advanced, and Expert team tables. Season and type are accepted only if offered by the selected page; discover their values with page-options. Player game-log seasons use their discovered season-specific path and return every table offered by the page; NFL category tabs are listed by page-options. College-football schedule slugs accept a discovered conference slug and filter the embedded schedule rows locally; an offered group with no games on that week returns status no_data. The trade value chart uses its public JSON asset and has a separate endpoint. A page with no structured tables returns an upstream error.
 
 ### `sportskeeda_page_options`
 
-Discover Sportskeeda page menus and filters. Returns the page's live contextual menus, team and ranking links, tabs, schedule views, and every currently offered select-filter value. Leaderboard category and metric values carry their destination slugs.
+Discover Sportskeeda page menus and filters. Returns the page's live contextual menus, team and ranking links, tabs, schedule views, and every currently offered select-filter value. Leaderboard category and metric values carry their destination slugs. College-football schedule pages expose the client-side conference selector here.
 
 ### `sportskeeda_player_stats`
 
@@ -10231,6 +11032,22 @@ Get NFL or NBA player season stats across event phases. Reads the anonymous seas
 ### `sportskeeda_profile`
 
 Get a Sportskeeda player or team profile. Returns facts and available news cards from a public player or team profile path, including sport-specific slugs.
+
+### `sportskeeda_quiz`
+
+Get a Sportskeeda quiz definition. Returns public question prompts and choice text from a quiz page, sorted by question number. The source does not expose correct answers in its anonymous page data; answer checking and user submissions are not included.
+
+### `sportskeeda_quiz_categories`
+
+List current Sportskeeda quiz categories. Discovers every quiz category linked from the public quiz hub. Use a returned host-free category slug with /sportskeeda/quizzes.
+
+### `sportskeeda_quizzes`
+
+List quizzes in a Sportskeeda category. Returns public quiz cards for one category path discovered through /sportskeeda/quiz-categories. The source currently renders its first quiz page; page pagination is not exposed because the visible page links currently repeat the same cards.
+
+### `sportskeeda_salary_cap`
+
+Get NFL team salary-cap figures from Sportskeeda. Returns the source's published season, team totals, every player cap scenario and expanded salary breakdown. The site's player search and sortable columns are applied to the complete server-rendered rows. The published season may lag the current season.
 
 ### `sportskeeda_schedule`
 
@@ -10260,9 +11077,21 @@ Discover Sportskeeda college standings seasons and conferences. Returns all live
 
 Search Sportskeeda categories and entities. Calls Sportskeeda's anonymous frontend taxonomy search across categories, events, teams, players, wiki pages, and wiki tags. The upstream UI always searches all six types; the q phrase is sanitized and capped at 100 characters just like the site.
 
+### `sportskeeda_topic`
+
+Get a Sportskeeda topic or entity overview's full content. Returns ordered prose, headings, lists, tables, images and embeds from a public topic, event, team or player overview page, plus available byline, modification text and related stories. Discover slugs with /sportskeeda/sitemap-items using tags.xml, tournaments.xml, teams.xml, players.xml or us-sitemap.xml. Pages without a CMS body return an upstream error.
+
 ### `sportskeeda_trade_values`
 
 Get NFL redraft or dynasty trade values. Reads the same anonymous JSON asset as the public chart. Returns source update time, ranks, values, and linked player slugs. The All position includes all source rows, including positions not displayed as chart sections. Discover current chart and filter choices with page-options.
+
+### `sportskeeda_transactions`
+
+Get complete monthly NFL league or team transactions. Reads the first-party public transaction feed in month-sized windows, avoiding its 10000-row broad-range cap. Discover accepted seasons, months, and team slugs with sportskeeda-transactions-options.
+
+### `sportskeeda_transactions_options`
+
+List NFL transaction seasons, months and team slugs. Discovers the complete live NFL transaction season list, months for the selected season, and all team transaction page slugs. Use these values with sportskeeda-transactions.
 
 ### `sportskeeda_video`
 
@@ -10271,6 +11100,38 @@ Get Sportskeeda video metadata. Returns the public video player's ID, title, pos
 ### `sportskeeda_videos`
 
 List Sportskeeda videos and channels. Lists public video cards from the main video library or a sport/event video listing.
+
+### `sportskeeda_wiki_activity`
+
+List accepted edits for a Sportskeeda Wiki page. Returns the public accepted activity history for one Wiki article, with bounded pagination and the page's live sort fields. The source page slug is obtained from sportskeeda-wiki-pages.
+
+### `sportskeeda_wiki_article`
+
+Get a Sportskeeda Wiki article. Returns the rendered article title, metadata, and body paragraphs. Pass the path_slug returned by sportskeeda-wiki-pages; URL and host input are not accepted.
+
+### `sportskeeda_wiki_categories`
+
+List Sportskeeda Wiki categories. Returns the nested live category menu for one Sportskeeda Wiki project, including child categories beneath expandable groups.
+
+### `sportskeeda_wiki_contributors`
+
+List contributors to a Sportskeeda Wiki page. Returns public accepted contributors for one Wiki article. The source page slug is obtained from sportskeeda-wiki-pages; user IP and private account fields are never returned.
+
+### `sportskeeda_wiki_issues`
+
+List reported issues for a Sportskeeda Wiki page. Returns public opened or closed issues for one Wiki article. The upstream also returns submitter IP addresses; this endpoint deliberately omits them.
+
+### `sportskeeda_wiki_options`
+
+List Sportskeeda Wiki projects. Returns the live-verified project slugs and taxonomy mappings accepted by the Wiki category, catalog, and article endpoints.
+
+### `sportskeeda_wiki_pages`
+
+Search and paginate Sportskeeda Wiki pages. Returns catalog pages for one Wiki project. Use path_slug as the preferred host-free slug for sportskeeda-wiki-article. total_items is the record count; the upstream field named total_pages is mislabelled and does not mean page count.
+
+### `sportskeeda_wiki_summary`
+
+Get community counts for a Sportskeeda Wiki page. Returns accepted contributor and activity totals plus the open-issue count for one Wiki article. The source page slug is obtained from sportskeeda-wiki-pages.
 
 ### `spotify_album`
 
@@ -10651,6 +11512,50 @@ A single Strava route's detail page. Returns a single Strava route's detail: typ
 ### `strava_routes`
 
 Strava route-index listing for a sport, country, and region. Returns a page of Strava's public route recommendations for a sport, country, and region (state, or state/city). 'sport' values: 'hiking', 'road-biking', 'mountain-biking', 'trail-running', 'gravel-biking'. Public data, sourced from Strava's own server-rendered route pages.
+
+### `streeteasy_areas`
+
+List StreetEasy search areas. Returns the complete area hierarchy exposed by StreetEasy's public homepage location picker. Use area IDs with streeteasy-rentals-search.
+
+### `streeteasy_building`
+
+Get StreetEasy building details. Retrieves public building facts, location, description, policies, amenities, and available sale/rental listing cards from StreetEasy's server-rendered building page. Pass the building slug from a StreetEasy /building/{slug} URL.
+
+### `streeteasy_market_data_catalog`
+
+List StreetEasy dashboard metric datasets. Returns every selectable public dashboard dataset, including supported bedroom and property-type variants. Use a returned dataset ID with streeteasy-market-data-series.
+
+### `streeteasy_market_data_series`
+
+Get one StreetEasy monthly market metric. Returns a public dashboard metric for every published area. Obtain the complete dataset ID set and its labels/dimensions from streeteasy-market-data-catalog. Defaults to the latest 12 months and limits requests to 36 months.
+
+### `streeteasy_market_indices`
+
+Get StreetEasy monthly market indices. Returns public sale-price and rent index values by dashboard area. The datasets have different historical start dates; missing values are omitted. Defaults to the latest 12 months and limits each request to 36 months.
+
+### `streeteasy_market_inventory`
+
+Get StreetEasy monthly market inventory. Returns monthly sales and rental inventory counts for every area in StreetEasy's public Data Dashboard. Defaults to the latest 12 available months; each request is limited to 36 months.
+
+### `streeteasy_quick_search`
+
+Search StreetEasy across public result types. Searches StreetEasy's public quick-search page and returns its rendered neighborhood, building, complex, school, agent, and recorded-sale groups. Recorded-sale entries are a limited anonymous preview when the page requires registration to see the remaining matches.
+
+### `streeteasy_rentals_search`
+
+Search StreetEasy rental listings. Searches active StreetEasy rentals in one or more areas with the public site's price, room, building, amenity, pet, open-house, tour, transit, and sort filters. Obtain valid area IDs from /streeteasy/areas.
+
+### `streeteasy_sales_search`
+
+Search StreetEasy sale listings. Searches public sale listings with location, status, sale type, price, bedroom, bathroom, square-footage, carrying cost, building age, school, ZIP, keyword, building type, amenity, pet, open-house, virtual-tour, transit, and sort filters. Obtain area IDs from /streeteasy/areas. When sale_status is omitted, active, preview, and coming_soon listings are included.
+
+### `streeteasy_school`
+
+Get StreetEasy school details. Retrieves the public school facts rendered on StreetEasy, including neighborhood, grade labels, district, address, phone, and fax when available. Use the school slug from a public /nyc/school/{slug} link, including the school results returned by streeteasy-quick-search.
+
+### `streeteasy_unit`
+
+Get StreetEasy unit details. Retrieves a public unit's structured listing details from its server-rendered page, including address, asking price, description, amenities, and scheduled open houses.
 
 ### `stubhub_carousel`
 
@@ -11048,6 +11953,26 @@ Get the latest stories in an Atlantic section. Returns the current front-page ar
 
 List The Atlantic sections. Lists every top-level Atlantic section accepted by /theatlantic/headlines, with its slug, display name, and landing-page URL. Values: 'ideas', 'politics', 'economy', 'international', 'national-security', 'technology', 'science', 'health', 'education', 'culture', 'family', 'books', 'photography'.
 
+### `theblaze_article`
+
+Get a Blaze Media article. Returns article metadata and body paragraphs from a canonical, publicly accessible editorial or show-story URL.
+
+### `theblaze_author`
+
+Get a Blaze Media contributor profile. Returns a public /u/<slug> profile and up to 30 recent article feed items. Provide exactly one of slug or canonical profile URL.
+
+### `theblaze_headlines`
+
+Get Blaze Media section headlines. Returns headlines from a public section RSS feed. Use /theblaze/sections to discover the complete accepted section list.
+
+### `theblaze_news`
+
+Get Blaze Media top stories. Returns fresh news and opinion stories from the public Blaze Media RSS feed.
+
+### `theblaze_sections`
+
+List Blaze Media sections. Returns all verified article-bearing editorial and show sections accepted by the headlines endpoint. The contributors collection is included; the off-site Profile feed is excluded.
+
 ### `thebodyshop_collection_products`
 
 List The Body Shop collection products. Returns normalized products from one The Body Shop (https://www.thebodyshop.com) collection. The storefront URL is fixed server-side; 'handle' is the collection's URL slug.
@@ -11171,6 +12096,26 @@ Get TheJournal.ie top stories. Returns fresh TheJournal.ie stories from the publ
 ### `thejournal_sections`
 
 Get TheJournal.ie sections. Returns the public TheJournal.ie section inventory: the category pages and navigation topic pages this family serves headlines for.
+
+### `thenextweb_article`
+
+Get The Next Web article content. Returns public The Next Web article metadata and body paragraphs from a canonical article URL.
+
+### `thenextweb_author`
+
+Get a The Next Web author profile. Returns one public author profile and the story cards shown on its public author archive.
+
+### `thenextweb_headlines`
+
+Get The Next Web section headlines. Returns article cards from the public server-rendered section page. Pagination uses a robots-disallowed JSON path and is not requested.
+
+### `thenextweb_news`
+
+Get The Next Web top stories. Returns current The Next Web stories from its public RSS feed.
+
+### `thenextweb_sections`
+
+Get The Next Web sections. Returns the ten editorial sections in The Next Web's current homepage navigation. Topic/tag archives, media, events and promotional categories are excluded.
 
 ### `therealreal_autocomplete`
 
@@ -11519,6 +12464,22 @@ Get TIME top stories. Returns fresh TIME top stories from its public RSS feed.
 ### `time_sections`
 
 Get TIME RSS sections. Returns the public TIME RSS section inventory used by the headlines endpoint.
+
+### `timeslive_article`
+
+Get TimesLIVE article content. Returns article metadata and body paragraphs for a canonical TimesLIVE editorial article URL. Some stories may have a publisher access gate; paywalled is set when the page's first-party access flags indicate restricted content.
+
+### `timeslive_headlines`
+
+Get TimesLIVE section headlines. Returns current TimesLIVE stories from the public Arc section feed. Pass a slug from timeslive_sections; results are the first 15 items in the live section order.
+
+### `timeslive_news`
+
+Get TimesLIVE top stories. Returns current TimesLIVE stories from its public anonymous Arc RSS feed. Section-specific headlines use the public TimesLIVE content feed; article access can vary by story.
+
+### `timeslive_sections`
+
+Get TimesLIVE sections. Returns the complete public editorial navigation set accepted by the TimesLIVE headlines endpoint. External Sunday Times, partner, podcast, account, and link-only surfaces are excluded.
 
 ### `timesofindia_article`
 
@@ -12144,6 +13105,34 @@ Get Vox top stories. Returns fresh public Vox stories from its RSS feed.
 
 Get Vox sections. Returns the public Vox editorial section inventory.
 
+### `vrbo_locations_search`
+
+Suggest Vrbo destinations. Returns public destination suggestions, including region IDs and location types when Vrbo provides them. The verified search term is sent with Vrbo's observed lodging, destination, and entry-page criteria.
+
+### `vrbo_properties_rate_calendar`
+
+Get a Vrbo property rate calendar. Returns public calendar dates, nightly display prices when provided, availability, check-in/out validity, and stay constraints. Resolves the property's GraphQL product ID from the server-rendered page and uses a fresh proxy connection for every request attempt.
+
+### `vrbo_properties_reviews`
+
+Get Vrbo property reviews. Returns one page of public traveler reviews, aggregate count, and current sort choices. Pagination and sort values follow the public reviews query; each property-page and GraphQL request uses a fresh proxy connection.
+
+### `vrbo_property`
+
+Get Vrbo property details. Reads public traveler-facing property details, grouped amenities, photos, content sections, FAQs, and aggregate rating. Tries request profiles in order; each attempt and retry uses a fresh proxy connection.
+
+### `vrbo_search`
+
+Search Vrbo vacation rentals. Searches public Vrbo rental listings for a selected destination and dates. Obtain destination, region_id, and lat_long from Vrbo's destination suggestion UI. Supports date flexibility, per-room adult and child-age inputs, current filter selections and ranges, and observed sort values. Copy filter IDs and option values from the returned filters.
+
+### `vrbo_travel_page_detail`
+
+Get a Vrbo travel page. Returns public editorial sections, visible rental cards, and related travel-page links for a /travel/{slug} page. Date-scoped prices are omitted; page slugs are not search-filter values.
+
+### `vrbo_travel_pages`
+
+List Vrbo travel pages. Lists the public stay-type and travel-theme pages linked from Vrbo's vacation-rental index. These are editorial browse pages, not a complete search-filter enumeration.
+
 ### `walesonline_article`
 
 Get WalesOnline article content. Returns public WalesOnline article metadata (including the section) and body paragraphs from a canonical article URL, including live blogs. Photo-gallery URLs are rejected.
@@ -12211,6 +13200,26 @@ Browse a Wayfair category. Returns a Wayfair category page's product grid, with 
 ### `wayfair_product`
 
 Get a Wayfair product's full detail. Returns one Wayfair product's full detail: name, brand, price, stock status, aggregate rating with a 1-5 star breakdown, images, every selectable variant option (e.g. color, finish), and site-selected feature highlights. id is the product's own "W"-prefixed id (e.g. W100794312), taken from a category result's product_id field or a product page's URL. An unrecognized id returns 404.
+
+### `wccftech_article`
+
+Get a Wccftech article. Returns metadata and body paragraphs for a canonical public Wccftech news, review, how-to, roundup, company, or best-of article URL.
+
+### `wccftech_author`
+
+Get a Wccftech author profile. Returns one author's public profile and recent article cards. Identify the author by slug or canonical /author/<slug>/ URL.
+
+### `wccftech_headlines`
+
+Get Wccftech section headlines. Returns current articles from one Wccftech topic, category, or editorial archive. Pass a slug from wccftech-sections, such as topic:hardware, category:news, or archive:videos.
+
+### `wccftech_news`
+
+Get current Wccftech news. Returns current top stories from Wccftech's public RSS feed, including title, canonical URL, summary, byline, publication time, and image when available.
+
+### `wccftech_sections`
+
+Discover Wccftech sections. Lists all non-empty public category and topic sections, plus the Reviews, Videos, How To, and Roundups archives. Use a returned slug with wccftech-headlines; taxonomy values are refreshed from the public WordPress REST API.
 
 ### `web_scrape`
 
@@ -12808,6 +13817,26 @@ Yahoo Tech section story stream. Returns a Yahoo Tech section's editorial story 
 
 Yahoo Tech homepage story stream. Returns Yahoo Tech's homepage editorial story feed: title, destination URL, category, and thumbnail image for each story. Sourced from Yahoo Tech's own server-rendered homepage.
 
+### `yardbarker_article`
+
+Get a Yardbarker article. Extracts metadata and the publicly served text paragraphs from a canonical Yardbarker story URL. Quiz, account, player, and non-article URLs are rejected.
+
+### `yardbarker_author`
+
+Get a Yardbarker author profile. Returns an author's public profile name, image, and story links from a canonical Yardbarker author URL.
+
+### `yardbarker_headlines`
+
+Get headlines for a Yardbarker section. Returns recent Yardbarker headlines and short RSS summaries for one section. Call /yardbarker/sections for the complete current slug list.
+
+### `yardbarker_news`
+
+Get Yardbarker top stories. Returns recent Yardbarker story metadata and short summaries from its public homepage. Use /yardbarker/sections to discover the supported sports, team, school, and topic sections.
+
+### `yardbarker_sections`
+
+List Yardbarker sections. Returns the complete live-verified directory snapshot of Yardbarker sports, teams, schools, and topics. Use each returned slug in /yardbarker/headlines.
+
 ### `yelp_business`
 
 Get Yelp business detail. Looks up a single Yelp business by alias or encoded id via Yelp's real Android app backend. Credential-free: no login, no API key, no cookie required from the caller.
@@ -13010,7 +14039,7 @@ Get ZDNet sections. Returns the public ZDNet topic and content-type taxonomy acc
 
 ### `zillow_autocomplete`
 
-Autocomplete Zillow locations. Returns normalized Zillow public web autocomplete candidates. Semantic candidates may include region_id/region_type compatibility aliases plus region_ids/region_types arrays; prefer complete bounds metadata for Zillow search when present.
+Autocomplete Zillow locations. Returns normalized Zillow public web autocomplete candidates, including region ids and types. Zillow autocomplete does not currently return map bounds.
 
 ### `zillow_property`
 
@@ -13018,7 +14047,7 @@ Get Zillow property. Returns normalized Zillow public property details using Zil
 
 ### `zillow_search`
 
-Search Zillow listings. Returns normalized Zillow public listing search results. Callers must pass complete map bounds from autocomplete when available, or a region id fallback.
+Search Zillow listings. Returns normalized Zillow public listing search results. Callers may pass a region id from autocomplete or a complete map bounding box. When a usable region-only response contains no listings, the API retries with a viewport from Zillow's public search page if that page selects exactly the same region. Upstream blocks and transport failures return errors.
 
 ### `zomato_cities`
 
@@ -13046,7 +14075,7 @@ Search Zomato restaurants in a city. Returns restaurants in a Zomato city, optio
 
 <!-- END MCP.SO TOOLS -->
 
-## What you can call (3209 tools / 12 categories)
+## What you can call (3465 tools / 12 categories)
 
 See [`tools.json`](./tools.json) or your MCP client UI for exact schemas. Below is a overview by category:
 
@@ -13067,7 +14096,7 @@ See [`tools.json`](./tools.json) or your MCP client UI for exact schemas. Below 
 
 ## Why Crawlora MCP?
 
-- **One key, 3209 tools** — search, commerce, social, gaming, finance, and more behind a single MCP endpoint.
+- **One key, 3465 tools** — search, commerce, social, gaming, finance, and more behind a single MCP endpoint.
 
 A good alternative to stitching together SerpApi, Firecrawl, ScraperAPI, or ScrapingBee.
 
