@@ -145,6 +145,44 @@ These account-gated or externally paused surfaces remain open follow-ups. The
 successful registry and npm checks do not establish that the third-party pages
 have refreshed.
 
+## 2026-10-06 release and directory status
+
+`crawlora-mcp@1.17.9` is published on npm with a verified SLSA provenance
+attestation, and the Official MCP Registry reports `1.17.9` / 3,475 tools. The
+release workflow's first post-publish check ran before npm propagation and
+reported the package missing; its idempotent rerun found the published package,
+verified provenance and the Official MCP Registry, and completed successfully
+(GitHub Actions run 37401230314). The package was not republished on retry.
+
+The release's live directory check reports:
+
+- **Glama:** public listing does not expose 3,475 structured tools. An
+  authenticated admin rescan and TDQS review of the ten newly added definitions
+  remain pending.
+- **Smithery:** public description does not show 3,475 tools / 468 groups. The
+  account-managed scan requires the private capability-scan credential.
+- **MCP.so:** public overview does not show 3,475 tools / 468 groups. The
+  anonymous directory check reached the page, but the signed-in browser editor
+  was unavailable in this run.
+- **MCP Servers.org:** latest readable page still says “300+” tools and offers
+  “Request update”; the existing request remains unresolved. No duplicate was
+  submitted.
+- **GoodFirms:** latest readable page still says 549 hosted tools / 578
+  endpoints; editing the claimed listing requires the vendor account.
+- **StackShare:** the public search URL could not be read by the available web
+  reader. No new listing was created.
+- **PulseMCP:** the page checked today says submissions and listing changes
+  remain paused.
+- **GitHub About:** repository description refreshed to “3,475 tools across
+  468 platform groups” and read back successfully.
+
+The local authenticated-browser inventory was unavailable because the Mac was
+locked and the Chrome/Brave request-header policy could not load. No account
+login, credential workaround, duplicate listing, or new StackShare listing was
+attempted. Retry Glama, Smithery, and MCP.so edits when the signed-in browser
+session is accessible; use the existing MCP Servers.org request, GoodFirms
+vendor account, and PulseMCP reopening rather than creating duplicate work.
+
 ### 2026-09-29 directory follow-up
 
 Rechecked with `node scripts/verify-directory-drift.mjs` under the installed
