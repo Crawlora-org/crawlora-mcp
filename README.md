@@ -7,7 +7,7 @@
 [![crawlora-mcp MCP server](https://glama.ai/mcp/servers/Crawlora-org/crawlora-mcp/badges/score.svg)](https://glama.ai/mcp/servers/Crawlora-org/crawlora-mcp)
 
 **Crawlora MCP** is a **hosted** Model Context Protocol server that gives AI clients and
-agents **3465 structured public‑web‑data tools** across 464 platform groups — search, maps,
+agents **3475 structured public‑web‑data tools** across 468 platform groups — search, maps,
 e‑commerce, social, finance, travel, app stores, media, and reviews — each returning clean,
 normalized **JSON** instead of HTML to parse.
 
@@ -155,7 +155,7 @@ Any client that speaks **Streamable HTTP** can use the generic config in
 
 ## Run it locally (open‑source server)
 
-This repo also ships a small **stdio** MCP server (`index.mjs`) that exposes the same **3465
+This repo also ships a small **stdio** MCP server (`index.mjs`) that exposes the same **3475
 tools**, each wrapping the Crawlora REST API (`https://api.crawlora.net/api/v1`) with your
 `CRAWLORA_API_KEY`. Useful if you'd rather run the server yourself than use the hosted endpoint.
 
@@ -985,6 +985,14 @@ Get Axios topic navigation. Returns Axios's full public topic and subtopic navig
 
 Get Axios topic headlines. Returns the newest public Axios stories on one topic or subtopic page. topic is a topic slug (e.g. technology) or a topic/subtopic path (e.g. technology/automation-and-ai) -- see axios-categories for the full known value space.
 
+### `baidu_search`
+
+Search Baidu web results. Returns normalized Baidu result cards for a query, read from Baidu's mobile search page: title, destination URL, snippet, publisher, and date, with page-based pagination. Each result's 'type' is 'web' (standard pages), 'video' (video cards), or 'baike' (Baidu Baike encyclopedia entries); answer widgets such as weather, entity panels, and recommendation lists are not returned. Baidu challenges a portion of requests with a security verification page; the service retries across browser profiles and returns 503 if every attempt is challenged, so callers should retry on 503.
+
+### `baidu_suggest`
+
+Suggest Baidu search queries. Returns Baidu search-box autocomplete completions for a query prefix, in Baidu's own ranking order. Baidu never returns more than 10 suggestions per prefix; Chinese prefixes are supported.
+
 ### `balenciaga_categories`
 
 List Balenciaga categories. Returns Balenciaga's live storefront navigation/category taxonomy. Each categories[].path is the exact value accepted by balenciaga-category's path parameter.
@@ -1227,7 +1235,7 @@ Search Bing web results. Returns normalized Bing web search results for a query 
 
 ### `bing_suggest`
 
-Suggest Bing search queries. Returns Bing autosuggest query completions for a query prefix. Locale defaults to country=us and lang=en-us. Suggestions are fetched from public Bing suggest endpoints and trimmed to the requested count.
+Suggest Bing search queries. Returns Bing autosuggest query completions for a query prefix. Locale defaults to country=us and lang=en-us. Suggestions are fetched from public Bing suggest endpoints and trimmed to the requested count. 'rich=true' adds entity cards (name, description, image) where Bing shows them.
 
 ### `bing_videos`
 
@@ -1507,7 +1515,7 @@ Search Brave. Returns normalized web search results from Brave Search for a quer
 
 ### `brave_suggest`
 
-Suggest Brave search queries. Returns Brave autosuggest query completions for a query prefix. Locale defaults to country=us and lang=en-us. Suggestions are fetched from public Brave Search suggest JSON and trimmed to the requested count.
+Suggest Brave search queries. Returns Brave autosuggest query completions for a query prefix. Locale defaults to country=us and lang=en-us. Suggestions are fetched from public Brave Search suggest JSON and trimmed to the requested count. 'rich=true' adds entity metadata (name, description, category, image) where Brave resolves a suggestion to a known entity.
 
 ### `brave_videos`
 
@@ -3425,6 +3433,10 @@ Search DuckDuckGo web results. Returns normalized DuckDuckGo web search results 
 
 Search DuckDuckGo shopping results. Returns normalized DuckDuckGo shopping results for a query string: title, brand, merchant, description, price, rating, and review count, plus total page count. DuckDuckGo's shopping vertical is ad-funded, syndicated product listings, not organic content; every product link is wrapped in an ad-click-tracking redirect with no clean destination to unwrap, so no destination URL is returned. DuckDuckGo's own pagination token for this vertical is an opaque per-response blob rather than a plain page offset, so only the first page is supported.
 
+### `duckduckgo_suggest`
+
+Suggest DuckDuckGo search queries. Returns DuckDuckGo search-box autocomplete completions for a query prefix, in DuckDuckGo's own ranking order. DuckDuckGo never returns more than 8 suggestions per prefix.
+
 ### `duckduckgo_video`
 
 Search DuckDuckGo video results. Returns normalized DuckDuckGo video results for a query string: title, destination URL, description, duration, thumbnail, publisher/uploader, published time, and view count, plus page-based pagination. Results are fetched from DuckDuckGo's own video JSON API.
@@ -5099,7 +5111,7 @@ Search Google News with JSON. Restored JSON compatibility endpoint. Returns curr
 
 ### `google_suggest`
 
-Suggest Google search queries. Returns Google autosuggest query completions from the public unauthenticated suggest JSON endpoint.
+Suggest Google search queries. Returns Google autosuggest query completions from the public unauthenticated suggest JSON endpoint. 'source' selects the web, YouTube, or shopping suggestion list, and 'rich=true' adds a type, relevance score, and short description to each suggestion.
 
 ### `google_trends_categories`
 
@@ -5315,7 +5327,15 @@ Get a Greystar apartment community. Retrieves a public Greystar community profil
 
 ### `greystar_search`
 
-Search Greystar apartment communities. Lists Greystar communities published on greystar.com, optionally filtered by market area, neighborhood, city, state, country, starting rent, or free text. Filter values must come from /greystar/markets; an unknown value returns 400. Starting prices reflect each community's published minimum and are null when none is published. Results come from a snapshot refreshed every few minutes.
+Search Greystar apartment communities. Lists Greystar communities published on greystar.com, optionally filtered by market area, neighborhood, city, state, country, starting rent, or free text. Filter values must come from /greystar/markets; an unknown value returns 400. Starting prices reflect each community's published minimum and are null when none is published. Results come from an hourly snapshot of every community listed on greystar.com; the default order follows the site.
+
+### `greystar_unit_locations`
+
+List Greystar unit search locations. Lists every location accepted by /greystar/units: the nationwide us listing, states, metros, cities, and neighborhoods (nested ones carry their parent), taken from the site's own search pages. Locations Greystar has no unit listing for are dropped once detected.
+
+### `greystar_units`
+
+Search available Greystar apartment units. Searches apartment units currently available to rent on greystar.com within one location (nationwide by default), filtered by bedrooms, bathrooms, building type, community highlights, and monthly price, sorted by relevance or price. Results are grouped by community: each carries its address, coordinates, the number of matching units, and up to about 100 units with unit number, floor plan, bedrooms, bathrooms, price range, and lease term. The response also returns filter counts for the location. Several values of one filter match any of them. Get location values from /greystar/unit-locations.
 
 ### `grubhub_availability`
 
@@ -6087,7 +6107,7 @@ Retrieve an Instagram user profile by username. Returns public profile details f
 
 ### `instagram_reels`
 
-Retrieve Instagram Reels for a user. Returns a feed of Instagram Reels for the specified user ID. Supports pagination via 'max_id'.
+Retrieve Instagram Reels for a user. Returns up to 12 public Reels via anonymous proxied HTTP for the numeric Instagram user ID. Supports opaque 'max_id' pagination. Captions, timestamps and original image dimensions are omitted when the public source does not expose them.
 
 ### `investopedia_article`
 
@@ -9319,7 +9339,7 @@ Retrieve Product Hunt product makers. Returns maker items for a Product Hunt pro
 
 ### `producthunt_product`
 
-Retrieve Product Hunt product details. Returns the core Product Hunt product details.
+Retrieve Product Hunt product details. Returns the core Product Hunt product details. The path takes an exact Product Hunt slug; if you only know the product name, look the slug up first with '/producthunt/search' (live) or '/datasets/producthunt-products/search' (indexed). Unknown slugs return 404, and that 404 is cached for one hour.
 
 ### `producthunt_reviews`
 
@@ -9524,6 +9544,10 @@ List Quince sitemaps. Returns Quince's US-region child sitemaps (products, colle
 ### `quince_suggest`
 
 Get Quince search suggestions. Returns Quince's own search-box typeahead suggestions for a partial query: a flat list of suggested search phrases, no product data. Pass a suggestion straight through to quince-search's own q parameter for product results. A query with no genuine matches returns a well-formed empty result rather than an error.
+
+### `qwant_suggest`
+
+Suggest Qwant search queries. Returns Qwant search-box autocomplete completions for a query prefix, in Qwant's own ranking order. 'locale' selects the Qwant market (en_US, fr_FR, de_DE, en_GB, ...); Qwant ignores locale codes it does not support and uses its default market.
 
 ### `raisingcanes_directory`
 
@@ -11324,6 +11348,10 @@ Get one Starbucks product with nutrition. Returns one Starbucks product's full d
 ### `starbucks_stores`
 
 Find nearby Starbucks stores worldwide. Returns Starbucks store locations near a point: store number, name, phone, full address, coordinates, weekly opening hours, amenities, and pick-up options. Either place, or both lat and lng, is required. place is free-text (city, address, or postal code) and is geocoded by Starbucks itself, so it works worldwide. market selects which Starbucks country site answers, one of us or ca, defaulting to us; this is not cosmetic even for stores, because the same store reports different operational data depending on the host. There is no filter parameter: Starbucks' own API accepts a features amenity filter but silently ignores it, so it is deliberately not offered here; filter on each store's returned amenities instead. A place Starbucks cannot resolve returns a well-formed empty result with place_not_found set to true rather than an error. The upstream returns at most 50 stores per request and supports no pagination; result_capped is true when that ceiling was reached. Store discovery works worldwide, but hours, amenities, and phone numbers are populated per market and may be absent outside the US and UK.
+
+### `startpage_suggest`
+
+Suggest Startpage search queries. Returns Startpage search-box autocomplete completions for a query prefix, in Startpage's own ranking order. Startpage never returns more than 10 suggestions per prefix.
 
 ### `startribune_news`
 
@@ -13223,7 +13251,7 @@ Discover Wccftech sections. Lists all non-empty public category and topic sectio
 
 ### `web_scrape`
 
-Scrape a URL into markdown, HTML, links or metadata. Fetches a single public URL and returns clean content in the requested formats (markdown, html, raw_html, links, metadata). The request body IS the ScrapeOption object itself — e.g. {"url": "https://example.com"} — do not wrap it in an extra key. With render=auto the request starts as a fast HTTP fetch and escalates to a real browser when the page is blocked or rendered with JavaScript; backend only pins a specific headless-browser engine for the browser tier and is not a render mode. only_main_content (default true) strips navigation, headers, footers and other boilerplate before conversion. Only public pages are supported; respect each site's terms of use and robots directives. A handful of popular sites (Amazon, Reddit, Yelp, LinkedIn, and others) already have a dedicated, more reliable endpoint elsewhere in this API — a failed scrape against one of them names it.
+Scrape a URL into markdown, HTML, links or metadata. Fetches a single public URL and returns clean content in the requested formats (markdown, html, raw_html, links, metadata). The request body IS the ScrapeOption object itself — e.g. {"url": "https://example.com"} — do not wrap it in an extra key. With render=auto the request starts as a fast HTTP fetch and escalates to a real browser when the page is blocked or rendered with JavaScript; backend only pins a specific headless-browser engine for the browser tier and is not a render mode. only_main_content (default true) strips navigation, headers, footers and other boilerplate before conversion. Only public pages are supported; respect each site's terms of use and robots directives. A handful of popular sites (Amazon, Reddit, Yelp, LinkedIn, and others) already have a dedicated, more reliable endpoint elsewhere in this API — a failed scrape against one of them names it. A Reddit URL that maps onto a dedicated Reddit endpoint (listings, search, comment threads, user and domain pages) is answered by that endpoint instead, and its response is returned as-is in data with an X-Routed-To header; send dedicated=false to always get the scraped page.
 
 ### `web_techstack`
 
@@ -13817,6 +13845,14 @@ Yahoo Tech section story stream. Returns a Yahoo Tech section's editorial story 
 
 Yahoo Tech homepage story stream. Returns Yahoo Tech's homepage editorial story feed: title, destination URL, category, and thumbnail image for each story. Sourced from Yahoo Tech's own server-rendered homepage.
 
+### `yandex_search`
+
+Search Yandex web results. Returns normalized organic Yandex web results for a query: title, destination URL, display URL, and snippet, with page-based pagination. Advertisements are not returned. Yandex challenges a portion of requests with a captcha; the service retries across browser profiles and returns 503 if every attempt is challenged, so callers should retry on 503. Results are localized by Yandex to the egress location.
+
+### `yandex_suggest`
+
+Suggest Yandex search queries. Returns Yandex search-box autocomplete completions for a query prefix, in Yandex's own ranking order. 'lang' is the two-letter Yandex UI language (en, ru, tr, ...) and re-ranks the list; Yandex ignores codes it does not support.
+
 ### `yardbarker_article`
 
 Get a Yardbarker article. Extracts metadata and the publicly served text paragraphs from a canonical Yardbarker story URL. Quiz, account, player, and non-article URLs are rejected.
@@ -13920,6 +13956,10 @@ Retrieve channel profile. Returns full profile details for a YouTube channel.
 ### `youtube_search`
 
 Search YouTube. Returns normalized YouTube search results using YouTube's InnerTube search API. Pass 'continuation_token' from a previous response to retrieve the next page. Use 'q' as the primary query parameter; 'search_query' is accepted as an alias. 'hl' and 'gl' localize ranking and result context; they default to 'en' and 'US'. Named filters cover the public web search filters. Account-only chips such as Watched and Unwatched are not exposed.
+
+### `youtube_suggest`
+
+Suggest YouTube search queries. Returns YouTube search-box autocomplete completions for a query prefix, in YouTube's own ranking order. 'hl' and 'gl' localize the list; they default to 'en' and 'US'.
 
 ### `youtube_tag`
 
@@ -14075,7 +14115,7 @@ Search Zomato restaurants in a city. Returns restaurants in a Zomato city, optio
 
 <!-- END MCP.SO TOOLS -->
 
-## What you can call (3465 tools / 12 categories)
+## What you can call (3475 tools / 12 categories)
 
 See [`tools.json`](./tools.json) or your MCP client UI for exact schemas. Below is a overview by category:
 
@@ -14096,7 +14136,7 @@ See [`tools.json`](./tools.json) or your MCP client UI for exact schemas. Below 
 
 ## Why Crawlora MCP?
 
-- **One key, 3465 tools** — search, commerce, social, gaming, finance, and more behind a single MCP endpoint.
+- **One key, 3475 tools** — search, commerce, social, gaming, finance, and more behind a single MCP endpoint.
 
 A good alternative to stitching together SerpApi, Firecrawl, ScraperAPI, or ScrapingBee.
 
