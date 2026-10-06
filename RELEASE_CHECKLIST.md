@@ -183,6 +183,47 @@ attempted. Retry Glama, Smithery, and MCP.so edits when the signed-in browser
 session is accessible; use the existing MCP Servers.org request, GoodFirms
 vendor account, and PulseMCP reopening rather than creating duplicate work.
 
+### 2026-10-06 authenticated directory follow-up
+
+The existing owner sessions became available for a partial follow-up:
+
+- **Glama:** saved the public description with 3,475 tools / 468 groups and
+  started **Sync Server**. The UI showed `Sync in Progress`. The TDQS page was
+  still on `v1.17.7` (3,209 tools evaluated, 3.9/5) and did not yet offer
+  `v1.17.9`. The browser session became unavailable before the sync result or a current TDQS release
+  could be checked. The post-edit `make mcp-directory-check` still warned that
+  Glama did not expose 3,475 structured tools. Resume by confirming the sync
+  completed, selecting `v1.17.9`, and reviewing the ten changed/new tool
+  definitions listed in the API release checklist.
+- **Smithery:** saved the
+  listing description at 3,475 tools / 468 groups. The newest existing release
+  was `SUCCESS` from ten days earlier; no release was in progress. The publish
+  wizard retained the hosted Streamable HTTP URL and required `x-api-key` as a
+  header, then stopped at **Provide scan credentials**, a private required
+  field. No release was submitted. The browser locked before the credential
+  could be entered, so the account-managed scan remains pending. Resume in an
+  authorized owner session, complete that private form, and verify the new
+  release reaches `SUCCESS` and the public description reflects the current
+  count.
+- **MCP.so:** edited the existing published listing; no duplicate was created.
+  The authenticated public page showed the updated overview with 3,475 tools /
+  468 groups and a configuration using the documented `x-api-key` header.
+  However, the About description still showed `319 tools`, and the public
+  Tools section still said `No tools detected`, even though the repository
+  README has its generated `## Tools` catalog. `make mcp-directory-check`
+  continued to warn on this listing after the edit. The checker requires the
+  exact unformatted marker `3475 structured public` plus `468 platform groups`
+  and a populated README-derived Tools section. Resume in the owner editor to
+  correct the description marker, then use MCP.so's supported refresh/index
+  path for the existing listing and verify the public Tools section is
+  populated. Do not submit a second listing.
+
+The same post-edit checker passed the Official MCP Registry at `1.17.9` /
+3,475 tools and reported warnings for all three account-managed directories.
+The browser session became unavailable before the final Glama sync result,
+Smithery private scan, and MCP.so public-index refresh could be verified. No credential was added to a
+repository, log, or public listing.
+
 ### 2026-09-29 directory follow-up
 
 Rechecked with `node scripts/verify-directory-drift.mjs` under the installed
