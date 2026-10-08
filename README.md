@@ -7,7 +7,7 @@
 [![crawlora-mcp MCP server](https://glama.ai/mcp/servers/Crawlora-org/crawlora-mcp/badges/score.svg)](https://glama.ai/mcp/servers/Crawlora-org/crawlora-mcp)
 
 **Crawlora MCP** is a **hosted** Model Context Protocol server that gives AI clients and
-agents **3475 structured public‑web‑data tools** across 468 platform groups — search, maps,
+agents **3606 structured public‑web‑data tools** across 468 platform groups — search, maps,
 e‑commerce, social, finance, travel, app stores, media, and reviews — each returning clean,
 normalized **JSON** instead of HTML to parse.
 
@@ -155,7 +155,7 @@ Any client that speaks **Streamable HTTP** can use the generic config in
 
 ## Run it locally (open‑source server)
 
-This repo also ships a small **stdio** MCP server (`index.mjs`) that exposes the same **3475
+This repo also ships a small **stdio** MCP server (`index.mjs`) that exposes the same **3606
 tools**, each wrapping the Crawlora REST API (`https://api.crawlora.net/api/v1`) with your
 `CRAWLORA_API_KEY`. Useful if you'd rather run the server yourself than use the hosted endpoint.
 
@@ -1037,6 +1037,10 @@ Get the latest Barron's stories. Returns Barron's current cross-section news fee
 
 List Barron's topics. Lists every Barron's editorial topic accepted by /barrons/headlines' section parameter, with each topic's slug, display name, and landing-page URL.
 
+### `bbb_article`
+
+Get a BBB article. Returns published BBB article metadata, author names, body text, and useful links from a canonical public article URL.
+
 ### `bbb_business`
 
 Get a Better Business Bureau business profile. Returns a normalized bbb.org business profile: BBB rating letter grade and reasons, accreditation status and since-date, years in business, BBB file/incorporation dates, entity type, contact info, business categories, social media, and a short latest-reviews preview. Credential-free public Better Business Bureau data.
@@ -1055,7 +1059,27 @@ Get a Better Business Bureau business's customer reviews. Returns a business's f
 
 ### `bbb_category`
 
-Browse a Better Business Bureau category. Browses bbb.org businesses by category and location directly, without a free-text search query. Returns the same normalized business-result shape as bbb-search. Credential-free public Better Business Bureau data.
+Browse a Better Business Bureau category. Browses bbb.org businesses by category and location directly, without a free-text search query. Returns the same normalized business-result shape as bbb-search. Optional sort and filter parameters use the same values as bbb-search; query-scoped category and state/province values come from bbb-search-filters. Credential-free public Better Business Bureau data.
+
+### `bbb_local_bbb`
+
+Get a local BBB chapter profile. Returns public chapter profile details including office locations and hours, service territory, supported languages, and upcoming public events. Use a canonical chapter URL from bbb-local-bbbs or a business record's local_bbb_url. Credential-free public Better Business Bureau data.
+
+### `bbb_local_bbbs`
+
+List local BBB chapters serving a region. Lists every chapter and public office shown on BBB's directory page for a region discovered by bbb-regions. Office addresses can be outside the selected service region. Credential-free public Better Business Bureau data.
+
+### `bbb_news`
+
+Get BBB newsroom stories. Returns one page of public BBB newsroom stories from a canonical US or Canada newsroom URL. Event dates and links are preserved when present.
+
+### `bbb_news_topics`
+
+List BBB newsroom topics. Returns the complete topic navigation shown by a US or Canada BBB newsroom page, including its active topic.
+
+### `bbb_regions`
+
+List Better Business Bureau directory regions. Returns the complete current country and region list from BBB's public local directory. Use the returned region code with bbb-local-bbbs. Credential-free public Better Business Bureau data.
 
 ### `bbb_scamtracker_detail`
 
@@ -1071,7 +1095,11 @@ Get Better Business Bureau Scam Tracker state/province aggregate stats. Returns 
 
 ### `bbb_search`
 
-Search Better Business Bureau businesses. Searches bbb.org for businesses by name or category near a location. Returns each business's BBB rating letter grade, accreditation status, categories, service areas, contact info, and profile URL. Credential-free public Better Business Bureau data.
+Search Better Business Bureau businesses. Searches bbb.org for businesses by name or category near a location. Returns each business's BBB rating letter grade, accreditation status, categories, service areas, contact info, and profile URL. Category IDs and state/province codes are query-scoped; call bbb-search-filters to discover values for this query and location. Credential-free public Better Business Bureau data.
+
+### `bbb_search_filters`
+
+Discover Better Business Bureau search filters. Returns the live sort, category, and state/province values BBB currently advertises for one context. Supply query and location for text search, or category_url for the exact category-browse context; do not combine these modes. Category IDs and state/province codes are query-scoped; call this endpoint again when the search context changes. Static accepted values are country USA or CAN; sort Relevance, Distance, Rating, AToZ, or ZToA; distance 5, 10, 25, 50, or 100 miles; rating A, B, C, D, or F. Credential-free public Better Business Bureau data.
 
 ### `bbc_article`
 
@@ -4059,7 +4087,7 @@ Get Fiverr seller profile. Returns a normalized Fiverr seller profile: display n
 
 ### `flashscore_calendar`
 
-Flashscore season calendar. Returns public tournament calendar entries, dates, winners when available, and competition paths for the current season.
+Flashscore season calendar. Returns public tournament calendar entries for the current season, sorted by start date, with date ranges, UTC start and end times, host country, winners and winner paths when decided, and competition paths.
 
 ### `flashscore_calendar_categories`
 
@@ -4068,6 +4096,18 @@ Flashscore season calendar categories. Lists the current ATP, WTA, golf, badmint
 ### `flashscore_competitions`
 
 Flashscore competitions by sport and date. Discovers competitions present in a selected sport's score feed, including the provider competition id, label, region, canonical path, and event count. This is the active feed-date inventory, not an archive of inactive or historical seasons.
+
+### `flashscore_entity_news`
+
+Flashscore news for a team, player, tournament or sport. Returns the article ids of Flashscore's own news layout for one entity: the featured article plus the 25 most recent ones, grouped in the sections Flashscore shows. The layout has no pagination. Resolve the ids with flashscore-news-article (metadata) or flashscore-news-article-body (full text). Teams and players share one layout type. A tournament is a tournament template id (the competition id in event lists); a sport is one of the SPORT entity ids listed by flashscore-news-categories. An id with no news layout returns not found.
+
+### `flashscore_match_box_score`
+
+Flashscore basketball, hockey and baseball box score. Returns the per-player box score of a basketball, hockey or baseball match: one table per team (hockey adds a goalkeeper table and baseball a pitcher table) with the statistic columns the provider defines for that sport, and each player's value per column, or null where Flashscore shows a dash. Other sports and matches without box-score coverage return not found.
+
+### `flashscore_match_darts`
+
+Flashscore darts throw-by-throw and statistics. Returns a darts match leg by leg: who started and won each leg, the leg score, every visit with the points scored, the score remaining and 180 or 140-plus highlights, and the score the winner finished from, plus the statistics comparison (three-dart average, 180s, 140+ and 100+ visits, checkout percentage, highest checkout). Streamed events whose scoring is not tracked and non-darts matches return not found.
 
 ### `flashscore_match_h2h`
 
@@ -4085,9 +4125,37 @@ Flashscore match venue and broadcast information. Returns the public match infor
 
 Flashscore match lineups and formations. Returns the public starting-lineup and formation feed as the provider's raw delimited text. Matches without published lineups return not found.
 
+### `flashscore_match_missing_players`
+
+Flashscore missing and doubtful players. Returns the players listed as missing and as doubtful for each side of a match, with the stated reason. Empty lists are a valid answer: nobody is reported missing, or the match has no coverage. Expected return dates are not provided by the source.
+
+### `flashscore_match_momentum`
+
+Flashscore football match momentum. Returns the per-minute momentum series of a football match (values from -1 to 1, positive favouring the home side) with the half and stoppage-time marker of each minute, and the key events plotted on it (goals, own goals, penalties, red cards) with their team and player. Matches without momentum coverage and non-football matches return not found.
+
 ### `flashscore_match_news`
 
 Flashscore match news references. Returns article references from the public news layout associated with a match. Article content is not included; use the article id with flashscore-news-article for public metadata.
+
+### `flashscore_match_odds`
+
+Flashscore match bookmaker odds comparison. Returns bookmaker odds for a match in one viewer market, grouped by betting type and scope with every bookmaker's priced outcomes, opening odds, handicap or total lines, and a normalized selection label. Bookmakers and prices depend on the market, so pick geo (and subdivision for US or CA) from flashscore-odds-geos. A market with no licensed bookmakers returns empty lists. Promotional bonus text is not included.
+
+### `flashscore_match_player_stats`
+
+Flashscore football player match statistics and ratings. Returns per-player statistics for a football match with player-statistics coverage: the Flashscore rating, highlight badges and every statistic of the player-statistics tabs (shots, expected goals, passes, duels, goalkeeping and more) with display text, unrounded value and rank, plus the statistic and group definitions. The full response is large; narrow it with group, or with player_id for a single player. Other sports and matches without coverage return not found.
+
+### `flashscore_match_point_by_point`
+
+Flashscore point-by-point scoring history. Returns the scoring history of a tennis, volleyball, badminton, handball or basketball match, grouped by set, quarter or half. Tennis lists each game with its server, winner, the running score inside the game and break, set and match point flags, plus tiebreak points; the other sports list every rally or basket with the leading side's margin. When a tennis match is live, current_game holds the game or tiebreak in progress. Other sports and matches without coverage return not found.
+
+### `flashscore_match_predicted_lineups`
+
+Flashscore predicted lineups. Returns each side's predicted formation, predicted starters with position tags and player details, lineup groups, and coaches. Predictions usually appear shortly before kickoff for covered matches; a match with no predicted players on either side returns not found.
+
+### `flashscore_match_report`
+
+Flashscore editorial match report. Returns Flashscore's written match report: title, author, publication time, the full text as ordered paragraphs and inline images (with links to teams, players and competitions kept as structured data), and the credited photos. Only matches with editorial coverage have a report; every other match returns not found.
 
 ### `flashscore_match_standings`
 
@@ -4096,6 +4164,10 @@ Flashscore match league standings. Returns the match-linked table feed. Select o
 ### `flashscore_match_stats`
 
 Flashscore match statistics. Returns Flashscore's public delimited statistics feed for a match id copied from a Flashscore match URL. The raw upstream feed is preserved as text because its format is not JSON.
+
+### `flashscore_match_tv`
+
+Flashscore match TV and streaming broadcasters. Returns the TV channels and streaming services listed for a match in one viewer market, with provider ids, names and website links. Listings are country specific, so pick geo from flashscore-odds-geos; an empty list means no broadcaster is listed for that market. Bookmaker promotions are not included.
 
 ### `flashscore_navigation`
 
@@ -4109,9 +4181,49 @@ Flashscore News listings by section. Returns article previews from a public Flas
 
 Flashscore news article metadata. Returns public article metadata and image credits for an article id from a Flashscore match news listing. Article body text is not included.
 
+### `flashscore_news_article_body`
+
+Flashscore news article with full text. Returns a Flashscore article with its headline, standfirst, author, source credit, tags, publication and edit times, cover image and the full body converted to plain-text paragraphs and headings with structured links to players, teams, matches and other articles. Embedded posts, images and info boxes are kept as placeholder blocks, not in the text. Live blogs work too. An unknown article id returns not found. For metadata and image variants only, use flashscore-news-article.
+
 ### `flashscore_news_categories`
 
 Flashscore News categories. Returns the exact currently usable public News section keys, names, and source paths from the live navigation inventory. Olympic Games is excluded because its linked page currently returns 404.
+
+### `flashscore_news_most_read`
+
+Flashscore most-read news. Returns Flashscore's site-wide list of the most-read news articles right now (about 20) in the provider's order, with title, slug, path, publication time and cover image. Use flashscore-news-article-body for an article's full text.
+
+### `flashscore_odds_geos`
+
+Flashscore odds markets, subdivisions and odds enums. Lists every country code accepted by flashscore-match-odds and flashscore-match-tv (with whether bookmakers were found for it when verified), the US states and Canadian provinces that change the bookmaker list, and every betting type, scope and handicap type that can appear in odds responses.
+
+### `flashscore_player`
+
+Flashscore player profile and career. Returns a player's public profile: name, country, birth date, sport, photo and current team, plus (for team-sport players) position, age, market value, contract expiry, extra details such as height, and career statistics by season, team and competition grouped into league, domestic cups, international cups and national team. Players of individual sports such as tennis return the profile (and ranking text) without a career table.
+
+### `flashscore_player_fixtures`
+
+Flashscore player fixtures. Returns one page of an individual-sport player's upcoming matches (tennis, darts, golf, snooker and similar), soonest first, as structured events. Football, basketball and hockey players have no event list and return an empty list; use flashscore-team-fixtures for their team. Request successive pages until event_count is 0.
+
+### `flashscore_player_injuries`
+
+Flashscore player injury history. Returns a team-sport player's injury history, newest first, with start date, end date (absent while unresolved) and injury type. A player with no recorded injuries returns an empty list. Players of individual sports have no injury page and return not found.
+
+### `flashscore_player_match_log`
+
+Flashscore player match log. Returns one page of a football, basketball or hockey player's match log, newest first: each match with date, both sides and scores, competition, the player's rating and labelled statistics (minutes, goals, assists, cards, goalkeeper saves, points, rebounds, time on ice and more depending on the sport). Matches without statistics say why (on the bench, injured, suspended). Page 1 holds the 10 newest matches and every later page 25 older ones; request pages until has_more is false. Players of individual sports return an empty list, use flashscore-player-results for those.
+
+### `flashscore_player_news`
+
+Flashscore player news. Returns up to 100 recent headlines about a player, aggregated from news publishers, with publisher, publication time and image. Links point to Flashscore's redirect to the publisher. A player without news returns an empty list. A team id returns not found, use flashscore-team-news for teams.
+
+### `flashscore_player_results`
+
+Flashscore player results. Returns one page of an individual-sport player's finished and in-progress matches (tennis, darts, golf, snooker and similar), newest first, as structured events with start time, stage, both sides, score and competition. Competition blocks carry tournament_id and tournament_stage_id for the tournament endpoints. Football, basketball and hockey players have no event list and return an empty list, use flashscore-player-match-log for those. Request successive pages until event_count is 0.
+
+### `flashscore_player_transfers`
+
+Flashscore player transfer history. Returns a team-sport player's club history, newest first, with date, type such as Loan or Free agent, fee text and the clubs on each side. A player with no recorded transfers returns an empty list. Players of individual sports have no transfers page and return not found.
 
 ### `flashscore_ranking_categories`
 
@@ -4133,17 +4245,53 @@ Flashscore search. Searches the same public entity index used by Flashscore's se
 
 Flashscore sports and live category counts. Returns every sport category visible in Flashscore's score navigation, with sport id, caller key, page path, and current event/competition counts. Counts are a live snapshot and may be zero when the sport has no fixtures in the current feed window.
 
+### `flashscore_team`
+
+Flashscore team profile. Returns a team's public profile: name, country, sport, logo, the stadium and capacity shown on its summary page, and the competitions of its recent and upcoming fixtures. Use a team id from flashscore-search, a Flashscore team URL, a match endpoint's team ids, or flashscore-team-squad and flashscore-player. A player id returns not found.
+
+### `flashscore_team_fixtures`
+
+Flashscore team fixtures. Returns one page of a team's upcoming matches, soonest first, as structured events with start time, both sides and competition. Event ids work with the flashscore match endpoints. Request successive pages until event_count is 0; a page past the end returns an empty list.
+
+### `flashscore_team_news`
+
+Flashscore team news headlines. Returns up to 100 recent headlines that Flashscore aggregates from news publishers for a team: title, publisher, publication time, image and a Flashscore link that redirects to the publisher's article. These are third-party headlines, separate from Flashscore's own articles in flashscore-news. Article text is not included.
+
+### `flashscore_team_outright_odds`
+
+Flashscore team title odds. Returns the title odds bookmakers list for a team in one viewer market, grouped by the competitions it is priced in (league, cup, European competition) with every bookmaker's price and last movement. Pick geo (and subdivision for US or CA) from flashscore-odds-geos. A team with no listed title odds returns empty lists; a player id returns not found.
+
+### `flashscore_team_results`
+
+Flashscore team results. Returns one page of a team's finished and in-progress matches, newest first, as structured events with start time, stage, both sides, score and competition. Event ids work with the flashscore match endpoints. Request successive pages until event_count is 0; a page past the end returns an empty list.
+
+### `flashscore_team_squad`
+
+Flashscore team squad. Returns a team's squad grouped by position (goalkeepers, defenders, and so on, plus the coach) with each person's jersey number, age, country (or club, for national teams), injury or absence note and season statistics. The default scope totals all competitions; the scopes list in every response names the per-competition scopes accepted by the scope parameter. Sports without a squad page return not found.
+
+### `flashscore_team_transfers`
+
+Flashscore team transfers. Returns one page (30 rows) of a team's transfer history, newest first: date, direction (in or out), type such as Loan or Transfer, fee text, the player and the clubs on each side. Filter by type to see arrivals or departures only. Request successive pages until transfer_count is 0.
+
 ### `flashscore_top_search`
 
 Flashscore top search entities. Returns the ten-or-fewer public team, player, and tournament results shown in Flashscore's search overlay. This is a changing curated list, not a complete entity directory.
+
+### `flashscore_tournament_archive_seasons`
+
+Flashscore competition seasons by stage id. Returns every season of the competition that owns a tournament stage: season label, season tournament id, whether it is current, the winning participants and the stage ids of each season, plus the requested stage's names and page tabs (summary, odds, standings, results, fixtures, draw, news). Get a stage id from tournament_stage_id in the competition block of team, player and match event lists, then reuse the stage ids returned here for older seasons. Pass a stage id, not a season tournament id or a competition id: other ids can return an unrelated competition, so check the returned tournament name. An unknown stage id returns not found.
 
 ### `flashscore_tournament_events`
 
 Flashscore tournament season results or fixtures. Returns a page of the public results or fixtures feed for any supported sport and competition path. Page 1 is embedded in the public tournament page; later pages follow its Show more feed sequence. Sum event_count from successive pages until total_events is reached.
 
+### `flashscore_tournament_outright_odds`
+
+Flashscore competition winner odds. Returns the title odds bookmakers list for one competition season in one viewer market, grouped by participant with every bookmaker's price and last movement. The provider lists only the top favourites (three in every competition checked), so this is a favourites market, not the full field. Bookmakers depend on the market: pick geo (and subdivision for US or CA) from flashscore-odds-geos. A market with no listed odds returns empty lists. Use the season-level tournament_id from event competition blocks or flashscore-tournament-archive-seasons.
+
 ### `flashscore_tournament_seasons`
 
-Flashscore tournament archive seasons. Lists the seasons and winners from a public competition archive page. Discover archive paths through flashscore-navigation or flashscore-competitions. Each returned results_path and fixtures_path can be passed to flashscore-tournament-events to retrieve season event feeds.
+Flashscore tournament archive seasons. Lists the seasons and winners (both players for doubles) from a public competition archive page. Discover archive paths through flashscore-navigation or flashscore-competitions. Each returned results_path and fixtures_path can be passed to flashscore-tournament-events to retrieve season event feeds.
 
 ### `flashscore_tournament_standings`
 
@@ -5391,7 +5539,7 @@ Browse a Gucci category listing. Returns one Gucci category/browse listing: norm
 
 ### `gucci_product`
 
-Get a Gucci product. Returns full normalized product detail for one style: name, marketing description, breadcrumb trail, brand line, gender, colors, materials, sizes, price, images, and stock -- combining Gucci's own structured product record with the product page's own marketing copy. style_code comes from gucci-search's or gucci-category's own style_code field.
+Get a Gucci product. Returns product detail for one style: name, price, images, stock, and PDP attributes available from Gucci's current storefront, including description, breadcrumbs, SKU, colors, materials, and sizes. style_code comes from gucci-search's or gucci-category's own style_code field. PDP-only fields are omitted if the detail page is unavailable.
 
 ### `gucci_recommendations`
 
@@ -5399,7 +5547,7 @@ Gucci product recommendations. Returns one Gucci recommendations shelf: normaliz
 
 ### `gucci_search`
 
-Search Gucci's product catalog. Searches Gucci's product catalog by keyword: normalized product summaries (name, price, colors, materials, sizes, gender, stock) with the search index's own live total result count. A genuinely empty result (e.g. a nonsense query) returns a well-formed empty products list, not an error. The response's own size_facets field lists every size value present in the result set (with live counts) -- pass one of those values as size on a follow-up call to filter to just that size.
+Search Gucci's product catalog. Searches Gucci's US product catalog by keyword using the storefront's public catalog. Results include card-level data and the live total count; per-product colors, materials, sizes, gender, and line are omitted when the search source does not provide them. A genuinely empty result returns a well-formed empty products list. The response's size_facets field lists live size values and counts -- pass one as size on a follow-up call to filter.
 
 ### `gucci_size_guide`
 
@@ -5419,7 +5567,7 @@ List Gucci store locations. Returns Gucci's full US store-locator listing: name,
 
 ### `gucci_suggest`
 
-Gucci search-box suggestions. Returns Gucci's own search-box typeahead suggestions for a partial query, each with its own live total result count on the search index. Not product data -- pass a suggestion's own query value straight into gucci-search for results.
+Gucci search-box suggestions. Returns Gucci's own search-box typeahead suggestions for a partial query. The current public suggestion source does not provide per-phrase result counts. Not product data -- pass a suggestion's query into gucci-search for results.
 
 ### `gulfnews_article`
 
@@ -10781,45 +10929,293 @@ Get The Sydney Morning Herald top stories. Returns The Sydney Morning Herald's c
 
 Get The Sydney Morning Herald sections. Lists every Sydney Morning Herald section accepted by /smh/headlines (96 sections from the site's own section menu), each with its slug, display name, and public section-front URL.
 
+### `sofascore_categories`
+
+SofaScore categories for a sport. Returns every category (country or region, such as England or International) SofaScore lists for a sport, with id, name, slug, flag, optional two-letter code, and priority, highest priority first. Use a category 'id' with category-tournaments (its competitions) and with scheduled-events (its fixtures on a date). The 'sport' enum accepts 'american-football', 'aussie-rules', 'badminton', 'bandy', 'baseball', 'basketball', 'beach-volley', 'cricket', 'darts', 'esports', 'floorball', 'football', 'futsal', 'handball', 'ice-hockey', 'mma', 'minifootball', 'padel', 'rugby', 'snooker', 'table-tennis', 'tennis', 'volleyball', and 'waterpolo'. Slugs are not unique across categories, so identify a category by 'id'.
+
+### `sofascore_category_tournaments`
+
+SofaScore competitions in a category. Returns the competitions (unique tournaments) inside one category, most followed first. Each 'id' is the competition id the tournament-seasons, standings, tournament-rounds, and round-events endpoints take. Get the category 'id' from the categories endpoint. An empty 'tournaments' list is a valid response: some categories exist without any competitions. Returns 404 for an unknown category id.
+
+### `sofascore_draft`
+
+SofaScore league draft. Returns the draft attached to a league season: the upcoming or just-held 'draft' and the 'previous_draft', each with its year, start and end time, status, the draft 'rounds' (the valid 'round' values for draft-picks) and whether the lottery is complete. The 'league' enum accepts 'nba' and 'nfl'. Get 'season' from tournament-seasons (NBA competition id 132, NFL 9464). A season without a draft, or a season id that does not belong to the league, returns 404. A season whose draft is not scheduled yet returns only 'previous_draft'.
+
+### `sofascore_draft_picks`
+
+SofaScore league draft picks. Returns one round of a league draft: each pick with the overall and in-round number, the drafting team, and the drafted prospect (name, position, college or club, top-prospect flag and the player id when SofaScore has one), plus the teams that hold no pick in that round. The 'league' enum accepts 'nba' (rounds 1 and 2) and 'nfl' (rounds 1 to 7); other rounds return 400. Get 'year' from the draft endpoint's 'draft.year' and 'previous_draft.year'; SofaScore keeps only recent drafts, so an older year returns 404. Returns 404 when SofaScore has no picks for that year and round.
+
+### `sofascore_esports_game`
+
+SofaScore esports game detail. Returns one resource of one esports game from SofaScore's credential-free public JSON, chosen with 'part': 'statistics' (team totals such as kills, towers and barracks for Dota 2, gold and drakes for League of Legends), 'lineups' (every player with hero or champion and per-player statistics such as net worth, gold or ADR), 'bans' (banned heroes or champions per side) and 'rounds' (Counter-Strike round history with outcome, winner and side per round, including overtime). Only the requested block is returned. Get the game id from sofascore-event-esports-games. Statistics and bans exist for Dota 2 and League of Legends only (404 for Counter-Strike), rounds fill for Counter-Strike only (an empty list otherwise) and lineups work for all three. Returns 404 when SofaScore has no such data for the game.
+
 ### `sofascore_event`
 
 SofaScore event detail. Returns one match's detail (teams, score, status, venue, referee) from SofaScore's credential-free public JSON.
+
+### `sofascore_event_at_bat_pitches`
+
+SofaScore event at-bat pitches. Returns every pitch of one baseball at-bat from SofaScore's credential-free public JSON, in pitch order: the ball-strike-out count, outcome code, pitch type and name, speed in kilometres per hour, zone, plate location, strike-zone bounds, batter and pitcher hand, the score, and for balls put in play the hit type, trajectory, hardness and location plus runner movements and fielder credits. Get the at-bat id ('at_bat_id') from sofascore-event-at-bats for the same event. Returns 404 when SofaScore has no pitches for that at-bat, which includes an at-bat id that does not belong to the event.
+
+### `sofascore_event_at_bats`
+
+SofaScore event at-bats. Returns a baseball match's at-bat timeline from SofaScore's credential-free public JSON, in play order: for each plate appearance the inning and half ('top' or 'bottom'), pitcher, hitter, their teams, when it ended and the home and away win probabilities before and after it. Use an at-bat 'id' with sofascore-event-at-bat-pitches to read its pitches. Returns 404 when SofaScore has no at-bat data for the match, which includes matches that have not started and sports other than baseball.
+
+### `sofascore_event_average_positions`
+
+SofaScore event average positions. Returns every player's average position on the pitch during a football match ('average_x' and 'average_y' on SofaScore's 0-100 pitch scale, plus the number of touches behind it) for the home and away sides, and the substitutions with their minute. Returns 404 when SofaScore has no positional data for the match, which includes unstarted matches and sports other than football.
+
+### `sofascore_event_baseball_top_performers`
+
+SofaScore event baseball top performers. Returns a baseball match's top performers from SofaScore's credential-free public JSON: each pitcher or batter ('role') with a rating, their team and a snake_case map of the statistics that earned the mention (for example pitching strike outs, batting home runs and runs batted in). Returns 404 when SofaScore has no top performers for the match, which includes matches that have not started and sports other than baseball.
+
+### `sofascore_event_best_players`
+
+SofaScore event best players. Returns a match's best-rated players per side, the overall top-rated list, and the player of the match (each with team and value) from SofaScore's credential-free public JSON. Covers football (value is the match rating, label 'rating') and ice hockey (label 'pts', value the points scored; a goalkeeper with no points has no numeric 'value' and carries the upstream dash in 'value_text'). The basketball, baseball and tennis matches checked returned no summary. Returns 404 when SofaScore has no best-players summary for the match, which includes matches that have not started, sports without one and fixtures without rated players.
+
+### `sofascore_event_comments`
+
+SofaScore event commentary. Returns a match's text commentary (minute, type, text, and the players involved, plus the running score on scoring lines) from SofaScore's credential-free public JSON, newest first. Works for football and basketball matches that have commentary. An empty 'comments' list is a valid response (a live match with no lines yet). Returns 404 when SofaScore has no commentary for the match, which includes matches that have not started.
+
+### `sofascore_event_esports_games`
+
+SofaScore event esports games. Returns the games (maps) of an esports match from SofaScore's credential-free public JSON: each game's id, status, start time, length in seconds, winner, score per side (kills for Dota 2 and League of Legends, rounds with half and overtime split for Counter-Strike), the map for Counter-Strike, and whether complete statistics exist. Use a game 'id' with sofascore-esports-game to read its statistics, lineups, bans or rounds. Returns 404 when SofaScore has no games for the event, which includes sports other than esports.
+
+### `sofascore_event_graph`
+
+SofaScore event momentum graph. Returns a match's momentum graph as minute and value points (positive values favour the home side) plus period length information, from SofaScore's credential-free public JSON. Covers football, ice hockey and basketball. An empty 'points' list is a valid response (a live match that has just started). Returns 404 when SofaScore has no momentum graph for the match, which includes matches that have not started and sports without one such as tennis and baseball.
 
 ### `sofascore_event_h2h`
 
 SofaScore event head-to-head. Returns the historical head-to-head win/draw record between a match's two teams (and managers, when available) from SofaScore's credential-free public JSON.
 
+### `sofascore_event_highlights`
+
+SofaScore event highlights. Returns the highlight videos attached to a match: title, subtitle (for example 'Full Highlights'), video 'url', thumbnail, the publish time, whether it is the key highlight, and the countries it is restricted to when SofaScore limits it. 'media_type_code' is SofaScore's own numeric code and is returned untranslated. Returns 404 when the match has no highlight videos, which includes matches that have not finished.
+
 ### `sofascore_event_incidents`
 
 SofaScore event incidents. Returns one match's goal, card, substitution, and period timeline from SofaScore's credential-free public JSON. An empty 'incidents' list is a valid response before kickoff.
 
+### `sofascore_event_innings`
+
+SofaScore event innings. Returns a cricket match's innings scorecards from SofaScore's credential-free public JSON. Each innings has the batting and bowling teams, runs, wickets, overs in cricket notation (18.4 is 18 overs and 4 balls), extras (wides, no balls, byes, leg byes, penalty), every batter's line (runs, balls, fours, sixes, dismissal with the bowler and fielder, fall-of-wicket score and over), every bowler's figures (overs, maidens, runs, wickets, wides, no balls), the partnerships and a derived fall-of-wickets list. Works for T20, one-day and Test matches (a Test lists up to four innings). Returns 404 when SofaScore has no innings data for the match, which includes matches that have not started and sports other than cricket.
+
 ### `sofascore_event_lineups`
 
-SofaScore event lineups. Returns one match's starting XI and substitutes per side, with formation, from SofaScore's credential-free public JSON. Returns 404 when SofaScore has no lineups for the match.
+SofaScore event lineups. Returns one match's starting XI and substitutes per side, with formation, from SofaScore's credential-free public JSON. Returns 404 when SofaScore has no lineups for the match. A missing-lineup result may be reused for up to two minutes before checking again.
+
+### `sofascore_event_managers`
+
+SofaScore event managers. Returns the two managers (coaches) of a match with their SofaScore ids, names and slugs. The manager 'id' works with the manager and manager-events endpoints. Returns 404 when SofaScore lists no managers for the match, which includes tennis matches.
 
 ### `sofascore_event_odds`
 
 SofaScore event odds. Returns one match's betting markets and choices from SofaScore's credential-free public JSON. Returns 404 when SofaScore has no odds for the match.
 
+### `sofascore_event_player_heatmap`
+
+SofaScore event player heatmap. Returns one player's touch locations in a football match as 'points', each an 'x' and 'y' on SofaScore's 0-100 pitch scale. Get 'player_id' from event-lineups. Returns 404 when SofaScore has no heatmap for that player in that match, which includes players who did not play, unstarted matches and sports other than football.
+
+### `sofascore_event_player_statistics`
+
+SofaScore event player statistics. Returns one player's statistics inside one football match (minutes, rating, passes, duels, shots, expected goals, and more) as a snake_case metric map from SofaScore's credential-free public JSON. The set of metrics depends on the player's position, so absent metrics are omitted rather than zero. Get 'player_id' from event-lineups. Returns 404 when SofaScore has no statistics for that player in that match.
+
+### `sofascore_event_point_by_point`
+
+SofaScore event point-by-point. Returns a racket-sport match's point-by-point timeline from SofaScore's credential-free public JSON, with sets and games in play order. Tennis sets list games and each game lists every point with the running score ('0', '15', '30', '40', 'A', or a plain count in a tie-break), the server, the game winner, a 'description' of 'ace' or 'double_fault' where SofaScore flags it, and break point ('break_point') or set or match point ('set_or_match_point') markers per player. Table tennis and badminton sets list their points directly. The ace flag is a lower bound of the match's real ace count. Darts matches are not covered. Returns 404 when SofaScore has no point-by-point data for the match, which includes matches that have not started and sports without it.
+
+### `sofascore_event_pregame_form`
+
+SofaScore event pre-game form. Returns each side's form going into a match: league position, points (football) or win-loss record (basketball) in 'value' with the 'label' that names it, the average player rating where SofaScore has one, and the recent results ('W', 'D', 'L') in the order SofaScore returns them. Covers football and basketball; returns 404 when SofaScore has no pre-game form for the match, which includes tennis matches.
+
+### `sofascore_event_shotmap`
+
+SofaScore event shot map. Returns every shot in a football or ice hockey match from SofaScore's credential-free public JSON. Football shots carry the shooter, side, outcome ('shot_type'), situation, body part, expected goals (xG and xGOT), minute, and pitch and goal-mouth coordinates. Ice hockey shots carry the shooter, team, side, shot technique ('shot_type', for example 'wrist'), 'outcome' ('made', 'saved', 'missed' or 'blocked'), 'strength' ('even', 'powerplay' or 'shorthanded'), period and period clock, rink 'coordinates' and, for most shots, 'xg'. An empty 'shots' list is a valid response (a live match with no shots yet). Returns 404 when SofaScore has no shot map for the match, which includes matches that have not started, basketball and other sports without one, and fixtures without expected-goals coverage.
+
 ### `sofascore_event_statistics`
 
 SofaScore event statistics. Returns one match's statistics (possession, shots, passes, and more, grouped and split by period) from SofaScore's credential-free public JSON. Returns 404 when SofaScore has no tracked statistics for the match.
 
+### `sofascore_event_team_heatmap`
+
+SofaScore event team heatmap. Returns one team's touch locations in a football match as 'player_points' (outfield players) and 'goalkeeper_points', each point an 'x' and 'y' on SofaScore's 0-100 pitch scale. 'team_id' must be the home or away team of the event; get both ids from the event endpoint. Returns 404 when SofaScore has no heatmap for that team in that match, which includes teams that did not play it, unstarted matches and sports other than football.
+
+### `sofascore_event_team_streaks`
+
+SofaScore event team streaks. Returns a match's team streaks and trends from SofaScore's credential-free public JSON: 'general' statements about each side's recent matches (for example 'Wins' 6 or 'No goals conceded' 4) and 'head2head' statements about their meetings. Each item names the streak, a 'value' that is either a run length ('6') or a ratio ('5/5'), the 'team' it refers to ('home', 'away' or 'both') and, where SofaScore reports it, whether the streak 'continued' into this match. Returns 404 when SofaScore lists no streaks for the match, which includes tennis matches.
+
+### `sofascore_event_tennis_power`
+
+SofaScore event tennis power. Returns a tennis match's per-game momentum series from SofaScore's credential-free public JSON: for each game of each set a 'value' (positive favours the home player or team, negative the away side) and whether a break of serve 'break_occurred'. An empty 'games' list is a valid response (a live match with no completed game yet). Returns 404 when SofaScore has no tennis power data for the match, which includes matches that have not started and sports other than tennis.
+
+### `sofascore_event_tv_channels`
+
+SofaScore event TV channels. Returns where a match is broadcast. 'available_countries' lists every country that has a broadcast with its channel ids; those country codes are the valid values for 'country'. With 'country' set (a two-letter ISO 3166-1 alpha-2 code such as 'GB', any case) the response also resolves that country's 'channels' to names, using one extra upstream call. A well-formed country code the match is not broadcast in returns 404, and so does a match with no broadcast information.
+
+### `sofascore_event_votes`
+
+SofaScore event votes. Returns a match's community vote tallies from SofaScore's credential-free public JSON: the match result vote ('match_result' with 'home', 'away', 'total' and 'draw', where 'draw' is absent for two-way sports such as basketball and tennis), both teams to score, which team scores first and who should have won (when SofaScore has opened that vote). A block that holds no votes is omitted. Returns 404 when SofaScore has no votes for the match.
+
 ### `sofascore_live_events`
 
-SofaScore live events. Returns currently live events for a sport from SofaScore's credential-free public JSON. The 'sport' enum accepts 'football', 'basketball', and 'tennis'. An empty 'events' list is a valid response when nothing is live right now.
+SofaScore live events. Returns currently live events for a sport from SofaScore's credential-free public JSON. The 'sport' enum accepts 'american-football', 'aussie-rules', 'badminton', 'bandy', 'baseball', 'basketball', 'beach-volley', 'cricket', 'darts', 'esports', 'floorball', 'football', 'futsal', 'handball', 'ice-hockey', 'mma', 'minifootball', 'padel', 'rugby', 'snooker', 'table-tennis', 'tennis', 'volleyball', and 'waterpolo'; the sports endpoint lists them. An empty 'events' list is a valid response when nothing is live right now.
+
+### `sofascore_manager`
+
+SofaScore manager detail. Returns a manager's (coach's) profile (nationality, birth date, preferred formation, current team and teams, and the career win/draw/loss and goals record) from SofaScore's credential-free public JSON. Get a manager id from sofascore-search results of type 'manager'.
+
+### `sofascore_manager_events`
+
+SofaScore manager recent matches. Returns a page of the matches a manager (coach) has recently taken charge of, newest first, across all clubs they managed, from SofaScore's credential-free public JSON. Only past matches are available; SofaScore publishes no upcoming list for managers. Returns 404 for a page past the end of the manager's history.
+
+### `sofascore_mma_card`
+
+SofaScore MMA card. Returns the bouts of one MMA fight card from SofaScore's credential-free public JSON, main event first, narrowed with 'part' to 'all' bouts, the 'maincard', the 'prelims' or the 'earlyprelims'. Each bout has the fighters (country, nickname, ranking where 0 is the champion, record), weight class, scheduled rounds, status, and for finished bouts the winner, win type, final round and fight time. Get 'org_id' and 'card_id' from sofascore-mma-schedule. Returns 404 when the card is unknown or has no bouts in that segment (for example a card without early prelims).
+
+### `sofascore_mma_schedule`
+
+SofaScore MMA schedule. Returns the main event of every fight card an MMA organisation holds in one calendar month from SofaScore's credential-free public JSON, with the card id and name, fighters (country, nickname, ranking where 0 is the champion, record), weight class, scheduled rounds, status, and for finished fights the winner, win type and final round. Find organisation ids (UFC 19906, PFL 19910, ONE 20269, Rizin 19905, Fight Nation Championship 20463, KSW 19946, OKTAGON 20258, Absolute Championship Akhmat 20254, Cage Warriors 19909, Dana White's Contender Series 20264, Brave CF 20267, Jungle Fight 20253) with sofascore-categories (sport 'mma') and sofascore-category-tournaments (category 1708). Use the 'card_id' with sofascore-mma-card to read every bout. Returns 404 when the organisation has no card in that month or the id is not an MMA organisation.
+
+### `sofascore_odds_dropping`
+
+SofaScore dropping odds. Returns SofaScore's dropping odds list for a sport: about twenty upcoming events whose odds moved most, each as the usual event summary plus the 'choice_name' and 'percentage' SofaScore reports for the move (returned as supplied) and the market with opening and current prices ('change' is 1 above the opening price, -1 below it, 0 unchanged). The 'sport' enum accepts 'all' and the SofaScore sport keys; it defaults to 'all'. A sport with no qualifying events at the moment (for example esports when probed) returns 404.
+
+### `sofascore_odds_winning`
+
+SofaScore winning odds. Returns SofaScore's winning odds list for a sport: about twenty upcoming events whose favourite SofaScore highlights, each as the usual event summary plus 'winning_odds' (fractional), the 'expected' and 'actual' percentages SofaScore reports for it (returned as supplied) and the full-time market with opening and current prices ('change' is 1 above the opening price, -1 below it, 0 unchanged). The 'sport' enum accepts 'all' and the SofaScore sport keys; it defaults to 'all'. A sport with no qualifying events at the moment (for example baseball, cricket and esports when probed) returns 404.
 
 ### `sofascore_player`
 
 SofaScore player detail. Returns one player's bio (position, height, market value, current team) from SofaScore's credential-free public JSON.
 
+### `sofascore_player_attributes`
+
+SofaScore player attributes and characteristics. Returns a football player's attribute scores (0 to 100) for the current year and up to three earlier years ('year_shift' 0 to 3), the average scores for the player's position, and the player's characteristics: playing positions plus strengths and weaknesses, each with SofaScore's numeric 'code', a 'key' and 'name' such as finishing or aerial duels, and a 'rank'. Outfield players carry attacking, technical, tactical, defending and creativity scores; goalkeepers carry saves, anticipation, ball_distribution, aerial and tactical. Combines two SofaScore requests. Returns 404 for players without attribute overviews, which includes non-football players.
+
+### `sofascore_player_events`
+
+SofaScore player matches with per-match numbers. Returns one page (30 matches) of a player's matches, each with the player's own numbers merged in: 'statistics' (football: rating and minutes_played; basketball: points, rebounds, assists and more), 'incident_counts' (goals, assists, yellow and red cards, penalty goals), 'on_bench' for an unused substitute and 'played_for_team_id' (club or national team). Page 0 is the most recent window and can include upcoming fixtures (status type 'notstarted'); matches inside a page run oldest first. Follow 'has_next_page' for older pages; a page past the end returns 404.
+
+### `sofascore_player_last_year_summary`
+
+SofaScore player form over the last year. Returns a player's form timeline over roughly the last year: 'summary' entries, each with a 'type', a date and (where it applies) a competition. 'event' is a rated match (the rating is in 'value' as published and as a number in 'rating', the competition in 'tournament_id'); 'injury' is an injury period whose 'value' is an opaque number; 'missing' is a match the player missed; 'transfer' is a transfer date. 'tournaments' describes the competitions referenced. An empty 'summary' is a valid response for a player with no rated appearance in the period.
+
+### `sofascore_player_national_team_statistics`
+
+SofaScore player national team record. Returns a player's national team record: for each national team the appearances, goals and debut date. An empty 'teams' list is a valid response for a player who never played internationally.
+
+### `sofascore_player_penalty_history`
+
+SofaScore player penalty history. Returns the penalties a player has taken, newest first: the totals ('attempts', 'scored') and, per penalty, the outcome ('goal', 'miss', 'post' or 'save'), the zone of the goal (for example 'low-right', 'high-left', 'close-high'), the x and y position in the goal mouth on SofaScore's 0 to 100 scale, the expected-goals value when available and the match. Returns 404 for players with no recorded penalties, such as most goalkeepers and defenders.
+
+### `sofascore_player_ratings`
+
+SofaScore player match ratings for a season. Returns a player's rating in every match of one competition season, newest first, with the opponent, home or away and the match. The 'type' enum accepts 'overall', 'home', 'away', 'regular_season' and 'playoffs' and defaults to 'overall'; football seasons answer 'overall' and NBA seasons answer 'regular_season' and 'playoffs' (the types a season offers are listed by player-statistics-seasons). Returns 404 when SofaScore has no ratings of that type for the combination.
+
+### `sofascore_player_season_heatmap`
+
+SofaScore player season heatmap. Returns a football player's aggregated touch locations over one competition season: 'points' with an 'x', 'y' and touch 'count' on SofaScore's 0-100 pitch scale, the number of 'matches' behind it and the matched 'events'. Get 'tournament_id' and 'season' from player-statistics-seasons. The response is large for a full league season. Returns 404 when SofaScore has no heatmap for that player, competition and season, which includes sports other than football and seasons the player did not play.
+
+### `sofascore_player_season_statistics`
+
+SofaScore player season statistics. Returns a player's statistics for one competition season (appearances, rating, goals, assists, passing, duels, and more) as a snake_case metric map, plus the team and a rating breakdown when available, from SofaScore's credential-free public JSON. The 'type' enum accepts 'overall', 'home', 'away', 'regular_season', and 'playoffs' and defaults to 'overall'; only the types listed for that season by player-statistics-seasons exist (football players have 'overall', 'home', 'away'; basketball, ice hockey and baseball players have 'regular_season' and 'playoffs'). Returns 404 when SofaScore has no statistics of that type for the combination.
+
+### `sofascore_player_statistical_rankings`
+
+SofaScore player ranking among all players in a season. Returns where a football player ranks against every other player of the competition season for about 78 statistics (goals, assists, rating, expected goals, passes, duels, distance covered and more): the 'value', the 'rank' (tied values share a rank), the number of ranked players ('count') and the tie-broken 'order'. Statistics are snake_case and sorted alphabetically. The 'type' enum accepts only 'overall', which is also the default; the other statistics views answer 404. Returns 404 for players without a ranking in that season, which includes basketball players.
+
+### `sofascore_player_statistics_seasons`
+
+SofaScore player statistics seasons. Lists the competitions and seasons a player has statistics for, with the statistics 'types' available for each season, from SofaScore's credential-free public JSON. Use a returned competition id ('unique_tournament_id'), season 'id' and one of its 'types' with player-season-statistics. The 'types' values are 'overall', 'home', 'away', 'regular_season', and 'playoffs'. Returns 404 for players with no tracked statistics (for example tennis players).
+
+### `sofascore_player_tournaments`
+
+SofaScore player competitions. Lists every competition a player has played in, with id, name, slug, category, sport and gender. It includes competitions without season statistics (cups, friendlies, all-star games) that player-statistics-seasons leaves out. Returns 404 when SofaScore has no competitions for the player.
+
+### `sofascore_player_transfers`
+
+SofaScore player transfer history. Returns a player's transfer history (clubs moved from and to, date, fee, and SofaScore's numeric transfer type code), newest first, from SofaScore's credential-free public JSON. An empty 'transfers' list is a valid response for a player who has never moved clubs. Returns 404 when SofaScore has no transfer record for the player (seen for ice hockey and baseball players). The 'type_code' values are SofaScore's own opaque codes and are not translated.
+
+### `sofascore_ranking_types`
+
+SofaScore ranking catalogue. Lists every ranking available from the sofascore rankings endpoint: the numeric 'type' id, a descriptive name, the sport, the gender and the kind of entity that is ranked ('team', 'player' or 'unique_tournament'). Covers 32 rankings across football (league coefficients, FIFA national teams, club coefficients), rugby, tennis (ATP and WTA official and live rankings, UTR), padel and MMA (UFC and Fight Nation Championship divisions). The catalogue is a fixed list and costs no upstream request.
+
+### `sofascore_rankings`
+
+SofaScore rankings. Returns one SofaScore ranking list: the rank, previous rank, points and the ranked team, player or competition, plus when the list was last updated. Choose the 'type' id from sofascore-ranking-types, for example 5 for the ATP men's singles ranking or 2 for the FIFA men's national team ranking. Optional 'limit' returns only the first rows of long lists (tennis lists hold 500 rows). MMA division rankings use rank 0 for the reigning champion.
+
+### `sofascore_referee`
+
+SofaScore referee profile. Returns a referee's profile: name, country, sport, career matches officiated and career yellow, red and yellow-red card totals, plus date of birth and first league debut when SofaScore records them. Get the referee id from the 'referee.id' of the sofascore-event endpoint or from a sofascore-search result of type referee. Returns 404 for an unknown id.
+
+### `sofascore_referee_events`
+
+SofaScore referee officiated matches. Returns one page (30 matches) of the matches a referee officiated, most recent first, across every competition. Follow 'has_next_page' for older pages; a page past the end returns 404. Only past matches exist (no upcoming list), and the list includes canceled and postponed fixtures (their 'status.type' says so), which the career match total of sofascore-referee does not count.
+
+### `sofascore_referee_statistics`
+
+SofaScore referee card statistics. Returns a referee's record per competition: matches officiated, yellow cards, red cards, yellow-red cards and penalties awarded. The per-competition appearances add up to the career matches in sofascore-referee. An empty 'competitions' list is valid for a referee with no recorded competitions.
+
 ### `sofascore_round_events`
 
-SofaScore round fixtures. Returns fixtures for one round of a competition season from SofaScore's credential-free public JSON. Get 'id' from search and 'season' from tournament-seasons.
+SofaScore round fixtures. Returns fixtures for one round of a competition season from SofaScore's credential-free public JSON. Get 'id' from search or category-tournaments, 'season' from tournament-seasons, and the round values from tournament-rounds. Round numbers are not unique in cups, and knockout or named rounds return 404 unless the round's 'slug' is passed (plus its 'prefix' when tournament-rounds lists one): the UEFA Champions League has a qualifying and a league-phase round 1, and a playoff round 636 both with the 'Qualification' prefix and without. Plain numbered league rounds need only 'round'. 'slug' is lowercase letters, digits, and hyphens (up to 64 characters); 'prefix' is letters, digits, spaces, and hyphens (up to 64 characters) and is only valid together with 'slug'.
+
+### `sofascore_scheduled_events`
+
+SofaScore events scheduled in a category on a date. Returns the events (matches) in one category, such as a country, that start on a UTC date, ordered by start time. Get the category 'id' from the categories endpoint (or 'category_id' from scheduled-tournaments). 'date' must be a real calendar date written 'YYYY-MM-DD' and is a UTC day; to cover a local day in another timezone, request the neighbouring dates and filter on 'start_timestamp'. An empty 'events' list is a valid response when the category has no fixtures that day. Returns 404 for an unknown category id.
+
+### `sofascore_scheduled_tournaments`
+
+SofaScore tournaments scheduled on a date. Returns one page of the tournaments that have fixtures on a UTC date for a sport, each with the number of events starting that UTC day. This lists competitions, not matches: use scheduled-events with a tournament's 'category_id' for the matches, or its 'unique_tournament_id' with the tournament-seasons and round endpoints. 'date' must be a real calendar date written 'YYYY-MM-DD'. Pages are one-based; follow 'has_next_page'. The 'sport' enum accepts 'american-football', 'aussie-rules', 'badminton', 'bandy', 'baseball', 'basketball', 'beach-volley', 'cricket', 'darts', 'esports', 'floorball', 'football', 'futsal', 'handball', 'ice-hockey', 'mma', 'minifootball', 'padel', 'rugby', 'snooker', 'table-tennis', 'tennis', 'volleyball', and 'waterpolo'. An empty 'tournaments' list is a valid response for a date with no fixtures or a page past the last one.
 
 ### `sofascore_search`
 
 SofaScore universal search. Searches SofaScore's credential-free public JSON for teams, players, and competitions matching a free-text query. An empty 'results' list is a valid response when nothing matches.
+
+### `sofascore_search_typed`
+
+SofaScore search by entity type. Searches SofaScore for one entity type and returns up to 20 ranked results per page, each normalized for its type: 'events' (matches), 'teams', 'players' (with team and position), 'managers', 'referees', 'venues' (with city and capacity) and 'unique_tournaments' (competitions with category). Page with the zero-based 'page'; an empty page means there are no further results. The optional 'sport' filter (any key listed by sofascore/sports, such as 'football', 'basketball', 'tennis' or 'mma') narrows 'teams', 'players', 'managers' and 'unique_tournaments', and is rejected for 'events', 'referees' and 'venues', which ignore it. Use the returned ids with the matching endpoints (team, player, manager, venue, tournament-seasons, event).
+
+### `sofascore_season_events`
+
+SofaScore season fixtures and results. Returns one page (about 30 events) of every fixture or result of a competition season, with the round of each event. The 'direction' enum accepts 'next' (upcoming fixtures) and 'last' (finished results). Follow 'has_next_page' to read further pages: a page past the end, a direction with no events (for example 'next' in a finished season) and a season id that does not belong to the competition all answer 404. Get 'id' from search and 'season' from tournament-seasons.
+
+### `sofascore_sports`
+
+SofaScore supported sports. Lists every sport key the SofaScore endpoints accept (the 'sport' enum of live-events, categories, and scheduled-tournaments), with live and total event counts when available. The list is fixed and always complete; if the live counts cannot be read, 'counts_available' is 'false' and the per-sport counts are omitted instead of failing the call. Counts are also omitted for a sport the count feed does not cover (for example 'mma'). Accepted sport keys: 'american-football', 'aussie-rules', 'badminton', 'bandy', 'baseball', 'basketball', 'beach-volley', 'cricket', 'darts', 'esports', 'floorball', 'football', 'futsal', 'handball', 'ice-hockey', 'mma', 'minifootball', 'padel', 'rugby', 'snooker', 'table-tennis', 'tennis', 'volleyball', 'waterpolo'.
+
+### `sofascore_stage`
+
+SofaScore motorsport and cycling stage. Returns one stage from SofaScore's stage hierarchy: a season (Formula 1 2026), an event (a Grand Prix weekend, a NASCAR race, a rally, a cycling race), a session (practice, qualifying, sprint, race) or a cycling stage. The response has its type ('Season', 'Event', 'Practice', 'Qualifying', 'Qualifying part', 'Race', 'Sprint race', 'Sprint qualifying', 'Practice part', 'Stage'), status ('finished', 'notstarted', 'canceled'), start time, country, competition, parent stage (the season of an event, the event of a session), the winner once decided, and circuit, weather and race facts where published (laps, race distance, lap record, safety car, NASCAR cautions, rally special stages, cycling route). 'info' fields are omitted when not published, never zero. A season has no status. Stage ids and competition ids are different id spaces. Returns 404 for an unknown stage id.
+
+### `sofascore_stage_categories`
+
+SofaScore motorsport and cycling categories and competitions. Lists the categories SofaScore keeps for a stage sport, each with its competitions. For 'motorsport' that is the racing series (Formula 1, MotoGP, Moto2, Moto3, Superbike, NASCAR with its Cup, Truck and Xfinity competitions, WRC, Formula E, Indycar, DTM); for 'cycling' it is Cycling Men and Cycling Women. Use a competition 'id' with stage-seasons to list its seasons. Some categories exist without any competition (for example Motocross, Speedway, WEC) and return an empty 'competitions' list. Motorsport and cycling are not available on the match-based endpoints (live-events, categories, scheduled-events); they use the stage endpoints. The 'sport' enum accepts 'motorsport' and 'cycling'.
+
+### `sofascore_stage_driver_performance`
+
+SofaScore motorsport race progress per driver. Returns every competitor's progress through a finished race or rally. For circuit races (Formula 1, MotoGP and similar) 'laps' lists the position at the end of each lap, starting with lap 0 for the grid, plus the tyre compound and a 'pit_stop' flag where published; the lap a driver retired has 'retired' set and no position. For rallies 'stage_positions' lists the overall position after each special stage. The response also repeats the stage itself. It is published for races and sprints of some series (verified for Formula 1, MotoGP and WRC) and not for practice, qualifying, NASCAR, cycling, events or seasons, which return 404. Returns 404 for an unknown id.
+
+### `sofascore_stage_featured`
+
+SofaScore featured motorsport and cycling events. Returns the events SofaScore features for a stage sport right now: a mix of the latest finished events (with 'winner' and result facts such as laps and circuit) and the next upcoming ones, across series such as Formula 1, MotoGP, Moto2, Moto3, Superbike, NASCAR and cycling races. Each event carries its competition, season name, parent season stage and country. Use an event 'id' with stage-substages for its sessions or stages and stage-standings for results. The 'sport' enum accepts 'motorsport' and 'cycling'.
+
+### `sofascore_stage_schedule`
+
+SofaScore motorsport and cycling events around a date. Returns the events SofaScore lists for a stage sport around a UTC date: Grand Prix weekends, NASCAR race weekends, rallies and cycling races, each with its country, competition, every session start time ('session_start_timestamps') and the session SofaScore highlights ('session': the live, next or latest one). The list is not a strict one-day filter. It holds the events in progress on the date plus the next upcoming ones, and a quiet date still returns the next events; use 'on_date', which is true when a session of the event starts inside the requested UTC day, to separate them. Schedule rows carry no event status or winner: use 'session.status', or pass the event 'id' to stage for the event detail and to stage-substages for its sessions. 'date' must be a real calendar date written 'YYYY-MM-DD'. An empty 'stages' list is valid when nothing is in progress or scheduled nearby. The 'sport' enum accepts 'motorsport' and 'cycling'.
+
+### `sofascore_stage_seasons`
+
+SofaScore seasons of a motorsport or cycling competition. Returns the seasons of one stage competition, newest first, for example Formula 1 2026 (id 214140) back to 1950. A season 'id' is a stage id: pass it to stage-substages for the race calendar and to stage-standings for the championship table. The season still in progress has no 'end_timestamp'. Get the competition 'id' from stage-categories (for example 40 for Formula 1, 17 for MotoGP, 18 for the NASCAR Cup Series, 9 for Cycling Men). Competition ids and stage ids are different id spaces, so a competition id passed to stage returns an unrelated stage. Returns 404 for an unknown competition id.
+
+### `sofascore_stage_standings`
+
+SofaScore motorsport and cycling stage standings. Returns one classification of a stage. For a race or sprint it is the result (position, grid, race time, gap, interval, laps, laps led, pit stops, tyre stints, fastest lap, points, retirement status); for practice and qualifying the timing order ('time' is the best lap); for a cycling stage the stage result with time gaps; for an event the event aggregate; for a season the championship table (points, victories, races started, pole positions, podiums, fastest laps; NASCAR adds top 5, top 10 and races not finished). 'competitor' returns drivers and riders, 'team' returns constructors and teams, which only some seasons and events publish (verified for the Formula 1 and MotoGP seasons and the Formula 1 event; races, NASCAR, WRC and cycling return 404 for 'team'). Rows are in upstream order. 'position' is omitted for competitors who did not finish or set no time, and 'gap' is 'DNF' for a retirement. The parent session of a split qualifying has no standings; use the ids of its parts from stage-substages. Fields a classification does not publish are omitted. Returns 404 for an unknown id, a stage that has no results yet, or a kind of stage without that classification. The 'type' enum accepts 'competitor' and 'team'.
+
+### `sofascore_stage_substages`
+
+SofaScore children of a motorsport or cycling stage. Returns the children of a stage in upstream order. For a season it is the race calendar: every event with status ('finished', 'notstarted', 'canceled'), dates, round, circuit and winner. For an event it is the sessions: practices, qualifying, sprint qualifying, sprint and race for a Grand Prix, the numbered stages of a cycling race or rally. Qualifying and practice sessions list their 'parts', and the part ids carry the timing results (the parent session of a split qualifying has no standings of its own). Use a child 'id' with stage for detail, stage-standings for its results and stage-driver-performance for race progress. A race, session or cycling stage has no children and returns 404, as does an unknown id.
 
 ### `sofascore_standings`
 
@@ -10829,17 +11225,145 @@ SofaScore standings. Returns a league table for a competition season from SofaSc
 
 SofaScore team detail. Returns one team's detail (identity, manager, venue, primary competition) from SofaScore's credential-free public JSON.
 
+### `sofascore_team_achievements`
+
+SofaScore team trophies. Returns the trophies a team has won: the total and, per competition, the number won and the winning seasons (newest first, with the season id where SofaScore tracks it). Some competitions, such as US leagues, report a count with an empty or shorter 'seasons' list. Returns 404 when SofaScore records no achievements for the team.
+
 ### `sofascore_team_events`
 
 SofaScore team fixtures. Returns a page of a team's upcoming or recent fixtures from SofaScore's credential-free public JSON. The 'direction' enum accepts 'next' and 'last'. An empty 'events' list is a valid response when there is no fixture on that page.
+
+### `sofascore_team_goal_distributions`
+
+SofaScore team goals by match minute. Returns a football team's goals scored and conceded per block of match minutes (1-15, 16-30, 31-45, 46-60, 61-75, 76-90) for one competition season, in three views: 'overall', 'home' and 'away', each with the matches played and the goal totals. A block with no goals is returned as 0. Returns 404 for non-football teams and for a team and season that do not belong together.
+
+### `sofascore_team_near_events`
+
+SofaScore team previous and next match. Returns a team's last played match and its next scheduled match with teams, competition, status, score and start time. Either side can be missing (a team with no upcoming fixture returns only 'previous_event'). Returns 404 when SofaScore has neither. For full fixture lists use team-events.
+
+### `sofascore_team_of_the_week`
+
+SofaScore team of the week. Returns one team of the week: the formation and the selected players with their SofaScore rating, team and, for round and weekly selections, the match the rating was earned in. Get the 'period' id from sofascore-team-of-the-week-periods; a period that does not belong to the given competition season is rejected with 400.
+
+### `sofascore_team_of_the_week_periods`
+
+SofaScore team of the week periods. Lists the periods of a competition season for which SofaScore published a team of the week, newest first: league rounds ('round'), weekly time spans ('timespan') and season-level selections ('season', such as an NBA regular season or playoff team). Use a returned period 'id' with sofascore-team-of-the-week. An empty list is valid when no team of the week has been published yet. Get 'id' from search and 'season' from tournament-seasons.
+
+### `sofascore_team_performance`
+
+SofaScore team recent performance. Returns a team's most recent matches (about ten, oldest first) with SofaScore's per-match performance value in 'points': higher is better and a heavy defeat is negative. An event SofaScore gave no value for has no 'points'. An empty 'events' list is a valid response for a team with no recent matches.
+
+### `sofascore_team_player_statistics`
+
+SofaScore team player statistics. Returns the statistics of every player in a team's squad for one competition season, each as a snake_case metric map (appearances, minutes, rating, goals, assists, passing and duel metrics for football; points, rebounds and assists for basketball), in SofaScore's order. The 'type' enum accepts 'overall', 'home', 'away', 'regular_season' and 'playoffs' and defaults to 'overall'; only the types listed for that season by team-player-statistics-seasons exist (football 'overall', 'home', 'away'; NBA 'regular_season', 'playoffs'). A metric SofaScore did not record is omitted rather than returned as 0. Returns 404 when SofaScore has no statistics of that type for the combination.
+
+### `sofascore_team_player_statistics_seasons`
+
+SofaScore team player statistics seasons. Lists the competitions and seasons for which SofaScore has per-player statistics for a team, with the statistics 'types' available in each season ('overall', 'home', 'away', 'regular_season', 'playoffs'). Use it to find the 'tournament_id', 'season' and 'type' accepted by team-player-statistics and team-top-players. Football teams offer 'overall', 'home' and 'away'; NBA teams offer 'regular_season' and 'playoffs'. Returns 404 when SofaScore has no player statistics for the team.
 
 ### `sofascore_team_players`
 
 SofaScore team players. Returns a team's full squad from SofaScore's credential-free public JSON.
 
+### `sofascore_team_rankings`
+
+SofaScore team rankings. Returns every ranking a team or tennis player appears in: for a tennis player the ATP or WTA ranking, its live version and the UTR rating, for a football club the UEFA club coefficient by year. Each ranking carries its 'type_id' (the same ids the rankings endpoint takes), name, sport, category and last update, and 'rows' with the 'position', 'points', previous and best position where SofaScore reports them. Returns 404 when the id appears in no ranking.
+
+### `sofascore_team_season_statistics`
+
+SofaScore team season statistics. Returns a team's statistics for one competition season (goals, shots, passing, duels, discipline, and the matching conceded-side metrics) as a snake_case metric map from SofaScore's credential-free public JSON. The 'type' enum accepts 'overall', 'home', 'away', 'regular_season', and 'playoffs' and defaults to 'overall'; only the types listed for that season by team-statistics-seasons exist (football teams have 'overall' only; basketball, ice hockey and baseball teams have 'regular_season' and 'playoffs'). Returns 404 when SofaScore has no statistics of that type for the combination.
+
+### `sofascore_team_statistics_seasons`
+
+SofaScore team statistics seasons. Lists the competitions and seasons a team has statistics for, with the statistics 'types' available for each season, from SofaScore's credential-free public JSON. Use a returned competition id ('unique_tournament_id'), season 'id' and one of its 'types' with team-season-statistics. The 'types' values are 'overall', 'home', 'away', 'regular_season', and 'playoffs'. Returns 404 for teams with no tracked statistics.
+
+### `sofascore_team_top_players`
+
+SofaScore team top players. Returns a team's best players for every statistic category SofaScore ranks within the team and season (rating, goals, assists, expected goals, tackles, saves and more for football; points, rebounds and assists for basketball), each as a ranked list with player, team and value. The category set depends on the sport, so the response lists every category it holds. The 'type' enum accepts 'overall', 'regular_season' and 'playoffs': football competitions publish 'overall', the NBA publishes 'regular_season' and 'playoffs', and a type the competition does not publish answers 404. Optional 'limit' caps the rows per category (up to 50); the payload is large without it.
+
+### `sofascore_team_tournaments`
+
+SofaScore team competitions. Lists the competitions a team plays in, each with id, name, slug, category and sport. By default ('all=false') it returns the competitions the team currently takes part in; with 'all=true' it returns every competition the team has been recorded in, including friendlies and older tournaments. Competition ids can be used as 'tournament_id' elsewhere in the SofaScore endpoints; use team-player-statistics-seasons for the seasons that have statistics. Returns 404 when SofaScore has no competitions for the team.
+
+### `sofascore_team_transfers`
+
+SofaScore team transfers. Returns a team's recent incoming ('transfers_in') and outgoing ('transfers_out') transfers with player, clubs, date, fee, and SofaScore's numeric transfer type code from SofaScore's credential-free public JSON. Empty lists are valid for a quiet transfer window. Returns 404 when SofaScore has no transfer record for the team (seen for ice hockey and baseball teams). The 'type_code' values are SofaScore's own opaque codes and are not translated.
+
+### `sofascore_tennis_player_grand_slam_results`
+
+SofaScore tennis player grand slam results. Returns a tennis player's best round at each grand slam (Australian Open, Roland Garros, Wimbledon and US Open) for the last five editions: per edition the 'year', the 'season_id', the best 'round' reached and whether the player won it ('winner'). A year without a 'round' means no result is recorded for that edition. 'id' is the SofaScore team id of a tennis player (tennis players are teams in SofaScore); get it from search or rankings. Returns 404 for ids that are not tennis players.
+
+### `sofascore_tournament_cuptree`
+
+SofaScore competition knockout tree. Returns the knockout tree(s) of a cup or playoff competition season: every round with its ties, each tie's participants (team or player, seed, winner flag, the earlier tie it advanced from), result and score strings (a shoot-out is appended, such as '1 (4)'), match ids and start time, plus the final and third-place tie. Tennis competitions return two trees (main draw and qualifying). League seasons have no tree and answer 404, as does a season id that does not belong to the competition. Get 'id' from search or tournaments-with-feature and 'season' from tournament-seasons; pass the returned 'event_ids' to the event endpoints.
+
+### `sofascore_tournament_info`
+
+SofaScore competition info. Returns a competition's metadata (name, sport, category, tier, title holder, most titles, current season dates, divisions above and below, linked competitions). When 'season' is given it also returns that season's aggregates: number of competitors and, for football competitions, goals, home wins, away wins, draws, yellow and red cards and the promoted teams. Get 'id' from search and 'season' from tournament-seasons.
+
+### `sofascore_tournament_player_of_the_season`
+
+SofaScore player of the season. Returns the player SofaScore names player of the season for a finished competition season: the player, their team, shirt number, average rating, appearances and the statistics scope ('overall', or 'regular_season' for the NBA). A season that is still running, has not been awarded, or does not belong to the competition answers 404. Get 'id' from search and 'season' from tournament-seasons or tournament-winners.
+
+### `sofascore_tournament_player_statistics`
+
+SofaScore season player statistics table. Returns one page of a football competition season's player statistics table, sortable by a statistic. 'order' chooses the statistic to sort by, 'direction' the sort direction ('desc' or 'asc'), 'accumulation' whether values are season totals, per-game averages or per-90-minute averages ('total', 'perGame', 'per90'), and 'group' which statistic columns each row carries ('summary', 'attack', 'defence', 'passing', 'goalkeeper'). Page with 'limit' (up to 100) and 'offset'; 'has_next_page' shows whether more rows follow. Optional filters narrow the table: 'team' (team ids), 'nationality' (SofaScore nationality codes), 'position' ('G', 'D', 'M', 'F'), 'min_appearances' and 'min_minutes'; several filters combine (AND) and several values of one filter are alternatives (OR). The team ids and nationality codes of a season come from tournament-statistics-info. A filter that matches nobody returns an empty 'players' list. Other sports return no rows (404). Get 'id' from search and 'season' from tournament-seasons.
+
+### `sofascore_tournament_rounds`
+
+SofaScore competition season rounds. Returns the rounds of a competition season and the current round. Round numbers are not unique in cups: the UEFA Champions League has both a qualifying and a league-phase round 1, and the same playoff round number with and without a 'prefix'. To fetch a round's fixtures, pass its 'round' to round-events together with its 'slug' and, when present, its 'prefix'; knockout and named rounds return 404 from round-events without the slug. Plain numbered rounds (a league's round 1 to 38) have no slug. Get 'id' from category-tournaments or search and 'season' from tournament-seasons. Returns 404 when SofaScore has no rounds for the season (for example a season that has not started).
+
 ### `sofascore_tournament_seasons`
 
 SofaScore competition seasons. Returns the season list for a competition from SofaScore's credential-free public JSON. Use a returned season id with the standings and round-events endpoints.
+
+### `sofascore_tournament_statistics_info`
+
+SofaScore player statistics table filters. Returns what the tournament-player-statistics table of a football competition season can be filtered by: the season's teams (ids for the 'team' filter), the nationality codes (for the 'nationality' filter; SofaScore uses 'EN', 'SX', 'WA' and 'NX' for the home nations), the position codes 'G', 'D', 'M' and 'F' (for the 'position' filter), and the statistic columns of each 'group' value ('summary', 'attack', 'defence', 'passing', 'goalkeeper'). Other sports answer 404. Get 'id' from search and 'season' from tournament-seasons.
+
+### `sofascore_tournament_team_of_the_season`
+
+SofaScore team of the season. Returns the team of the season SofaScore selected for a finished competition season: the formation, when it was created and the selected players (11 in football, 5 in basketball) with position, shirt number, team and average rating. A season that is still running, has no selection, or does not belong to the competition answers 404. Get 'id' from search and 'season' from tournament-seasons or tournament-winners.
+
+### `sofascore_tournament_teams`
+
+SofaScore teams of a competition season. Returns every team (or, for tennis and other individual sports, every player) entered in a competition season, with id, name, short name, name code, country, gender, type ('0' team, '1' individual player) and, for individual players, the current ranking. Use the team ids with team, team-players and the 'team' filter of tournament-player-statistics. A season id that does not belong to the competition, or a field not yet decided, answers 404. Get 'id' from search and 'season' from tournament-seasons.
+
+### `sofascore_tournament_top_players`
+
+SofaScore season top players. Returns a competition season's top players for every statistic category SofaScore ranks (for football about 30 categories such as rating, goals, assists, expected goals, tackles and saves; for basketball points, rebounds, assists and more), each with the ranked players, their team and the value. The category set depends on the sport and competition, so the response lists every category it holds. The 'type' enum accepts 'overall', 'regular_season' and 'playoffs': football competitions publish 'overall', the NBA publishes 'regular_season' and 'playoffs', and a type the competition does not publish answers 404. Optional 'limit' caps the rows per category (up to 50). Get 'id' from search and 'season' from tournament-seasons.
+
+### `sofascore_tournament_top_teams`
+
+SofaScore season top teams. Returns a competition season's top teams for every team statistic category SofaScore ranks (for football about 30 categories such as average rating, goals scored, possession, shots and clean sheets; for basketball points, pace, ratings and more), each with the ranked teams and the value. The category set depends on the sport and competition, so the response lists every category it holds. The 'type' enum accepts 'overall', 'regular_season' and 'playoffs': football competitions publish 'overall', the NBA publishes 'regular_season', and a type the competition does not publish answers 404. Optional 'limit' caps the rows per category (up to 50). Get 'id' from search and 'season' from tournament-seasons.
+
+### `sofascore_tournament_venues`
+
+SofaScore venues of a competition season. Returns every venue used by a competition season with id, name, capacity, city, state (US), coordinates and the 'hidden' flag. Use the venue ids with venue and venue-events. A season id that does not belong to the competition answers 404. Get 'id' from search and 'season' from tournament-seasons.
+
+### `sofascore_tournament_winners`
+
+SofaScore past winners of a competition. Returns one page (10 seasons, newest first) of a competition's past winners: the year, the season id and the winning team or player. Follow 'has_next_page' and pass 'page' (zero-based) for older seasons; a page past the last one and an unknown competition both answer 404. Get 'id' from search; the returned 'season_id' works with every season-scoped endpoint.
+
+### `sofascore_tournaments_with_feature`
+
+SofaScore competitions that carry a feature. Returns SofaScore's short list (up to 10) of the most followed competitions of a sport that carry one feature. The 'feature' enum accepts 'cuptree' (knockout tree, for tournament-cuptree), 'standings' (league table), 'totw' (team of the week) and 'power_rankings'. The 'sport' enum accepts 'american-football', 'aussie-rules', 'badminton', 'bandy', 'baseball', 'basketball', 'beach-volley', 'cricket', 'darts', 'esports', 'floorball', 'football', 'futsal', 'handball', 'ice-hockey', 'minifootball', 'rugby', 'snooker', 'table-tennis', 'tennis', 'volleyball' and 'waterpolo' ('mma' and 'padel' are not supported). The list is fixed by SofaScore and cannot be paged or searched; a sport with no such competition returns an empty list. Use search-typed with 'type' 'unique_tournaments' to find other competitions.
+
+### `sofascore_trending_events`
+
+SofaScore trending events. Returns the events trending in one country across every sport (live, recent and upcoming), each as the usual event summary plus its 'sport' key. 'country' is a two-letter ISO 3166-1 alpha-2 code such as 'GB' or 'US' (any case); SofaScore serves a trending list per country, and a code it does not serve returns 404. The list is about twenty events and changes through the day.
+
+### `sofascore_trending_players`
+
+SofaScore trending players. Returns a sport's trending top players: standout performers from recent matches with the player, team, the match and that match's numbers as a snake_case metric map ('rating', 'minutes_played', 'goals' and more; the metric set depends on the sport and position). The 'sport' enum accepts 'football' and 'basketball', the sports for which SofaScore publishes this list. Returns 404 when SofaScore has no trending players for the sport right now.
+
+### `sofascore_venue`
+
+SofaScore venue. Returns one venue (stadium or arena): name, capacity, city, country, coordinates, its home teams, the venue-wide match totals (matches, goals, home and away win shares, and for football cards and corners per game) and a per-sport record in 'sports', most matches first. 'hidden' venues, such as NBA arenas, have no venue-wide match list in venue-events and are listed per competition season instead. An unknown venue id answers 404. Get 'id' from search-typed with 'type' 'venues', from tournament-venues or from an event's venue.
+
+### `sofascore_venue_events`
+
+SofaScore matches at a venue. Returns one page (up to 30) of the matches played ('direction' 'last', newest page first) or scheduled ('next') at a venue, as match summaries. Without 'tournament' and 'season' it lists every match at the venue, optionally narrowed by 'sport' ('all', or any key listed in the venue's 'sports', such as 'football', 'rugby', 'basketball', 'mma'); with both it lists that competition season's matches at the venue and 'sport' must be omitted. Hidden venues (see venue) have no venue-wide list and answer 404 without 'tournament' and 'season'. A direction with no matches, a sport the venue never hosted and a page past the last one also answer 404; follow 'has_next_page'.
 
 ### `sonic_availability`
 
@@ -14115,28 +14639,28 @@ Search Zomato restaurants in a city. Returns restaurants in a Zomato city, optio
 
 <!-- END MCP.SO TOOLS -->
 
-## What you can call (3475 tools / 12 categories)
+## What you can call (3606 tools / 468 platform groups)
 
 See [`tools.json`](./tools.json) or your MCP client UI for exact schemas. Below is a overview by category:
 
 | Category | Highlights |
 |---|---|
-| **Search & Web** | `google_search`, `google_news`, `bing_search`, `duckduckgo_search`, `baidu_search`, `brave_search`, `startpage_search`, `yandex_search`, `kagi_search`, `web_scrape`, `web_parse` |
-| **Maps & Places** | `google_maps_search`, `google_maps_place`, `google_maps_reviews`, `google_maps_photos` |
+| **Search & Web** | `google_search`, `google_news`, `bing_search`, `duckduckgo_search`, `baidu_search`, `brave_search`, `startpage_search`, `yandex_search`, `kagi_search`, `web_scrape`, `web_parse`, `bbb_search`, `bbb_search_filters` |
+| **Maps & Places** | `google_maps_search`, `google_maps_place`, `google_maps_reviews`, `google_maps_photos`, `bbb_regions`, `bbb_local_bbbs`, `bbb_local_bbb` |
 | **Marketplace & Products** | `amazon_search`, `amazon_product`, `amazon_reviews`, `walmart_search`, `ebay_search`, `etsy_search`, `shopify_store`, `target_search`, `doordash_store`, `doordash_feed`, `ubereats_store` |
 | **Social & Profiles** | `twitter_user`, `twitter_tweet`, `instagram_user`, `reddit_post`, `reddit_comments`, `threads_user`, `tiktok_user` |
 | **Finance & Markets** | `google_finance_search`, `google_finance_quote`, `yahoo_finance_quote`, `polymarket_events`, `kalshi_markets` |
 | **Travel & Lodging** | `airbnb_search`, `airbnb_room`, `tripadvisor_search`, `booking_search` |
 | **Jobs & Companies** | `linkedin_jobs`, `indeed_jobs`, `glassdoor_company`, `pitchbook_company` |
-| **Media & Audio** | `youtube_video`, `youtube_transcript`, `spotify_artist`, `apple_podcasts_show` |
+| **Media & Audio** | `youtube_video`, `youtube_transcript`, `spotify_artist`, `apple_podcasts_show`, `bbb_news`, `bbb_news_topics`, `bbb_article` |
 | **App Stores** | `appstore_app`, `googleplay_app` |
-| **Reviews & Q&A** | `trustpilot_reviews`, `g2_reviews`, `capterra_product`, `goodreads_book` |
+| **Reviews & Q&A** | `trustpilot_reviews`, `g2_reviews`, `capterra_product`, `goodreads_book`, `bbb_business`, `bbb_category`, `bbb_business_complaints`, `bbb_business_more_info`, `bbb_business_reviews`, `bbb_scamtracker_search`, `bbb_scamtracker_detail`, `bbb_scamtracker_state_stats` |
 
 ---
 
 ## Why Crawlora MCP?
 
-- **One key, 3475 tools** — search, commerce, social, gaming, finance, and more behind a single MCP endpoint.
+- **One key, 3606 tools** — search, commerce, social, gaming, finance, and more behind a single MCP endpoint.
 
 A good alternative to stitching together SerpApi, Firecrawl, ScraperAPI, or ScrapingBee.
 
