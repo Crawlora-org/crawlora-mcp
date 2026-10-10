@@ -7,7 +7,7 @@
 [![crawlora-mcp MCP server](https://glama.ai/mcp/servers/Crawlora-org/crawlora-mcp/badges/score.svg)](https://glama.ai/mcp/servers/Crawlora-org/crawlora-mcp)
 
 **Crawlora MCP** is a **hosted** Model Context Protocol server that gives AI clients and
-agents **3606 structured public‑web‑data tools** across 468 platform groups — search, maps,
+agents **3625 structured public‑web‑data tools** across 471 platform groups — search, maps,
 e‑commerce, social, finance, travel, app stores, media, and reviews — each returning clean,
 normalized **JSON** instead of HTML to parse.
 
@@ -155,7 +155,7 @@ Any client that speaks **Streamable HTTP** can use the generic config in
 
 ## Run it locally (open‑source server)
 
-This repo also ships a small **stdio** MCP server (`index.mjs`) that exposes the same **3606
+This repo also ships a small **stdio** MCP server (`index.mjs`) that exposes the same **3625
 tools**, each wrapping the Crawlora REST API (`https://api.crawlora.net/api/v1`) with your
 `CRAWLORA_API_KEY`. Useful if you'd rather run the server yourself than use the hosted endpoint.
 
@@ -3296,6 +3296,14 @@ Get Depop's size taxonomy. Returns Depop's full, multi-region size taxonomy -- e
 ### `depop_suggest`
 
 Depop search-box autocomplete. Returns Depop's own search-box autocomplete suggestions for a partial query, including the category a suggestion maps to when relevant. Public data sourced from Depop's own search-suggestions API.
+
+### `developer_search`
+
+Search indexed developer documentation. Searches indexed sources only; this operation never starts ingestion or contacts upstream sources. The current ready source is 'go:docs' and it covers only the 18 selected verified pages documented by 'developer-sources'. Search matches Unicode-aware lexical terms and punctuation-bearing identifiers such as 'context.Context'; passages retain byte/line locators into the indexed document. 'types' accepts 'doc', 'readme', 'issue', and 'pull_request', but the current source supports only 'doc'; unsupported values return 400. The 'version' filter is not supported by the current unversioned source and returns 400. Continuation bodies contain only 'cursor' and optional 'limit'; their pages come from the frozen snapshot and do not repeat the search.
+
+### `developer_sources`
+
+Discover indexed developer sources. Returns the registered developer source catalog and each source's exact supported operations, filters, artifact types, and index state. The current catalog contains only 'go:docs', a selected set of 18 parser-verified Go documentation/specification pages. A source is 'not_indexed' until a complete generation is promoted. The catalog does not accept a cursor; 'limit' may be 1–100.
 
 ### `discogs_artist`
 
@@ -9877,6 +9885,46 @@ Search Redfin listings. Returns normalized Redfin public listing search results 
 
 Get Redfin comparable listings. Returns Redfin's comparable ("similar") listings for a property as normalized listing rows. Faithful pass-through of Redfin's public similars resource.
 
+### `research_cancel`
+
+Cancel a research job. Requests cancellation of the authenticated owner's research job. The existing job kind is checked before the state is changed.
+
+### `research_events`
+
+Read research job events. Reads a signed owner-bound page of research job events. 'limit' defaults to 50 and accepts 1 through 100.
+
+### `research_inspect_paper`
+
+Inspect paper metadata. Return normalized paper records including titles, abstracts when available, authors, publication dates and verified identifier aliases. Europe PMC resolution is limited to MED-backed PMID, PMCID and DOI records; no full-text body is fetched.
+
+### `research_read_paper`
+
+Read a research paper. Return licensed Europe PMC body prose, question-ranked passages, byte locators, license and content provenance. Restricted or unavailable bodies return metadata-only availability; arXiv does not fetch PDFs. Full text costs 5 credits, metadata-only reads 1.
+
+### `research_related_papers`
+
+Get paper references or citing papers. Return one-hop Europe PMC citation edges, canonical seed IDs, source provenance and a frozen owner-bound cursor. Modes are references and citers; intent is unsupported. Partial results explicitly report indexed-source and candidate-window limits.
+
+### `research_results`
+
+Read all retained research results. Returns the complete owner-scoped retained result prefix up to a consistent manifest sequence. Before a valid report or structured result exists, returns 'ready=false' with 'partial=true' and any retained evidence.
+
+### `research_search_papers`
+
+Search research papers. Search arXiv papers with an owner-bound frozen result window and cursor-only continuation.
+
+### `research_sources`
+
+List paper sources. Return the stable authenticated paper source registry, including arXiv search and MED-backed Europe PMC metadata, licensed text and citation operations.
+
+### `research_start`
+
+Start a durable cross-corpus research job. Submits bounded research over the selected web, arXiv paper, and developer-document sources. Repeated owner-scoped idempotency requests return the original job.
+
+### `research_status`
+
+Read a research job status. Returns the authenticated owner's research job state, progress, and cumulative usage.
+
 ### `resy_availability`
 
 Get a Resy restaurant's bookable reservation timeslots. Returns the bookable reservation timeslots Resy currently shows for a restaurant, date, and party size -- the same read-only availability an anonymous visitor sees before signing in. This is discovery only; it does not create, hold, modify, or cancel a reservation.
@@ -12971,7 +13019,7 @@ Retrieve TikTok Top Ads. Returns high-performing auction ads from TikTok Creativ
 
 ### `tiktok_top_ads_location_info`
 
-Retrieve TikTok Top Ads location info. Returns the initial location and industry context used by TikTok Creative Center Top Ads.
+Retrieve TikTok Top Ads location info. Returns TikTok's inferred initial country and industry targeting context for Top Ads. Use it when you need starting targeting values; use the locations, filters, and list endpoints to choose criteria and retrieve ads.
 
 ### `tiktok_top_ads_locations`
 
@@ -13773,9 +13821,37 @@ Get current Wccftech news. Returns current top stories from Wccftech's public RS
 
 Discover Wccftech sections. Lists all non-empty public category and topic sections, plus the Reviews, Videos, How To, and Roundups archives. Use a returned slug with wccftech-headlines; taxonomy values are refreshed from the public WordPress REST API.
 
+### `web_capabilities`
+
+Get web retrieval capabilities and limits. Return supported search/map modes, effective limits, and published credit unit prices.
+
+### `web_crawl`
+
+Submit a bounded resumable web crawl. Accepts an owner-scoped durable crawl job. 'max_credits' is required; the accepted request and active reader/source revisions are frozen for idempotent replay. A repeated matching idempotency key returns the original job without preparing another reservation.
+
+### `web_crawl_cancel`
+
+Request cooperative crawl cancellation. Requests cancellation of an owned crawl job. This control call does not reserve, charge, or settle credits; retained successful work is reconciled by the job settlement worker.
+
+### `web_crawl_results`
+
+Read committed crawl outcomes. Reads committed outcomes in stable publication order. While running, 'has_more=false' only means the job is currently drained; poll again with 'next_cursor' to observe later outcomes. Each response is bounded to 1 MiB.
+
+### `web_crawl_status`
+
+Read crawl job status and cumulative accounting. Returns status for a crawl job owned by the authenticated principal. This control call does not reserve or settle credits.
+
+### `web_map`
+
+Map a public site. Discover a bounded approximate URL inventory using robots, sitemaps, and the seed page.
+
 ### `web_scrape`
 
 Scrape a URL into markdown, HTML, links or metadata. Fetches a single public URL and returns clean content in the requested formats (markdown, html, raw_html, links, metadata). The request body IS the ScrapeOption object itself — e.g. {"url": "https://example.com"} — do not wrap it in an extra key. With render=auto the request starts as a fast HTTP fetch and escalates to a real browser when the page is blocked or rendered with JavaScript; backend only pins a specific headless-browser engine for the browser tier and is not a render mode. only_main_content (default true) strips navigation, headers, footers and other boilerplate before conversion. Only public pages are supported; respect each site's terms of use and robots directives. A handful of popular sites (Amazon, Reddit, Yelp, LinkedIn, and others) already have a dedicated, more reliable endpoint elsewhere in this API — a failed scrape against one of them names it. A Reddit URL that maps onto a dedicated Reddit endpoint (listings, search, comment threads, user and domain pages) is answered by that endpoint instead, and its response is returned as-is in data with an X-Routed-To header; send dedicated=false to always get the scraped page.
+
+### `web_search`
+
+Search the public web. Search Brave's public web results; optional page reads remain scoped to each result host.
 
 ### `web_techstack`
 
@@ -14639,7 +14715,7 @@ Search Zomato restaurants in a city. Returns restaurants in a Zomato city, optio
 
 <!-- END MCP.SO TOOLS -->
 
-## What you can call (3606 tools / 468 platform groups)
+## What you can call (3625 tools / 471 platform groups)
 
 See [`tools.json`](./tools.json) or your MCP client UI for exact schemas. Below is a overview by category:
 
@@ -14650,6 +14726,7 @@ See [`tools.json`](./tools.json) or your MCP client UI for exact schemas. Below 
 | **Marketplace & Products** | `amazon_search`, `amazon_product`, `amazon_reviews`, `walmart_search`, `ebay_search`, `etsy_search`, `shopify_store`, `target_search`, `doordash_store`, `doordash_feed`, `ubereats_store` |
 | **Social & Profiles** | `twitter_user`, `twitter_tweet`, `instagram_user`, `reddit_post`, `reddit_comments`, `threads_user`, `tiktok_user` |
 | **Finance & Markets** | `google_finance_search`, `google_finance_quote`, `yahoo_finance_quote`, `polymarket_events`, `kalshi_markets` |
+| **Research & Papers** | `research_search_papers`, `research_inspect_paper`, `research_read_paper`, `research_related_papers`, `research_sources` |
 | **Travel & Lodging** | `airbnb_search`, `airbnb_room`, `tripadvisor_search`, `booking_search` |
 | **Jobs & Companies** | `linkedin_jobs`, `indeed_jobs`, `glassdoor_company`, `pitchbook_company` |
 | **Media & Audio** | `youtube_video`, `youtube_transcript`, `spotify_artist`, `apple_podcasts_show`, `bbb_news`, `bbb_news_topics`, `bbb_article` |
@@ -14660,7 +14737,7 @@ See [`tools.json`](./tools.json) or your MCP client UI for exact schemas. Below 
 
 ## Why Crawlora MCP?
 
-- **One key, 3606 tools** — search, commerce, social, gaming, finance, and more behind a single MCP endpoint.
+- **One key, 3625 tools** — search, commerce, social, gaming, finance, and more behind a single MCP endpoint.
 
 A good alternative to stitching together SerpApi, Firecrawl, ScraperAPI, or ScrapingBee.
 
