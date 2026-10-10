@@ -9895,7 +9895,7 @@ Read research job events. Reads a signed owner-bound page of research job events
 
 ### `research_inspect_paper`
 
-Inspect paper metadata. Return normalized arXiv or Europe PMC metadata and verified identifier aliases. Europe PMC resolution is limited to MED-backed PMID, PMCID and DOI records; no full-text body is fetched.
+Inspect paper metadata. Return normalized paper records including titles, abstracts when available, authors, publication dates and verified identifier aliases. Europe PMC resolution is limited to MED-backed PMID, PMCID and DOI records; no full-text body is fetched.
 
 ### `research_read_paper`
 
