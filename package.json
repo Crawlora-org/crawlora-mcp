@@ -28,11 +28,21 @@
   },
   "keywords": [
     "mcp",
+    "mcp-server",
     "model-context-protocol",
     "crawlora",
+    "ai-agents",
+    "llm-tools",
+    "claude",
+    "cursor",
     "web-scraping",
+    "web-scraping-api",
+    "web-search",
+    "search-api",
     "serp",
-    "data-extraction"
+    "serp-api",
+    "data-extraction",
+    "structured-data"
   ],
   "homepage": "https://crawlora.net/mcp",
   "repository": {
