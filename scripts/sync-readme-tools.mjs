@@ -19,7 +19,7 @@ export function renderToolsSection(tools) {
   return [
     "## Tools",
     "",
-    "The complete tool catalog is generated from [`tools.json`](./tools.json) so MCP directories can index it.",
+    "The complete tool catalog is generated from [`tools.json`](./tools.json) so MCP directories can index it. It is the last section of this README because of its length.",
     "",
     START_MARKER,
     ...entries,
@@ -29,14 +29,13 @@ export function renderToolsSection(tools) {
 
 export function replaceToolsSection(readme, tools) {
   const section = renderToolsSection(tools);
-  const start = readme.indexOf("## Tools");
-  const nextHeading = start >= 0 ? readme.indexOf("\n## ", start + 1) : -1;
-  if (start >= 0 && nextHeading >= 0) {
-    return `${readme.slice(0, start)}${section}\n${readme.slice(nextHeading)}`;
-  }
-  const insertionPoint = readme.indexOf("\n## What you can call");
-  if (insertionPoint < 0) throw new Error("README is missing the What you can call heading");
-  return `${readme.slice(0, insertionPoint + 1)}${section}\n\n${readme.slice(insertionPoint + 1)}`;
+  const start = readme.search(/^## Tools$/m);
+  if (start < 0) return `${readme.trimEnd()}\n\n${section}\n`;
+  // The catalog is the last README section, so everything a reader needs
+  // renders before it. Any section that follows it is kept in place.
+  const nextHeading = readme.indexOf("\n## ", start + 1);
+  if (nextHeading < 0) return `${readme.slice(0, start)}${section}\n`;
+  return `${readme.slice(0, start)}${section}\n${readme.slice(nextHeading)}`;
 }
 
 async function main() {

@@ -22,3 +22,17 @@ test("replaces an existing generated section idempotently", () => {
   assert.match(updated, /## Next\n\nbody/);
   assert.equal(replaceToolsSection(updated, tools), updated);
 });
+
+test("replaces a trailing generated section idempotently", () => {
+  const readme = "# Example\n\n## Links\n\nbody\n\n## Tools\n\nold\n";
+  const updated = replaceToolsSection(readme, tools);
+  assert.match(updated, /## Links\n\nbody\n\n## Tools\n/);
+  assert.ok(updated.endsWith("<!-- END MCP.SO TOOLS -->\n"));
+  assert.equal(replaceToolsSection(updated, tools), updated);
+});
+
+test("appends the section when the README has none", () => {
+  const updated = replaceToolsSection("# Example\n\n## Links\n\nbody\n", tools);
+  assert.match(updated, /body\n\n## Tools\n/);
+  assert.equal(replaceToolsSection(updated, tools), updated);
+});

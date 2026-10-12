@@ -208,9 +208,51 @@ Every account includes **2,000 free credits / month** with no credit card requir
 
 ---
 
+## What you can call (3631 tools / 471 platform groups)
+
+See [`tools.json`](./tools.json) or your MCP client UI for exact schemas, and the [full tool catalog](#tools) at the end of this README. Below is an overview by category:
+
+| Category | Highlights |
+|---|---|
+| **Search & Web** | `google_search`, `google_news`, `bing_search`, `duckduckgo_search`, `baidu_search`, `brave_search`, `startpage_search`, `yandex_search`, `kagi_search`, `web_scrape`, `web_parse`, `bbb_search`, `bbb_search_filters` |
+| **Maps & Places** | `google_maps_search`, `google_maps_place`, `google_maps_reviews`, `google_maps_photos`, `bbb_regions`, `bbb_local_bbbs`, `bbb_local_bbb` |
+| **Marketplace & Products** | `amazon_search`, `amazon_product`, `amazon_reviews`, `walmart_search`, `ebay_search`, `etsy_search`, `shopify_store`, `target_search`, `doordash_store`, `doordash_feed`, `ubereats_store` |
+| **Social & Profiles** | `twitter_user`, `twitter_tweet`, `instagram_user`, `reddit_post`, `reddit_comments`, `threads_user`, `tiktok_user` |
+| **Finance & Markets** | `google_finance_search`, `google_finance_quote`, `yahoo_finance_quote`, `polymarket_events`, `kalshi_markets` |
+| **Research & Papers** | `research_search_papers`, `research_inspect_paper`, `research_read_paper`, `research_related_papers`, `research_sources` |
+| **Travel & Lodging** | `airbnb_search`, `airbnb_room`, `tripadvisor_search`, `booking_search` |
+| **Jobs & Companies** | `linkedin_jobs`, `indeed_jobs`, `glassdoor_company`, `pitchbook_company` |
+| **Media & Audio** | `youtube_video`, `youtube_transcript`, `spotify_artist`, `apple_podcasts_show`, `bbb_news`, `bbb_news_topics`, `bbb_article` |
+| **App Stores** | `appstore_app`, `googleplay_app` |
+| **Reviews & Q&A** | `trustpilot_reviews`, `g2_reviews`, `capterra_product`, `goodreads_book`, `bbb_business`, `bbb_category`, `bbb_business_complaints`, `bbb_business_more_info`, `bbb_business_reviews`, `bbb_scamtracker_search`, `bbb_scamtracker_detail`, `bbb_scamtracker_state_stats` |
+
+---
+
+## Why Crawlora MCP?
+
+- **One key, 3631 tools** — search, commerce, social, gaming, finance, and more behind a single MCP endpoint.
+- **Structured JSON, not HTML** — every tool returns normalized fields, so an agent can use the result without writing a parser.
+- **Hosted or local** — connect to the hosted Streamable HTTP endpoint with no install, or run the open-source stdio server from this repo with `npx` or Docker.
+- **Free to start** — 2,000 credits per month with no credit card.
+
+A good alternative to stitching together SerpApi, Firecrawl, ScraperAPI, or ScrapingBee.
+
+## Links
+
+- Website: [https://crawlora.net/mcp](https://crawlora.net/mcp?utm_source=github&utm_medium=referral&utm_campaign=crawlora-mcp)
+- Docs & Playground: [https://crawlora.net/docs](https://crawlora.net/docs?utm_source=github&utm_medium=referral&utm_campaign=crawlora-mcp) · [https://crawlora.net/playground](https://crawlora.net/playground?utm_source=github&utm_medium=referral&utm_campaign=crawlora-mcp)
+- Pricing: [https://crawlora.net/pricing](https://crawlora.net/pricing?utm_source=github&utm_medium=referral&utm_campaign=crawlora-mcp)
+- Server card: https://crawlora.net/.well-known/mcp/server-card.json
+- Official MCP registry manifest: [`server.json`](server.json)
+
+## License
+
+See [`LICENSE`](LICENSE). The Crawlora MCP service itself is a hosted SaaS governed by the
+[Crawlora terms](https://crawlora.net?utm_source=github&utm_medium=referral&utm_campaign=crawlora-mcp); this repository contains connection docs and manifests.
+
 ## Tools
 
-The complete tool catalog is generated from [`tools.json`](./tools.json) so MCP directories can index it.
+The complete tool catalog is generated from [`tools.json`](./tools.json) so MCP directories can index it. It is the last section of this README because of its length.
 
 <!-- BEGIN MCP.SO TOOLS: generated from tools.json; do not edit manually -->
 ### `abcau_article`
@@ -14738,42 +14780,3 @@ Get one Zomato restaurant's menu. Returns one restaurant's menu grouped into cat
 Search Zomato restaurants in a city. Returns restaurants in a Zomato city, optionally filtered by a keyword. With no query this reads Zomato's own city-wide delivery listing, which pages through an opaque cursor (~12 restaurants per page: pass a response's next_cursor back as cursor until has_more is false, which marks the end of the city's listing) and accepts Zomato's own sort and Pure Veg filters; with a query it uses Zomato's own keyword search across restaurant names, dishes, and cuisines, which returns a single unpaginated result set. Each restaurant carries its url (the value the restaurant and menu endpoints take), name, cuisines, cost for two, rating, distance from the city location, delivery time, whether Zomato currently delivers from it, whether the placement is promoted (sponsored), and — on the plain city-wide listing — Zomato's own headline offer badges.
 
 <!-- END MCP.SO TOOLS -->
-
-## What you can call (3631 tools / 471 platform groups)
-
-See [`tools.json`](./tools.json) or your MCP client UI for exact schemas. Below is a overview by category:
-
-| Category | Highlights |
-|---|---|
-| **Search & Web** | `google_search`, `google_news`, `bing_search`, `duckduckgo_search`, `baidu_search`, `brave_search`, `startpage_search`, `yandex_search`, `kagi_search`, `web_scrape`, `web_parse`, `bbb_search`, `bbb_search_filters` |
-| **Maps & Places** | `google_maps_search`, `google_maps_place`, `google_maps_reviews`, `google_maps_photos`, `bbb_regions`, `bbb_local_bbbs`, `bbb_local_bbb` |
-| **Marketplace & Products** | `amazon_search`, `amazon_product`, `amazon_reviews`, `walmart_search`, `ebay_search`, `etsy_search`, `shopify_store`, `target_search`, `doordash_store`, `doordash_feed`, `ubereats_store` |
-| **Social & Profiles** | `twitter_user`, `twitter_tweet`, `instagram_user`, `reddit_post`, `reddit_comments`, `threads_user`, `tiktok_user` |
-| **Finance & Markets** | `google_finance_search`, `google_finance_quote`, `yahoo_finance_quote`, `polymarket_events`, `kalshi_markets` |
-| **Research & Papers** | `research_search_papers`, `research_inspect_paper`, `research_read_paper`, `research_related_papers`, `research_sources` |
-| **Travel & Lodging** | `airbnb_search`, `airbnb_room`, `tripadvisor_search`, `booking_search` |
-| **Jobs & Companies** | `linkedin_jobs`, `indeed_jobs`, `glassdoor_company`, `pitchbook_company` |
-| **Media & Audio** | `youtube_video`, `youtube_transcript`, `spotify_artist`, `apple_podcasts_show`, `bbb_news`, `bbb_news_topics`, `bbb_article` |
-| **App Stores** | `appstore_app`, `googleplay_app` |
-| **Reviews & Q&A** | `trustpilot_reviews`, `g2_reviews`, `capterra_product`, `goodreads_book`, `bbb_business`, `bbb_category`, `bbb_business_complaints`, `bbb_business_more_info`, `bbb_business_reviews`, `bbb_scamtracker_search`, `bbb_scamtracker_detail`, `bbb_scamtracker_state_stats` |
-
----
-
-## Why Crawlora MCP?
-
-- **One key, 3631 tools** — search, commerce, social, gaming, finance, and more behind a single MCP endpoint.
-
-A good alternative to stitching together SerpApi, Firecrawl, ScraperAPI, or ScrapingBee.
-
-## Links
-
-- Website: [https://crawlora.net/mcp](https://crawlora.net/mcp?utm_source=github&utm_medium=referral&utm_campaign=crawlora-mcp)
-- Docs & Playground: [https://crawlora.net/docs](https://crawlora.net/docs?utm_source=github&utm_medium=referral&utm_campaign=crawlora-mcp) · [https://crawlora.net/playground](https://crawlora.net/playground?utm_source=github&utm_medium=referral&utm_campaign=crawlora-mcp)
-- Pricing: [https://crawlora.net/pricing](https://crawlora.net/pricing?utm_source=github&utm_medium=referral&utm_campaign=crawlora-mcp)
-- Server card: https://crawlora.net/.well-known/mcp/server-card.json
-- Official MCP registry manifest: [`server.json`](server.json)
-
-## License
-
-See [`LICENSE`](LICENSE). The Crawlora MCP service itself is a hosted SaaS governed by the
-[Crawlora terms](https://crawlora.net?utm_source=github&utm_medium=referral&utm_campaign=crawlora-mcp); this repository contains connection docs and manifests.
