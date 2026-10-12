@@ -139,5 +139,5 @@ jobs:
           - [StackShare search](https://stackshare.io/?q=crawlora) — create a listing only if desired
           - [PulseMCP](https://www.pulsemcp.com/) — submissions currently paused
 
-          See [RELEASE_CHECKLIST.md](https://github.com/Crawlora-org/crawlora-mcp/blob/main/RELEASE_CHECKLIST.md) for the SDK, skills, profile, and trusted-publishing batch.
+          The SDK, skills, profile, and trusted-publishing batch is tracked in the maintainers' release checklist.
           EOF
