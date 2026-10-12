@@ -479,7 +479,7 @@ List Alt search filter values. Returns every accepted value for alt-search/alt-a
 
 ### `alt_listing`
 
-Get one Alt listing's full public detail. One listing's full public detail -- title, description, price/bid state, grading info, and images -- normalized across Alt's own native listings and its aggregated external listings. id and listing_type come from a prior alt-search/alt-auctions result. Not every response field applies to every listing_type -- see the field-level notes in this endpoint's markdown doc.
+Get one Alt listing's full public detail. One listing's full public detail -- title, description, price/bid state, grading info, and images -- normalized across Alt's own native listings and its aggregated external listings. id and listing_type come from a prior alt-search/alt-auctions result, or from an alt-sold-listings result's listing_id and listing_type for a completed sale on Alt itself. Not every response field applies to every listing_type -- see the field-level notes in this endpoint's markdown doc.
 
 ### `alt_market_trends`
 
@@ -491,7 +491,7 @@ Search Alt's aggregated card marketplace. Searches Alt's universal aggregator in
 
 ### `alt_sold_listings`
 
-Search Alt's completed sales archive. Searches Alt's global archive of completed card sales, aggregated across every source auction house its search carries -- the "market data" side of Alt's card-investment-marketplace positioning. This is a separate index from alt-search/alt-auctions, scoped to a rolling recent time window, not a filtered view of live listings. Pass auction_house=Alt to see only Alt's own completed auctions. Credential-free public data from Alt's own search backend. See alt-categories for the accepted category/auction_house/grading_company values.
+Search Alt's completed sales archive. Searches Alt's global archive of completed card sales, aggregated across every source auction house its search carries -- the "market data" side of Alt's card-investment-marketplace positioning. This is a separate index from alt-search/alt-auctions, scoped to a rolling recent time window, not a filtered view of live listings. Pass auction_house=Alt to see only Alt's own completed sales. Each of Alt's own sales carries listing_id and listing_type -- pass both to alt-listing to get that item's certificate number -- and its url is the alt.xyz item page; a sale aggregated from another auction house carries that source site's own url instead. Credential-free public data from Alt's own search backend. See alt-categories for the accepted category/auction_house/grading_company values.
 
 ### `alt_top_movers`
 
@@ -1047,7 +1047,7 @@ Get a Better Business Bureau business profile. Returns a normalized bbb.org busi
 
 ### `bbb_business_complaints`
 
-Get a Better Business Bureau business's complaint history. Returns a business's BBB complaint history: total complaint count, complaints closed in the last 12 months, and per-complaint detail (date, type, status, narrative text, and any business response / customer answer thread). A business with no filed complaints returns total_complaints 0 and an empty complaints list -- this is a normal result, not an error. Credential-free public Better Business Bureau data.
+Get a Better Business Bureau business's complaint history. Returns a business's BBB complaint history: total complaint count, complaints closed or filed in the last 12 months, and one page of per-complaint detail (date, type, status, narrative text, and any business response / customer answer thread). Complaints are listed newest first, 10 per page; use page with the returned page, total_pages and has_more to walk the full list. A business with no filed complaints returns total_complaints 0 and an empty complaints list -- this is a normal result, not an error. Credential-free public Better Business Bureau data.
 
 ### `bbb_business_more_info`
 
@@ -2699,7 +2699,7 @@ Search the apps-intelligence dataset. Searches resolved iOS App Store and Google
 
 ### `datasets_bbb_businesses_facets`
 
-Facet the BBB businesses dataset. Returns distribution counts over the BBB businesses index (dataset id enum value 'bbb-businesses'), honoring the same filters as search. Facet enum: 'category', 'state', 'city', 'rating', 'accredited', 'entity_type', 'run_id'.
+Facet the BBB businesses dataset. Returns distribution counts over the BBB businesses index (dataset id enum value 'bbb-businesses'), honoring the same filters as search. Facet enum: 'category', 'state', 'city', 'rating', 'accredited', 'entity_type', 'run_id', 'alert_title', 'has_alerts'.
 
 ### `datasets_bbb_businesses_item`
 
@@ -2707,7 +2707,19 @@ Get a business from the BBB businesses dataset. Returns one business by id from 
 
 ### `datasets_bbb_businesses_search`
 
-Search the BBB businesses dataset. Searches the BBB (Better Business Bureau) businesses index (dataset id enum value 'bbb-businesses') — business profiles crawled from bbb.org's own search/category-browse pages: computed A+-F letter-grade rating, paid-accreditation status, category, contact info, business details, operating hours, and products/services. Complaints, full reviews, and the full "reasons for rating"/service-area detail are NOT embedded here; each record instead carries complaints_url/reviews_url/more_info_url pointing at the live bbb-business-complaints/bbb-business-reviews/bbb-business-more-info endpoints for on-demand lookup. rating enum: 'A+', 'A', 'A-', 'B+', 'B', 'B-', 'C+', 'C', 'C-', 'D+', 'D', 'D-', 'F'. sort enum: 'relevance', 'rating_desc', 'rating_asc', 'accredited_first', 'name_asc', 'years_in_business_desc'.
+Search the BBB businesses dataset. Searches the BBB (Better Business Bureau) businesses index (dataset id enum value 'bbb-businesses') — business profiles crawled from bbb.org's own search/category-browse pages: computed A+-F letter-grade rating, paid-accreditation status, category, contact info, business details, operating hours, and products/services. Complaints, full reviews, and the full "reasons for rating"/service-area detail are NOT embedded here; each record instead carries complaints_url/reviews_url/more_info_url pointing at the live bbb-business-complaints/bbb-business-reviews/bbb-business-more-info endpoints for on-demand lookup. rating enum: 'A+', 'A', 'A-', 'B+', 'B', 'B-', 'C+', 'C', 'C-', 'D+', 'D', 'D-', 'F'. Each record also stores BBB's complaint and review counts (total_complaints and related fields) and the BBB alerts on the profile (has_alerts, alert_titles, alerts[] with full text), so businesses with complaints or with a given alert can be listed without calling the live endpoints; these fields are filled as records are re-crawled and are absent on a record not refreshed since they were added. sort enum: 'relevance', 'rating_desc', 'rating_asc', 'accredited_first', 'name_asc', 'years_in_business_desc', 'complaints_desc'. Billing: this search costs 1 credit per record returned, with a minimum of 2 (an empty result costs 2, a full page of 100 costs 100); the item and facets endpoints cost 1.
+
+### `datasets_bbb_scamtracker_reports_facets`
+
+Facet the BBB Scam Tracker reports dataset. Returns distribution counts over the stored BBB Scam Tracker reports (dataset id enum value 'bbb-scamtracker-reports'), honoring the same filters as search. Counts are of stored reports. Facet enum: 'scam_type', 'state', 'country'. country enum: 'USA', 'CAN'.
+
+### `datasets_bbb_scamtracker_reports_item`
+
+Get a report from the BBB Scam Tracker reports dataset. Returns one stored report by id from dataset id enum value 'bbb-scamtracker-reports'. Returns 404 when the report is not in the archive; the live bbb-scamtracker-detail endpoint can still fetch it from BBB.
+
+### `datasets_bbb_scamtracker_reports_search`
+
+Search the BBB Scam Tracker reports dataset. Searches the stored archive of public consumer scam reports from bbb.org/scamtracker (dataset id enum value 'bbb-scamtracker-reports'), one record per report: narrative, scam type, reported dollar loss, targeted and scammer locations, the business name used, and the report date. Unlike the live bbb-scamtracker-search endpoint, results are not cut off at BBB's 10,000-result limit and any date range can be read page by page. Reports are unreviewed consumer allegations; names and contact details in them are as reported, not verified. The archive is still being filled, so 'total' is the number of stored reports matching the filters, not BBB's own count. country enum: 'USA', 'CAN'. sort enum: 'relevance', 'reported_desc', 'reported_asc', 'loss_desc'. Billing: this search costs 1 credit per record returned, with a minimum of 2 (an empty result costs 2, a full page of 100 costs 100); the item and facets endpoints cost 1.
 
 ### `datasets_boxofficemojo_facets`
 
@@ -2900,6 +2912,18 @@ Search the journalists dataset. Searches the journalists index (dataset id enum 
 ### `datasets_list`
 
 List stored scraped datasets. Lists available read-only scraped datasets and the capabilities supported by each dataset.
+
+### `datasets_llms_facets`
+
+Facet the AI-readiness (llms.txt) dataset. Returns distribution counts over the AI-readiness census (dataset id enum value 'llms'), honoring the same filters as search — adoption by producer, generator, TLD or category, and which AI crawlers robots.txt blocks. Facet enum: 'state', 'source_kind', 'generator', 'bot', 'policy', 'tld', 'category', 'robots_state', 'robots_default', 'blocked_crawler', 'partial_crawler', 'content_signal_train', 'full_state', 'home_status'. The filter enums are the same as search. Counts include 'blocked' and 'error' probes, which are unknown rather than absent; filter 'state=present' or 'state=absent' to count only sites that were established either way.
+
+### `datasets_llms_item`
+
+Get a site from the AI-readiness (llms.txt) dataset. Returns one site by its domain from dataset id enum value 'llms', including the stored '/llms.txt' and '/llms-full.txt' bodies ('llms.body', 'full.body'; 'body_truncated' marks a cut file, and a body that tries to override an AI reader's instructions is withheld with 'body_withheld' set to 'injection'), their structure and classification, and the '/robots.txt' stance toward each tracked AI crawler. Returns 404 when the domain is not in the dataset or its owner asked for removal (privacy@crawlora.net).
+
+### `datasets_llms_search`
+
+Search the AI-readiness (llms.txt) dataset. Searches the AI-readiness census of the top 1M sites (dataset id enum value 'llms') — one record per site describing whether it serves a real '/llms.txt' or '/llms-full.txt' (who produced it, what it links to and mentions) and what its '/robots.txt' says to 17 AI crawlers, next to a homepage control request. Search results omit the file bodies; read one site with the item endpoint. 'blocked' and 'error' states mean unknown, never absent. Sort enum: 'relevance', 'rank_asc', 'links_desc', 'bytes_desc', 'domain_asc', 'crawled_desc'. state and robots_state enum: 'present', 'absent', 'blocked', 'error', 'skipped'. source_kind enum: 'shopify_agent_template', 'seo_plugin', 'platform_default', 'parked', 'custom'. generator enum: 'yoast', 'aioseo', 'rankmath', 'wix', 'shopify', 'parked'. robots_default enum: 'allowed', 'partial', 'blocked'. content_signal_train enum: 'yes', 'no'. Crawler enum for blocks_all, blocks_any and not_blocked: 'GPTBot', 'OAI-SearchBot', 'ChatGPT-User', 'ClaudeBot', 'Claude-SearchBot', 'Claude-User', 'anthropic-ai', 'Google-Extended', 'PerplexityBot', 'Perplexity-User', 'CCBot', 'Bytespider', 'Applebot-Extended', 'Amazonbot', 'meta-externalagent', 'cohere-ai', 'Diffbot'. Site owners can ask for removal at privacy@crawlora.net.
 
 ### `datasets_numbeo_cities_facets`
 
@@ -3811,7 +3835,7 @@ Get The Express Tribune sections. Returns every usable feed section listed in th
 
 ### `extract`
 
-Extract schema-conforming JSON from a URL. Scrapes a public URL into clean Markdown, then returns data that strictly conforms to the supplied bounded JSON Schema.
+Extract schema-conforming JSON from a URL. Scrapes a public URL into clean Markdown, then returns data that strictly conforms to the supplied bounded JSON Schema. The response includes 'truncated', which is true when the page was too long and only its first part was used.
 
 ### `facebook_marketplace_search`
 
@@ -3859,7 +3883,7 @@ Search Fanatics Collect listings. Searches Fanatics Collect's full marketplace -
 
 ### `fanaticscollect_sold_items`
 
-Search Fanatics Collect sold items. Searches Fanatics Collect's sales-history archive -- every completed sale across every marketplace, not just what the live search index currently surfaces. A separate product from Search, reached from the "View all sold items" link on every marketplace search page. Credential-free public data from Fanatics Collect's own public sales-history API. See GetCategories for the accepted category, grading-service, eye-appeal-grade, and sort values.
+Search Fanatics Collect sold items. Searches Fanatics Collect's sales-history archive -- every completed sale across every marketplace, not just what the live search index currently surfaces. A separate product from Search, reached from the "View all sold items" link on every marketplace search page. purchase_price is what the buyer paid in US dollars: for WEEKLY and PREMIER auction sales it includes the buyer's premium, so it is higher than the listing's final bid; for FIXED sales it equals the asking price. Credential-free public data from Fanatics Collect's own public sales-history API. See GetCategories for the accepted category, grading-service, eye-appeal-grade, and sort values.
 
 ### `fanaticscollect_trending_searches`
 
@@ -5835,7 +5859,7 @@ Home Depot product questions and answers. Returns the first page (8 questions) o
 
 ### `homedepot_search`
 
-Home Depot keyword search. Returns one page (up to 12 products) of a Home Depot keyword search's product listing: normalized products with title, image, model, current/original price, and rating/review count, plus the search's total result count. q is free-text search keywords, e.g. "impact driver". page is a 1-indexed page number (default 1). An unrecognized/blocked query returns an upstream error rather than an empty result.
+Home Depot keyword search. Returns one page of a Home Depot keyword search's product listing: normalized products with title, image, model, current/original price, and rating/review count, plus the search's total result count. A page carries up to 24 products, or up to 12 when Home Depot answers the query with a category page. q is free-text search keywords, e.g. "impact driver". page is a 1-indexed page number (default 1). An unrecognized/blocked query returns an upstream error rather than an empty result.
 
 ### `homedepot_suggest`
 
@@ -9927,7 +9951,7 @@ Read a research job status. Returns the authenticated owner's research job state
 
 ### `resy_availability`
 
-Get a Resy restaurant's bookable reservation timeslots. Returns the bookable reservation timeslots Resy currently shows for a restaurant, date, and party size -- the same read-only availability an anonymous visitor sees before signing in. This is discovery only; it does not create, hold, modify, or cancel a reservation.
+Get a Resy restaurant's bookable reservation timeslots. Returns the bookable reservation timeslots Resy currently shows for a restaurant, date, and party size -- the same read-only availability an anonymous visitor sees before signing in. The date is optional and defaults to the current date in UTC; the response echoes the date used. This is discovery only; it does not create, hold, modify, or cancel a reservation.
 
 ### `resy_cuisines`
 
@@ -10011,7 +10035,7 @@ Get a Reuters article's content. Returns one normal Reuters article's public met
 
 ### `reuters_articles`
 
-Get recent Reuters articles. Returns a page of recent Reuters articles: title, canonical URL, update time, and the lead image URL when available. The index covers the most recent 10,000 articles.
+Get recent Reuters articles. Returns a page of recent Reuters articles: canonical URL, update time, and the lead image URL when available, plus the title when Reuters publishes one in this index (currently it does not). The index covers the most recent 10,000 articles. Use /reuters/news for a title-bearing feed of fresh stories, or /reuters/article for one article's title and text.
 
 ### `reuters_author`
 
@@ -10023,7 +10047,7 @@ Get fresh Reuters headlines. Returns fresh Reuters headlines with title, canonic
 
 ### `reuters_section`
 
-Get recent articles in a Reuters section. Returns a page of one top-level Reuters section's recent articles: canonical URL, update time, lead image URL, and image caption. This feed does not publish titles; use /reuters/articles for a title-bearing index.
+Get recent articles in a Reuters section. Returns a page of one top-level Reuters section's recent articles: canonical URL, update time, lead image URL, and image caption. This feed does not publish titles; use /reuters/news for a title-bearing feed of fresh stories.
 
 ### `reuters_sections`
 
@@ -13851,7 +13875,7 @@ Scrape a URL into markdown, HTML, links or metadata. Fetches a single public URL
 
 ### `web_search`
 
-Search the public web. Search Brave's public web results; optional page reads remain scoped to each result host.
+Search the public web. Search Brave's public web results. limit (1-50, default 10) is honoured by reading up to 3 result pages; each successful result page read costs 3 credits, and optional page reads (5 credits each) remain scoped to each result host. country and language select the result locale (defaults us and en-us).
 
 ### `web_techstack`
 
