@@ -54,7 +54,9 @@ affected listing before rerunning the job:
    secret and required, and provide the scan key only in Smithery's private
    credential form. Confirm the release reaches `SUCCESS`.
 3. [MCP.so listing](https://mcp.so/servers/crawlora-mcp): the README's generated
-   `## Tools` section is the source for the tool catalog. Use **Edit** and save
+   `## Tools` section is a compact index of every tool by platform, and
+   `TOOLS.md` holds the per-tool descriptions (the README has to stay small
+   enough for GitHub to render it into the repository page). Use **Edit** and save
    the public description/overview with the current counts, then confirm the
    public page shows a non-empty Tools section (not “No tools detected”).
 4. Rerun **MCP directory drift**. Confirm the official registry passes, review
