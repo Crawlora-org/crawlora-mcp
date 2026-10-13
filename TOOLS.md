@@ -830,7 +830,7 @@ List Barron's topics. Lists every Barron's editorial topic accepted by /barrons/
 
 ### `bbb_article`
 
-Get a BBB article. Returns published BBB article metadata, author names, body text, and useful links from a canonical public article URL.
+Get a BBB article. Returns published BBB article metadata, author names, body text, and useful links from a canonical public article URL. Returns 404 when BBB no longer has the article, including a story BBB has moved to one of its evergreen pages under /all/; the error then names the new address, and the answer is permanent.
 
 ### `bbb_business`
 
@@ -862,11 +862,11 @@ List local BBB chapters serving a region. Lists every chapter and public office 
 
 ### `bbb_news`
 
-Get BBB newsroom stories. Returns one page of public BBB newsroom stories from a canonical US or Canada newsroom URL. Event dates and links are preserved when present.
+Get BBB newsroom stories. Returns one page of public BBB newsroom stories from a canonical BBB newsroom URL. Three scopes are accepted, each with an optional topic: the US or Canada newsroom (/us/news), a state, province or city newsroom (/us/ca/news, /us/ca/san-francisco/news), and one local BBB chapter's own newsroom (/local-bbb/<chapter>/news, the news_url returned by bbb-local-bbbs and bbb-local-bbb). The list is whatever BBB shows on that page: a city or chapter whose local BBB publishes its own stories returns those, and other cities, other chapters and the state pages checked so far return the same list as the country newsroom, so compare total and the first items with the country newsroom before treating a list as local. A chapter URL also returns local_bbb_id and local_bbb_name. Event dates and links are preserved when present.
 
 ### `bbb_news_topics`
 
-List BBB newsroom topics. Returns the complete topic navigation shown by a US or Canada BBB newsroom page, including its active topic.
+List BBB newsroom topics. Returns the complete topic navigation shown by a BBB newsroom page, including its active topic. The page can be the US or Canada newsroom, a state, province or city newsroom, or one local BBB chapter's newsroom; the returned topic URLs stay in that scope, and a chapter has its own topic set.
 
 ### `bbb_regions`
 
@@ -2462,7 +2462,7 @@ Airbnb market density near a coordinate. Returns an aggregate geohash-grid densi
 
 ### `datasets_airbnb_search`
 
-Search the Airbnb markets dataset. Returns aggregate Airbnb short-term-rental market rollups from the dataset id enum value 'airbnb-markets'. Aggregate-only: each row is a market cell, never an individual listing. Thin cells are suppressed. group_by enum: 'country', 'market', 'admin1' (top subdivision), 'locality' (settlement), 'room_type' ('entire_place'/'private_room'/'hotel'/'shared_room'), 'property_type' (Airbnb's canonical listing type from the detail page). 'admin1', 'locality', 'room_type' and 'property_type' are enrichment-derived and stay empty until their coverage is high enough to be reliable. Each cell also carries 'median_price_usd', the median nightly price converted to USD via an approximate dated FX snapshot, for cross-country comparison (combine with 'group_by=room_type' for median price by room type); 'guest_favorite_pct', the share of listings carrying the Guest Favorite badge (an observed lower bound, like 'superhost_pct'); and 'avg_person_capacity', the average guests a listing sleeps over the detail-page-enriched sample. Sort enum: 'listings_desc', 'superhost_pct_desc', 'rating_desc', 'key_asc'.
+Search the Airbnb markets dataset. Returns aggregate Airbnb short-term-rental market rollups from the dataset id enum value 'airbnb-markets'. Aggregate-only: each row is a market cell, never an individual listing. Thin cells are suppressed. group_by enum: 'country', 'market', 'admin1' (top subdivision), 'locality' (settlement), 'room_type' ('entire_place'/'private_room'/'hotel'/'shared_room'), 'property_type' (Airbnb's canonical listing type from the detail page). 'admin1', 'locality', 'room_type' and 'property_type' are enrichment-derived and stay empty until their coverage is high enough to be reliable. Each cell also carries 'median_price_usd', the median nightly price converted to USD via an approximate dated FX snapshot, for cross-country comparison (combine with 'group_by=room_type' for median price by room type); 'guest_favorite_pct', the share of listings carrying the Guest Favorite badge (an observed lower bound, like 'superhost_pct'); and 'avg_person_capacity', the average guests a listing sleeps over the detail-page-enriched sample. Sort enum: 'listings_desc', 'superhost_pct_desc', 'rating_desc', 'key_asc'. Billing: this search costs 1 credit per record returned, with a minimum of 2 (an empty result costs 2, a full page of 100 costs 100).
 
 ### `datasets_apple_podcasts_shows_facets`
 
@@ -2474,23 +2474,23 @@ Get an Apple Podcasts show from dataset. Returns one crawled Apple Podcasts show
 
 ### `datasets_apple_podcasts_shows_search`
 
-Search Apple Podcasts shows dataset. Searches the crawled public Apple Podcasts show catalog stored in a search index. One row per show. Discovered from a country x genre x collection chart grid and a search-term sweep — not a full catalog of every Apple Podcasts show. Sort enum: 'relevance', 'popularity', 'track_count_desc', 'release_desc', 'title_asc'.
+Search Apple Podcasts shows dataset. Searches the crawled public Apple Podcasts show catalog stored in a search index. One row per show. Discovered from a country x genre x collection chart grid and a search-term sweep — not a full catalog of every Apple Podcasts show. Sort enum: 'relevance', 'popularity', 'track_count_desc', 'release_desc', 'title_asc'. Billing: this search costs 1 credit per record returned, with a minimum of 2 (an empty result costs 2, a full page of 100 costs 100).
 
 ### `datasets_apps_charts_search`
 
-Search the app-charts dataset. Searches daily top-chart snapshots scraped from the iOS App Store and Google Play, stored in a search index (one document per chart × snapshot × rank). With no 'date' the latest snapshot is returned (today's chart); pair 'app_id' with 'sort=date_desc' for an app's rank over time. Store enum: 'ios', 'android'. Chart type enum: 'top_free', 'top_paid', 'top_grossing', 'new'. Platform enum (Apple device platforms, ios charts only): 'phone', 'pad', 'mac'. Sort enum: 'rank', 'rank_desc', 'date_desc'.
+Search the app-charts dataset. Searches daily top-chart snapshots scraped from the iOS App Store and Google Play, stored in a search index (one document per chart × snapshot × rank). With no 'date' the latest snapshot is returned (today's chart); pair 'app_id' with 'sort=date_desc' for an app's rank over time. Store enum: 'ios', 'android'. Chart type enum: 'top_free', 'top_paid', 'top_grossing', 'new'. Platform enum (Apple device platforms, ios charts only): 'phone', 'pad', 'mac'. Sort enum: 'rank', 'rank_desc', 'date_desc'. Billing: this search costs 1 credit per record returned, with a minimum of 2 (an empty result costs 2, a full page of 100 costs 100).
 
 ### `datasets_apps_reviews_search`
 
-Search the app-reviews dataset. Searches user reviews scraped from the iOS App Store and Google Play, stored in a search index (one document per review). Store enum: 'ios', 'android'. Sort enum: 'recent', 'score_desc', 'score_asc', 'helpful_desc'.
+Search the app-reviews dataset. Searches user reviews scraped from the iOS App Store and Google Play, stored in a search index (one document per review). Store enum: 'ios', 'android'. Sort enum: 'recent', 'score_desc', 'score_asc', 'helpful_desc'. Billing: this search costs 1 credit per record returned, with a minimum of 2 (an empty result costs 2, a full page of 100 costs 100).
 
 ### `datasets_apps_search`
 
-Search the apps-intelligence dataset. Searches resolved iOS App Store and Google Play apps stored in a search index. Store enum: 'ios', 'android', 'both'. Platform enum (Apple device platforms, ios records only): 'phone', 'pad', 'mac', 'tv', 'watch', 'vision'. Sort enum: 'relevance', 'rating_desc', 'reviews_desc', 'installs_desc', 'updated_at_desc', 'popularity_desc'.
+Search the apps-intelligence dataset. Searches resolved iOS App Store and Google Play apps stored in a search index. Store enum: 'ios', 'android', 'both'. Platform enum (Apple device platforms, ios records only): 'phone', 'pad', 'mac', 'tv', 'watch', 'vision'. Sort enum: 'relevance', 'rating_desc', 'reviews_desc', 'installs_desc', 'updated_at_desc', 'popularity_desc'. Billing: this search costs 1 credit per record returned, with a minimum of 2 (an empty result costs 2, a full page of 100 costs 100).
 
 ### `datasets_bbb_businesses_facets`
 
-Facet the BBB businesses dataset. Returns distribution counts over the BBB businesses index (dataset id enum value 'bbb-businesses'), honoring the same filters as search. Facet enum: 'category', 'state', 'city', 'rating', 'accredited', 'entity_type', 'run_id', 'alert_title', 'has_alerts'.
+Facet the BBB businesses dataset. Returns the values of one field of the BBB businesses index (dataset id enum value 'bbb-businesses') with the number of records for each, honoring the same filters as search. Facet enum: 'country', 'category', 'state', 'city', 'rating', 'accredited', 'entity_type', 'run_id', 'alert_title', 'has_alerts'. country enum: 'us', 'ca'. Values come most frequent first, 50 per page by default; page through all of them with 'limit' (up to 1000) and 'offset' while 'has_more' is true. The response also returns 'total' (records matching the filters), 'total_values' (distinct values) and 'missing' (records with no value for the facet), so the counts can be checked against the total. Values of the 'accredited' and 'has_alerts' facets are '1' (true) and '0' (false). Use it to split a search that would exceed 10,000 records: 'facet=state' lists every state and province, and 'facet=city' with a 'state' filter lists every city in it.
 
 ### `datasets_bbb_businesses_item`
 
@@ -2498,7 +2498,7 @@ Get a business from the BBB businesses dataset. Returns one business by id from 
 
 ### `datasets_bbb_businesses_search`
 
-Search the BBB businesses dataset. Searches the BBB (Better Business Bureau) businesses index (dataset id enum value 'bbb-businesses') — business profiles crawled from bbb.org's own search/category-browse pages: computed A+-F letter-grade rating, paid-accreditation status, category, contact info, business details, operating hours, and products/services. Complaints, full reviews, and the full "reasons for rating"/service-area detail are NOT embedded here; each record instead carries complaints_url/reviews_url/more_info_url pointing at the live bbb-business-complaints/bbb-business-reviews/bbb-business-more-info endpoints for on-demand lookup. rating enum: 'A+', 'A', 'A-', 'B+', 'B', 'B-', 'C+', 'C', 'C-', 'D+', 'D', 'D-', 'F'. Each record also stores BBB's complaint and review counts (total_complaints and related fields) and the BBB alerts on the profile (has_alerts, alert_titles, alerts[] with full text), so businesses with complaints or with a given alert can be listed without calling the live endpoints; these fields are filled as records are re-crawled and are absent on a record not refreshed since they were added. sort enum: 'relevance', 'rating_desc', 'rating_asc', 'accredited_first', 'name_asc', 'years_in_business_desc', 'complaints_desc'. Billing: this search costs 1 credit per record returned, with a minimum of 2 (an empty result costs 2, a full page of 100 costs 100); the item and facets endpoints cost 1.
+Search the BBB businesses dataset. Searches the BBB (Better Business Bureau) businesses index (dataset id enum value 'bbb-businesses') — business profiles crawled from bbb.org's own search/category-browse pages: computed A+-F letter-grade rating, paid-accreditation status, category, contact info, business details, operating hours, and products/services. Complaints, full reviews, and the full "reasons for rating"/service-area detail are NOT embedded here; each record instead carries complaints_url/reviews_url/more_info_url pointing at the live bbb-business-complaints/bbb-business-reviews/bbb-business-more-info endpoints for on-demand lookup. rating enum: 'A+', 'A', 'A-', 'B+', 'B', 'B-', 'C+', 'C', 'C-', 'D+', 'D', 'D-', 'F'. Each record also stores BBB's complaint and review counts (total_complaints and related fields) and the BBB alerts on the profile (has_alerts, alert_titles, alerts[] with full text), so businesses with complaints or with a given alert can be listed without calling the live endpoints; these fields are filled as records are re-crawled and are absent on a record not refreshed since they were added. sort enum: 'relevance', 'rating_desc', 'rating_asc', 'accredited_first', 'name_asc', 'years_in_business_desc', 'complaints_desc'. country enum: 'us', 'ca'. A query returns at most 10,000 records; to read more, split it with the values and counts from the facets endpoint (for example one request per state, then per city) so each part stays under that limit. Billing: this search costs 1 credit per record returned, with a minimum of 2 (an empty result costs 2, a full page of 100 costs 100); the item and facets endpoints cost 1.
 
 ### `datasets_bbb_scamtracker_reports_facets`
 
@@ -2522,7 +2522,7 @@ Get a Box Office Mojo title from the dataset. Returns one Box Office Mojo datase
 
 ### `datasets_boxofficemojo_search`
 
-Search the Box Office Mojo dataset. Searches theatrical box-office records from public Box Office Mojo charts and title pages, stored in a search index. Filter by title id, year, franchise/brand/genre, gross band, lifetime top-1000 membership, hydration status, and worldwide/domestic gross ranges. Sort enum: 'relevance', 'worldwide_desc', 'domestic_desc', 'peak_worldwide_desc', 'lifetime_rank_asc', 'year_desc', 'year_asc'. gross_band enum: 'under_50m', '50_100m', '100_250m', '250_500m', '500m_1b', 'over_1b'.
+Search the Box Office Mojo dataset. Searches theatrical box-office records from public Box Office Mojo charts and title pages, stored in a search index. Filter by title id, year, franchise/brand/genre, gross band, lifetime top-1000 membership, hydration status, and worldwide/domestic gross ranges. Sort enum: 'relevance', 'worldwide_desc', 'domestic_desc', 'peak_worldwide_desc', 'lifetime_rank_asc', 'year_desc', 'year_asc'. gross_band enum: 'under_50m', '50_100m', '100_250m', '250_500m', '500m_1b', 'over_1b'. Billing: this search costs 1 credit per record returned, with a minimum of 2 (an empty result costs 2, a full page of 100 costs 100).
 
 ### `datasets_chrome_extensions_changes`
 
@@ -2546,15 +2546,15 @@ Get Chrome Web Store dataset metrics. Returns chart-ready coverage, adoption, ra
 
 ### `datasets_chrome_extensions_search`
 
-Search the Chrome Web Store dataset. Searches stored Chrome Web Store item snapshots. Item type enum: 'extension', 'theme', 'app', 'unknown'. Sort enum: 'relevance', 'users_desc', 'rating_desc', 'reviews_desc', 'updated_desc', 'trending_desc'. Status enum: 'active', 'removed'. Manifest version enum: '2', '3'.
+Search the Chrome Web Store dataset. Searches stored Chrome Web Store item snapshots. Item type enum: 'extension', 'theme', 'app', 'unknown'. Sort enum: 'relevance', 'users_desc', 'rating_desc', 'reviews_desc', 'updated_desc', 'trending_desc'. Status enum: 'active', 'removed'. Manifest version enum: '2', '3'. Billing: this search costs 1 credit per record returned, with a minimum of 2 (an empty result costs 2, a full page of 100 costs 100).
 
 ### `datasets_chrome_extensions_trending`
 
-Get trending Chrome Web Store items. Returns stored Chrome Web Store items ranked by the latest observed user and rating-count movement. Filters match the search endpoint; sort is fixed to 'trending_desc'.
+Get trending Chrome Web Store items. Returns stored Chrome Web Store items ranked by the latest observed user and rating-count movement. Filters match the search endpoint; sort is fixed to 'trending_desc'. Billing: this endpoint costs 1 credit per record returned, with a minimum of 2 (an empty result costs 2, a full page of 100 costs 100).
 
 ### `datasets_creators_search`
 
-Search the TikTok creators dataset. Searches TikTok creators stored in a search index (one document per creator), with follower counts, verified status, niche, and engagement. Deleted and private accounts are excluded by default; set 'include_inactive=true' to include them for historical lookups. Sort enum: 'followers_desc', 'engagement_desc', 'engagement_qualified_desc', 'likes_desc', 'relevance'. Coverage note: 'followers_desc', 'likes_desc', and 'relevance' are backed by profile fields present across the full dataset; the post-level engagement metrics ('engagement_rate', 'avg_views', and the nested 'post_stats' object) and the 'engagement_desc'/'engagement_qualified_desc' sorts are currently populated for a growing subset of creators, prioritizing the highest-reach accounts. Creators without these metrics are still returned but sort last under 'engagement_desc' and omit those fields; 'engagement_qualified_desc' excludes them outright (they cannot clear its floors). 'engagement_desc' ranks by raw 'engagement_rate' with no eligibility floor — it surfaces a real stale-record + ratio-by-design trap: an account whose last real post was years ago can still carry an unrealistic rate computed from a handful of old posts. 'engagement_qualified_desc' is the same metric restricted to creators with a recent post ('last_post_at' within 90 days), a minimum reach ('avg_views >= 10000') and sample size ('post_stats.sampled_posts >= 10'), and a sanity ceiling ('engagement_rate <= 50%') — use this, not the raw sort, for a "best engagement" leaderboard. Sound fields: 'post_stats.top_sounds' holds only a creator's FIVE most-used sounds from the sampled posts, ranked by use count with ties broken by lowest 'music_id', so it is a top-5 view and not the creator's full sound list; 'post_stats.distinct_sounds' gives the true number of different sounds the sample used. Use each sound's 'original' boolean to tell TikTok-generated original audio from catalogue tracks - do NOT infer it from the title, because TikTok localizes the original-audio label ('sonido original', 'som original', 'оригинальный звук', and at least fifteen more), so a title match silently reclassifies original audio as named tracks.
+Search the TikTok creators dataset. Searches TikTok creators stored in a search index (one document per creator), with follower counts, verified status, niche, and engagement. Deleted and private accounts are excluded by default; set 'include_inactive=true' to include them for historical lookups. Sort enum: 'followers_desc', 'engagement_desc', 'engagement_qualified_desc', 'likes_desc', 'relevance'. Coverage note: 'followers_desc', 'likes_desc', and 'relevance' are backed by profile fields present across the full dataset; the post-level engagement metrics ('engagement_rate', 'avg_views', and the nested 'post_stats' object) and the 'engagement_desc'/'engagement_qualified_desc' sorts are currently populated for a growing subset of creators, prioritizing the highest-reach accounts. Creators without these metrics are still returned but sort last under 'engagement_desc' and omit those fields; 'engagement_qualified_desc' excludes them outright (they cannot clear its floors). 'engagement_desc' ranks by raw 'engagement_rate' with no eligibility floor — it surfaces a real stale-record + ratio-by-design trap: an account whose last real post was years ago can still carry an unrealistic rate computed from a handful of old posts. 'engagement_qualified_desc' is the same metric restricted to creators with a recent post ('last_post_at' within 90 days), a minimum reach ('avg_views >= 10000') and sample size ('post_stats.sampled_posts >= 10'), and a sanity ceiling ('engagement_rate <= 50%') — use this, not the raw sort, for a "best engagement" leaderboard. Sound fields: 'post_stats.top_sounds' holds only a creator's FIVE most-used sounds from the sampled posts, ranked by use count with ties broken by lowest 'music_id', so it is a top-5 view and not the creator's full sound list; 'post_stats.distinct_sounds' gives the true number of different sounds the sample used. Use each sound's 'original' boolean to tell TikTok-generated original audio from catalogue tracks - do NOT infer it from the title, because TikTok localizes the original-audio label ('sonido original', 'som original', 'оригинальный звук', and at least fifteen more), so a title match silently reclassifies original audio as named tracks. Billing: this search costs 1 credit per record returned, with a minimum of 2 (an empty result costs 2, a full page of 100 costs 100).
 
 ### `datasets_doordash_stores_facets`
 
@@ -2566,11 +2566,11 @@ Get a stored DoorDash store. Returns one stored DoorDash store by its DoorDash s
 
 ### `datasets_doordash_stores_nearby`
 
-Find nearby stored DoorDash stores. Returns stored DoorDash stores within a radius of a point, nearest first, from dataset id 'doordash-stores'. lat, lon, and radius_m are required. Unlike the live /doordash/search endpoint (which is a proximity search capped at roughly five stores), this queries the stored directory, so it can return every discovered store in the radius. Coverage is best-effort rather than provably exhaustive: a store DoorDash never surfaced, or one not yet hydrated with coordinates, will not appear.
+Find nearby stored DoorDash stores. Returns stored DoorDash stores within a radius of a point, nearest first, from dataset id 'doordash-stores'. lat, lon, and radius_m are required. Unlike the live /doordash/search endpoint (which is a proximity search capped at roughly five stores), this queries the stored directory, so it can return every discovered store in the radius. Coverage is best-effort rather than provably exhaustive: a store DoorDash never surfaced, or one not yet hydrated with coordinates, will not appear. Billing: this endpoint costs 1 credit per record returned, with a minimum of 2 (an empty result costs 2, a full page of 100 costs 100).
 
 ### `datasets_doordash_stores_search`
 
-Search the DoorDash store directory. Searches the DoorDash merchant-location directory (dataset id 'doordash-stores'), built by grid-tiling the anonymous guest Explore feed and hydrating every discovered store. Identity and marketplace fields (name, marketplace tags, price range, ratings, DashPass eligibility) come from Explore; contact, address, and coordinates come from the hydration pass, so a store that has not been hydrated yet can appear without them. 'display_status', 'display_asap_time', 'asap_available', and 'pickup_available' are a point-in-time observation of the PICKUP surface at crawl time, not a durable capability. Geographic coverage is best-effort: Explore caps at 40 stores per call with no pagination, so the census saturates a tile rather than draining it. Supports full-text 'q', 'country'/'state'/'city'/'tag' filters, 'dash_pass_only', 'min_price'/'max_price'/'min_rating', 'lat'/'lon'/'radius_m' radius filtering, and 'sort' (relevance, rating, distance, distance_asc). 'sort=relevance' ranks by text-match score when 'q' is supplied; without 'q' it sorts by store name. Use 'pagination=cursor' and the returned 'next_cursor' to enumerate beyond the 10,000-result offset window against a point-in-time snapshot.
+Search the DoorDash store directory. Searches the DoorDash merchant-location directory (dataset id 'doordash-stores'), built by grid-tiling the anonymous guest Explore feed and hydrating every discovered store. Identity and marketplace fields (name, marketplace tags, price range, ratings, DashPass eligibility) come from Explore; contact, address, and coordinates come from the hydration pass, so a store that has not been hydrated yet can appear without them. 'display_status', 'display_asap_time', 'asap_available', and 'pickup_available' are a point-in-time observation of the PICKUP surface at crawl time, not a durable capability. Geographic coverage is best-effort: Explore caps at 40 stores per call with no pagination, so the census saturates a tile rather than draining it. Supports full-text 'q', 'country'/'state'/'city'/'tag' filters, 'dash_pass_only', 'min_price'/'max_price'/'min_rating', 'lat'/'lon'/'radius_m' radius filtering, and 'sort' (relevance, rating, distance, distance_asc). 'sort=relevance' ranks by text-match score when 'q' is supplied; without 'q' it sorts by store name. Use 'pagination=cursor' and the returned 'next_cursor' to enumerate beyond the 10,000-result offset window against a point-in-time snapshot. Billing: this search costs 1 credit per record returned, with a minimum of 2 (an empty result costs 2, a full page of 100 costs 100).
 
 ### `datasets_facebook_pages_facets`
 
@@ -2582,7 +2582,7 @@ Get a Facebook Page from the dataset. Returns one Facebook Page record by page i
 
 ### `datasets_facebook_pages_search`
 
-Search the Facebook Pages dataset. Searches public Facebook Page contact records stored in a search index — website, email, phone, WhatsApp, category and like count, discovered through business-search enumeration, domain-scoped scans, and Wikidata seeding, then hydrated from each Page's public About tab. Sort enum: 'relevance', 'likes_desc', 'likes_asc', 'hydrated_at_desc', 'hydrated_at_asc'.
+Search the Facebook Pages dataset. Searches public Facebook Page contact records stored in a search index — website, email, phone, WhatsApp, category and like count, discovered through business-search enumeration, domain-scoped scans, and Wikidata seeding, then hydrated from each Page's public About tab. Sort enum: 'relevance', 'likes_desc', 'likes_asc', 'hydrated_at_desc', 'hydrated_at_asc'. Billing: this search costs 1 credit per record returned, with a minimum of 2 (an empty result costs 2, a full page of 100 costs 100).
 
 ### `datasets_github_users_facets`
 
@@ -2594,11 +2594,11 @@ Get a GitHub user from the dataset. Returns one enriched GitHub user record by l
 
 ### `datasets_github_users_nearby`
 
-Search nearby GitHub users. Searches enriched GitHub users near a coordinate, sorted by distance, in dataset id enum value 'github-users'. influence_tier enum: 'nano', 'micro', 'mid', 'macro', 'mega'.
+Search nearby GitHub users. Searches enriched GitHub users near a coordinate, sorted by distance, in dataset id enum value 'github-users'. influence_tier enum: 'nano', 'micro', 'mid', 'macro', 'mega'. Billing: this endpoint costs 1 credit per record returned, with a minimum of 2 (an empty result costs 2, a full page of 100 costs 100).
 
 ### `datasets_github_users_search`
 
-Search the GitHub users dataset. Searches enriched public GitHub user profiles stored in a search index. influence_tier enum: 'nano', 'micro', 'mid', 'macro', 'mega'. Sort enum: 'relevance', 'rank_score_desc', 'followers_desc', 'account_age_desc', 'account_age_asc', 'distance_asc'.
+Search the GitHub users dataset. Searches enriched public GitHub user profiles stored in a search index. influence_tier enum: 'nano', 'micro', 'mid', 'macro', 'mega'. Sort enum: 'relevance', 'rank_score_desc', 'followers_desc', 'account_age_desc', 'account_age_asc', 'distance_asc'. Billing: this search costs 1 credit per record returned, with a minimum of 2 (an empty result costs 2, a full page of 100 costs 100).
 
 ### `datasets_goodreads_authors_facets`
 
@@ -2610,7 +2610,7 @@ Get a Goodreads author from dataset. Returns one crawled Goodreads author profil
 
 ### `datasets_goodreads_authors_search`
 
-Search Goodreads authors dataset. Searches the crawled public Goodreads author profile index. Authors are discovered as a byproduct of the books crawl (every credited book contributor, plus the genre/search/list seed sources) — not a full catalog. Sort enum: 'relevance', 'rating_desc', 'reviews_desc', 'name_asc'.
+Search Goodreads authors dataset. Searches the crawled public Goodreads author profile index. Authors are discovered as a byproduct of the books crawl (every credited book contributor, plus the genre/search/list seed sources) — not a full catalog. Sort enum: 'relevance', 'rating_desc', 'reviews_desc', 'name_asc'. Billing: this search costs 1 credit per record returned, with a minimum of 2 (an empty result costs 2, a full page of 100 costs 100).
 
 ### `datasets_goodreads_books_facets`
 
@@ -2622,7 +2622,7 @@ Get a Goodreads book from dataset. Returns one crawled Goodreads book record by 
 
 ### `datasets_goodreads_books_search`
 
-Search Goodreads books dataset. Searches the crawled public Goodreads book catalog stored in a search index. Discovered from curated Listopia "best of" lists, a search-term sweep, and author bibliography expansion — not a full catalog. Sort enum: 'relevance', 'rating_desc', 'reviews_desc', 'publication_desc', 'publication_asc', 'pages_desc', 'pages_asc', 'title_asc'.
+Search Goodreads books dataset. Searches the crawled public Goodreads book catalog stored in a search index. Discovered from curated Listopia "best of" lists, a search-term sweep, and author bibliography expansion — not a full catalog. Sort enum: 'relevance', 'rating_desc', 'reviews_desc', 'publication_desc', 'publication_asc', 'pages_desc', 'pages_asc', 'title_asc'. Billing: this search costs 1 credit per record returned, with a minimum of 2 (an empty result costs 2, a full page of 100 costs 100).
 
 ### `datasets_google_map_facets`
 
@@ -2634,11 +2634,11 @@ Get a stored Google Maps business. Returns one stored Google Maps business by Go
 
 ### `datasets_google_map_nearby`
 
-Search nearby stored Google Maps businesses. Searches stored Google Maps businesses near a coordinate in dataset id enum value 'google-map-businesses'. 'category' is the exact Google Maps category label returned for the business locale; it can be localized, non-ASCII, or contain punctuation, so use the category facet to discover exact filter values. A 'rating' of 'null' means no aggregate rating is available. A 'review_count' of 'null' means Google did not return a count; numeric '0' means Google confirmed zero reviews. 'min_rating' above 0 excludes unrated businesses.
+Search nearby stored Google Maps businesses. Searches stored Google Maps businesses near a coordinate in dataset id enum value 'google-map-businesses'. 'category' is the exact Google Maps category label returned for the business locale; it can be localized, non-ASCII, or contain punctuation, so use the category facet to discover exact filter values. A 'rating' of 'null' means no aggregate rating is available. A 'review_count' of 'null' means Google did not return a count; numeric '0' means Google confirmed zero reviews. 'min_rating' above 0 excludes unrated businesses. Billing: this endpoint costs 1 credit per record returned, with a minimum of 2 (an empty result costs 2, a full page of 100 costs 100).
 
 ### `datasets_google_map_search`
 
-Search stored Google Maps businesses. Searches Google Maps business records stored in a search index. Sort enum: 'relevance', 'updated_at_desc', 'rating_desc', 'review_count_desc', 'distance_asc'. 'category' is the exact Google Maps category label returned for the business locale; it can be localized, non-ASCII, or contain punctuation, so use the category facet to discover exact filter values. A 'rating' of 'null' means no aggregate rating is available. A 'review_count' of 'null' means Google did not return a count; numeric '0' means Google confirmed zero reviews. 'rating_desc' sorts unrated businesses last, and 'min_rating' above 0 excludes them. Use 'has_geo=false' to isolate locationless service-area businesses (which have a 'null' 'geo'). A 'permanently_closed' of 'true' means Google marks the business permanently closed; 'false' means a crawl confirmed it does not; 'null' means the business has not been status-checked since capture shipped on 2026-08-31 and is UNKNOWN, not open — so any total computed from this dataset includes an unknown number of closed businesses. Use 'permanently_closed=false' to exclude the confirmed-closed ones.
+Search stored Google Maps businesses. Searches Google Maps business records stored in a search index. Sort enum: 'relevance', 'updated_at_desc', 'rating_desc', 'review_count_desc', 'distance_asc'. 'category' is the exact Google Maps category label returned for the business locale; it can be localized, non-ASCII, or contain punctuation, so use the category facet to discover exact filter values. A 'rating' of 'null' means no aggregate rating is available. A 'review_count' of 'null' means Google did not return a count; numeric '0' means Google confirmed zero reviews. 'rating_desc' sorts unrated businesses last, and 'min_rating' above 0 excludes them. Use 'has_geo=false' to isolate locationless service-area businesses (which have a 'null' 'geo'). A 'permanently_closed' of 'true' means Google marks the business permanently closed; 'false' means a crawl confirmed it does not; 'null' means the business has not been status-checked since capture shipped on 2026-08-31 and is UNKNOWN, not open — so any total computed from this dataset includes an unknown number of closed businesses. Use 'permanently_closed=false' to exclude the confirmed-closed ones. Billing: this search costs 1 credit per record returned, with a minimum of 2 (an empty result costs 2, a full page of 100 costs 100).
 
 ### `datasets_housing_markets_facets`
 
@@ -2650,7 +2650,7 @@ Get a US housing market record from the dataset. Returns one housing-market reco
 
 ### `datasets_housing_markets_search`
 
-Search the US housing markets dataset. Searches monthly Redfin housing-market statistics per region and property type since 2012, joined to Census ACS income for affordability metrics. region_type enum: 'national', 'metro', 'county', 'city', 'zip'. property_type enum: 'All Residential', 'Single Family Residential', 'Condo/Co-op', 'Townhouse', 'Multi-Family (2-4 Unit)', 'Single Units Only'. Sort enum: 'relevance', 'price_desc', 'price_asc', 'list_price_desc', 'list_price_asc', 'price_to_income_desc', 'price_to_income_asc', 'salary_to_buy_desc', 'salary_to_buy_asc', 'dom_asc', 'dom_desc', 'inventory_desc', 'homes_sold_desc', 'period_desc'. Use 'latest=true' for the most recent period per region series.
+Search the US housing markets dataset. Searches monthly Redfin housing-market statistics per region and property type since 2012, joined to Census ACS income for affordability metrics. region_type enum: 'national', 'metro', 'county', 'city', 'zip'. property_type enum: 'All Residential', 'Single Family Residential', 'Condo/Co-op', 'Townhouse', 'Multi-Family (2-4 Unit)', 'Single Units Only'. Sort enum: 'relevance', 'price_desc', 'price_asc', 'list_price_desc', 'list_price_asc', 'price_to_income_desc', 'price_to_income_asc', 'salary_to_buy_desc', 'salary_to_buy_asc', 'dom_asc', 'dom_desc', 'inventory_desc', 'homes_sold_desc', 'period_desc'. Use 'latest=true' for the most recent period per region series. Billing: this search costs 1 credit per record returned, with a minimum of 2 (an empty result costs 2, a full page of 100 costs 100).
 
 ### `datasets_instagram_users_facets`
 
@@ -2662,11 +2662,11 @@ Get an Instagram user from the dataset. Returns one Instagram user record by use
 
 ### `datasets_instagram_users_search`
 
-Search the Instagram users dataset. Searches public Instagram user profiles stored in a search index. Sort enum: 'relevance', 'followers_desc', 'followers_asc', 'crawled_at_desc', 'crawled_at_asc', 'created_at_desc', 'created_at_asc'.
+Search the Instagram users dataset. Searches public Instagram user profiles stored in a search index. Sort enum: 'relevance', 'followers_desc', 'followers_asc', 'crawled_at_desc', 'crawled_at_asc', 'created_at_desc', 'created_at_asc'. Billing: this search costs 1 credit per record returned, with a minimum of 2 (an empty result costs 2, a full page of 100 costs 100).
 
 ### `datasets_jobs_companies`
 
-Find which companies are hiring. Searches the discovered company board registry — which companies are hiring, on which ATS (or, for the 5 single-company big-tech providers, which platform), with how many open roles. Set sponsors_visa=true to keep companies with certified employer filings in recent public U.S. Department of Labor LCA disclosure data. This is company-level historical evidence, not a guarantee for a specific role or candidate. provider enum: 'greenhouse', 'lever', 'ashby', 'workday', 'smartrecruiters', 'workable', 'recruitee', 'rippling', 'personio', 'teamtailor', 'oracle', 'ukg', 'icims', 'eightfold', 'gem', 'pinpoint', 'amazon-jobs', 'apple-jobs', 'google-jobs', 'meta-jobs', 'tesla-jobs'. status enum: 'active', 'empty', 'gone', 'blocked', 'pending', 'invalid'. sort enum: 'open_desc', 'company_asc', 'crawled_desc'.
+Find which companies are hiring. Searches the discovered company board registry — which companies are hiring, on which ATS (or, for the 5 single-company big-tech providers, which platform), with how many open roles. Set sponsors_visa=true to keep companies with certified employer filings in recent public U.S. Department of Labor LCA disclosure data. This is company-level historical evidence, not a guarantee for a specific role or candidate. provider enum: 'greenhouse', 'lever', 'ashby', 'workday', 'smartrecruiters', 'workable', 'recruitee', 'rippling', 'personio', 'teamtailor', 'oracle', 'ukg', 'icims', 'eightfold', 'gem', 'pinpoint', 'amazon-jobs', 'apple-jobs', 'google-jobs', 'meta-jobs', 'tesla-jobs'. status enum: 'active', 'empty', 'gone', 'blocked', 'pending', 'invalid'. sort enum: 'open_desc', 'company_asc', 'crawled_desc'. Billing: this endpoint costs 1 credit per 10 records returned, rounded up, with a minimum of 1 (up to 10 records cost 1, a full page of 100 costs 10).
 
 ### `datasets_jobs_company_item`
 
@@ -2682,11 +2682,11 @@ Get a single posting from the jobs dataset. Returns one crawled job posting by i
 
 ### `datasets_jobs_nearby`
 
-Find postings near a coordinate. Finds crawled job postings within 'radius_km' of a 'lat'/'lon', nearest first. Only geocoded postings participate (the geo-enrich worker back-fills coordinates from each posting's location). Open roles only by default. provider enum: 'greenhouse', 'lever', 'ashby', 'workday', 'smartrecruiters', 'workable', 'recruitee', 'rippling', 'personio', 'teamtailor', 'oracle', 'ukg', 'icims', 'eightfold', 'gem', 'pinpoint', 'amazon-jobs', 'apple-jobs', 'google-jobs', 'meta-jobs', 'tesla-jobs'.
+Find postings near a coordinate. Finds crawled job postings within 'radius_km' of a 'lat'/'lon', nearest first. Only geocoded postings participate (the geo-enrich worker back-fills coordinates from each posting's location). Open roles only by default. provider enum: 'greenhouse', 'lever', 'ashby', 'workday', 'smartrecruiters', 'workable', 'recruitee', 'rippling', 'personio', 'teamtailor', 'oracle', 'ukg', 'icims', 'eightfold', 'gem', 'pinpoint', 'amazon-jobs', 'apple-jobs', 'google-jobs', 'meta-jobs', 'tesla-jobs'. Billing: this endpoint costs 1 credit per 10 records returned, rounded up, with a minimum of 1 (up to 10 records cost 1, a full page of 100 costs 10).
 
 ### `datasets_jobs_search`
 
-Search the jobs dataset (all companies' live postings). Full-text + faceted search over every job posting crawled from every discovered company ATS board (Greenhouse, Lever, Ashby, Workday, SmartRecruiters, Workable, Recruitee, Rippling, Personio, Teamtailor, Oracle, UKG, iCIMS, Eightfold, Gem, Pinpoint) plus 5 single-company big-tech careers platforms (Amazon, Apple, Google, Meta, Tesla). Open roles only by default (set include_closed=true for historical/filled roles). Salary is parsed from a structured field when the provider has one, or from an explicit pay figure stated in the description otherwise, so coverage varies by posting rather than by provider; min_salary/max_salary filter on it and require salary_currency, since comparing raw compensation numbers across currencies is meaningless. Location is also exposed as structured city/state/country fields alongside the free-text location string, so city/state/country filter on an exact match of those parsed components rather than substring-matching the display string. job_family is an exact level-2 ISCO family label assigned from ESCO occupation evidence; ambiguous postings remain unclassified and do not match that filter. employment_type is never populated for google-jobs/meta-jobs, and posted_at (so sort=posted_desc) is never populated for meta-jobs/tesla-jobs -- their upstream APIs expose no such field. provider enum: 'greenhouse', 'lever', 'ashby', 'workday', 'smartrecruiters', 'workable', 'recruitee', 'rippling', 'personio', 'teamtailor', 'oracle', 'ukg', 'icims', 'eightfold', 'gem', 'pinpoint', 'amazon-jobs', 'apple-jobs', 'google-jobs', 'meta-jobs', 'tesla-jobs'. workplace_type enum: 'onsite', 'hybrid', 'remote'. sort enum: 'relevance', 'posted_desc', 'company_asc'.
+Search the jobs dataset (all companies' live postings). Full-text + faceted search over every job posting crawled from every discovered company ATS board (Greenhouse, Lever, Ashby, Workday, SmartRecruiters, Workable, Recruitee, Rippling, Personio, Teamtailor, Oracle, UKG, iCIMS, Eightfold, Gem, Pinpoint) plus 5 single-company big-tech careers platforms (Amazon, Apple, Google, Meta, Tesla). Open roles only by default (set include_closed=true for historical/filled roles). Salary is parsed from a structured field when the provider has one, or from an explicit pay figure stated in the description otherwise, so coverage varies by posting rather than by provider; min_salary/max_salary filter on it and require salary_currency, since comparing raw compensation numbers across currencies is meaningless. Location is also exposed as structured city/state/country fields alongside the free-text location string, so city/state/country filter on an exact match of those parsed components rather than substring-matching the display string. job_family is an exact level-2 ISCO family label assigned from ESCO occupation evidence; ambiguous postings remain unclassified and do not match that filter. employment_type is never populated for google-jobs/meta-jobs, and posted_at (so sort=posted_desc) is never populated for meta-jobs/tesla-jobs -- their upstream APIs expose no such field. provider enum: 'greenhouse', 'lever', 'ashby', 'workday', 'smartrecruiters', 'workable', 'recruitee', 'rippling', 'personio', 'teamtailor', 'oracle', 'ukg', 'icims', 'eightfold', 'gem', 'pinpoint', 'amazon-jobs', 'apple-jobs', 'google-jobs', 'meta-jobs', 'tesla-jobs'. workplace_type enum: 'onsite', 'hybrid', 'remote'. sort enum: 'relevance', 'posted_desc', 'company_asc'. Billing: this search costs 1 credit per 10 records returned, rounded up, with a minimum of 1 (up to 10 records cost 1, a full page of 100 costs 10).
 
 ### `datasets_journalists_facets`
 
@@ -2698,7 +2698,7 @@ Get a journalist from the journalists dataset. Returns one journalist by outlet 
 
 ### `datasets_journalists_search`
 
-Search the journalists dataset. Searches the journalists index (dataset id enum value 'journalists') — public journalist and reporter records crawled from news outlets' own staff/author pages, for PR outreach. Each record carries the outlet, title, best-effort beat topics, and any public contact info found on that outlet's own page, plus deterministic record_type, role_type, email_kind, and outreach-readiness quality signals. There is no cross-outlet upstream search; this dataset is built by crawling a curated roster of outlets ourselves. vertical enum: 'tech', 'crypto', 'marketing', 'consumer_tech', 'consumer_policy', 'cybersecurity', 'health', 'gaming', 'climate', 'business', 'entertainment', 'sports', 'legal', 'science', 'politics', 'real_estate', 'automotive', 'travel', 'food', 'education', 'design', 'film_tv', 'fashion', 'music', 'personal_finance', 'tech_independent', 'culture_independent', 'local_news', 'construction', 'banking', 'retail', 'aerospace_defense', 'energy', 'agriculture', 'local_business'. contact_type enum: 'email', 'social', 'none'. record_type enum: 'person', 'desk', 'organization', 'syndicated_byline', 'unknown'. role_type enum: 'staff', 'editor', 'reporter', 'contributor', 'freelancer', 'columnist', 'non_editorial', 'unknown'. email_kind enum: 'individual_work', 'individual_personal_public', 'shared_desk', 'tips_or_submissions', 'outlet_generic', 'unknown'. sort enum: 'relevance', 'name_asc', 'outlet_asc', 'crawled_desc', 'readiness_desc'.
+Search the journalists dataset. Searches the journalists index (dataset id enum value 'journalists') — public journalist and reporter records crawled from news outlets' own staff/author pages, for PR outreach. Each record carries the outlet, title, best-effort beat topics, and any public contact info found on that outlet's own page, plus deterministic record_type, role_type, email_kind, and outreach-readiness quality signals. There is no cross-outlet upstream search; this dataset is built by crawling a curated roster of outlets ourselves. vertical enum: 'tech', 'crypto', 'marketing', 'consumer_tech', 'consumer_policy', 'cybersecurity', 'health', 'gaming', 'climate', 'business', 'entertainment', 'sports', 'legal', 'science', 'politics', 'real_estate', 'automotive', 'travel', 'food', 'education', 'design', 'film_tv', 'fashion', 'music', 'personal_finance', 'tech_independent', 'culture_independent', 'local_news', 'construction', 'banking', 'retail', 'aerospace_defense', 'energy', 'agriculture', 'local_business'. contact_type enum: 'email', 'social', 'none'. record_type enum: 'person', 'desk', 'organization', 'syndicated_byline', 'unknown'. role_type enum: 'staff', 'editor', 'reporter', 'contributor', 'freelancer', 'columnist', 'non_editorial', 'unknown'. email_kind enum: 'individual_work', 'individual_personal_public', 'shared_desk', 'tips_or_submissions', 'outlet_generic', 'unknown'. sort enum: 'relevance', 'name_asc', 'outlet_asc', 'crawled_desc', 'readiness_desc'. Billing: this search costs 1 credit per record returned, with a minimum of 2 (an empty result costs 2, a full page of 100 costs 100).
 
 ### `datasets_list`
 
@@ -2714,7 +2714,7 @@ Get a site from the AI-readiness (llms.txt) dataset. Returns one site by its dom
 
 ### `datasets_llms_search`
 
-Search the AI-readiness (llms.txt) dataset. Searches the AI-readiness census of the top 1M sites (dataset id enum value 'llms') — one record per site describing whether it serves a real '/llms.txt' or '/llms-full.txt' (who produced it, what it links to and mentions) and what its '/robots.txt' says to 17 AI crawlers, next to a homepage control request. Search results omit the file bodies; read one site with the item endpoint. 'blocked' and 'error' states mean unknown, never absent. Sort enum: 'relevance', 'rank_asc', 'links_desc', 'bytes_desc', 'domain_asc', 'crawled_desc'. state and robots_state enum: 'present', 'absent', 'blocked', 'error', 'skipped'. source_kind enum: 'shopify_agent_template', 'seo_plugin', 'platform_default', 'parked', 'custom'. generator enum: 'yoast', 'aioseo', 'rankmath', 'wix', 'shopify', 'parked'. robots_default enum: 'allowed', 'partial', 'blocked'. content_signal_train enum: 'yes', 'no'. Crawler enum for blocks_all, blocks_any and not_blocked: 'GPTBot', 'OAI-SearchBot', 'ChatGPT-User', 'ClaudeBot', 'Claude-SearchBot', 'Claude-User', 'anthropic-ai', 'Google-Extended', 'PerplexityBot', 'Perplexity-User', 'CCBot', 'Bytespider', 'Applebot-Extended', 'Amazonbot', 'meta-externalagent', 'cohere-ai', 'Diffbot'. Site owners can ask for removal at privacy@crawlora.net.
+Search the AI-readiness (llms.txt) dataset. Searches the AI-readiness census of the top 1M sites (dataset id enum value 'llms') — one record per site describing whether it serves a real '/llms.txt' or '/llms-full.txt' (who produced it, what it links to and mentions) and what its '/robots.txt' says to 17 AI crawlers, next to a homepage control request. Search results omit the file bodies; read one site with the item endpoint. 'blocked' and 'error' states mean unknown, never absent. Sort enum: 'relevance', 'rank_asc', 'links_desc', 'bytes_desc', 'domain_asc', 'crawled_desc'. state and robots_state enum: 'present', 'absent', 'blocked', 'error', 'skipped'. source_kind enum: 'shopify_agent_template', 'seo_plugin', 'platform_default', 'parked', 'custom'. generator enum: 'yoast', 'aioseo', 'rankmath', 'wix', 'shopify', 'parked'. robots_default enum: 'allowed', 'partial', 'blocked'. content_signal_train enum: 'yes', 'no'. Crawler enum for blocks_all, blocks_any and not_blocked: 'GPTBot', 'OAI-SearchBot', 'ChatGPT-User', 'ClaudeBot', 'Claude-SearchBot', 'Claude-User', 'anthropic-ai', 'Google-Extended', 'PerplexityBot', 'Perplexity-User', 'CCBot', 'Bytespider', 'Applebot-Extended', 'Amazonbot', 'meta-externalagent', 'cohere-ai', 'Diffbot'. Site owners can ask for removal at privacy@crawlora.net. Billing: this search costs 1 credit per record returned, with a minimum of 2 (an empty result costs 2, a full page of 100 costs 100).
 
 ### `datasets_numbeo_cities_facets`
 
@@ -2726,7 +2726,7 @@ Get a Numbeo city from the dataset. Returns one composite Numbeo city record by 
 
 ### `datasets_numbeo_cities_search`
 
-Search the Numbeo cities dataset. Searches the composite Numbeo cities dataset, merged from the current global rankings of all seven index families (cost of living, quality of life, crime, health care, pollution, traffic, property investment). A city appears once it is ranked by at least one family; coverage varies per city. Sort enum: 'name_asc', 'cost_of_living_asc', 'cost_of_living_desc', 'quality_of_life_desc', 'safety_desc', 'crime_asc', 'health_care_desc', 'pollution_asc', 'traffic_asc'.
+Search the Numbeo cities dataset. Searches the composite Numbeo cities dataset, merged from the current global rankings of all seven index families (cost of living, quality of life, crime, health care, pollution, traffic, property investment). A city appears once it is ranked by at least one family; coverage varies per city. Sort enum: 'name_asc', 'cost_of_living_asc', 'cost_of_living_desc', 'quality_of_life_desc', 'safety_desc', 'crime_asc', 'health_care_desc', 'pollution_asc', 'traffic_asc'. Billing: this search costs 1 credit per record returned, with a minimum of 2 (an empty result costs 2, a full page of 100 costs 100).
 
 ### `datasets_numbeo_countries_item`
 
@@ -2734,7 +2734,7 @@ Get a Numbeo country from the dataset. Returns one composite Numbeo country reco
 
 ### `datasets_numbeo_countries_search`
 
-Search the Numbeo countries dataset. Searches the composite Numbeo countries dataset, merged from the current global by-country rankings of all seven index families. Sort enum: 'name_asc', 'cost_of_living_asc', 'cost_of_living_desc', 'quality_of_life_desc', 'safety_desc', 'crime_asc', 'health_care_desc', 'pollution_asc', 'traffic_asc'.
+Search the Numbeo countries dataset. Searches the composite Numbeo countries dataset, merged from the current global by-country rankings of all seven index families. Sort enum: 'name_asc', 'cost_of_living_asc', 'cost_of_living_desc', 'quality_of_life_desc', 'safety_desc', 'crime_asc', 'health_care_desc', 'pollution_asc', 'traffic_asc'. Billing: this search costs 1 credit per record returned, with a minimum of 2 (an empty result costs 2, a full page of 100 costs 100).
 
 ### `datasets_pitchbook_advisors_facets`
 
@@ -2746,7 +2746,7 @@ Get a PitchBook advisor from dataset. Returns one crawled PitchBook advisor reco
 
 ### `datasets_pitchbook_advisors_search`
 
-Search PitchBook advisors dataset. Searches the crawled public PitchBook advisor (service provider — e.g. investment bank, lender, financing advisory firm) profile catalog stored in a search index. Discovered from PitchBook's public sitemap. Sort enum: 'relevance', 'name_asc', 'year_founded_desc', 'recently_crawled_desc'.
+Search PitchBook advisors dataset. Searches the crawled public PitchBook advisor (service provider — e.g. investment bank, lender, financing advisory firm) profile catalog stored in a search index. Discovered from PitchBook's public sitemap. Sort enum: 'relevance', 'name_asc', 'year_founded_desc', 'recently_crawled_desc'. Billing: this search costs 1 credit per record returned, with a minimum of 2 (an empty result costs 2, a full page of 100 costs 100).
 
 ### `datasets_pitchbook_companies_facets`
 
@@ -2758,7 +2758,7 @@ Get a PitchBook company from dataset. Returns one crawled PitchBook company reco
 
 ### `datasets_pitchbook_companies_search`
 
-Search PitchBook companies dataset. Searches the crawled public PitchBook company profile catalog stored in a search index. Discovered from PitchBook's public sitemap. Sort enum: 'relevance', 'name_asc', 'year_founded_desc', 'investor_count_desc', 'recently_crawled_desc'.
+Search PitchBook companies dataset. Searches the crawled public PitchBook company profile catalog stored in a search index. Discovered from PitchBook's public sitemap. Sort enum: 'relevance', 'name_asc', 'year_founded_desc', 'investor_count_desc', 'recently_crawled_desc'. Billing: this search costs 1 credit per record returned, with a minimum of 2 (an empty result costs 2, a full page of 100 costs 100).
 
 ### `datasets_pitchbook_funds_facets`
 
@@ -2770,7 +2770,7 @@ Get a PitchBook fund from dataset. Returns one crawled PitchBook fund record by 
 
 ### `datasets_pitchbook_funds_search`
 
-Search PitchBook funds dataset. Searches the crawled public PitchBook fund profile catalog stored in a search index. Discovered from PitchBook's public sitemap. Sort enum: 'relevance', 'name_asc', 'vintage_desc', 'recently_crawled_desc'.
+Search PitchBook funds dataset. Searches the crawled public PitchBook fund profile catalog stored in a search index. Discovered from PitchBook's public sitemap. Sort enum: 'relevance', 'name_asc', 'vintage_desc', 'recently_crawled_desc'. Billing: this search costs 1 credit per record returned, with a minimum of 2 (an empty result costs 2, a full page of 100 costs 100).
 
 ### `datasets_pitchbook_investors_facets`
 
@@ -2782,7 +2782,7 @@ Get a PitchBook investor from dataset. Returns one crawled PitchBook investor re
 
 ### `datasets_pitchbook_investors_search`
 
-Search PitchBook investors dataset. Searches the crawled public PitchBook investor (fund manager/firm) profile catalog stored in a search index. Discovered from PitchBook's public sitemap. Sort enum: 'relevance', 'name_asc', 'portfolio_count_desc', 'recently_crawled_desc'.
+Search PitchBook investors dataset. Searches the crawled public PitchBook investor (fund manager/firm) profile catalog stored in a search index. Discovered from PitchBook's public sitemap. Sort enum: 'relevance', 'name_asc', 'portfolio_count_desc', 'recently_crawled_desc'. Billing: this search costs 1 credit per record returned, with a minimum of 2 (an empty result costs 2, a full page of 100 costs 100).
 
 ### `datasets_pitchbook_limited_partners_facets`
 
@@ -2794,7 +2794,7 @@ Get a PitchBook limited partner from dataset. Returns one crawled PitchBook limi
 
 ### `datasets_pitchbook_limited_partners_search`
 
-Search PitchBook limited partners dataset. Searches the crawled public PitchBook limited partner (institutional investor — e.g. pension fund, endowment, insurance company) profile catalog stored in a search index. Discovered from PitchBook's public sitemap. Some limited partner profiles have no FAQ section -- this is normal, not a sign of missing data. Sort enum: 'relevance', 'name_asc', 'year_founded_desc', 'recently_crawled_desc'.
+Search PitchBook limited partners dataset. Searches the crawled public PitchBook limited partner (institutional investor — e.g. pension fund, endowment, insurance company) profile catalog stored in a search index. Discovered from PitchBook's public sitemap. Some limited partner profiles have no FAQ section -- this is normal, not a sign of missing data. Sort enum: 'relevance', 'name_asc', 'year_founded_desc', 'recently_crawled_desc'. Billing: this search costs 1 credit per record returned, with a minimum of 2 (an empty result costs 2, a full page of 100 costs 100).
 
 ### `datasets_playstation_games_facets`
 
@@ -2806,7 +2806,7 @@ Get a PlayStation game from dataset. Returns one crawled PlayStation Store recor
 
 ### `datasets_playstation_games_search`
 
-Search PlayStation games dataset. Searches the crawled public PlayStation Store catalog stored in a search index. One row per product SKU (game, edition or add-on); concept_id / np_title_id group a title's SKUs. price_tier enum: 'free', 'under_5', '5_to_10', '10_to_20', '20_to_40', '40_to_60', '60_plus'. Sort enum: 'relevance', 'rating_desc', 'reviews_desc', 'price_asc', 'price_desc', 'discount_desc', 'release_desc', 'release_asc'.
+Search PlayStation games dataset. Searches the crawled public PlayStation Store catalog stored in a search index. One row per product SKU (game, edition or add-on); concept_id / np_title_id group a title's SKUs. price_tier enum: 'free', 'under_5', '5_to_10', '10_to_20', '20_to_40', '40_to_60', '60_plus'. Sort enum: 'relevance', 'rating_desc', 'reviews_desc', 'price_asc', 'price_desc', 'discount_desc', 'release_desc', 'release_asc'. Billing: this search costs 1 credit per record returned, with a minimum of 2 (an empty result costs 2, a full page of 100 costs 100).
 
 ### `datasets_producthunt_makers_facets`
 
@@ -2818,7 +2818,7 @@ Get a Product Hunt maker from the dataset. Returns one maker by Product Hunt use
 
 ### `datasets_producthunt_makers_search`
 
-Search the Product Hunt makers dataset. Searches Product Hunt makers from the dataset id enum value 'producthunt-makers' — public-profile records of the people who made products, with their footprint (products made, total upvotes, topics) for maker leaderboards. Public fields only. Sort enum: 'total_votes_desc', 'product_count_desc', 'followers_desc', 'relevance'.
+Search the Product Hunt makers dataset. Searches Product Hunt makers from the dataset id enum value 'producthunt-makers' — public-profile records of the people who made products, with their footprint (products made, total upvotes, topics) for maker leaderboards. Public fields only. Sort enum: 'total_votes_desc', 'product_count_desc', 'followers_desc', 'relevance'. Billing: this search costs 1 credit per record returned, with a minimum of 2 (an empty result costs 2, a full page of 100 costs 100).
 
 ### `datasets_producthunt_products_facets`
 
@@ -2830,7 +2830,7 @@ Get a Product Hunt product from the dataset. Returns one product by its Product 
 
 ### `datasets_producthunt_products_search`
 
-Search the Product Hunt products dataset. Searches individual Product Hunt launches from the dataset id enum value 'producthunt-products' — the searchable launch archive. Each result is one product with its topics, upvotes, ranks and launch history; description/website/twitter_url/pricing/makers are filled in as hydration runs. Sort enum: 'relevance', 'votes_desc', 'launched_desc', 'launched_asc', 'rating_desc', 'best_rank_asc'.
+Search the Product Hunt products dataset. Searches individual Product Hunt launches from the dataset id enum value 'producthunt-products' — the searchable launch archive. Each result is one product with its topics, upvotes, ranks and launch history; description/website/twitter_url/pricing/makers are filled in as hydration runs. Sort enum: 'relevance', 'votes_desc', 'launched_desc', 'launched_asc', 'rating_desc', 'best_rank_asc'. Billing: this search costs 1 credit per record returned, with a minimum of 2 (an empty result costs 2, a full page of 100 costs 100).
 
 ### `datasets_producthunt_trends_facets`
 
@@ -2838,11 +2838,11 @@ Facet the Product Hunt trends dataset. Returns suppressed distribution counts ov
 
 ### `datasets_producthunt_trends_search`
 
-Search the Product Hunt trends dataset. Returns aggregate Product Hunt launch trends from the dataset id enum value 'producthunt-trends'. Aggregate-only: each row is a category-over-time cell (a topic, optionally within a calendar period), reporting launch count, total and average upvotes, average rating and the top product — never an individual product record. Thin cells are suppressed. group_by enum: 'topic_month', 'topic_year', 'topic'. Sort enum: 'period_desc', 'period_asc', 'launch_count_desc', 'sum_votes_desc'.
+Search the Product Hunt trends dataset. Returns aggregate Product Hunt launch trends from the dataset id enum value 'producthunt-trends'. Aggregate-only: each row is a category-over-time cell (a topic, optionally within a calendar period), reporting launch count, total and average upvotes, average rating and the top product — never an individual product record. Thin cells are suppressed. group_by enum: 'topic_month', 'topic_year', 'topic'. Sort enum: 'period_desc', 'period_asc', 'launch_count_desc', 'sum_votes_desc'. Billing: this search costs 1 credit per record returned, with a minimum of 2 (an empty result costs 2, a full page of 100 costs 100).
 
 ### `datasets_reddit_trending_search`
 
-Search the reddit-trending dataset. Searches daily snapshots of each tracked subreddit's hot-feed post order, stored in a search index (one document per subreddit × snapshot × rank) so history accumulates. With no 'date' the latest snapshot is returned (today's trending); pair 'subreddit' with 'sort=date_desc' for a subreddit's trending history over time. There is no score or comment-count field — the underlying credential-free scraper does not expose vote counts, so 'rank' reflects Reddit's own hot-feed order rather than a locally computed score.
+Search the reddit-trending dataset. Searches daily snapshots of each tracked subreddit's hot-feed post order, stored in a search index (one document per subreddit × snapshot × rank) so history accumulates. With no 'date' the latest snapshot is returned (today's trending); pair 'subreddit' with 'sort=date_desc' for a subreddit's trending history over time. There is no score or comment-count field — the underlying credential-free scraper does not expose vote counts, so 'rank' reflects Reddit's own hot-feed order rather than a locally computed score. Billing: this search costs 1 credit per record returned, with a minimum of 2 (an empty result costs 2, a full page of 100 costs 100).
 
 ### `datasets_sec_companies_facets`
 
@@ -2862,7 +2862,7 @@ Get a company from the SEC companies dataset. Returns one SEC-reporting company 
 
 ### `datasets_sec_companies_search`
 
-Search the SEC companies dataset. Searches SEC-reporting companies stored in a search index — normalized filing history, financial-statement rollups (latest annual/quarterly revenue, net income, total assets) and trailing-90-day insider (Form 3/4/5) activity. Sort enum: 'relevance', 'name_asc', 'revenue_desc', 'net_income_desc', 'filing_recent_desc', 'insider_activity_desc'. 'entity_type', 'sic', 'sic_description', 'exchange', and 'state_of_incorporation' are open filters over the exact values EDGAR reports for each filer (not a fixed enum) — discover real values via the matching facet.
+Search the SEC companies dataset. Searches SEC-reporting companies stored in a search index — normalized filing history, financial-statement rollups (latest annual/quarterly revenue, net income, total assets) and trailing-90-day insider (Form 3/4/5) activity. Sort enum: 'relevance', 'name_asc', 'revenue_desc', 'net_income_desc', 'filing_recent_desc', 'insider_activity_desc'. 'entity_type', 'sic', 'sic_description', 'exchange', and 'state_of_incorporation' are open filters over the exact values EDGAR reports for each filer (not a fixed enum) — discover real values via the matching facet. Billing: this search costs 1 credit per record returned, with a minimum of 2 (an empty result costs 2, a full page of 100 costs 100).
 
 ### `datasets_sec_institutional_positions_facets`
 
@@ -2870,7 +2870,7 @@ Facet the SEC institutional positions dataset. Returns terms-aggregation counts 
 
 ### `datasets_sec_institutional_positions_search`
 
-Search the SEC institutional positions dataset. Searches institutional investment managers' quarterly 13F portfolio holdings stored in a search index. Filter by manager_cik for a manager's full reported portfolio (an exact, reliable filter), or by issuer_name/cusip for a best-effort view of which managers reported a position in an issuer — SEC publishes no authoritative CUSIP-to-CIK mapping, so the issuer side is never a guaranteed-resolved join. Sort enum: 'value_desc', 'value_asc', 'shares_desc'.
+Search the SEC institutional positions dataset. Searches institutional investment managers' quarterly 13F portfolio holdings stored in a search index. Filter by manager_cik for a manager's full reported portfolio (an exact, reliable filter), or by issuer_name/cusip for a best-effort view of which managers reported a position in an issuer — SEC publishes no authoritative CUSIP-to-CIK mapping, so the issuer side is never a guaranteed-resolved join. Sort enum: 'value_desc', 'value_asc', 'shares_desc'. Billing: this search costs 1 credit per record returned, with a minimum of 2 (an empty result costs 2, a full page of 100 costs 100).
 
 ### `datasets_starbucks_stores_facets`
 
@@ -2882,19 +2882,19 @@ Get a stored Starbucks store. Returns one stored Starbucks store by its store nu
 
 ### `datasets_starbucks_stores_nearby`
 
-Find nearby stored Starbucks stores. Returns stored Starbucks stores within a radius of a point, nearest first, from dataset id 'starbucks-stores'. lat, lon, and radius_m are required. Unlike the live /starbucks/stores endpoint (which caps at 50 near a point), this queries the full grid-tiled directory, so it can return every store in the radius.
+Find nearby stored Starbucks stores. Returns stored Starbucks stores within a radius of a point, nearest first, from dataset id 'starbucks-stores'. lat, lon, and radius_m are required. Unlike the live /starbucks/stores endpoint (which caps at 50 near a point), this queries the full grid-tiled directory, so it can return every store in the radius. Billing: this endpoint costs 1 credit per record returned, with a minimum of 2 (an empty result costs 2, a full page of 100 costs 100).
 
 ### `datasets_starbucks_stores_search`
 
-Search the Starbucks store directory. Searches the worldwide Starbucks store directory (dataset id 'starbucks-stores'), built by grid-tiling the store locator around its 50-result cap. Each store has its store number, name, phone, full address, coordinates, weekly hours, amenity codes, and pick-up options. Store discovery is global, but hours, amenities, and phone numbers are populated per market and are largely absent outside the US, Canada, Europe, and the Gulf; an empty schedule means "not published for this market", not "closed". 'country' is the store's true country while 'market' is crawl provenance (the US host geocodes worldwide). Supports full-text 'q', 'country'/'state'/'city'/'market'/'amenity' filters, 'lat'/'lon'/'radius_m' radius filtering, and 'sort' (relevance, distance_asc).
+Search the Starbucks store directory. Searches the worldwide Starbucks store directory (dataset id 'starbucks-stores'), built by grid-tiling the store locator around its 50-result cap. Each store has its store number, name, phone, full address, coordinates, weekly hours, amenity codes, and pick-up options. Store discovery is global, but hours, amenities, and phone numbers are populated per market and are largely absent outside the US, Canada, Europe, and the Gulf; an empty schedule means "not published for this market", not "closed". 'country' is the store's true country while 'market' is crawl provenance (the US host geocodes worldwide). Supports full-text 'q', 'country'/'state'/'city'/'market'/'amenity' filters, 'lat'/'lon'/'radius_m' radius filtering, and 'sort' (relevance, distance_asc). Billing: this search costs 1 credit per record returned, with a minimum of 2 (an empty result costs 2, a full page of 100 costs 100).
 
 ### `datasets_steam_achievements_search`
 
-Search steam-achievements dataset. Searches per-game global achievement unlock percentages (one document per appid × achievement). Pass 'app_id' to list a game's achievements. Sort enum: 'percent_desc' (most-unlocked first, default), 'percent_asc' (rarest first), 'rank_asc'.
+Search steam-achievements dataset. Searches per-game global achievement unlock percentages (one document per appid × achievement). Pass 'app_id' to list a game's achievements. Sort enum: 'percent_desc' (most-unlocked first, default), 'percent_asc' (rarest first), 'rank_asc'. Billing: this search costs 1 credit per record returned, with a minimum of 2 (an empty result costs 2, a full page of 100 costs 100).
 
 ### `datasets_steam_charts_search`
 
-Search the steam-charts dataset. Searches daily snapshots of Steam's player-count and sales charts, stored in a search index (one document per chart × country × snapshot × rank) so history accumulates. Charts: 'most_played' (weekly peak concurrent), 'concurrent' (live concurrent players), 'top_sellers' (weekly sales; country-specific). With no 'date' the latest snapshot is returned (today's chart); pair 'app_id' with 'sort=date_desc' for an app's rank/players over time. Country is 'global' for the player-count charts or an ISO code (e.g. 'us') for 'top_sellers'. Sort enum: 'rank', 'rank_desc', 'date_desc'.
+Search the steam-charts dataset. Searches daily snapshots of Steam's player-count and sales charts, stored in a search index (one document per chart × country × snapshot × rank) so history accumulates. Charts: 'most_played' (weekly peak concurrent), 'concurrent' (live concurrent players), 'top_sellers' (weekly sales; country-specific). With no 'date' the latest snapshot is returned (today's chart); pair 'app_id' with 'sort=date_desc' for an app's rank/players over time. Country is 'global' for the player-count charts or an ISO code (e.g. 'us') for 'top_sellers'. Sort enum: 'rank', 'rank_desc', 'date_desc'. Billing: this search costs 1 credit per record returned, with a minimum of 2 (an empty result costs 2, a full page of 100 costs 100).
 
 ### `datasets_steam_games_facets`
 
@@ -2906,23 +2906,23 @@ Get a Steam game from the dataset. Returns one enriched Steam catalog record by 
 
 ### `datasets_steam_games_search`
 
-Search the Steam games dataset. Searches enriched public Steam catalog records stored in a search index. price_tier enum: 'free', 'under5', '5to15', '15to30', '30to60', 'over60'. review_tier enum: 'overwhelmingly_positive', 'very_positive', 'positive', 'mostly_positive', 'mixed', 'mostly_negative', 'negative', 'very_negative', 'overwhelmingly_negative', 'insufficient'. Sort enum: 'relevance', 'owners_desc', 'reviews_desc', 'review_score_desc', 'ccu_desc', 'metacritic_desc', 'price_asc', 'price_desc', 'release_desc', 'release_asc'.
+Search the Steam games dataset. Searches enriched public Steam catalog records stored in a search index. price_tier enum: 'free', 'under5', '5to15', '15to30', '30to60', 'over60'. review_tier enum: 'overwhelmingly_positive', 'very_positive', 'positive', 'mostly_positive', 'mixed', 'mostly_negative', 'negative', 'very_negative', 'overwhelmingly_negative', 'insufficient'. Sort enum: 'relevance', 'owners_desc', 'reviews_desc', 'review_score_desc', 'ccu_desc', 'metacritic_desc', 'price_asc', 'price_desc', 'release_desc', 'release_asc'. Billing: this search costs 1 credit per record returned, with a minimum of 2 (an empty result costs 2, a full page of 100 costs 100).
 
 ### `datasets_steam_news_search`
 
-Search the steam-news dataset. Searches Steam news + announcements for tracked apps (one document per appid × gid; the latest items per app are kept). Filter by 'app_id' for a single game's news, or full-text 'q' over the title + contents. Sort enum: 'date_desc' (newest first, default), 'date_asc'.
+Search the steam-news dataset. Searches Steam news + announcements for tracked apps (one document per appid × gid; the latest items per app are kept). Filter by 'app_id' for a single game's news, or full-text 'q' over the title + contents. Sort enum: 'date_desc' (newest first, default), 'date_asc'. Billing: this search costs 1 credit per record returned, with a minimum of 2 (an empty result costs 2, a full page of 100 costs 100).
 
 ### `datasets_steam_playercounts_search`
 
-Search steam-playercounts dataset. Searches the daily concurrent-player time series for tracked games (one document per appid × day). Pair 'app_id' with 'sort=date_desc' for a game's player-count history, or pass 'date' for one day's snapshot. Sort enum: 'date_desc' (default), 'date_asc', 'players_desc'.
+Search steam-playercounts dataset. Searches the daily concurrent-player time series for tracked games (one document per appid × day). Pair 'app_id' with 'sort=date_desc' for a game's player-count history, or pass 'date' for one day's snapshot. Sort enum: 'date_desc' (default), 'date_asc', 'players_desc'. Billing: this search costs 1 credit per record returned, with a minimum of 2 (an empty result costs 2, a full page of 100 costs 100).
 
 ### `datasets_steam_prices_search`
 
-Search the steam-prices dataset. Searches the daily price time series for priced games (one document per appid × day; integer cents). Pair 'app_id' with 'sort=date_desc' for a game's price history, or pass 'date' for one day's snapshot. Sort enum: 'date_desc' (default), 'date_asc', 'price_asc', 'price_desc', 'discount_desc'.
+Search the steam-prices dataset. Searches the daily price time series for priced games (one document per appid × day; integer cents). Pair 'app_id' with 'sort=date_desc' for a game's price history, or pass 'date' for one day's snapshot. Sort enum: 'date_desc' (default), 'date_asc', 'price_asc', 'price_desc', 'discount_desc'. Billing: this search costs 1 credit per record returned, with a minimum of 2 (an empty result costs 2, a full page of 100 costs 100).
 
 ### `datasets_steam_reviews_search`
 
-Search the steam-reviews dataset. Searches the stored Steam review corpus (the most-helpful reviews per game; one document per appid × recommendation). Full-text 'q' over the review body, filter by 'app_id', 'language', or 'voted_up' (positive/negative). Sort enum: 'votes_desc' (most-helpful first, default), 'weighted_desc', 'date_desc'.
+Search the steam-reviews dataset. Searches the stored Steam review corpus (the most-helpful reviews per game; one document per appid × recommendation). Full-text 'q' over the review body, filter by 'app_id', 'language', or 'voted_up' (positive/negative). Sort enum: 'votes_desc' (most-helpful first, default), 'weighted_desc', 'date_desc'. Billing: this search costs 1 credit per record returned, with a minimum of 2 (an empty result costs 2, a full page of 100 costs 100).
 
 ### `datasets_techstack_facets`
 
@@ -2934,7 +2934,7 @@ Get a site from the website tech-stack dataset. Returns one site by its domain f
 
 ### `datasets_techstack_search`
 
-Search the website tech-stack dataset. Searches the website tech-stack index (dataset id enum value 'techstack') — one record per site listing the web technologies it is built with (frameworks, CMS, e-commerce, analytics, CDNs, servers, and more), BuiltWith / Wappalyzer-style. The reverse-index filters are the point: repeat 'technology' to require several at once (AND), 'any_of' to match at least one (OR), and 'not' to exclude — e.g. sites on 'Shopify' and 'Klaviyo' but not 'Recharge'. Sort enum: 'relevance', 'rank_asc', 'tech_count_desc', 'domain_asc', 'crawled_desc'. render_tier enum: 'http', 'browser'.
+Search the website tech-stack dataset. Searches the website tech-stack index (dataset id enum value 'techstack') — one record per site listing the web technologies it is built with (frameworks, CMS, e-commerce, analytics, CDNs, servers, and more), BuiltWith / Wappalyzer-style. The reverse-index filters are the point: repeat 'technology' to require several at once (AND), 'any_of' to match at least one (OR), and 'not' to exclude — e.g. sites on 'Shopify' and 'Klaviyo' but not 'Recharge'. Sort enum: 'relevance', 'rank_asc', 'tech_count_desc', 'domain_asc', 'crawled_desc'. render_tier enum: 'http', 'browser'. Billing: this search costs 1 credit per record returned, with a minimum of 2 (an empty result costs 2, a full page of 100 costs 100).
 
 ### `datasets_trustmrr_facets`
 
@@ -2950,7 +2950,7 @@ Get a TrustMRR startup from the dataset. Returns one startup record by slug from
 
 ### `datasets_trustmrr_search`
 
-Search the TrustMRR dataset. Searches public startups with payment-provider-verified revenue and MRR, stored in a search index. Filter by category, country, payment provider, target audience, tech, marketing channel, listing tier and for-sale status, and by revenue/MRR/traffic/growth/multiple/asking-price ranges. Sort enum: 'relevance', 'mrr_desc', 'revenue_desc', 'revenue_30d_desc', 'traffic_desc', 'growth_desc', 'deal_score_desc', 'price_asc', 'price_desc', 'multiple_asc', 'founded_desc'. status enum: 'active', 'removed'.
+Search the TrustMRR dataset. Searches public startups with payment-provider-verified revenue and MRR, stored in a search index. Filter by category, country, payment provider, target audience, tech, marketing channel, listing tier and for-sale status, and by revenue/MRR/traffic/growth/multiple/asking-price ranges. Sort enum: 'relevance', 'mrr_desc', 'revenue_desc', 'revenue_30d_desc', 'traffic_desc', 'growth_desc', 'deal_score_desc', 'price_asc', 'price_desc', 'multiple_asc', 'founded_desc'. status enum: 'active', 'removed'. Billing: this search costs 1 credit per record returned, with a minimum of 2 (an empty result costs 2, a full page of 100 costs 100).
 
 ### `datasets_vehicle_listings_facets`
 
@@ -2966,7 +2966,7 @@ Get a vehicle listing's price history. Returns the recorded price-change events 
 
 ### `datasets_vehicle_listings_search`
 
-Search vehicle listings dataset. Searches the crawled used-vehicle listings index. source enum: 'carmax', 'autotrader', 'carsdotcom'. CarMax's own national inventory is fully enumerable (re-crawled on a standing schedule); Autotrader/Cars.com coverage is a best-effort zip-code sweep, not exhaustive, and their rows approximate city/state from the searched area rather than the seller's exact location. seller_type enum: 'retailer', 'dealer', 'private' (not populated for every row -- see the dataset markdown). Sort enum: 'relevance', 'recently_updated', 'newly_listed', 'price_asc', 'price_desc', 'mileage_asc', 'mileage_desc', 'year_desc', 'year_asc'.
+Search vehicle listings dataset. Searches the crawled used-vehicle listings index. source enum: 'carmax', 'autotrader', 'carsdotcom'. CarMax's own national inventory is fully enumerable (re-crawled on a standing schedule); Autotrader/Cars.com coverage is a best-effort zip-code sweep, not exhaustive, and their rows approximate city/state from the searched area rather than the seller's exact location. seller_type enum: 'retailer', 'dealer', 'private' (not populated for every row -- see the dataset markdown). Sort enum: 'relevance', 'recently_updated', 'newly_listed', 'price_asc', 'price_desc', 'mileage_asc', 'mileage_desc', 'year_desc', 'year_asc'. Billing: this search costs 1 credit per record returned, with a minimum of 2 (an empty result costs 2, a full page of 100 costs 100).
 
 ### `datasets_x_users_facets`
 
@@ -2978,7 +2978,7 @@ Get an X user from the dataset. Returns one X user record by username from datas
 
 ### `datasets_x_users_search`
 
-Search the X users dataset. Searches public X (Twitter) user profiles stored in a search index. Sort enum: 'relevance', 'followers_desc', 'followers_asc', 'crawled_at_desc', 'crawled_at_asc', 'created_at_desc', 'created_at_asc'.
+Search the X users dataset. Searches public X (Twitter) user profiles stored in a search index. Sort enum: 'relevance', 'followers_desc', 'followers_asc', 'crawled_at_desc', 'crawled_at_asc', 'created_at_desc', 'created_at_asc'. Billing: this search costs 1 credit per record returned, with a minimum of 2 (an empty result costs 2, a full page of 100 costs 100).
 
 ### `datasets_youtube_creators_facets`
 
@@ -2990,7 +2990,7 @@ Get a YouTube creator from the dataset. Returns one YouTube channel record by ch
 
 ### `datasets_youtube_creators_search`
 
-Search the YouTube creators dataset. Searches public YouTube channel profiles stored in a search index — subscriber, video and view counts, region, bio and links, discovered via Common Crawl and Wikidata and hydrated from each channel's public About page. Sort enum: 'relevance', 'followers_desc', 'followers_asc', 'views_desc', 'videos_desc', 'hydrated_at_desc', 'hydrated_at_asc'. Some channels hide their subscriber, video, or view count; the '_available' flags on each item distinguish a hidden count (stored as '0', '*_available: false') from a genuine '0'.
+Search the YouTube creators dataset. Searches public YouTube channel profiles stored in a search index — subscriber, video and view counts, region, bio and links, discovered via Common Crawl and Wikidata and hydrated from each channel's public About page. Sort enum: 'relevance', 'followers_desc', 'followers_asc', 'views_desc', 'videos_desc', 'hydrated_at_desc', 'hydrated_at_asc'. Some channels hide their subscriber, video, or view count; the '_available' flags on each item distinguish a hidden count (stored as '0', '*_available: false') from a genuine '0'. Billing: this search costs 1 credit per record returned, with a minimum of 2 (an empty result costs 2, a full page of 100 costs 100).
 
 ### `dawn_article`
 
