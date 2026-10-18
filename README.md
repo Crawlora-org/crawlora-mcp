@@ -7,7 +7,7 @@
 [![crawlora-mcp MCP server](https://glama.ai/mcp/servers/Crawlora-org/crawlora-mcp/badges/score.svg)](https://glama.ai/mcp/servers/Crawlora-org/crawlora-mcp)
 
 **Crawlora MCP** is a **hosted** Model Context Protocol server that gives AI clients and
-agents **3631 structured public‑web‑data tools** across 471 platform groups — search, maps,
+agents **3642 structured public‑web‑data tools** across 472 platform groups — search, maps,
 e‑commerce, social, finance, travel, app stores, media, and reviews — each returning clean,
 normalized **JSON** instead of HTML to parse.
 
@@ -155,7 +155,7 @@ Any client that speaks **Streamable HTTP** can use the generic config in
 
 ## Run it locally (open‑source server)
 
-This repo also ships a small **stdio** MCP server (`index.mjs`) that exposes the same **3631
+This repo also ships a small **stdio** MCP server (`index.mjs`) that exposes the same **3642
 tools**, each wrapping the Crawlora REST API (`https://api.crawlora.net/api/v1`) with your
 `CRAWLORA_API_KEY`. Useful if you'd rather run the server yourself than use the hosted endpoint.
 
@@ -208,7 +208,7 @@ Every account includes **2,000 free credits / month** with no credit card requir
 
 ---
 
-## What you can call (3631 tools / 471 platform groups)
+## What you can call (3642 tools / 472 platform groups)
 
 See [`tools.json`](./tools.json) or your MCP client UI for exact schemas, the [index of every tool by platform](#tools) at the end of this README, and [`TOOLS.md`](./TOOLS.md) for each tool's description. Below is an overview by category:
 
@@ -216,21 +216,21 @@ See [`tools.json`](./tools.json) or your MCP client UI for exact schemas, the [i
 |---|---|
 | **Search & Web** | `google_search`, `google_news`, `bing_search`, `duckduckgo_search`, `baidu_search`, `brave_search`, `startpage_search`, `yandex_search`, `kagi_search`, `web_scrape`, `web_parse`, `bbb_search`, `bbb_search_filters` |
 | **Maps & Places** | `google_maps_search`, `google_maps_place`, `google_maps_reviews`, `google_maps_photos`, `bbb_regions`, `bbb_local_bbbs`, `bbb_local_bbb` |
-| **Marketplace & Products** | `amazon_search`, `amazon_product`, `amazon_reviews`, `walmart_search`, `ebay_search`, `etsy_search`, `shopify_store`, `target_search`, `doordash_store`, `doordash_feed`, `ubereats_store` |
-| **Social & Profiles** | `twitter_user`, `twitter_tweet`, `instagram_user`, `reddit_post`, `reddit_comments`, `threads_user`, `tiktok_user` |
+| **Marketplace & Products** | `amazon_search`, `amazon_product`, `amazon_reviews`, `walmart_search`, `ebay_search`, `etsy_search`, `shopify_store`, `target_search`, `doordash_store`, `doordash_feed`, `ubereats_store`, `reverb_search`, `reverb_listing`, `reverb_price_guide` |
+| **Social & Profiles** | `twitter_user`, `twitter_tweet`, `instagram_user`, `reddit_post`, `reddit_comments`, `threads_user`, `tiktok_user`, `tiktok_creative_center_filters`, `tiktok_creative_center_hashtags`, `tiktok_creative_center_top_content`, `tiktok_creative_center_videos` |
 | **Finance & Markets** | `google_finance_search`, `google_finance_quote`, `yahoo_finance_quote`, `polymarket_events`, `kalshi_markets` |
 | **Research & Papers** | `research_search_papers`, `research_inspect_paper`, `research_read_paper`, `research_related_papers`, `research_sources` |
 | **Travel & Lodging** | `airbnb_search`, `airbnb_room`, `tripadvisor_search`, `booking_search` |
 | **Jobs & Companies** | `linkedin_jobs`, `indeed_jobs`, `glassdoor_company`, `pitchbook_company` |
 | **Media & Audio** | `youtube_video`, `youtube_transcript`, `spotify_artist`, `apple_podcasts_show`, `bbb_news`, `bbb_news_topics`, `bbb_article` |
 | **App Stores** | `appstore_app`, `googleplay_app` |
-| **Reviews & Q&A** | `trustpilot_reviews`, `g2_reviews`, `capterra_product`, `goodreads_book`, `bbb_business`, `bbb_category`, `bbb_business_complaints`, `bbb_business_more_info`, `bbb_business_reviews`, `bbb_scamtracker_search`, `bbb_scamtracker_detail`, `bbb_scamtracker_state_stats` |
+| **Reviews & Q&A** | `trustpilot_reviews`, `g2_reviews`, `capterra_product`, `goodreads_book`, `bbb_business`, `bbb_page`, `bbb_category`, `bbb_business_complaints`, `bbb_business_more_info`, `bbb_business_reviews`, `bbb_scamtracker_search`, `bbb_scamtracker_detail`, `bbb_scamtracker_state_stats` |
 
 ---
 
 ## Why Crawlora MCP?
 
-- **One key, 3631 tools** — search, commerce, social, gaming, finance, and more behind a single MCP endpoint.
+- **One key, 3642 tools** — search, commerce, social, gaming, finance, and more behind a single MCP endpoint.
 - **Structured JSON, not HTML** — every tool returns normalized fields, so an agent can use the result without writing a parser.
 - **Hosted or local** — connect to the hosted Streamable HTTP endpoint with no install, or run the open-source stdio server from this repo with `npx` or Docker.
 - **Free to start** — 2,000 credits per month with no credit card.
@@ -252,7 +252,7 @@ See [`LICENSE`](LICENSE). The Crawlora MCP service itself is a hosted SaaS gover
 
 ## Tools
 
-All 3631 tools by platform, generated from [`tools.json`](./tools.json). [`TOOLS.md`](./TOOLS.md) has the description of every tool.
+All 3642 tools by platform, generated from [`tools.json`](./tools.json). [`TOOLS.md`](./TOOLS.md) has the description of every tool.
 
 <!-- BEGIN MCP.SO TOOLS: generated from tools.json; do not edit manually -->
 - **1stdibs** (4): `firstdibs_categories`, `firstdibs_designers`, `firstdibs_product`, `firstdibs_search`
@@ -288,7 +288,7 @@ All 3631 tools by platform, generated from [`tools.json`](./tools.json). [`TOOLS
 - **baidu** (2): `baidu_search`, `baidu_suggest`
 - **balenciaga** (7): `balenciaga_categories`, `balenciaga_category`, `balenciaga_product`, `balenciaga_product_variants`, `balenciaga_search`, `balenciaga_store_countries`, `balenciaga_stores`
 - **barrons** (4): `barrons_article`, `barrons_headlines`, `barrons_news`, `barrons_topics`
-- **bbb** (16): `bbb_article`, `bbb_business`, `bbb_business_complaints`, `bbb_business_more_info`, `bbb_business_reviews`, `bbb_category`, `bbb_local_bbb`, `bbb_local_bbbs`, `bbb_news`, `bbb_news_topics`, `bbb_regions`, `bbb_scamtracker_detail`, `bbb_scamtracker_search`, `bbb_scamtracker_state_stats`, `bbb_search`, `bbb_search_filters`
+- **bbb** (17): `bbb_article`, `bbb_business`, `bbb_business_complaints`, `bbb_business_more_info`, `bbb_business_reviews`, `bbb_category`, `bbb_local_bbb`, `bbb_local_bbbs`, `bbb_news`, `bbb_news_topics`, `bbb_page`, `bbb_regions`, `bbb_scamtracker_detail`, `bbb_scamtracker_search`, `bbb_scamtracker_state_stats`, `bbb_search`, `bbb_search_filters`
 - **bbc** (5): `bbc_article`, `bbc_author`, `bbc_headlines`, `bbc_live`, `bbc_search`
 - **benzinga** (5): `benzinga_article`, `benzinga_headlines`, `benzinga_news`, `benzinga_search`, `benzinga_sections`
 - **bestbuy** (11): `bestbuy_brands`, `bestbuy_categories`, `bestbuy_categories_trending`, `bestbuy_category`, `bestbuy_category_subcategories`, `bestbuy_product`, `bestbuy_product_questions`, `bestbuy_product_related`, `bestbuy_product_reviews`, `bestbuy_search`, `bestbuy_stores`
@@ -575,6 +575,7 @@ All 3631 tools by platform, generated from [`tools.json`](./tools.json). [`TOOLS
 - **resy** (7): `resy_availability`, `resy_cuisines`, `resy_event_detail`, `resy_events`, `resy_locations`, `resy_restaurant`, `resy_search`
 - **retailmenot** (13): `retailmenot_autocomplete`, `retailmenot_blog_categories`, `retailmenot_blog_post`, `retailmenot_blog_posts`, `retailmenot_blog_tags`, `retailmenot_cashback`, `retailmenot_categories`, `retailmenot_category`, `retailmenot_deal_event`, `retailmenot_deal_events`, `retailmenot_home`, `retailmenot_store`, `retailmenot_stores`
 - **reuters** (6): `reuters_article`, `reuters_articles`, `reuters_author`, `reuters_news`, `reuters_section`, `reuters_sections`
+- **reverb** (8): `reverb_categories`, `reverb_listing`, `reverb_makes`, `reverb_price_guide`, `reverb_price_guide_search`, `reverb_search`, `reverb_shop`, `reverb_shop_feedback`
 - **rightmove** (8): `rightmove_agent_branch`, `rightmove_agents`, `rightmove_autocomplete`, `rightmove_commercial_search`, `rightmove_new_homes_search`, `rightmove_property`, `rightmove_search`, `rightmove_student_search`
 - **rnz** (5): `rnz_article`, `rnz_author`, `rnz_headlines`, `rnz_news`, `rnz_sections`
 - **roblox** (4): `roblox_badges`, `roblox_game`, `roblox_rankings`, `roblox_search`
@@ -656,7 +657,7 @@ All 3631 tools by platform, generated from [`tools.json`](./tools.json). [`TOOLS
 - **ticketmaster** (15): `ticketmaster_attraction`, `ticketmaster_attraction_events`, `ticketmaster_attraction_related`, `ticketmaster_attraction_reviews`, `ticketmaster_discover_categories`, `ticketmaster_discover_category_events`, `ticketmaster_discover_cities`, `ticketmaster_discover_city_events`, `ticketmaster_event`, `ticketmaster_search_events`, `ticketmaster_suggest`, `ticketmaster_trending_attractions`, `ticketmaster_venue`, `ticketmaster_venue_enhanced_details`, `ticketmaster_venue_events`
 - **ticketweb** (3): `ticketweb_event`, `ticketweb_search`, `ticketweb_venue`
 - **tiffany** (8): `tiffany_categories`, `tiffany_category`, `tiffany_content_search`, `tiffany_filters`, `tiffany_product`, `tiffany_search`, `tiffany_stores`, `tiffany_suggest`
-- **tiktok** (25): `tiktok_category`, `tiktok_challenge`, `tiktok_challenge_list`, `tiktok_comments`, `tiktok_creative_center_hashtags`, `tiktok_creative_center_videos`, `tiktok_explore`, `tiktok_popular_trend_country_industry_meta`, `tiktok_post`, `tiktok_posts`, `tiktok_profile`, `tiktok_search`, `tiktok_search_hashtag`, `tiktok_search_user`, `tiktok_top_ads_analysis`, `tiktok_top_ads_detail`, `tiktok_top_ads_filters`, `tiktok_top_ads_list`, `tiktok_top_ads_location_info`, `tiktok_top_ads_locations`, `tiktok_top_ads_recommend`, `tiktok_top_ads_safety`, `tiktok_top_ads_spotlight`, `tiktok_top_ads_suggestions`, `tiktok_trending`
+- **tiktok** (27): `tiktok_category`, `tiktok_challenge`, `tiktok_challenge_list`, `tiktok_comments`, `tiktok_creative_center_filters`, `tiktok_creative_center_hashtags`, `tiktok_creative_center_top_content`, `tiktok_creative_center_videos`, `tiktok_explore`, `tiktok_popular_trend_country_industry_meta`, `tiktok_post`, `tiktok_posts`, `tiktok_profile`, `tiktok_search`, `tiktok_search_hashtag`, `tiktok_search_user`, `tiktok_top_ads_analysis`, `tiktok_top_ads_detail`, `tiktok_top_ads_filters`, `tiktok_top_ads_list`, `tiktok_top_ads_location_info`, `tiktok_top_ads_locations`, `tiktok_top_ads_recommend`, `tiktok_top_ads_safety`, `tiktok_top_ads_spotlight`, `tiktok_top_ads_suggestions`, `tiktok_trending`
 - **time** (5): `time_article`, `time_author`, `time_headlines`, `time_news`, `time_sections`
 - **timeslive** (4): `timeslive_article`, `timeslive_headlines`, `timeslive_news`, `timeslive_sections`
 - **timesofindia** (5): `timesofindia_article`, `timesofindia_author`, `timesofindia_headlines`, `timesofindia_news`, `timesofindia_sections`
