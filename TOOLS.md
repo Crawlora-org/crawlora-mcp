@@ -1,6 +1,6 @@
 # Crawlora MCP tool catalog
 
-Every tool the Crawlora MCP server exposes (3642), generated from [`tools.json`](./tools.json); do not edit manually. See the [README](./README.md) for setup and an index by platform.
+Every tool the Crawlora MCP server exposes (3660), generated from [`tools.json`](./tools.json); do not edit manually. See the [README](./README.md) for setup and an index by platform.
 
 ## Tools
 
@@ -12831,6 +12831,78 @@ Retrieve TikTok Creative Center trending videos. Returns TikTok Creative Center'
 ### `tiktok_explore`
 
 Retrieve the TikTok explore feed for a category. Returns the TikTok explore feed for a category, given its category type 'id' from the category endpoint. The response has 'itemList' with the videos, 'hasMore' and a 'cursor'. A feed that comes back empty is reported as an upstream error, not as an empty list.
+
+### `tiktok_mobile_feed`
+
+Retrieve the TikTok mobile For You feed. Returns one page of videos from TikTok's mobile For You feed, signed with well-formed mobile signature headers (no device or account needed). Each item carries 'aweme_id', 'create_time', 'author_id', 'share_url' and the verified statistics block ('play_count', 'digg_count', 'comment_count', 'share_count', 'collect_count', 'download_count', 'forward_count', 'lose_count', 'lose_comment_count', 'whatsapp_share_count', 'repost_count'). A zero 'count' uses the app's default page size; 'count' is capped at 50.
+
+### `tiktok_mobile_hashtag`
+
+Retrieve a TikTok hashtag. Returns one hashtag's detail by name: 'challenge_info' (cid, hashtag_name, desc, ...) and 'stats' (view and video counts), exactly as the mobile API returns them. Hashtags are addressed by name; an internal id is rejected upstream.
+
+### `tiktok_mobile_hashtag_posts`
+
+Retrieve videos for a TikTok hashtag. Lists videos for one hashtag name as the mobile app returns them ('aweme_list' with author, music and statistics), plus 'cursor' and 'has_more'. 'sort=fresh' is the newest list and works from any measured egress; 'sort=popular' is the hot list and only answers from a US egress.
+
+### `tiktok_mobile_hashtags`
+
+Search TikTok hashtags. Searches hashtags by keyword and returns the matching hashtag objects unmodified, with 'cursor' and 'has_more' for paging.
+
+### `tiktok_mobile_live_effects`
+
+Retrieve TikTok LIVE effects. Returns the complete LIVE effects/sticker asset catalogue in one call: 'data.assets' (2,032 assets, each with 'id', 'name', 'describe', 'resource_url', 'resource_uri', 'md5', 'size', 'resource_type', 'download_type', 'model_requirements', 'sticker_asset_variant' and 'video_resource_list'). There are no request parameters and no paging, and the body is large because the catalogue is complete.
+
+### `tiktok_mobile_live_gifts`
+
+Retrieve TikTok LIVE gifts. Returns the complete LIVE gift catalogue in one call: 'data.gifts' (771 gift objects with 'diamond_count', 'describe', 'duration', 'gift_resources', 'gift_skins', 'batch_gift_info' and 'combo') plus the gift config and resource maps ('gift_configs', 'gifts_info', 'doodle_templates', 'gift_name_group_map', 'gift_resource_group_map'). There are no request parameters and no paging: the response is a single complete catalogue.
+
+### `tiktok_mobile_live_search`
+
+Search TikTok LIVE streams. Searches the mobile app's LIVE surface by keyword: 'data' of '{type, anchor}' entries with 'feedback_type' set to 'live', plus 'cursor' and 'has_more'. 'keyword' is required; without it the gateway answers a valid but empty envelope. This is the API's first LIVE endpoint.
+
+### `tiktok_mobile_music_beats`
+
+Retrieve TikTok music beats. Returns the mobile app's beats/songs chart unmodified: 'music_list' of the same full sound objects the pick chart returns ('id_str', 'title', 'user_count', 'album', 'artists', 'cover_*'), ordered as the app's beats list. The measured envelope carries no paging fields.
+
+### `tiktok_mobile_music_collections`
+
+Retrieve TikTok music collections. Returns the mobile app's sound-collection feed unmodified: 'mcf_list', where each entry is '{collection, music_list}' (the measured default page holds 8 entries), plus 'cursor' and 'has_more'. This route is first-page only: the returned 'cursor' is not a reusable page token, so callers should not page with it.
+
+### `tiktok_mobile_music_pick`
+
+Retrieve TikTok sound chart picks. Returns the mobile app's sound pick/chart list: 'music_list' of full sound objects (id, title, author, user_count, duration, ...) plus the chart list 'mc_list' and 'radio_cursor'.
+
+### `tiktok_mobile_music_posts`
+
+Retrieve videos for a TikTok sound. Lists the videos that use one sound, as the mobile app returns them: 'aweme_list' of full video objects (with 'author', 'statistics' and 'added_sound_music_info'), plus 'cursor' and 'has_more'. 'music_id' is required. 'count' is accepted but ignored upstream - the server returns its own default page, so page with 'cursor'.
+
+### `tiktok_mobile_music_related`
+
+Retrieve sounds related to a TikTok video. Returns sounds related to one video: 'music_list' of full sound objects, 'recall_info_list' explaining why each was recalled, 'similar_song_ids', plus 'cursor' and 'has_more'.
+
+### `tiktok_mobile_music_trending`
+
+Retrieve TikTok trending sounds. Returns the mobile app's trending sound chart: 'music_list' of full sound objects ('id_str', 'title', 'user_count', 'album', 'artists', 'cover_large'/'cover_medium'/'cover_thumb', 'binded_challenge_id', 'collect_stat', 'audition_duration') unmodified, plus 'cursor' and 'has_more' for paging. This is the chart behind 'music.trending'.
+
+### `tiktok_mobile_search`
+
+Search TikTok videos on the mobile API. Keyword search returning the mobile API result documents unmodified: each entry has 'aweme_info' (a full video object with statistics), 'card_profile' and search metadata, plus 'cursor' and 'has_more'. Keep 'count' small (20 already exceeds one megabyte of upstream JSON).
+
+### `tiktok_mobile_search_music`
+
+Search TikTok sounds on the mobile API. Keyword search over sounds, returning 'music_info_list' of full sound objects unmodified with 'cursor', 'has_more' and 'total'.
+
+### `tiktok_mobile_search_user`
+
+Search TikTok users on the mobile API. Keyword search over users, returning 'user_list' unmodified. Each 'user_info' carries the populated creator statistics (follower_count, following_count, total_favorited, aweme_count, custom_verify).
+
+### `tiktok_mobile_trending_categories`
+
+Retrieve TikTok trending categories. Returns the discover-category feed unmodified: each 'category_list' entry is '{aweme_list, category_type, challenge_info, click_track_url_list, desc, track_url_list}', with 'cursor' and 'has_more' for paging.
+
+### `tiktok_mobile_trending_effects`
+
+Retrieve TikTok trending effects. Returns the effect/sticker discovery feed unmodified: 'aweme_list' of full video objects, each additionally carrying 'stickers' and 'sticker_detail', plus 'feed_session_id', 'cursor' and 'has_more'.
 
 ### `tiktok_popular_trend_country_industry_meta`
 

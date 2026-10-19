@@ -7,7 +7,7 @@
 [![crawlora-mcp MCP server](https://glama.ai/mcp/servers/Crawlora-org/crawlora-mcp/badges/score.svg)](https://glama.ai/mcp/servers/Crawlora-org/crawlora-mcp)
 
 **Crawlora MCP** is a **hosted** Model Context Protocol server that gives AI clients and
-agents **3642 structured public‑web‑data tools** across 472 platform groups — search, maps,
+agents **3660 structured public‑web‑data tools** across 472 platform groups — search, maps,
 e‑commerce, social, finance, travel, app stores, media, and reviews — each returning clean,
 normalized **JSON** instead of HTML to parse.
 
@@ -155,7 +155,7 @@ Any client that speaks **Streamable HTTP** can use the generic config in
 
 ## Run it locally (open‑source server)
 
-This repo also ships a small **stdio** MCP server (`index.mjs`) that exposes the same **3642
+This repo also ships a small **stdio** MCP server (`index.mjs`) that exposes the same **3660
 tools**, each wrapping the Crawlora REST API (`https://api.crawlora.net/api/v1`) with your
 `CRAWLORA_API_KEY`. Useful if you'd rather run the server yourself than use the hosted endpoint.
 
@@ -208,7 +208,7 @@ Every account includes **2,000 free credits / month** with no credit card requir
 
 ---
 
-## What you can call (3642 tools / 472 platform groups)
+## What you can call (3660 tools / 472 platform groups)
 
 See [`tools.json`](./tools.json) or your MCP client UI for exact schemas, the [index of every tool by platform](#tools) at the end of this README, and [`TOOLS.md`](./TOOLS.md) for each tool's description. Below is an overview by category:
 
@@ -230,7 +230,7 @@ See [`tools.json`](./tools.json) or your MCP client UI for exact schemas, the [i
 
 ## Why Crawlora MCP?
 
-- **One key, 3642 tools** — search, commerce, social, gaming, finance, and more behind a single MCP endpoint.
+- **One key, 3660 tools** — search, commerce, social, gaming, finance, and more behind a single MCP endpoint.
 - **Structured JSON, not HTML** — every tool returns normalized fields, so an agent can use the result without writing a parser.
 - **Hosted or local** — connect to the hosted Streamable HTTP endpoint with no install, or run the open-source stdio server from this repo with `npx` or Docker.
 - **Free to start** — 2,000 credits per month with no credit card.
@@ -252,7 +252,7 @@ See [`LICENSE`](LICENSE). The Crawlora MCP service itself is a hosted SaaS gover
 
 ## Tools
 
-All 3642 tools by platform, generated from [`tools.json`](./tools.json). [`TOOLS.md`](./TOOLS.md) has the description of every tool.
+All 3660 tools by platform, generated from [`tools.json`](./tools.json). [`TOOLS.md`](./TOOLS.md) has the description of every tool.
 
 <!-- BEGIN MCP.SO TOOLS: generated from tools.json; do not edit manually -->
 - **1stdibs** (4): `firstdibs_categories`, `firstdibs_designers`, `firstdibs_product`, `firstdibs_search`
@@ -657,7 +657,7 @@ All 3642 tools by platform, generated from [`tools.json`](./tools.json). [`TOOLS
 - **ticketmaster** (15): `ticketmaster_attraction`, `ticketmaster_attraction_events`, `ticketmaster_attraction_related`, `ticketmaster_attraction_reviews`, `ticketmaster_discover_categories`, `ticketmaster_discover_category_events`, `ticketmaster_discover_cities`, `ticketmaster_discover_city_events`, `ticketmaster_event`, `ticketmaster_search_events`, `ticketmaster_suggest`, `ticketmaster_trending_attractions`, `ticketmaster_venue`, `ticketmaster_venue_enhanced_details`, `ticketmaster_venue_events`
 - **ticketweb** (3): `ticketweb_event`, `ticketweb_search`, `ticketweb_venue`
 - **tiffany** (8): `tiffany_categories`, `tiffany_category`, `tiffany_content_search`, `tiffany_filters`, `tiffany_product`, `tiffany_search`, `tiffany_stores`, `tiffany_suggest`
-- **tiktok** (27): `tiktok_category`, `tiktok_challenge`, `tiktok_challenge_list`, `tiktok_comments`, `tiktok_creative_center_filters`, `tiktok_creative_center_hashtags`, `tiktok_creative_center_top_content`, `tiktok_creative_center_videos`, `tiktok_explore`, `tiktok_popular_trend_country_industry_meta`, `tiktok_post`, `tiktok_posts`, `tiktok_profile`, `tiktok_search`, `tiktok_search_hashtag`, `tiktok_search_user`, `tiktok_top_ads_analysis`, `tiktok_top_ads_detail`, `tiktok_top_ads_filters`, `tiktok_top_ads_list`, `tiktok_top_ads_location_info`, `tiktok_top_ads_locations`, `tiktok_top_ads_recommend`, `tiktok_top_ads_safety`, `tiktok_top_ads_spotlight`, `tiktok_top_ads_suggestions`, `tiktok_trending`
+- **tiktok** (45): `tiktok_category`, `tiktok_challenge`, `tiktok_challenge_list`, `tiktok_comments`, `tiktok_creative_center_filters`, `tiktok_creative_center_hashtags`, `tiktok_creative_center_top_content`, `tiktok_creative_center_videos`, `tiktok_explore`, `tiktok_mobile_feed`, `tiktok_mobile_hashtag`, `tiktok_mobile_hashtag_posts`, `tiktok_mobile_hashtags`, `tiktok_mobile_live_effects`, `tiktok_mobile_live_gifts`, `tiktok_mobile_live_search`, `tiktok_mobile_music_beats`, `tiktok_mobile_music_collections`, `tiktok_mobile_music_pick`, `tiktok_mobile_music_posts`, `tiktok_mobile_music_related`, `tiktok_mobile_music_trending`, `tiktok_mobile_search`, `tiktok_mobile_search_music`, `tiktok_mobile_search_user`, `tiktok_mobile_trending_categories`, `tiktok_mobile_trending_effects`, `tiktok_popular_trend_country_industry_meta`, `tiktok_post`, `tiktok_posts`, `tiktok_profile`, `tiktok_search`, `tiktok_search_hashtag`, `tiktok_search_user`, `tiktok_top_ads_analysis`, `tiktok_top_ads_detail`, `tiktok_top_ads_filters`, `tiktok_top_ads_list`, `tiktok_top_ads_location_info`, `tiktok_top_ads_locations`, `tiktok_top_ads_recommend`, `tiktok_top_ads_safety`, `tiktok_top_ads_spotlight`, `tiktok_top_ads_suggestions`, `tiktok_trending`
 - **time** (5): `time_article`, `time_author`, `time_headlines`, `time_news`, `time_sections`
 - **timeslive** (4): `timeslive_article`, `timeslive_headlines`, `timeslive_news`, `timeslive_sections`
 - **timesofindia** (5): `timesofindia_article`, `timesofindia_author`, `timesofindia_headlines`, `timesofindia_news`, `timesofindia_sections`
