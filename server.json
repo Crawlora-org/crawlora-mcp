@@ -3,7 +3,7 @@
   "name": "net.crawlora/crawlora-mcp",
   "title": "Crawlora MCP",
   "description": "Hosted MCP: 3665 structured web-data tools across 472 platform groups.",
-  "version": "1.17.13",
+  "version": "1.17.14",
   "websiteUrl": "https://crawlora.net/mcp",
   "repository": {
     "url": "https://github.com/Crawlora-org/crawlora-mcp",

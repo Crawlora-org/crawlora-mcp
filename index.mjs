@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 // Crawlora MCP — local stdio MCP server.
-// Exposes 3660 structured web-data tools, each wrapping the Crawlora REST API
+// Exposes the structured web-data tools in tools.json, each wrapping the Crawlora REST API
 // (https://api.crawlora.net/api/v1) with your CRAWLORA_API_KEY. Get a free key
 // (2,000 credits/month, no card) at https://crawlora.net.
 //
@@ -18,6 +18,7 @@ import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
 
 const HERE = dirname(fileURLToPath(import.meta.url));
+const PACKAGE = JSON.parse(readFileSync(join(HERE, "package.json"), "utf8"));
 const TOOLS = JSON.parse(readFileSync(join(HERE, "tools.json"), "utf8"));
 const BY_NAME = new Map(TOOLS.map((t) => [t.name, t]));
 
@@ -25,7 +26,7 @@ const API_BASE = (process.env.CRAWLORA_API_BASE || "https://api.crawlora.net/api
 const API_KEY = process.env.CRAWLORA_API_KEY || "";
 
 const server = new Server(
-  { name: "crawlora-mcp", version: "1.7.0" },
+  { name: "crawlora-mcp", version: PACKAGE.version },
   { capabilities: { tools: {} } }
 );
 
