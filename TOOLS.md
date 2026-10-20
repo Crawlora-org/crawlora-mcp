@@ -1,6 +1,6 @@
 # Crawlora MCP tool catalog
 
-Every tool the Crawlora MCP server exposes (3660), generated from [`tools.json`](./tools.json); do not edit manually. See the [README](./README.md) for setup and an index by platform.
+Every tool the Crawlora MCP server exposes (3665), generated from [`tools.json`](./tools.json); do not edit manually. See the [README](./README.md) for setup and an index by platform.
 
 ## Tools
 
@@ -6826,7 +6826,7 @@ Search Letterboxd. Searches Letterboxd for films, people, lists and tags by 'q',
 
 ### `linkedin_company`
 
-Get LinkedIn Company info by ID. Returns a LinkedIn company page by its company 'id'. The response has the name, headline, about text, industry, company size, employee count on LinkedIn, follower count, founding year, headquarters, locations, specialties, website, logo, affiliated and similar pages, and recent updates with reactions and comment counts.
+Get LinkedIn Company info by ID. Returns a LinkedIn company page by its company 'id'. The response has the name, headline, about text, industry, company size, employee count on LinkedIn, follower count, founding year, headquarters, locations, specialties, website, logo, Products section cards, affiliated and similar pages, and recent updates with reactions and comment counts.
 
 ### `linkedin_product`
 
@@ -6842,7 +6842,7 @@ Search the LinkedIn product directory. Returns one page of LinkedIn's public pro
 
 ### `linkedin_showcase`
 
-Get Linkedin Showcase Page Info. Returns a LinkedIn showcase page by its showcase page 'id'. The response has the name, headline, about text, industry, follower count, employees on LinkedIn, headquarters, locations, specialties, website, logo, affiliated and similar pages, and recent updates with reactions and comment counts.
+Get Linkedin Showcase Page Info. Returns a LinkedIn showcase page by its showcase page 'id'. The response has the name, headline, about text, industry, follower count, employees on LinkedIn, headquarters, locations, specialties, website, logo, Products section cards when present, affiliated and similar pages, and recent updates with reactions and comment counts.
 
 ### `livemint_article`
 
@@ -12684,13 +12684,33 @@ Retrieve public replies to a Threads post. Returns the public replies currently 
 
 Retrieve a public Threads profile. Returns a public Threads profile by 'username' (with or without a leading '@'): name, profile URL, biography, avatar URL, 'followers_count' and 'threads_count'. Counts are derived from the compact figures shown on the profile page. An unavailable profile returns 404.
 
+### `threads_profile_media`
+
+Retrieve public media posts from a Threads profile. Returns the first public page shown on a profile's Media tab. Items include image and video URLs, including carousel attachments, plus post and topic metadata. The logged-out page exposes no continuation cursor or media-type filter; 'pagination_limited' reports when additional results are gated by login or lack a supported cursor.
+
 ### `threads_profile_posts`
 
-Retrieve public posts from a Threads profile. Lists public posts from a Threads profile by 'username'. Each item has its code, URL, text, creation time, image and video URLs, like, reply, repost and quote counts, reply flag and author. When 'has_more' is true, pass 'next_cursor' unchanged as 'cursor' to fetch the next page.
+Retrieve public posts from a Threads profile. Lists public posts from the profile's Threads tab by 'username'. Each item has its code, URL, text, creation time, image and video URLs, like, reply, repost and quote counts, reply flag and author. When 'has_more' is true, pass 'next_cursor' unchanged as 'cursor' to fetch the next page; 'pagination_limited' is true if Threads withholds a usable cursor.
+
+### `threads_profile_replies`
+
+Retrieve public items from a Threads profile's Replies tab. Returns the first public page shown on a profile's Replies tab. Each item preserves its actual author and public reply metadata. The logged-out page has no continuation cursor; 'pagination_limited' is true when Threads reports more items without a cursor or shows a login wall for additional items.
+
+### `threads_profile_reposts`
+
+Retrieve public posts reposted by a Threads profile. Returns the first public page shown on a profile's Reposts tab. Each item preserves the original post author and metadata. 'pagination_limited' is true when Threads gates more items behind login or reports more items without a supported cursor.
+
+### `threads_profile_topics`
+
+Discover public topic tags on a Threads profile. Returns every topic tag listed on a public profile, including the numeric tag id and canonical 'name' to pass as 'q' to '/threads/search/topics'. Community topics include their community metadata.
 
 ### `threads_search`
 
-Search public Threads posts. Returns the public first page of Threads search results for a query. Logged-out search does not expose a continuation cursor.
+Search public Threads posts. Returns the public first page of Threads search results for a query. 'sort' supports 'top' and 'recent'; 'pagination_limited' marks the logged-out login wall because search has no continuation cursor. Author and date filters in Threads require login and are not exposed here.
+
+### `threads_topic_search`
+
+Search posts for a public Threads topic tag. Returns the public first page of posts for a topic tag. Discover the required 'tag_id' and its canonical query 'name' from '/threads/profile/{username}/topics' or a post's 'topic' metadata. Topic results have no logged-out continuation cursor; 'pagination_limited' marks the login wall for more results.
 
 ### `ticketmaster_attraction`
 
