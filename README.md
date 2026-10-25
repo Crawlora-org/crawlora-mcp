@@ -7,7 +7,7 @@
 [![crawlora-mcp MCP server](https://glama.ai/mcp/servers/Crawlora-org/crawlora-mcp/badges/score.svg)](https://glama.ai/mcp/servers/Crawlora-org/crawlora-mcp)
 
 **Crawlora MCP** is a **hosted** Model Context Protocol server that gives AI clients and
-agents **3665 structured public‑web‑data tools** across 472 platform groups — search, maps,
+agents **3829 structured public‑web‑data tools** across 480 platform groups — search, maps,
 e‑commerce, social, finance, travel, app stores, media, and reviews — each returning clean,
 normalized **JSON** instead of HTML to parse.
 
@@ -155,7 +155,7 @@ Any client that speaks **Streamable HTTP** can use the generic config in
 
 ## Run it locally (open‑source server)
 
-This repo also ships a small **stdio** MCP server (`index.mjs`) that exposes the same **3665
+This repo also ships a small **stdio** MCP server (`index.mjs`) that exposes the same **3829
 tools**, each wrapping the Crawlora REST API (`https://api.crawlora.net/api/v1`) with your
 `CRAWLORA_API_KEY`. Useful if you'd rather run the server yourself than use the hosted endpoint.
 
@@ -208,7 +208,7 @@ Every account includes **2,000 free credits / month** with no credit card requir
 
 ---
 
-## What you can call (3665 tools / 472 platform groups)
+## What you can call (3829 tools / 480 platform groups)
 
 See [`tools.json`](./tools.json) or your MCP client UI for exact schemas, the [index of every tool by platform](#tools) at the end of this README, and [`TOOLS.md`](./TOOLS.md) for each tool's description. Below is an overview by category:
 
@@ -230,7 +230,7 @@ See [`tools.json`](./tools.json) or your MCP client UI for exact schemas, the [i
 
 ## Why Crawlora MCP?
 
-- **One key, 3665 tools** — search, commerce, social, gaming, finance, and more behind a single MCP endpoint.
+- **One key, 3829 tools** — search, commerce, social, gaming, finance, and more behind a single MCP endpoint.
 - **Structured JSON, not HTML** — every tool returns normalized fields, so an agent can use the result without writing a parser.
 - **Hosted or local** — connect to the hosted Streamable HTTP endpoint with no install, or run the open-source stdio server from this repo with `npx` or Docker.
 - **Free to start** — 2,000 credits per month with no credit card.
@@ -252,7 +252,7 @@ See [`LICENSE`](LICENSE). The Crawlora MCP service itself is a hosted SaaS gover
 
 ## Tools
 
-All 3665 tools by platform, generated from [`tools.json`](./tools.json). [`TOOLS.md`](./TOOLS.md) has the description of every tool.
+All 3829 tools by platform, generated from [`tools.json`](./tools.json). [`TOOLS.md`](./TOOLS.md) has the description of every tool.
 
 <!-- BEGIN MCP.SO TOOLS: generated from tools.json; do not edit manually -->
 - **1stdibs** (4): `firstdibs_categories`, `firstdibs_designers`, `firstdibs_product`, `firstdibs_search`
@@ -363,7 +363,7 @@ All 3665 tools by platform, generated from [`tools.json`](./tools.json). [`TOOLS
 - **discogs** (7): `discogs_artist`, `discogs_artist_releases`, `discogs_label`, `discogs_label_releases`, `discogs_master`, `discogs_release`, `discogs_search`
 - **dominos** (6): `dominos_coupons`, `dominos_customization`, `dominos_menu`, `dominos_nutrition`, `dominos_store`, `dominos_store_locator`
 - **doordash** (12): `doordash_explore`, `doordash_feed`, `doordash_search`, `doordash_search_autocomplete`, `doordash_search_filters`, `doordash_search_items`, `doordash_store`, `doordash_store_fulfillment`, `doordash_store_info`, `doordash_store_item`, `doordash_store_menu`, `doordash_store_reviews`
-- **draftkings** (12): `draftkings_event`, `draftkings_event_context`, `draftkings_event_markets`, `draftkings_featured_leagues`, `draftkings_futures`, `draftkings_league_events`, `draftkings_leagues`, `draftkings_live`, `draftkings_odds`, `draftkings_quick_links`, `draftkings_team`, `draftkings_teams`
+- **draftkings** (31): `draftkings_casino_cleopatra_guide`, `draftkings_casino_directory`, `draftkings_casino_slots_categories`, `draftkings_casino_slots_guide`, `draftkings_casino_wheel_of_fortune_guide`, `draftkings_dfs_glossary`, `draftkings_dfs_guide`, `draftkings_dfs_nfl_best_ball_featured_contests`, `draftkings_dfs_rules_and_scoring`, `draftkings_dfs_sports`, `draftkings_event`, `draftkings_event_context`, `draftkings_event_markets`, `draftkings_featured_leagues`, `draftkings_futures`, `draftkings_league_events`, `draftkings_leagues`, `draftkings_live`, `draftkings_odds`, `draftkings_pick6_rule_page`, `draftkings_pick6_rules`, `draftkings_pick6_sports`, `draftkings_predictions_availability`, `draftkings_predictions_categories`, `draftkings_predictions_rules`, `draftkings_quick_links`, `draftkings_racing_race_info`, `draftkings_racing_schedule`, `draftkings_racing_tracks`, `draftkings_team`, `draftkings_teams`
 - **duckduckgo** (6): `duckduckgo_image`, `duckduckgo_news`, `duckduckgo_search`, `duckduckgo_shopping`, `duckduckgo_suggest`, `duckduckgo_video`
 - **dunkin** (4): `dunkin_directory`, `dunkin_menu`, `dunkin_nearby`, `dunkin_store`
 - **dw** (5): `dw_article`, `dw_author`, `dw_headlines`, `dw_news`, `dw_sections`
@@ -383,6 +383,7 @@ All 3665 tools by platform, generated from [`tools.json`](./tools.json). [`TOOLS
 - **fanatics** (4): `fanatics_categories`, `fanatics_category`, `fanatics_product`, `fanatics_search`
 - **fanaticscollect** (7): `fanaticscollect_auctions`, `fanaticscollect_categories`, `fanaticscollect_instant_rips_categories`, `fanaticscollect_listing`, `fanaticscollect_search`, `fanaticscollect_sold_items`, `fanaticscollect_trending_searches`
 - **fanaticslive** (8): `fanaticslive_browse`, `fanaticslive_channel`, `fanaticslive_instant_rips`, `fanaticslive_leagues`, `fanaticslive_shop`, `fanaticslive_shop_shows`, `fanaticslive_shops`, `fanaticslive_show`
+- **fanduel** (72): `fanduel_casino_categories`, `fanduel_casino_category`, `fanduel_casino_game`, `fanduel_racing_carryover_pools`, `fanduel_racing_filters`, `fanduel_racing_horse`, `fanduel_racing_past_race`, `fanduel_racing_past_races`, `fanduel_racing_past_tracks`, `fanduel_racing_race`, `fanduel_racing_races`, `fanduel_racing_results`, `fanduel_racing_search`, `fanduel_racing_track`, `fanduel_racing_tracks`, `fanduel_racing_wager_types`, `fanduel_research`, `fanduel_research_article`, `fanduel_research_articles`, `fanduel_research_author`, `fanduel_research_authors`, `fanduel_research_featured_articles`, `fanduel_research_fixtures`, `fanduel_research_nfl_schedule`, `fanduel_research_player_news`, `fanduel_research_projection_slates`, `fanduel_research_projection_tables`, `fanduel_research_projections`, `fanduel_research_quick_picks_daily`, `fanduel_research_sports`, `fanduel_research_sub_categories`, `fanduel_sportsbook_autocomplete`, `fanduel_sportsbook_builder`, `fanduel_sportsbook_builder_events`, `fanduel_sportsbook_builder_quotes`, `fanduel_sportsbook_competition`, `fanduel_sportsbook_event`, `fanduel_sportsbook_event_box_score`, `fanduel_sportsbook_event_play_by_play`, `fanduel_sportsbook_event_players`, `fanduel_sportsbook_event_score`, `fanduel_sportsbook_event_stats`, `fanduel_sportsbook_events_status`, `fanduel_sportsbook_home`, `fanduel_sportsbook_league`, `fanduel_sportsbook_live`, `fanduel_sportsbook_live_count`, `fanduel_sportsbook_live_data`, `fanduel_sportsbook_live_scores`, `fanduel_sportsbook_market_prices`, `fanduel_sportsbook_parlays`, `fanduel_sportsbook_player`, `fanduel_sportsbook_player_news`, `fanduel_sportsbook_player_props`, `fanduel_sportsbook_player_stats`, `fanduel_sportsbook_players`, `fanduel_sportsbook_promotions`, `fanduel_sportsbook_schedule`, `fanduel_sportsbook_search`, `fanduel_sportsbook_search_tabs`, `fanduel_sportsbook_sport`, `fanduel_sportsbook_sports`, `fanduel_sportsbook_standings`, `fanduel_sportsbook_stats`, `fanduel_sportsbook_team_depth_chart`, `fanduel_sportsbook_team_news`, `fanduel_sportsbook_team_odds`, `fanduel_sportsbook_team_roster`, `fanduel_sportsbook_team_schedule`, `fanduel_sportsbook_team_stats`, `fanduel_sportsbook_teams`, `fanduel_sportsbook_trending`
 - **farfetch** (4): `farfetch_categories`, `farfetch_designers`, `farfetch_product`, `farfetch_search`
 - **fashionnova** (11): `fashionnova_collection_products`, `fashionnova_collections`, `fashionnova_page`, `fashionnova_pages`, `fashionnova_product`, `fashionnova_product_recommendations`, `fashionnova_products`, `fashionnova_search_suggest`, `fashionnova_sitemap_urls`, `fashionnova_sitemaps`, `fashionnova_store`
 - **fashionphile** (12): `fashionphile_collection_products`, `fashionphile_collections`, `fashionphile_page`, `fashionphile_pages`, `fashionphile_product`, `fashionphile_product_recommendations`, `fashionphile_products`, `fashionphile_search`, `fashionphile_search_suggest`, `fashionphile_sitemap_urls`, `fashionphile_sitemaps`, `fashionphile_store`
@@ -401,6 +402,7 @@ All 3665 tools by platform, generated from [`tools.json`](./tools.json). [`TOOLS
 - **france24** (5): `france24_article`, `france24_author`, `france24_headlines`, `france24_news`, `france24_sections`
 - **freemalaysiatoday** (2): `freemalaysiatoday_news`, `freemalaysiatoday_sections`
 - **ft** (6): `ft_article`, `ft_author`, `ft_categories`, `ft_headlines`, `ft_news`, `ft_search`
+- **fussballde** (27): `fussballde_amateur_stats`, `fussballde_club`, `fussballde_club_matches`, `fussballde_club_search`, `fussballde_competition_options`, `fussballde_competitions`, `fussballde_federation`, `fussballde_filters`, `fussballde_match`, `fussballde_match_calendar`, `fussballde_match_comparison`, `fussballde_match_plan`, `fussballde_matchday`, `fussballde_national_top_scorers`, `fussballde_news`, `fussballde_news_article`, `fussballde_news_search`, `fussballde_player`, `fussballde_player_matches`, `fussballde_player_search`, `fussballde_position_history`, `fussballde_postal_codes`, `fussballde_table`, `fussballde_team`, `fussballde_team_matches`, `fussballde_team_squad`, `fussballde_top_scorers`
 - **gamerant** (5): `gamerant_article`, `gamerant_author`, `gamerant_headlines`, `gamerant_news`, `gamerant_sections`
 - **gamesradar** (5): `gamesradar_article`, `gamesradar_author`, `gamesradar_headlines`, `gamesradar_news`, `gamesradar_sections`
 - **gbnews** (5): `gbnews_article`, `gbnews_author`, `gbnews_headlines`, `gbnews_news`, `gbnews_sections`
@@ -451,7 +453,7 @@ All 3665 tools by platform, generated from [`tools.json`](./tools.json). [`TOOLS
 - **inews** (5): `inews_article`, `inews_author`, `inews_headlines`, `inews_news`, `inews_sections`
 - **inquirer** (5): `inquirer_article`, `inquirer_author`, `inquirer_headlines`, `inquirer_news`, `inquirer_sections`
 - **instacart** (6): `instacart_departments`, `instacart_item`, `instacart_search`, `instacart_search_nearby`, `instacart_stores`, `instacart_trending`
-- **instagram** (3): `instagram_post`, `instagram_profile`, `instagram_reels`
+- **instagram** (5): `instagram_comments`, `instagram_post`, `instagram_profile`, `instagram_reels`, `instagram_user_posts`
 - **investopedia** (5): `investopedia_article`, `investopedia_author`, `investopedia_headlines`, `investopedia_news`, `investopedia_sections`
 - **iol** (5): `iol_article`, `iol_author`, `iol_headlines`, `iol_news`, `iol_sections`
 - **irishindependent** (5): `irishindependent_article`, `irishindependent_author`, `irishindependent_headlines`, `irishindependent_news`, `irishindependent_sections`
@@ -461,6 +463,7 @@ All 3665 tools by platform, generated from [`tools.json`](./tools.json). [`TOOLS
 - **jerusalempost** (6): `jerusalempost_article`, `jerusalempost_author`, `jerusalempost_authors`, `jerusalempost_headlines`, `jerusalempost_news`, `jerusalempost_sections`
 - **jimmy-johns** (5): `jimmy_johns_menu`, `jimmy_johns_modifiers`, `jimmy_johns_nearby`, `jimmy_johns_sitemap`, `jimmy_johns_store`
 - **jobs** (30): `jobs_ashby_board`, `jobs_company_search`, `jobs_eightfold_board`, `jobs_eightfold_job`, `jobs_gem_board`, `jobs_greenhouse_board`, `jobs_greenhouse_job`, `jobs_hiring_signals`, `jobs_icims_board`, `jobs_icims_job`, `jobs_lever_posting`, `jobs_lever_postings`, `jobs_oracle_board`, `jobs_oracle_job`, `jobs_personio_feed`, `jobs_phenom_board`, `jobs_phenom_job`, `jobs_pinpoint_board`, `jobs_recruitee_offer`, `jobs_recruitee_offers`, `jobs_rippling_board`, `jobs_rippling_job`, `jobs_smartrecruiters_posting`, `jobs_smartrecruiters_postings`, `jobs_teamtailor_jobs`, `jobs_ukg_board`, `jobs_workable_posting`, `jobs_workable_postings`, `jobs_workday_board`, `jobs_workday_job`
+- **jumia** (5): `jumia_categories`, `jumia_category`, `jumia_countries`, `jumia_product`, `jumia_search`
 - **justeat** (4): `justeat_restaurant`, `justeat_restaurant_menu`, `justeat_search`, `justeat_search_filters`
 - **justwatch** (21): `justwatch_age_certifications`, `justwatch_discover`, `justwatch_episode_by_id`, `justwatch_episode_offers`, `justwatch_genre_titles`, `justwatch_genres`, `justwatch_monetization_titles`, `justwatch_new`, `justwatch_popular`, `justwatch_provider_titles`, `justwatch_providers`, `justwatch_search`, `justwatch_season_by_id`, `justwatch_season_episodes`, `justwatch_show_seasons`, `justwatch_title`, `justwatch_title_analysis`, `justwatch_title_by_id`, `justwatch_title_media`, `justwatch_title_offers`, `justwatch_title_similar`
 - **kalshi** (21): `kalshi_event`, `kalshi_event_history`, `kalshi_event_metadata`, `kalshi_events`, `kalshi_exchange_schedule`, `kalshi_exchange_status`, `kalshi_historical_cutoff`, `kalshi_historical_market`, `kalshi_historical_market_history`, `kalshi_historical_markets`, `kalshi_historical_trades`, `kalshi_market`, `kalshi_market_history`, `kalshi_market_orderbook`, `kalshi_markets`, `kalshi_markets_history`, `kalshi_markets_orderbooks`, `kalshi_multivariate_events`, `kalshi_series`, `kalshi_series_detail`, `kalshi_trades`
@@ -569,7 +572,7 @@ All 3665 tools by platform, generated from [`tools.json`](./tools.json). [`TOOLS
 - **rappler** (5): `rappler_article`, `rappler_author`, `rappler_headlines`, `rappler_news`, `rappler_sections`
 - **rawstory** (5): `rawstory_article`, `rawstory_author`, `rawstory_headlines`, `rawstory_news`, `rawstory_sections`
 - **rebag** (12): `rebag_collection_products`, `rebag_collections`, `rebag_page`, `rebag_pages`, `rebag_product`, `rebag_product_recommendations`, `rebag_products`, `rebag_search`, `rebag_search_suggest`, `rebag_sitemap_urls`, `rebag_sitemaps`, `rebag_store`
-- **reddit** (12): `reddit_comments`, `reddit_domain_posts`, `reddit_leads`, `reddit_post`, `reddit_search`, `reddit_subreddit_about`, `reddit_subreddit_comments`, `reddit_subreddit_posts`, `reddit_subreddits_posts`, `reddit_trends`, `reddit_user_comments`, `reddit_user_posts`
+- **reddit** (19): `reddit_archive_comments_ids`, `reddit_archive_comments_search`, `reddit_archive_comments_tree`, `reddit_archive_posts_ids`, `reddit_archive_posts_search`, `reddit_archive_subreddits_search`, `reddit_archive_time_series`, `reddit_comments`, `reddit_domain_posts`, `reddit_leads`, `reddit_post`, `reddit_search`, `reddit_subreddit_about`, `reddit_subreddit_comments`, `reddit_subreddit_posts`, `reddit_subreddits_posts`, `reddit_trends`, `reddit_user_comments`, `reddit_user_posts`
 - **redfin** (5): `redfin_estimate`, `redfin_property`, `redfin_region_trends`, `redfin_search`, `redfin_similar`
 - **research** (10): `research_cancel`, `research_events`, `research_inspect_paper`, `research_read_paper`, `research_related_papers`, `research_results`, `research_search_papers`, `research_sources`, `research_start`, `research_status`
 - **resy** (7): `resy_availability`, `resy_cuisines`, `resy_event_detail`, `resy_events`, `resy_locations`, `resy_restaurant`, `resy_search`
@@ -597,7 +600,7 @@ All 3665 tools by platform, generated from [`tools.json`](./tools.json). [`TOOLS
 - **sevennewsau** (5): `sevennewsau_article`, `sevennewsau_author`, `sevennewsau_headlines`, `sevennewsau_news`, `sevennewsau_sections`
 - **sfgate** (5): `sfgate_article`, `sfgate_author`, `sfgate_headlines`, `sfgate_news`, `sfgate_sections`
 - **shakeshack** (4): `shakeshack_locations`, `shakeshack_menu`, `shakeshack_nearby`, `shakeshack_store`
-- **shein** (8): `shein_category_filters`, `shein_category_goods`, `shein_category_nav`, `shein_products_aggregation_filters`, `shein_products_detail`, `shein_products_search`, `shein_search_autocomplete`, `shein_search_keywords`
+- **shein** (16): `shein_brands`, `shein_categories`, `shein_category_filters`, `shein_category_goods`, `shein_category_nav`, `shein_deals_products`, `shein_deals_tabs`, `shein_products_aggregation_filters`, `shein_products_detail`, `shein_products_search`, `shein_search_autocomplete`, `shein_search_keywords`, `shein_store`, `shein_store_products`, `shein_trending_categories`, `shein_trending_filters`
 - **shop-app** (16): `shop_app_analysis`, `shop_app_categories`, `shop_app_collection_products`, `shop_app_product`, `shop_app_product_related`, `shop_app_product_reviews`, `shop_app_product_shop`, `shop_app_product_variant`, `shop_app_product_variants`, `shop_app_search`, `shop_app_shop`, `shop_app_shop_locations`, `shop_app_shop_products`, `shop_app_shop_reviews`, `shop_app_shop_typeahead`, `shop_app_suggestions`
 - **shopify** (11): `shopify_collection_products`, `shopify_collections`, `shopify_page`, `shopify_pages`, `shopify_product`, `shopify_product_recommendations`, `shopify_products`, `shopify_search_suggest`, `shopify_sitemap_urls`, `shopify_sitemaps`, `shopify_store`
 - **similarweb** (2): `similarweb_search`, `similarweb_web`
@@ -657,7 +660,7 @@ All 3665 tools by platform, generated from [`tools.json`](./tools.json). [`TOOLS
 - **ticketmaster** (15): `ticketmaster_attraction`, `ticketmaster_attraction_events`, `ticketmaster_attraction_related`, `ticketmaster_attraction_reviews`, `ticketmaster_discover_categories`, `ticketmaster_discover_category_events`, `ticketmaster_discover_cities`, `ticketmaster_discover_city_events`, `ticketmaster_event`, `ticketmaster_search_events`, `ticketmaster_suggest`, `ticketmaster_trending_attractions`, `ticketmaster_venue`, `ticketmaster_venue_enhanced_details`, `ticketmaster_venue_events`
 - **ticketweb** (3): `ticketweb_event`, `ticketweb_search`, `ticketweb_venue`
 - **tiffany** (8): `tiffany_categories`, `tiffany_category`, `tiffany_content_search`, `tiffany_filters`, `tiffany_product`, `tiffany_search`, `tiffany_stores`, `tiffany_suggest`
-- **tiktok** (45): `tiktok_category`, `tiktok_challenge`, `tiktok_challenge_list`, `tiktok_comments`, `tiktok_creative_center_filters`, `tiktok_creative_center_hashtags`, `tiktok_creative_center_top_content`, `tiktok_creative_center_videos`, `tiktok_explore`, `tiktok_mobile_feed`, `tiktok_mobile_hashtag`, `tiktok_mobile_hashtag_posts`, `tiktok_mobile_hashtags`, `tiktok_mobile_live_effects`, `tiktok_mobile_live_gifts`, `tiktok_mobile_live_search`, `tiktok_mobile_music_beats`, `tiktok_mobile_music_collections`, `tiktok_mobile_music_pick`, `tiktok_mobile_music_posts`, `tiktok_mobile_music_related`, `tiktok_mobile_music_trending`, `tiktok_mobile_search`, `tiktok_mobile_search_music`, `tiktok_mobile_search_user`, `tiktok_mobile_trending_categories`, `tiktok_mobile_trending_effects`, `tiktok_popular_trend_country_industry_meta`, `tiktok_post`, `tiktok_posts`, `tiktok_profile`, `tiktok_search`, `tiktok_search_hashtag`, `tiktok_search_user`, `tiktok_top_ads_analysis`, `tiktok_top_ads_detail`, `tiktok_top_ads_filters`, `tiktok_top_ads_list`, `tiktok_top_ads_location_info`, `tiktok_top_ads_locations`, `tiktok_top_ads_recommend`, `tiktok_top_ads_safety`, `tiktok_top_ads_spotlight`, `tiktok_top_ads_suggestions`, `tiktok_trending`
+- **tiktok** (68): `tiktok_category`, `tiktok_challenge`, `tiktok_challenge_list`, `tiktok_comments`, `tiktok_creative_center_filters`, `tiktok_creative_center_hashtags`, `tiktok_creative_center_top_content`, `tiktok_creative_center_videos`, `tiktok_explore`, `tiktok_mobile_anchor_list`, `tiktok_mobile_comment_replies`, `tiktok_mobile_comments`, `tiktok_mobile_feed`, `tiktok_mobile_feed_post`, `tiktok_mobile_hashtag`, `tiktok_mobile_hashtag_posts`, `tiktok_mobile_hashtags`, `tiktok_mobile_live_effects`, `tiktok_mobile_live_gifts`, `tiktok_mobile_live_hashtags`, `tiktok_mobile_live_room`, `tiktok_mobile_live_room_by_user`, `tiktok_mobile_live_search`, `tiktok_mobile_live_tabs`, `tiktok_mobile_music_beats`, `tiktok_mobile_music_choices`, `tiktok_mobile_music_collection_list`, `tiktok_mobile_music_collections`, `tiktok_mobile_music_pick`, `tiktok_mobile_music_posts`, `tiktok_mobile_music_related`, `tiktok_mobile_music_trending`, `tiktok_mobile_mv_videos`, `tiktok_mobile_place_detail`, `tiktok_mobile_place_info`, `tiktok_mobile_place_photos`, `tiktok_mobile_place_videos`, `tiktok_mobile_search`, `tiktok_mobile_search_effects`, `tiktok_mobile_search_hashtags`, `tiktok_mobile_search_music`, `tiktok_mobile_search_place`, `tiktok_mobile_search_pre_info`, `tiktok_mobile_search_suggestions`, `tiktok_mobile_search_tabs`, `tiktok_mobile_search_user`, `tiktok_mobile_trending_categories`, `tiktok_mobile_trending_effects`, `tiktok_mobile_user_recommendations`, `tiktok_mobile_video_subtitles`, `tiktok_popular_trend_country_industry_meta`, `tiktok_post`, `tiktok_posts`, `tiktok_profile`, `tiktok_search`, `tiktok_search_hashtag`, `tiktok_search_user`, `tiktok_top_ads_analysis`, `tiktok_top_ads_detail`, `tiktok_top_ads_filters`, `tiktok_top_ads_list`, `tiktok_top_ads_location_info`, `tiktok_top_ads_locations`, `tiktok_top_ads_recommend`, `tiktok_top_ads_safety`, `tiktok_top_ads_spotlight`, `tiktok_top_ads_suggestions`, `tiktok_trending`
 - **time** (5): `time_article`, `time_author`, `time_headlines`, `time_news`, `time_sections`
 - **timeslive** (4): `timeslive_article`, `timeslive_headlines`, `timeslive_news`, `timeslive_sections`
 - **timesofindia** (5): `timesofindia_article`, `timesofindia_author`, `timesofindia_headlines`, `timesofindia_news`, `timesofindia_sections`
@@ -721,7 +724,7 @@ All 3665 tools by platform, generated from [`tools.json`](./tools.json). [`TOOLS
 - **yardbarker** (5): `yardbarker_article`, `yardbarker_author`, `yardbarker_headlines`, `yardbarker_news`, `yardbarker_sections`
 - **yelp** (8): `yelp_business`, `yelp_business_menu`, `yelp_business_photos`, `yelp_business_review_highlights`, `yelp_business_reviews`, `yelp_business_reviews_search`, `yelp_geocode`, `yelp_search`
 - **yoox** (4): `yoox_categories`, `yoox_designers`, `yoox_product`, `yoox_search`
-- **youtube** (14): `youtube_captions`, `youtube_channel_playlists`, `youtube_channel_search`, `youtube_channel_shorts`, `youtube_channel_videos`, `youtube_comments`, `youtube_playlist`, `youtube_profile`, `youtube_search`, `youtube_suggest`, `youtube_tag`, `youtube_transcript`, `youtube_transcript_languages`, `youtube_video`
+- **youtube** (15): `youtube_captions`, `youtube_channel_playlists`, `youtube_channel_search`, `youtube_channel_shorts`, `youtube_channel_videos`, `youtube_comment_replies`, `youtube_comments`, `youtube_playlist`, `youtube_profile`, `youtube_search`, `youtube_suggest`, `youtube_tag`, `youtube_transcript`, `youtube_transcript_languages`, `youtube_video`
 - **zalando** (6): `zalando_categories`, `zalando_category`, `zalando_markets`, `zalando_product`, `zalando_search`, `zalando_suggest`
 - **zappos** (5): `zappos_brand`, `zappos_brands`, `zappos_product`, `zappos_search`, `zappos_suggest`
 - **zara** (6): `zara_categories`, `zara_category_products`, `zara_product`, `zara_search`, `zara_stores`, `zara_suggest`
