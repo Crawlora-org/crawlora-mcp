@@ -1,6 +1,6 @@
 # Crawlora MCP tool catalog
 
-Every tool the Crawlora MCP server exposes (3829), generated from [`tools.json`](./tools.json); do not edit manually. See the [README](./README.md) for setup and an index by platform.
+Every tool the Crawlora MCP server exposes (3926), generated from [`tools.json`](./tools.json); do not edit manually. See the [README](./README.md) for setup and an index by platform.
 
 ## Tools
 
@@ -176,6 +176,18 @@ Get AL.com top stories. Returns current AL.com News stories. Summaries are brief
 
 Get AL.com editorial sections. Lists the three top-level editorial sections in AL.com's navigation: 'news', 'sports' and 'life'. Each has a 'slug', a display 'name' and the section's page 'url', and the slugs are the values 'alcom-headlines' accepts for 'section'.
 
+### `aliexpress_categories`
+
+List AliExpress category navigation. Returns AliExpress's category navigation taxonomy. With no parameters it lists the top-level category tabs (about 24), each with its navigation id, name, numeric platform category id and icon. Pass one tab's id as category_tab to expand that tab into its second- and third-level categories; third-level categories carry the search keyword and a ready-to-use search URL, so they can be passed to the search endpoint as q. Category ids are exposed only where AliExpress's payload actually carries them: second-level categories have no numeric platform id, so none is invented for them. This is a taxonomy surface, not a product listing.
+
+### `aliexpress_category_ids`
+
+Discover AliExpress web category ids. Returns the AliExpress web category ids that its own product cards carry on one listing page, with each id's parent, depth and full category path. Pass q to discover the categories of products matching a keyword, or category_id to inspect one category listing. Pass exactly one of them. The ids are the same web category ids used in /category/<id>/<slug>.html URLs and by the search endpoint's cat_id parameter; they are NOT the platform/taxonomy ids returned by the categories endpoint. A parent category listing contains products from its descendants, so inspecting a category reveals its child ids, and every returned path names that id's ancestors: the value space is discoverable by walking from a keyword or a category id rather than guessing.
+
+### `aliexpress_category_products`
+
+List products in an AliExpress category. Returns one page (up to 60 products) of a public AliExpress category listing with the same product fields as the search endpoint: product id, title, link, image, price, currency, original price, rating, sold text, discount, SKU id, ship-from country and store name when AliExpress lists them. category_id is the AliExpress web category id from a /category/<id>/<slug>.html URL (for example 5090301 for Cellphones); the slug segment is cosmetic (the listing is selected by id) and defaults to products. The listing uses the anonymous US English/USD locale. Product-detail pages are currently unavailable through the supported HTTP profiles.
+
 ### `aliexpress_reviews`
 
 Get AliExpress product reviews. Returns one page of public reviews and rating statistics for a numeric AliExpress product id. AliExpress currently returns up to 20 review records per page.
@@ -187,6 +199,14 @@ Search AliExpress products. Returns one page (up to 60 products) of public keywo
 ### `aliexpress_search_filters`
 
 List AliExpress search filters. Returns every sort value and boolean filter the search endpoint accepts, plus the product-attribute filters (brand, color, style, and so on) AliExpress offers for the keyword, as ready-to-use attr values. Attribute filters differ per keyword, so call this with the same q as the search.
+
+### `aliexpress_suggest`
+
+Suggest AliExpress search keywords. Returns AliExpress's own search-box keyword completions for a query, with a ready-to-use search URL for each suggestion. This is a suggestion/autocomplete surface, not a product feed: the upstream payload contains keyword strings only, so no product id, title, price or seller is returned. AliExpress usually offers 10-12 suggestions; each suggestion's url is the matching AliExpress search page and can be passed to the search endpoint as q.
+
+### `aliexpress_trending_searches`
+
+List AliExpress trending searches. Returns AliExpress's own discovery/trending keyword feed from its anonymous search box: the hot-search keywords it groups by category, plus its discovery and shading keyword modules. Each item carries the keyword, its display casing when different, the kind (hot, shading, discovery, history), the module's UI label, the hot-list category, and a ready-to-use search URL; keyword thumbnails are included where AliExpress supplies them. This is a keyword-discovery feed, not a product list and not a personalized recommendation: no product id, title, price or seller is returned, and AliExpress does not promise a stable order between calls. The anonymous feed carries roughly 40 hot keywords plus a few discovery/shading keywords per call; search history is empty for anonymous callers.
 
 ### `aljazeera_article`
 
@@ -2468,6 +2488,22 @@ Airbnb market density near a coordinate. Returns an aggregate geohash-grid densi
 
 Search the Airbnb markets dataset. Returns aggregate Airbnb short-term-rental market rollups from the dataset id enum value 'airbnb-markets'. Aggregate-only: each row is a market cell, never an individual listing. Thin cells are suppressed. group_by enum: 'country', 'market', 'admin1' (top subdivision), 'locality' (settlement), 'room_type' ('entire_place'/'private_room'/'hotel'/'shared_room'), 'property_type' (Airbnb's canonical listing type from the detail page). Enrichment-derived groupings include a 'coverage' object with the number and share of filtered listings carrying that dimension; the 20% minimum gate is not a completeness guarantee, and counts still describe classified rows only. Each cell also carries 'median_price_usd', the median nightly price converted to USD via an approximate dated FX snapshot, for cross-country comparison (combine with 'group_by=room_type' for median price by room type); 'guest_favorite_pct', the share of listings carrying the Guest Favorite badge (an observed lower bound, like 'superhost_pct'); and 'avg_person_capacity', the average guests a listing sleeps over the detail-page-enriched sample. Sort enum: 'listings_desc', 'superhost_pct_desc', 'rating_desc', 'key_asc'. Billing: this search costs 1 credit per record returned, with a minimum of 2 (an empty result costs 2, a full page of 100 costs 100).
 
+### `datasets_apple_maps_places_facets`
+
+Facet stored Apple Maps places. Returns terms aggregation counts for the stored Apple Maps place directory. Facet enum: 'category', 'country_code', 'state', 'city', 'price_symbol', 'catalog_country'. Accepts the same filter parameters as search to scope the aggregation. Use 'facet=category' to discover the exact category names the 'category' filter accepts.
+
+### `datasets_apple_maps_places_item`
+
+Get a stored Apple Maps place. Returns one stored Apple Maps place by Apple place id from dataset id 'apple-maps-places'. Accepts either the numeric place id (the 'id' field) or the external place id that appears in maps.apple.com URLs (the 'place_id' field, starting with 'I'). A 'rating' of 'null' means Apple shows no rating for the place. 'catalog_country' is the Apple storefront the place was found under, not its country; 'country_code' is the place's own country. 'first_seen_at' is when the directory first observed the place and 'last_seen_at' the latest observation. Does not trigger live scraping; for a live Apple Maps lookup use the apple-maps-place endpoint.
+
+### `datasets_apple_maps_places_nearby`
+
+Find nearby stored Apple Maps places. Returns stored Apple Maps places within a radius of a point, nearest first, from dataset id 'apple-maps-places'. lat, lon and radius_m are required. Unlike the live apple-maps-search endpoint (which returns at most 25 places per call), this pages through the stored directory with 'distance_m' on every item. Coverage is observed, not complete. Does not trigger live scraping. Billing: this endpoint costs 1 credit per record returned, with a minimum of 2 (an empty result costs 2, a full page of 100 costs 100).
+
+### `datasets_apple_maps_places_search`
+
+Search stored Apple Maps places. Searches the stored Apple Maps place directory (dataset id 'apple-maps-places'), built by tiling populated areas and running category searches over each tile. Each place has its Apple place id, name, category path, address, coordinates, phone, website, opening hours, rating and price level where Apple shows them. Coverage is observed, not complete: Apple answers each search with at most 25 places, so very dense areas can hold places the directory has not reached, and a place missing from the results is not evidence that it does not exist or has closed. A 'rating' of 'null' means Apple shows no rating for the place (never a zero-star score); ratings and rating counts come from third-party review partners that Apple shows (for example Yelp and Foursquare), so they are not comparable across places and a few places carry a rating with no count. Supports full-text 'q', 'category'/'city'/'state'/'country_code'/'postal_code' filters, 'min_rating', 'min_rating_count', 'has_website', 'has_phone', 'lat'/'lon'/'radius_m' radius filtering, and 'sort' (relevance, rating_desc, review_count_desc, updated_at_desc, distance_asc). Does not trigger live scraping. Billing: this search costs 1 credit per record returned, with a minimum of 2 (an empty result costs 2, a full page of 100 costs 100).
+
 ### `datasets_apple_podcasts_shows_facets`
 
 Facet Apple Podcasts shows dataset. Returns value counts for one field of the Apple Podcasts shows dataset, chosen by the required 'facet': 'genre', 'genre_id', 'country', 'content_advisory_rating' or 'run_id'. The counts honour the search filters ('q', 'genre', 'country', 'min_track_count' and others) and cover the top 50 values.
@@ -2630,7 +2666,7 @@ Search Goodreads books dataset. Searches the crawled public Goodreads book catal
 
 ### `datasets_google_map_facets`
 
-Facet stored Google Maps businesses. Returns terms aggregation counts for Google Maps businesses. Facet enum: 'category', 'country', 'state', 'state_code', 'county', 'county_code', 'city', 'town', 'website_status'. Category facet values are exact locale-specific Google Maps labels and can be localized, non-ASCII, or contain punctuation; pass a returned value unchanged to the category filter. 'state' and 'county' keep each country's own administrative vocabulary (e.g. 'Provincia de Madrid', 'Département du Nord'); 'state_code' and 'county_code' are the matching ISO 3166-2 codes (e.g. 'ES-MD', 'FR-59') and are the stable cross-country grouping key. Rows not yet resolved carry no code and are absent from the code facets.
+Facet stored Google Maps businesses. Returns terms aggregation counts for Google Maps businesses. Facet enum: 'category', 'country', 'state', 'state_code', 'county', 'county_code', 'city', 'town', 'website_status'. Category facet values are exact locale-specific Google Maps labels and can be localized, non-ASCII, or contain punctuation; pass a returned value unchanged to the category filter. 'state' and 'county' keep each country's own administrative vocabulary (e.g. 'Provincia de Madrid', 'Département du Nord'); 'state_code' and 'county_code' are ISO 3166-2 codes populated today only for Canadian provinces and territories (e.g. 'CA-ON') and Irish counties (e.g. 'IE-D'); every other record, including all US rows, carries no code and is absent from the code facets.
 
 ### `datasets_google_map_item`
 
@@ -3347,6 +3383,70 @@ DraftKings Sportsbook team. Returns stable team metadata embedded in a public Dr
 ### `draftkings_teams`
 
 DraftKings Sportsbook league teams. Returns the teams listed on DraftKings Sportsbook's public Teams page for one league. Allowed 'league' values: 'nfl', 'nhl', 'nba', 'cbb', 'mlb', 'cfb'.
+
+### `dramabox_browse`
+
+Browse DramaBox short dramas by genre. Returns one page of 12 DramaBox short dramas, optionally within one genre: id, title, description, cover, link, episode count, tags, genres, rating, update status and displayed views, with the page and total page count. Genre ids come from dramabox-genres. Only public catalog metadata is read; no playable video is returned.
+
+### `dramabox_categories`
+
+List DramaBox category filters. Returns the DramaBox app's category navigation as six groups: language, production type, dub mode, two genre rows (genre_1 and genre_2) and sort order. Each group lists the selectable options as display names and the values to pass to dramabox-category-books. The "All" pseudo-option is dropped because omitting a filter means all. Only public catalog metadata is read; no playable video is returned.
+
+### `dramabox_category_books`
+
+Browse DramaBox titles by category. Returns one page of 20 DramaBox short dramas from the app's category feed, optionally filtered by values from dramabox-categories: language, production type, dub mode, either genre row and sort order. Filters are ANDed; an omitted filter means all. Each title carries its id, title, description, cover, website link, episode count, tags with tag ids, protagonist, play count, library flag and listing times. Only public catalog metadata is read; no playable video is returned.
+
+### `dramabox_channels`
+
+List DramaBox theater channels. Returns the 8 DramaBox app theater channels as ids and names: Popular, New, Rankings, Categories, Anime, Live-Action, VIP and Original+. The channel value for dramabox-theater is the lowercase name (popular, new, rankings, categories, anime, live-action, vip, original). Only public catalog metadata is read; no playable video is returned.
+
+### `dramabox_drama`
+
+Get a DramaBox short drama and its episodes. Returns one DramaBox short drama: title, description, cover, link, language, episode count, lifetime views, follows, tags, genres, listing times, the languages it is available in, the episode list with each episode's number, id, duration, free flag and thumbnail, and related titles. Only public catalog metadata is read; no playable video is returned.
+
+### `dramabox_genres`
+
+List DramaBox genres. Returns the genres DramaBox's browse accepts (Romance, Werewolves, Revenge, Billionaire, ...) as ids and names, read live from DramaBox. Pass a genre id to dramabox-browse. Only public catalog metadata is read; no playable video is returned.
+
+### `dramabox_home`
+
+List DramaBox's featured titles and shelves. Returns DramaBox's (dramabox.com) home page: the featured short dramas and the three curated shelves (Trending, Must-sees, Hidden gems), each title with its id, title, description, cover, DramaBox link, episode count, tags, genres and the view count as the site prints it. Use dramabox-more for a whole shelf. Only public catalog metadata is read; no playable video is returned.
+
+### `dramabox_more`
+
+Get a whole DramaBox curated shelf. Returns one page of 18 titles from a DramaBox curated shelf (trending, must-sees or hidden-gems): id, title, description, cover, link, episode count, tags, genres and displayed views, with the page and total page count. Only public catalog metadata is read; no playable video is returned.
+
+### `dramabox_performer`
+
+Get a DramaBox performer and their titles. Returns one DramaBox performer from the Android app API: name, gender, avatar, video count, follow flag, and one page of the titles they appear in (each with id, title, description, cover, website link, episode count, tags with their tag ids, protagonist, library flag and listing times). Get performer ids from dramabox-search or dramabox-suggest's people results. Only public catalog metadata is read; no playable video is returned.
+
+### `dramabox_rank`
+
+Get a DramaBox ranking list. Returns one DramaBox ranking list from the DramaBox Android app API: the available tabs (Most Trending, Top Searched, New Releases) and 20 ranked titles, each with its id, title, description, cover, website link, episode count, tags, protagonist, rank position, hot metric, library flag and listing times. Pass a tab's type as rank_type to read that tab. Only public catalog metadata is read; no playable video is returned.
+
+### `dramabox_recommend`
+
+Get a page of DramaBox's recommendation feed. Returns one page of DramaBox's own "You Might Like" recommendation feed from the Android app API: the feed title and its titles, each with id, title, description, cover, website link, episode count, tags with their tag ids, protagonist, library flag and listing times. The upstream page size is fixed, so page is the only paging control. Only public catalog metadata is read; no playable video is returned.
+
+### `dramabox_search`
+
+Search DramaBox titles and performers. Searches the DramaBox Android app API and returns one page of mixed results: book rows (id, title, description, cover, website link, tags, protagonist) and performer rows (id, name, avatar, series count), plus an is_more flag for the next page. The keyword is trimmed and truncated to 80 characters like the app; sort selects one of the app's result orderings. Performer ids can be passed to dramabox-performer. Only public catalog metadata is read; no playable video is returned.
+
+### `dramabox_suggest`
+
+Get DramaBox search-box suggestions. Returns the DramaBox Android app API's autocomplete suggestions for a partial query: book rows (kind "book", cover_url) and performer rows (kind "actor", avatar, series count). The keyword is trimmed and truncated to 80 characters like the app; a query with no match returns an empty items list. Only public catalog metadata is read; no playable video is returned.
+
+### `dramabox_tag`
+
+List the DramaBox titles carrying a tag. Returns one page of DramaBox titles carrying a tag, as the Android app shows them: each title's id, title, description, cover, website link, episode count, tags with their tag ids, protagonist, library flag and listing times, plus the tag's own name. Get tag ids from any title result's tag_refs (dramabox-rank, dramabox-search, dramabox-category-books and the other list endpoints all expose them). An unknown tag id returns an empty list rather than an error. Only public catalog metadata is read; no playable video is returned.
+
+### `dramabox_theater`
+
+Get a DramaBox theater channel feed. Returns one page of a DramaBox app theater channel: the channel, its titled shelves (each with styles and 10 to 20 titles), poster banners and search hot words. Each title carries its id, title, description, cover, website link, episode count, tags with tag ids, protagonist, play count, library flag and listing times. Channel values are the lowercase names from dramabox-channels. An empty feed is a valid answer. Only public catalog metadata and poster images are read; no playable video is returned.
+
+### `dramabox_trending`
+
+Get DramaBox's search landing feeds. Returns the DramaBox Android app API's search landing page: the hot, trending and new-release title lists, the ranking tabs (pass a tab's type to dramabox-rank as rank_type) and the app's preset search keyword. Takes no parameters. Only public catalog metadata is read; no playable video is returned.
 
 ### `duckduckgo_image`
 
@@ -6876,9 +6976,21 @@ List supported Jumia country storefronts. Returns the Jumia country storefronts 
 
 Get a Jumia product. Returns one Jumia product: name, brand, sku, images, price in the storefront's currency with original price and discount, availability, rating and rating count, category path, seller (name, id, score, followers, shipping speed), description, key features and the specification table. Pass the url returned by jumia-search or jumia-category; the storefront country is taken from the URL host. Jumia sits behind an anti-bot challenge that clears on only some connections, so a call can take up to about 50 seconds and may return 503; retry it. A product id Jumia no longer serves returns 404.
 
+### `jumia_reviews`
+
+Get the reviews of a Jumia product. Returns one page of a Jumia product's written, verified customer reviews (rating, title, text, date, first name of the author) with the rating summary: average rating, total ratings, total written reviews and the count of ratings per star. Reviews are 10 per page. A product with ratings but no written reviews returns an empty list with the summary. Pass the sku returned by jumia-search, jumia-category or jumia-product. Jumia sits behind an anti-bot challenge that clears on only some connections, so a call can take up to about 50 seconds and may return 503; retry it. country is required; see jumia-countries.
+
 ### `jumia_search`
 
 Search Jumia products. Searches a Jumia country storefront by keyword and returns one page of product cards with price in the storefront's currency, original price and discount, rating, brand, categories and badges, plus the upstream total_count and a has_next flag. Jumia serves at most 50 pages. A search with no matches returns an empty products list. Jumia sits behind an anti-bot challenge that clears on only some connections, so a call can take up to about 50 seconds and may return 503; retry it. country is required (there is no default storefront); see jumia-countries.
+
+### `jumia_sitemap_urls`
+
+Read the URLs in a Jumia sitemap file. Returns one page of the URLs listed in a Jumia sitemap file, each with its last-modified date and first image, plus the total number of URLs in the file. A product file holds up to 16,000 product URLs; page through it with page and page_size (up to 5000). Take the file name from jumia-sitemaps. A page past the end returns an empty list. Jumia sits behind an anti-bot challenge that clears on only some connections, so a call can take up to about 50 seconds and may return 503; retry it. country is required; see jumia-countries.
+
+### `jumia_sitemaps`
+
+List the sitemap files of a Jumia storefront. Lists the sitemap files a Jumia storefront publishes: product, brand, category and curated-page (mlps) files, each with its name, type, language, last-modified date and URL. Pass a returned name to jumia-sitemap-urls to read the URLs in it. Optionally narrow to one type. Jumia sits behind an anti-bot challenge that clears on only some connections, so a call can take up to about 50 seconds and may return 503; retry it. country is required; see jumia-countries.
 
 ### `justeat_restaurant`
 
@@ -7111,6 +7223,90 @@ Get Khaleej Times top stories. Returns fresh Khaleej Times top stories from its 
 ### `khaleejtimes_sections`
 
 Get Khaleej Times sections. Returns the public Khaleej Times section inventory used by the headlines endpoint. A section slug is its URL path with slashes turned into hyphens (for example business-markets for /business/markets).
+
+### `kick_categories`
+
+List Kick's top-level categories. Returns Kick's top-level categories (Games, IRL, Music, Gambling, Creative, Alternative, Chat Roulette) with id, name, slug and icon. These slugs are the exact values the category parameter of kick-subcategories takes. Kick's website and its mobile app each list one parent the other omits (Gambling and Chat Roulette), so this call reads both and returns their union; icon is empty for a category only the app lists. The lists are read live from Kick.
+
+### `kick_category_clips`
+
+List the newest clips in a Kick category. Returns one page of 20 clips made in a Kick (kick.com) game or activity category, newest first: id, title, kick.com link, thumbnail, views, likes, duration in seconds, creation time, mature flag, category, the channel it came from, with a cursor for the next page. slug is a category slug from kick-subcategories such as just-chatting; a top-level category such as games has no clip page and returns not found. Only public data is read and no playable media is returned.
+
+### `kick_channel`
+
+Get a Kick channel profile and live state. Returns a Kick (kick.com) channel's public profile and, when it is live, its current broadcast: username, bio, verification and affiliate flags, follower count, linked social handles, profile and banner images, recent categories, and a live object with title, viewers, start time, language, tags and categories (omitted when the channel is offline). slug is the channel slug from its kick.com address, case-insensitive; a full kick.com URL is also accepted. Playable stream URLs are never returned. An unknown channel returns not found.
+
+### `kick_channel_chatroom`
+
+Get a Kick channel's chat settings and rules. Returns a Kick (kick.com) channel's chat restrictions and rules: slow mode (delay between messages), subscribers-only, followers-only (minimum follow time), emotes-only and minimum account age, whether gifts are enabled, and the channel's chat rules text. slug is the channel slug from its kick.com address, case-insensitive; a full kick.com URL is also accepted. The pinned message is not returned. This call reads two Kick pages. An unknown channel returns not found.
+
+### `kick_channel_clips`
+
+List a Kick channel's clips. Returns one page of 20 clips from a Kick channel, newest first: id, title, kick.com link, thumbnail, views, likes, duration in seconds, creation time, mature flag, category, the viewer who made the clip and the channel. Page onward by passing the previous response's next_cursor as cursor; next_cursor is empty on the last page. Playable clip URLs are never returned. An unknown channel returns not found.
+
+### `kick_channel_emotes`
+
+List the chat emotes a Kick channel offers. Returns the chat emote sets available in a Kick (kick.com) channel: the channel's own custom emotes (id, name, whether subscribers only, image link), plus the Global and Emoji sets that every channel shares. slug is the channel slug from its kick.com address, case-insensitive; a full kick.com URL is also accepted. A channel with no custom emotes returns an empty channel set. Only public data is read and no playable media is returned. An unknown channel returns not found.
+
+### `kick_channel_links`
+
+List a Kick channel's link panels. Returns the panels a Kick (kick.com) channel shows under its stream, in the order Kick shows them: link panels (tip pages, merch, social profiles) with title, description, URL and image, and text panels (FAQ, rules, disclaimers) that are only a title and description. slug is the channel slug from its kick.com address, case-insensitive; a full kick.com URL is also accepted. Only public data is read and no playable media is returned. An unknown channel returns not found.
+
+### `kick_channel_streams`
+
+List a Kick channel's recent broadcast history. Returns a Kick (kick.com) channel's recent broadcast history, newest first: id, title, start time, duration in milliseconds, the viewer count Kick reports for the broadcast, language, mature flag, tags, categories, thumbnail, and for broadcasts with a recording its video uuid, video views and kick.com video link. slug is the channel slug from its kick.com address, case-insensitive; a full kick.com URL is also accepted. Kick keeps between none and about thirty broadcasts. Only public data is read and no playable media is returned. An unknown channel returns not found.
+
+### `kick_channel_videos`
+
+List a Kick channel's recent past broadcasts. Returns a Kick channel's recent past broadcasts (VODs), newest first: id, uuid, title, start time, duration in milliseconds, views, language, mature flag, tags, categories, thumbnail and the kick.com video link. Kick returns a fixed window of recent videos (26 at the time of writing) with no paging, so this call takes only the channel slug. Playable stream sources are never returned. An unknown channel returns not found.
+
+### `kick_clip`
+
+Get one Kick clip. Returns one Kick clip by id: title, kick.com link, thumbnail, views, duration, creation time, the moment it starts inside the source broadcast, mature flag, category and channel. id is a clip id such as clip_01M5SKVA6GGAAAT5YPJ7J43WE4, from the id field of kick-channel-clips or kick-clips. A malformed id returns a 400 and an unknown clip returns not found. Playable clip URLs are never returned.
+
+### `kick_clips`
+
+List Kick's site-wide clips. Returns one page of 20 clips from across all of Kick, either newest first (sort=date, the default) or ranked by views inside a time window (sort=views with time=day, week, month or all). Each clip has its id, title, kick.com link, thumbnail, views, duration, category and channel. Page onward by passing the previous response's next_cursor as cursor. Playable clip URLs are never returned. Use kick-channel-clips for one channel's clips.
+
+### `kick_drops`
+
+List Kick Drops campaigns. Returns Kick (kick.com) Drops campaigns, publisher-sponsored rewards that viewers earn by watching, newest first: id, name, status, start and end time, campaign page, the rule (for example Watch to redeem), the publisher with its logo, the game or activity category, every reward with the watch threshold that earns it and its image, and the channels taking part. status is active (the default), expired or all. Only public campaign information is read; no account or progress data.
+
+### `kick_gifts`
+
+List the gifts viewers can send on Kick. Returns the catalog of gifts viewers can send on Kick (kick.com) with Kicks, Kick's virtual currency: gift id, name, price in Kicks, tier (BASIC, MID or HIGHER), type (BASIC or LEVEL_UP), and for level-up gifts the message length they allow and how long they pin the message in chat. This call takes no parameters.
+
+### `kick_languages`
+
+List Kick stream languages. Returns the stream languages Kick shows in its own language picker, each with its code and display name (67 at the time of writing). These codes are all accepted by the language parameter of kick-livestreams, which also accepts further ISO-style codes the picker does not list. The list is read live from Kick, so it follows any language Kick adds.
+
+### `kick_livestreams`
+
+List live broadcasts on Kick. Returns one page of Kick's live-stream directory: title, viewer count, start time, language, mature flag, tags, category, thumbnail and the channel for each live broadcast. sort is viewer_count_desc (the default, most viewers first) or featured. language filters to one stream language by code (kick-languages lists the languages Kick shows in its own picker; the directory accepts a wider range of codes than that list, and an unrecognized code returns a 400), and category_id filters to one category by the numeric id from kick-subcategories or kick-search-categories. limit is 1 to 100 (default 24). Page onward by passing the previous response's next_cursor as after; next_cursor is empty on the last page.
+
+### `kick_search_categories`
+
+Search Kick categories. Searches Kick's game and activity categories by name and returns each match's id, name, slug, tags, mature flag, current viewers, thumbnail and kick.com link. query is required and at most 100 characters; limit is 1 to 100 (default 10). Use this to find categories outside the first pages that kick-subcategories can reach. A search with no matches returns an empty list.
+
+### `kick_search_channels`
+
+Search Kick channels. Searches Kick channels by name and returns each match's id, slug, username, follower count, live flag, verification and kick.com link, most relevant first. query is required and at most 100 characters. live=true restricts to channels that are broadcasting now. limit is 1 to 100 (default 10). A search with no matches returns an empty list.
+
+### `kick_subcategories`
+
+List Kick's game and activity categories. Returns one page of Kick's game and activity categories (Just Chatting, Grand Theft Auto V, ...) ordered by current viewers: id, name, slug, parent category, tags, viewers, mature flag, banner and kick.com link. category restricts to one top-level category by slug from kick-categories (a parent Kick adds later is accepted too). page is 1 to 20 and limit is 1 to 32 (default 24) because Kick silently caps both; total is the size of the whole catalog (over 18,000) while reachable is how many entries these limits can reach, so use kick-search-categories to find a category outside the first pages.
+
+### `kick_subcategory`
+
+Get one Kick category. Returns one Kick game or activity category by slug: id, name, parent category, tags, description, current viewers, follower count, mature flag, banner and kick.com link. slug comes from kick-subcategories or kick-search-categories. An unknown slug returns not found.
+
+### `kick_top_channels`
+
+List Kick's top channels. Returns Kick's top-channels list (30 at the time of writing) ranked by followers: id, slug, username, follower count, live flag, verification, profile picture and kick.com link. The list takes no parameters.
+
+### `kick_video`
+
+Get a Kick video by its uuid. Returns one Kick (kick.com) past broadcast looked up by its recording's uuid, without needing the channel: uuid, title, start time, duration in milliseconds, the viewer count Kick reports, views, status, language, mature flag, tags, categories, thumbnail, the owning channel and the kick.com video link. id is the uuid from kick-channel-videos or kick-channel-streams, or a kick.com video URL. Only public data is read and no playable media is returned. An unknown video returns not found.
 
 ### `kickstarter_comments`
 
@@ -9716,6 +9912,30 @@ Locate Prada retail stores. Locates Prada's (prada.com) physical retail stores w
 
 Get Prada search-box suggestions. Returns Prada's own search-box typeahead suggestions for a partial query -- a ranked list of suggested search phrases with the live result count each one would return. Pass a suggestion straight through to prada-search's own q parameter for product results. A query with no genuine matches returns a well-formed empty result rather than an error.
 
+### `pricecharting_big_movers`
+
+Get PriceCharting's Big Movers report. Returns PriceCharting's Big Movers report for one category: the 100 products whose price changed most since the previous reading (the page says it is usually refreshed within the last week), with product id, name, console or set, address, current loose or ungraded price and the signed change. Choose the category (video-games, coins, comic-books, funko-pops, pokemon-cards, dragon-ball-cards, lorcana-cards, magic-cards, marvel-cards, one-piece-cards, star-wars-cards, yugioh-cards, garbage-pail-cards, other-tcg-cards, other-cards or lego-sets), the order (dollar-increase, dollar-decrease, percent-increase or percent-decrease) and, for video games, the region (all, japan, ntsc or pal). Price data is PriceCharting's; cite it with a link when you display it.
+
+### `pricecharting_categories`
+
+List PriceCharting categories and their consoles or sets. Lists PriceCharting's categories (Pokemon Cards, Magic Cards, Video Games, Comics, Coins, Funko Pops and more) with their slugs, or, given a category, lists that category's consoles or sets with the slugs pricecharting-console takes.
+
+### `pricecharting_console`
+
+List the products of a PriceCharting console or set. Lists the products of one PriceCharting console or set (for example a Pokemon set or a game console), 150 per page: id, name, product address, image and the loose/ungraded, complete/Grade 9 and new/PSA 10 prices. Sort by popularity, highest price, lowest price or name, and page with the returned cursor. Price data is PriceCharting's; cite it with a link when you display it.
+
+### `pricecharting_price_history`
+
+Get a PriceCharting product's monthly price history. Returns the monthly price history behind a PriceCharting product page's price chart: one series per price column (for a trading card Ungraded, Grade 7, Grade 8, Grade 9, Grade 9.5 and PSA 10; for a video game Loose, Complete, New, Graded, Box and Manual), each a list of dated prices, oldest first, starting wherever PriceCharting's chart starts for that product. Trading cards also carry the PSA and CGC population counts by grade 1 to 10. Look a product up by id, by its pricecharting.com address, or by console and slug. Price data is PriceCharting's; cite it with a link when you display it.
+
+### `pricecharting_product`
+
+Get a PriceCharting product's prices and recent sales. Returns one PriceCharting product page: current prices by condition or grade with their latest change, the full price guide, attributes (publisher, release date, card number and similar) and the most recent completed eBay and TCGplayer sales per grade. Look a product up by id, by its pricecharting.com address, or by console and slug. Price data is PriceCharting's; cite it with a link when you display it.
+
+### `pricecharting_search`
+
+Search PriceCharting products. Searches PriceCharting's price guide (trading cards, video games, comics, coins, Funko Pops, LEGO and more) and returns up to 100 matches: product id, name, console or set, category, image and the loose/ungraded, complete/Grade 9 and new/PSA 10 prices. Narrow by console_uid, drop variants, and sort by popularity, highest price or name. Price data is PriceCharting's; cite it with a link when you display it.
+
 ### `pristine_auction_categories`
 
 Discover Pristine Auction's search enum values. Returns the whole value space for pristine-auction-search's category, auction_type, sort, and status params. categories[] is fetched live (with a current listing count per category, refreshed on every call); auction_types[], sort[], and statuses[] are pristineauction.com's own fixed, small search-form value sets.
@@ -9887,6 +10107,10 @@ Search PSA Price Guide. Searches PSA Price Guide by free text (a player/subject 
 ### `psa_price_guide_set`
 
 Get a PSA Price Guide set's price table. Fetches one PSA Price Guide set's full grade-by-grade price table: every card in the set with PSA's own formatted price per grade column (the set's own grade columns vary -- a vintage set may carry more/lower grade tiers than a modern one). category_path, set_path and set_id together identify the set; use the matching fields from a psa-price-guide-search result, or category_path from psa-price-guide-categories combined with a set_path/set_id found by browsing PSA's own category page.
+
+### `psa_price_guide_sets`
+
+Search PSA Price Guide set names. Searches PSA Price Guide by set name (for example "1974 topps" or "super bowl") using PSA's own browse-by-category pages. It matches set names only: it does not search card or player names, and results carry no card items. Use psa-price-guide-search for card and player search while PSA's own search is available. Every word of the query must start a word of the set name; exact and leading matches rank first. Each result's category_path, set_path and set_id are the inputs to psa-price-guide-set. Set lists are cached for 12 hours, so a first call after a cold start can take longer. If a category's set list cannot be loaded, the other categories still answer and unavailable_categories names the missing ones.
 
 ### `psa_probatfacts_categories`
 
@@ -10231,6 +10455,50 @@ Search Redfin listings. Returns Redfin public listing search results. Pass regio
 ### `redfin_similar`
 
 Get Redfin comparable listings. Returns the comparable listings Redfin shows for a property, identified by the required 'property_id'. Each row has the address, city, state, zip, price, beds, baths, 'sqft', 'price_per_sqft', days on market, MLS number, 'hoa_monthly', lot size, year built, status, image and URL, plus coordinates when present.
+
+### `reelshort_fandom_categories`
+
+List ReelShort Fandom's article categories. Returns the categories of ReelShort's (reelshort.com) editorial site, Fandom (cast profiles, plot write-ups, streaming guides): id, slug, name, description, number of articles and link, read live from ReelShort. Pass a category slug to reelshort-fandom-posts. Only public editorial text is read.
+
+### `reelshort_fandom_post`
+
+Get a ReelShort Fandom article. Returns one article from ReelShort's (reelshort.com) editorial site, Fandom: title, excerpt, link, image, publish and modify times, category names, the full article text as plain text, and the ids of the ReelShort titles it links to (pass them to reelshort-movie). id is the article id, its slug, or its reelshort.com/fandom URL. Only public editorial text is read. An unknown article returns not found.
+
+### `reelshort_fandom_posts`
+
+List ReelShort Fandom articles. Lists articles from ReelShort's (reelshort.com) editorial site, Fandom, newest first: id, slug, title, excerpt, link, image, publish and modify times and category names, with the total and page count. Filter by search text and by category slug (general-topic, movie-cast-list, top-movie-stories, where-to-watch or where-to-watch-2). Pass an article id to reelshort-fandom-post for its text. Only public editorial text is read.
+
+### `reelshort_home`
+
+List ReelShort's home page shelves. Returns ReelShort's (reelshort.com) home page as ranked shelves of short dramas (New Release, TOP, Reel Original, Hidden Identity, and so on): shelf id and name, and for each title its id, title, description, cover, ReelShort link, episode count, tags, plays, favorites and the episode from which viewing is paid. Pass a shelf id to reelshort-shelf for the whole list. Only public catalog metadata is read; no playable video is returned.
+
+### `reelshort_movie`
+
+Get a ReelShort short drama and its episodes. Returns one ReelShort short drama: title, description, cover, link, language, episode count, plays, favorites, badge, dubbed and AI-generated flags, release times, tags with their kind (genre, style, mood, trope and more), cast with IMDb links, and the full episode list with each episode's id, number, link, likes, release time and whether it is free. Only public catalog metadata is read; no playable video is returned.
+
+### `reelshort_new_releases`
+
+List ReelShort's curated New Release titles. Returns ReelShort's (reelshort.com) curated "New Release" list from its website's signed JSON API: up to 18 titles with id, name, description, cover, reelshort.com link, episode count, plays, favorites and the first paid episode. book_id is a 24-character title id required by ReelShort's own API; on 2026-10-26 four different values, including an unknown id, returned the same list, so it is not known to change the result. Only public catalogue data is read and no playable media is returned.
+
+### `reelshort_search`
+
+Search ReelShort short dramas by title. Searches ReelShort (reelshort.com) short dramas by keyword and returns 12 titles per page: id, title, description, cover, link, episode count, tags, plays and favorites, with the page, page count and an approximate total. The search is fuzzy and the total varies between calls. Only public catalog metadata is read; no playable video is returned.
+
+### `reelshort_shelf`
+
+Get a whole ReelShort shelf. Returns one whole ReelShort shelf, such as TOP (up to 200 titles) or New Release: shelf id, name and every title with its id, title, description, cover, link, episode count, tags, plays and favorites. Shelf ids come from reelshort-home. Only public catalog metadata is read; no playable video is returned.
+
+### `reelshort_tag_books`
+
+List the ReelShort titles carrying a tag. Returns a ReelShort (reelshort.com) tag and one page of the titles that carry it: the tag's id, kind and name, its top titles, related tags, and for each title its id, name, description, cover, reelshort.com link, plays and favorites. tag_id is a 24-character tag id from reelshort-tags, reelshort-tag-search or reelshort-movie. Pages hold up to 100 titles and ReelShort lists over a thousand titles for the biggest tags. Only public catalogue data is read and no playable media is returned. An unknown tag returns not found.
+
+### `reelshort_tag_search`
+
+Search ReelShort tags by text. Searches ReelShort's (reelshort.com) tags by text: an actor or actress name, an identity or a trope. Returns one page of up to 50 matches, each with its tag id, name, kind, the number of titles ReelShort's search lists for it and an image. A search with no match returns an empty list. Pass a tag id to reelshort-tag-books for the titles carrying it. Only public catalogue data is read and no playable media is returned.
+
+### `reelshort_tags`
+
+List ReelShort's featured tags in one category. Returns ReelShort's (reelshort.com) featured tags for one category: actor, actress, identity (Billionaire, CEO, Werewolf...) or trope (Flash Marriage, Revenge...), about 48 per category, each with its tag id, kind and name. Pass a tag id to reelshort-tag-books for the titles carrying it. category is one of actor, actress, identity or trope; language is a site language and defaults to en. Only public catalogue data is read and no playable media is returned.
 
 ### `research_cancel`
 
@@ -11034,7 +11302,7 @@ SHEIN category filter facets. Returns the filter facets for a SHEIN category by 
 
 ### `shein_category_goods`
 
-SHEIN category product listing. Lists products in a SHEIN category, by the required numeric 'cat_id'. 'page' starts at 1 and 'page_size' defaults to 20; 'sort' is a non-negative integer, '0' by default. Each product has its id, name, images, sale, retail and USD prices, rating, review count, and 'on_sale' and 'sold_out' flags. 'total' is the category's listing count.
+SHEIN category product listing. Lists products in a SHEIN category, by the required numeric 'cat_id'. 'page' starts at 1 and 'page_size' is 1-20 (default 20); 'sort' is a non-negative integer, '0' by default. Each product has its id, name, images, sale, retail and USD prices, rating, review count, and 'on_sale' and 'sold_out' flags. 'total' is the category's listing count.
 
 ### `shein_category_nav`
 
@@ -11054,11 +11322,11 @@ SHEIN search aggregation filters. Returns the filter facets for a SHEIN search, 
 
 ### `shein_products_detail`
 
-SHEIN product detail. Returns a SHEIN product by the required numeric 'goods_id'; 'goods_sn' is optional and narrows the lookup. The response has the name, description, category, brand code, sale, retail and USD prices, images, video URL, size options, per-SKU stock and prices, and colour variants.
+SHEIN product detail. Returns a SHEIN product by the required numeric 'goods_id'; 'goods_sn' is accepted but currently ignored. The response has the name, description, category, brand code, sale, retail and USD prices, images, video URL, size options, per-SKU stock and prices, and colour variants.
 
 ### `shein_products_search`
 
-SHEIN product search. Searches SHEIN products for the required 'keyword'. 'page' starts at 1, 'page_size' defaults to 20 and 'sort' is a non-negative integer, '0' by default. Each product card has its id, name, images, prices, rating, review count and stock flags. Also returns 'total' and spelling suggestions in 'suggest_words'.
+SHEIN product search. Searches SHEIN products for the required 'keyword'. 'page' starts at 1, 'page_size' is 1-20 and defaults to 20, and 'sort' is a non-negative integer, '0' by default. A query with no matches returns an empty 'products' list with 'total' 0. Each product card has its id, name, images, prices, rating, review count and stock flags. Also returns 'total' and spelling suggestions in 'suggest_words'.
 
 ### `shein_search_autocomplete`
 
@@ -12832,6 +13100,42 @@ Search Target products. Searches Target products and returns products plus every
 
 Find Target stores near a location. Returns Target's physical stores near a ZIP code, a free-text "city, state", or a "latitude,longitude" pair, including each store's store_id, status, distance, phone, address, service list, time zone, and two weeks of daily opening hours. Use the returned store_id values with the store_id parameter on target-search, target-category-products, target-filter-options, and target-product.
 
+### `tcgplayer_filters`
+
+List the printing, condition and language filters of a TCGplayer product line. Returns the values the tcgplayer-sales filters accept for one TCGplayer product line: the printings (variants such as Normal, Foil, Holofoil or 1st Edition), the six conditions, the languages and the listing types, each with TCGplayer's id. Printings belong to one product line (Pokemon has Reverse Holofoil, Magic has Foil), while languages are shared. Give product_line (a url_name from tcgplayer-product-lines) or id (a TCGplayer product id, which uses that product's line). An unknown product line returns invalid parameters and an unknown product returns not found.
+
+### `tcgplayer_listings`
+
+List the sellers offering a TCGplayer product. Returns one page of the current seller listings for a TCGplayer product: seller storefront name, rating and sales volume, condition, printing, language, quantity, price, shipping price and seller location. Filter by condition, printing and language, and sort by price or price with shipping.
+
+### `tcgplayer_price_guide`
+
+Get TCGplayer's price guide for a whole set. Returns TCGplayer's price guide for one set, one row per card, condition and printing: card id, name, collector number, rarity, condition, printing, language, low price, market price and units sold. Page through a whole set (up to 500 rows per call) instead of fetching each card; the set_id comes from tcgplayer-sets.
+
+### `tcgplayer_price_history`
+
+Get a TCGplayer product's price history. Returns a TCGplayer product's price history over a month, quarter, half year or year, per condition, printing and language: market price, quantity sold, transaction count and low/high sale price for each period, plus the average daily sales volume.
+
+### `tcgplayer_product`
+
+Get a TCGplayer product's detail and price points. Returns one TCGplayer product in full: name, product line, set, rarity, card number, card text, attributes, the market, lowest and median prices, listing and seller counts, every purchasable condition/variant/language SKU, and TCGplayer's market and buylist price per printing.
+
+### `tcgplayer_product_lines`
+
+List TCGplayer product lines. Lists TCGplayer's product lines (games and product families such as Pokemon, Magic: The Gathering, Yu-Gi-Oh!, One Piece and Lorcana): id, name and the url_name that tcgplayer-search and tcgplayer-sets take as product_line.
+
+### `tcgplayer_sales`
+
+Get a TCGplayer product's most recent sales. Returns the five most recent completed sales of a TCGplayer product: condition, printing, language, quantity, sale price, shipping price and order time. Optionally restrict to one condition (near-mint, lightly-played, moderately-played, heavily-played, damaged or unopened), one printing (variant such as Normal, Foil or Reverse Holofoil), one language (such as English or Japanese) and whether the listing had photos. The printing and language values a product accepts come from tcgplayer-filters; an unlisted value returns invalid parameters. A variant or language filter makes one extra call to read the product line's filter values.
+
+### `tcgplayer_search`
+
+Search TCGplayer trading-card products. Searches TCGplayer's catalog of trading-card and collectible products (Pokemon, Magic, Yu-Gi-Oh!, One Piece, Lorcana and about 70 other product lines) and returns one page of matches: product id, name, set, rarity, card number, market, lowest and median prices, listing count, links and filter facets. Filter by product line, set, product type, rarity, card type and price range, and sort by price, listings, sales or name.
+
+### `tcgplayer_sets`
+
+List the sets of a TCGplayer product line. Lists the active sets (expansions) of one TCGplayer product line, newest first: name, the url_name that tcgplayer-search takes as set, abbreviation and release date.
+
 ### `techcrunch_article`
 
 Get TechCrunch article content. Returns public TechCrunch article metadata (title, author(s), published/updated dates, dek, section, lead image) and body paragraphs from a canonical article URL.
@@ -12871,6 +13175,26 @@ Get TechRadar top stories. Returns TechRadar's latest top stories across the sit
 ### `techradar_sections`
 
 Get TechRadar sections. Lists the 25 top-level TechRadar sections that 'techradar-headlines' accepts, such as 'computing', 'phones', 'best', 'deals' and 'how-to'. Each entry has a 'slug', a display 'name' and the section page 'url'.
+
+### `telegram_bot`
+
+Get a public Telegram bot's profile. Returns a public Telegram bot's profile from its t.me page: name, verified flag, description, avatar link and, when Telegram shows it, the number of monthly users. username is the bot's public username, with or without a leading @ or a t.me URL prefix. A channel, group, person's account or invite link is reported as such so you can use the right endpoint; an unknown username returns not found. Only public profile text is read.
+
+### `telegram_channel`
+
+Get a public Telegram channel profile. Returns the public profile of a Telegram channel: title, description, verification badge, subscriber count, and the photo, video, file and link counters shown on the channel's public web preview (t.me/s/{username}). username is the channel's public username, with or without a leading @ or a t.me link; private channels, groups, bots, user accounts and invite links are not supported and return an error that says which kind of name was given. subscribers is the exact figure when available; subscribers_approximate is true when only the preview's abbreviated figure (for example 10.3M) could be read. The photo, video, file and link counters are the preview's abbreviated figures and are approximate for large channels. Only public content is read, no media files are returned, and Telegram's terms restrict using platform content to train AI or machine-learning systems, so results must not be used for that purpose.
+
+### `telegram_channel_posts`
+
+List posts from a public Telegram channel. Returns one page of up to 20 posts from a public Telegram channel's web preview (t.me/s/{username}), newest first. Each post has its id, link, text, links found in the text, publish time, edited flag, view count, author signature, forwarded-from and reply references, photo and video thumbnails, link-preview card, and reaction tallies. Page backwards by passing the previous response's next_before as before; has_more is false and next_before is omitted on the last page. Pass query to search inside the channel instead of browsing; search pages use the same before cursor. A search with no matches returns an empty posts list. Views are the preview's abbreviated figures (for example 32.4K) and are approximate above 1,000. Media entries carry thumbnail references only, never playable file URLs. Polls, documents, voice notes and stickers appear as an unsupported media entry. Private channels, groups, bots, user accounts and channels that disabled their web preview are not supported. Telegram's terms restrict using platform content to train AI or machine-learning systems, so results must not be used for that purpose.
+
+### `telegram_group`
+
+Get a public Telegram group profile. Returns the public profile of a Telegram group from its public t.me page: title, description, member count and, when Telegram shows it, the number of members online. username is the group's public username, with or without a leading @ or a t.me link. Only the profile is available for groups; their messages are not readable here. Channels (use telegram-channel), bots, user accounts and invite links are not supported and return an error that says which kind of name was given; a username nobody owns returns not found. online is 0 when Telegram shows no online figure. avatar_url is omitted for groups without a profile photo. Only public content is read, and Telegram's terms restrict using platform content to train AI or machine-learning systems, so results must not be used for that purpose.
+
+### `telegram_post`
+
+Get one public Telegram channel post. Returns a single post from a public Telegram channel by username and post id, as Telegram's public embed widget shows it: text, links, publish time, edited flag, views, author signature, forwarded-from and reply references, photo and video thumbnails, link-preview card, and reaction tallies. The post id is the number at the end of a post link (t.me/durov/531 has id 531) or the id field of telegram-channel-posts. A post that does not exist, was deleted, or belongs to a channel that is not public returns not found. Telegram's terms restrict using platform content to train AI or machine-learning systems, so results must not be used for that purpose.
 
 ### `telegraph_article`
 
@@ -14360,6 +14684,26 @@ Get WalesOnline sections. Lists the 37 WalesOnline sections accepted by 'waleson
 
 Find nearby Walgreens stores. Returns Walgreens stores near a latitude/longitude or a zip code, nearest first: name, address, phone, hours, and in-store services (pharmacy, clinic, photo, and more) for each. Public data sourced from Walgreens' own store locator.
 
+### `wallapop_categories`
+
+Discover Wallapop search categories. Returns the complete live search taxonomy as a flat parent-linked list, including all descendant IDs used by /wallapop/search. Only IDs from this search taxonomy are accepted; legacy navigation-only IDs are excluded. Re-fetch periodically because the upstream taxonomy changes.
+
+### `wallapop_filter_options`
+
+Discover Wallapop remote filter values. Returns one page from a remote option list advertised by /wallapop/filters. Use its exact filter_id and category_id. brand/model lists use a root category ID; category-specific lists use the selected category ID. Model discovery requires brand. Multi-select options such as size map to the live search parameter fashion_size. q and sort provide listing context; options_query narrows the option list. Follow next_cursor while repeating the same context; an empty terminal page has no next_cursor. Option IDs are accepted by /wallapop/search's filter parameter.
+
+### `wallapop_filters`
+
+Discover Wallapop search filters. Returns Wallapop's live search filter schema for a query and optional category. Each filter includes its current type, the upstream search-enabled flag when provided, accepted parameter names, inline option values or slider bounds, and a category-scoped /wallapop/filter-options link for remote value lists.
+
+### `wallapop_item_detail`
+
+Fetch a public Wallapop listing detail page. Returns public listing details parsed from the anonymous server-rendered item page: description, price, taxonomy, condition, images, coarse location, shipping, category attributes, hashtags, and related-search links. Pass a clean https item URL returned by /wallapop/search, using es.wallapop.com, it.wallapop.com, or pt.wallapop.com. Seller/profile/contact data, exact coordinates, postal codes, favorites, and view-tracking state are omitted. The upstream may rate-limit or block requests; this endpoint uses the measured browser_android_native@fresh profile and retries up to three times.
+
+### `wallapop_search`
+
+Search Wallapop public listings. Returns one page of public Wallapop listing cards with title, price, currency, images, coarse location, taxonomy, shipping state, and a public item URL. q is a free-text search. latitude and longitude are required caller-provided coordinates because Wallapop otherwise resolves location from the request egress. category_id accepts any ID returned by /wallapop/categories, including descendants. sort is one of closest, most_relevance, newest, price_low_to_high, or price_high_to_low. When category_id is supplied, discover condition values from /wallapop/filters; categories can add values beyond the base set. Use /wallapop/filter-options for remote filter values. Pass next_cursor back as cursor by itself to fetch the next page.
+
 ### `walmart_product`
 
 Get a Walmart product. Returns a Walmart product: price, availability, brand, images, rating, seller, description, highlights, specifications, and variants.
@@ -14391,6 +14735,50 @@ Get the latest Washington Post stories. Returns the current Washington Post news
 ### `wapo_sections`
 
 List Washington Post sections. Lists the Washington Post sections accepted by 'wapo-headlines'. Each has a path 'slug' such as 'politics' or 'business/technology', a display 'name' and a landing-page 'url'. Use it to find valid 'section' values. Takes no parameters.
+
+### `wattpad_categories`
+
+List Wattpad story categories. Returns Wattpad's story categories (Romance, Fantasy, Fanfiction, Werewolf, ...) with id, name and English name. These ids are the values the category parameter of wattpad-search takes and the values in every story's category_ids. The list is read live from Wattpad.
+
+### `wattpad_languages`
+
+List Wattpad story languages. Returns the story languages Wattpad's search can filter by, each with its numeric id and native-script name (50 at the time of writing). These ids are the values the language parameter of wattpad-search takes.
+
+### `wattpad_part`
+
+Get a Wattpad chapter. Returns one Wattpad chapter's metadata: id, title, link, word count, reads, votes, comments, length, dates and the story it belongs to (id and title). part_id is the numeric chapter id from wattpad-story-parts. A chapter that does not exist returns not found. Chapter text is never returned.
+
+### `wattpad_part_comments`
+
+List reader comments on a Wattpad chapter. Returns one page of the public reader comments on a Wattpad chapter, newest first: id, text, commenter username and avatar, reply count, whether it is a reply, parent id, link and creation time. part_id is the numeric chapter id from wattpad-story-parts. limit is 1 to 100 (default 20) and offset pages the list; next_offset is absent on the last page. A chapter with no comments, or an unknown chapter, returns an empty list.
+
+### `wattpad_search`
+
+Search and browse Wattpad stories. Searches Wattpad's story catalog by text or browses it by ranking, category and language, and returns one page of stories: id, title, description, cover, link, author, votes, reads, comments, chapter count, completed and mature flags, language, category ids, tags and dates. Give at least one of query, filter, category or language. filter is hot, new or featured; category is an id from wattpad-categories; language is an id from wattpad-languages. limit is 1 to 100 (default 20) and offset pages the results: a text search reaches offset 9999, while browsing without a query is capped at 1500 results. Browse pages can hold fewer stories than limit (or none) because Wattpad filters after paging, so advance with next_offset rather than the item count.
+
+### `wattpad_search_users`
+
+Search Wattpad authors by name. Searches Wattpad's authors by username or name and returns one page: username, display name, bio, avatar, verified flag, published story count and follower count. limit is 1 to 100 (default 20) and offset pages the results. Authors with a private profile or who have opted out of crawling are left out, so a page can hold fewer authors than limit; advance with next_offset.
+
+### `wattpad_story`
+
+Get a Wattpad story. Returns one Wattpad story's public details: title, description, cover, link, author, votes, reads, comments, chapter count, completed and mature flags, language, category ids, tags, first chapter id, last published date, rating and copyright codes, paywall flag and dates. story_id is the numeric id from the story's wattpad.com link; the full link is also accepted. A story that does not exist returns not found. Chapter text is never returned.
+
+### `wattpad_story_parts`
+
+List a Wattpad story's chapters. Returns a Wattpad story's chapter list, in reading order: id, title, link, word count, reads, votes, comments, length, and created and modified dates for every chapter. The per-chapter reads show where readers drop off. Use it to see how a story is paced and which chapters readers react to. story_id is the numeric story id, or its wattpad.com link. Chapter text is never returned.
+
+### `wattpad_story_recommendations`
+
+List stories Wattpad recommends for a story. Returns the stories Wattpad recommends alongside one story (readers of this also read these), with the same fields as wattpad-search: id, title, description, cover, link, author, votes, reads, comments, chapter count, completed and mature flags, language, category ids, tags and dates. story_id is the numeric story id or its wattpad.com link. Wattpad returns at most 18 recommendations and does not page; limit is 1 to 20.
+
+### `wattpad_user`
+
+Get a Wattpad author profile. Returns a Wattpad author's public profile: username, display name, bio, avatar, location, website, verified and ambassador flags, follower and following counts, votes received, published story count, reading list count and join date. username is the name from the author's wattpad.com/user/ link, case-insensitive. Authors with a private profile or who have opted out of crawling are not returned. An unknown author returns not found.
+
+### `wattpad_user_stories`
+
+List a Wattpad author's stories. Returns one page of the stories a Wattpad author has published, with the same fields as wattpad-search: id, title, description, cover, link, votes, reads, comments, chapter count, completed and mature flags, language, category ids, tags and dates. username is the name from the author's wattpad.com/user/ link. limit is 1 to 100 (default 20) and offset pages the list; next_offset is absent on the last page. Authors with a private profile or who have opted out of crawling are not returned. This call reads the author's access settings first, so it costs two requests.
 
 ### `wayfair_categories`
 
