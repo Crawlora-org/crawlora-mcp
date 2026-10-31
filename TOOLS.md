@@ -1,6 +1,6 @@
 # Crawlora MCP tool catalog
 
-Every tool the Crawlora MCP server exposes (3926), generated from [`tools.json`](./tools.json); do not edit manually. See the [README](./README.md) for setup and an index by platform.
+Every tool the Crawlora MCP server exposes (4115), generated from [`tools.json`](./tools.json); do not edit manually. See the [README](./README.md) for setup and an index by platform.
 
 ## Tools
 
@@ -464,6 +464,10 @@ Get AP News sections. Lists the 11 AP News hubs accepted by 'apnews-headlines': 
 
 Retrieve Apple Books audiobook details. Returns audiobook metadata from Apple Books, including narrator, duration, audio preview, and a cross-link to the ebook edition (when one exists).
 
+### `apple_books_audiobook_charts`
+
+Retrieve Apple Books audiobook chart rankings. Returns the 40 audiobook rows Apple currently serves in its paid top chart for one storefront. 'genre_id' narrows the page using an ID from 'GET /apple-books/genres?media=audiobook'. The upstream page has no free/paid selector or pagination.
+
 ### `apple_books_audiobook_reviews`
 
 Retrieve Apple Books audiobook customer reviews. Returns a page of an audiobook's customer reviews. The default first page is served from the audiobook's own catalog page; deeper pages (page>1 or a larger limit) page through Apple's review API directly, up to 20 per page.
@@ -498,7 +502,11 @@ Retrieve "Customers Also Bought" books. Returns the 'Customers Also Bought' book
 
 ### `apple_books_charts`
 
-Retrieve Apple Books chart rankings. Returns Apple Books chart rankings for a 'collection', 'top-free' (default) or 'top-paid'. Narrow with 'genre' (an Apple Books genre ID, '0' for all genres), 'country' (default 'us') and 'limit' (default 50, max 200). Each entry has 'name', author, 'genres', 'release_date', 'artwork_url' and 'url'.
+Retrieve Apple Books chart rankings. Returns Apple Books ebook chart rankings for 'collection', 'top-free' (default) or 'top-paid'. Omit 'genre' for all genres, or use one of the discovered ebook category IDs. 'country' defaults to 'us'; 'limit' defaults to 50 and maxes at 200. Each entry has 'name', author, 'genres', 'release_date', 'artwork_url' and 'url'.
+
+### `apple_books_genres`
+
+List Apple Books chart genres. Reads every category link from Apple's current chart page. The ebook and audiobook genre ID spaces differ; pass 'media=book' before filtering ebook charts or 'media=audiobook' before filtering audiobook charts.
 
 ### `apple_books_search`
 
@@ -1192,6 +1200,118 @@ Search Bluesky accounts. Returns Bluesky accounts matching a query against displ
 
 Bluesky's current trending topics. Returns Bluesky's current trending topics and suggested feeds, each with a link to its feed. This surface is less stable than the rest of this family -- Bluesky may change its shape without notice.
 
+### `bo3_economy_baseline`
+
+BO3.gg CS2 economy baseline. Returns the site-wide CS2 round win rate for every pairing of buy levels (rounds, wins, win rate), the baseline to compare a team's 'economy' view of bo3-team-stats with. Levels: -1 full eco, 0 semi-eco, 1 half buy, 2 full buy; the opposing level is null when it is unknown.
+
+### `bo3_forum`
+
+BO3.gg forum threads with category and sort filters. Returns BO3.gg forum threads for one game with paging: a 'category' id from bo3-forum-categories and 'sort' ('activity' with pinned threads first, 'newest', 'comments', 'rating'), up to 100 per page. Each thread has slug, title, category, comment count, rating, pinned flag, created and last-activity times and the author's nickname; post bodies, reactions and replies are not returned.
+
+### `bo3_forum_categories`
+
+BO3.gg forum categories. Returns the BO3.gg forum categories of one game (id, slug and title, ordered by id; CS2 has CS2, IDEAS AND BUGS and OFF TOP) that the 'category' filter of bo3-forum accepts.
+
+### `bo3_match`
+
+BO3.gg match detail. Returns one BO3.gg match by slug: teams with scores and winner, status, best-of, tier, start and end time, tournament, stage and round, the maps played with scores, the site's AI prediction, live and recorded streams and the key-fact insights for each team. The slug comes from bo3-match-history.
+
+### `bo3_match_games`
+
+BO3.gg esports match maps with round-by-round results. Returns the maps of one BO3.gg match with round-by-round results: for each map the number, map name, state, start, duration in seconds, final score, per-half side results (CT or T score, overtime) and every round with its number, duration, end reason, winning side and running score. A match with no maps yet returns an empty list.
+
+### `bo3_match_history`
+
+BO3.gg esports match history. Returns BO3.gg's esports match history for one game, newest first by default, with paging and filters: 'status' ('finished', 'defwin', 'upcoming', 'current', 'canceled', 'postponed'; the default is finished and default-win matches together), 'tier' ('s' to 'd'), an inclusive 'from'/'to' day range (UTC), 'sort' and 'offset'/'limit' (up to 100 per page). Each match has teams, scores, winner, best-of, tournament, maps and the site's AI prediction; 'total' and 'has_more' page through the full history.
+
+### `bo3_match_players`
+
+BO3.gg per-player match statistics. Returns every player's statistics for one BO3.gg match, ordered by team then nickname: kills, deaths, assists, headshots, first kills and deaths, trades, KAST, rating, ADR, damage, utility and money figures as a numeric 'stats' map, plus the multikill counts (2K to 5K), team and opponent. The match slug comes from bo3-match-history.
+
+### `bo3_news_categories`
+
+BO3.gg news categories. Returns the BO3.gg editorial categories (id and title, sorted by title: Analytics, Article, Blog, Events, Gaming, Guides, Highlights, Interviews, News, Predictions, Results, Streams, Tips, Transfers, Wiki) accepted by the 'category' filter of bo3-news-feed.
+
+### `bo3_news_feed`
+
+BO3.gg news, articles, wiki and predictions feed. Returns BO3.gg's editorial feed for one game with paging and filters: 'section' ('news', 'article', 'wiki', 'predictions', 'reviews'), a 'locale' (16 languages, 'en' by default), a 'category' id from bo3-news-categories and 'sort' ('newest', 'oldest'), up to 100 per page. Each item has slug, title, description, category, publish time, author, tags, image and canonical URL; 'total' and 'has_more' page through the archive (over 100,000 items across games).
+
+### `bo3_player`
+
+BO3.gg player profile. Returns a BO3.gg player profile by slug: nickname, name, game, birthday, role, coach flag, country, current team and join date, six-month average rating, career prize money, social links, former names and tournament achievements newest first. Use 'game' to insist on one game; a player of another game is not found.
+
+### `bo3_player_leaderboard`
+
+BO3.gg CS2 player leaderboard. Returns BO3.gg's CS2 player leaderboard over a day range (default: the last six months): players ranked by 'sort' ('rating', 'kd', 'kills', 'damage', 'assists', 'headshots', 'games', 'rounds') in 'order' ('desc', 'asc'), optionally limited to games at one tournament 'tier' ('s' to 'd'), with paging. Each player has team, games, rounds and every per-game average as a 'stats' map; players below the API's minimum-games threshold for the window are excluded ('min_games_count'). CS2 only.
+
+### `bo3_player_recent_matches`
+
+BO3.gg player recent matches. Returns a CS2 player's newest matches (up to 30) with the opponent, the tournament, the rounds played, each map in order with whether the player's team won it, and the player's own line for the match (rating, kills, deaths, assists, damage, first kills and deaths, trade kills and deaths, headshots, hits, shots, accuracy, money saved and equipment value). Filter by 'opponent' or 'tournament'. Date windows are not supported upstream; the list does not page past 30.
+
+### `bo3_player_stats`
+
+BO3.gg player statistics. Returns one statistics view of a BO3.gg player over a day range (default: the last six months): 'general' (match, game, round, kill, death, assist and damage totals), 'maps' (rating, kills and damage per map) or 'accuracy' (hits, damage and kills by hit group). General views fill 'stats'; the other views fill 'rows'.
+
+### `bo3_records`
+
+BO3.gg CS2 records with scope and type filters. Returns BO3.gg's CS2 records (standout single-game and single-round performances such as best shots accuracy, clutches, multikills, damage, win streaks) with paging. Scope them to one 'match', 'tournament', 'team' or 'player' slug, filter by 'record_type' (for example 'game_player_headshots'), restrict the game day range with 'from'/'to', and order 'newest' or 'oldest'. Unscoped requests cover the last six months; each record has its value, unit, side, map, round, player, team and opponents.
+
+### `bo3_team`
+
+BO3.gg team profile. Returns a BO3.gg team profile by slug: name, acronym, game, world rank and rank change, country and region, founding date, six-month earnings, logo, social links, former names, the current roster (nickname, name, birthday, six-month rating) and the team's tournament achievements, newest first. Use 'game' to insist on one game; a team of another game is not found.
+
+### `bo3_team_prize_money`
+
+BO3.gg team prize money by period. Returns BO3.gg's teams ranked by the prize money they won in tournaments that ended inside a day range (default: the last six months), for one game with paging up to 100 per page. Each team has its prize money in USD, tournament wins, country and region and its current roster with each player's career prize money and six-month rating. 'total' and 'has_more' page through all teams that earned money in the window.
+
+### `bo3_team_ranking_dates`
+
+BO3.gg official ranking dates and regions. Returns the days for which Valve published an official ranking for a game (newest first) and the region labels BO3.gg accepts for that game's team rankings. Use it to choose 'date' and 'region' for bo3-team-rankings.
+
+### `bo3_team_rankings`
+
+BO3.gg team rankings, current and historical. Returns BO3.gg's team ranking for a game, worldwide or for one region, for the latest day or any past 'date', paged up to 100 per page. A date that Valve published (listed by bo3-team-ranking-dates) returns the official Valve ranking ('source' 'valve_official', 'official' true); other dates return BO3.gg's own daily ranking ('internal'). Rows carry rank, rank change, points, region, country and the five-player roster with ratings.
+
+### `bo3_team_recent_matches`
+
+BO3.gg team recent matches. Returns a CS2 team's newest matches (up to 30) with, for every match, the opponent, the tournament, the rounds played, each map played in order and every player's line (rating, kills, deaths, assists, damage, first kills and deaths, trade kills and deaths, headshots, hits, shots, accuracy, money saved and equipment value). Filter by 'opponent' for head-to-head history or by 'tournament' for one event. Date windows are not supported upstream; the newest matches come first and the list does not page past 30.
+
+### `bo3_team_stats`
+
+BO3.gg team statistics. Returns one statistics view of a BO3.gg team over a day range (default: the last six months): 'general' (match, game, round and kill totals), 'advanced' (CT/T, pistol, eco, force and full-buy round records), 'accuracy' (hits and damage by hit group), 'economy' (win rate by own and enemy economy level) or 'map-pool' (maps picked and banned). General views fill 'stats'; the other views fill 'rows'.
+
+### `bo3_tournament`
+
+BO3.gg tournament detail. Returns one BO3.gg tournament by slug: name, status, tier, event type, prize pool, dates, description, series, host city, country and region, its stages (format, status, dates), the prize distribution by place and the participating teams with their placement and prize money. The slug comes from bo3-tournaments.
+
+### `bo3_tournament_map_pool`
+
+BO3.gg CS2 tournament map pool. Returns the maps played at a CS2 tournament: games and rounds per map, CT-side and T-side round wins with the CT win percentage, and picked and banned counts. The upstream returns the whole event and ignores stage filters.
+
+### `bo3_tournament_mvps`
+
+BO3.gg esports tournament MVPs. Returns the tournament most-valuable-player awards BO3.gg publishes, newest first, optionally for one game: the award type, tournament, player, team and the BO3 article about it. Every row seen has the type 'mvp'.
+
+### `bo3_tournament_squads`
+
+BO3.gg CS2 tournament squads. Returns every team's squad at a CS2 tournament as it played there: team, and each player with nickname, name, photo, coach flag and stand-in flag. Use it to see who actually played, including substitutes.
+
+### `bo3_tournament_stages`
+
+BO3.gg esports tournament stages. Returns the stages of one BO3.gg tournament in order: title, format type (for example 'group' or 'playoff'), whether it is on hold, promotion team count and dates. An unknown tournament slug returns 404.
+
+### `bo3_tournaments`
+
+BO3.gg tournament list with filters. Returns BO3.gg esports tournaments for one game with paging and filters: 'status' ('current', 'upcoming', 'finished', 'canceled', 'postponed'), 'tier' ('s' to 'd'), 'event_type' ('lan', 'online') and 'sort' ('newest', 'oldest', 'prize' for the largest prize pool first), up to 100 per page. Each tournament has its slug, name, status, tier, event type, prize pool in USD, dates and image; 'total' and 'has_more' page through the full list (over 3,000 CS2 events).
+
+### `bo3_transfers`
+
+BO3.gg esports transfer feed. Returns BO3.gg's esports player and coach transfer feed, newest first by default, with paging and filters: 'team_id' (moves into or out of one team), 'player_id', 'action' ('join', 'change', 'leave') and 'role' ('player', 'coach'). The feed cannot be filtered by game upstream, so every row carries its 'game' instead; narrow it with a team or player id.
+
+### `bo3_valorant_leaderboard`
+
+BO3.gg Valorant player leaderboard. Returns BO3.gg's Valorant player leaderboard over a day range (default: the last six months): players ranked by 'sort' ('acs', 'kills', 'deaths', 'damage', 'assists', 'first_kills', 'clutches', 'first_duels', 'games', 'rounds') in 'order' ('desc', 'asc') with paging. Each player has nickname, slug, games, rounds and every per-round average as a 'stats' map; players below the API's minimum-games threshold for the window are excluded ('min_games_count').
+
 ### `bonhams_auction_detail`
 
 Get a Bonhams auction's normalized facts. Returns one Bonhams auction's facts by id: title, category, department, country, currency, sale dates, and lot count. Unlike the search endpoint, this is not restricted to upcoming/live auctions -- a historical/ended auction id resolves too.
@@ -1539,6 +1659,26 @@ Get Capterra product reviews. Returns a page of Capterra reviews (author, headli
 ### `capterra_search`
 
 Search Capterra products. Returns Capterra search-result products (id, name, url, description, rating). Note: Capterra renders a fallback product list even for queries with no genuine match, rather than a distinct empty-results page, so callers should treat low-relevance results as an upstream characteristic, not a bug.
+
+### `cardmarket_catalog`
+
+Search Cardmarket product catalogues. Reads the public singles, non-singles, or global accessories export and applies local name/category/expansion filters. Category and expansion IDs and labels are discovered from the complete selected file. Game IDs 26-33 have price guides but no verified catalogue files. The response is a catalogue snapshot, not current seller offers.
+
+### `cardmarket_catalog_categories`
+
+Discover Cardmarket catalogue categories and expansions. Returns only the category and expansion values from the selected public product catalogue. Use this lightweight discovery route before filtering catalogues by category_id or expansion_id; it does not return product rows.
+
+### `cardmarket_games`
+
+Discover Cardmarket download game IDs. Returns the exact observed public S3 price-guide IDs and whether singles/non-singles catalogue files are present. Product display names are not inferred from numeric IDs when the download index cannot provide a confirmed mapping.
+
+### `cardmarket_price_guide`
+
+Get Cardmarket daily price-guide data. Returns a paginated snapshot of Cardmarket's public daily price-guide export. The response discovers category IDs but the source file has no category labels. Cardmarket's posted English terms include a prior-written-agreement clause for external price display in a future-dated revision whose effective status is unconfirmed here; the response marks permission as unconfirmed.
+
+### `cardmarket_price_guide_categories`
+
+Discover Cardmarket price-guide categories. Returns only the numeric category IDs and counts in a game or global accessories price guide. Use this discovery route before filtering price guides by category_id; it does not return price rows.
 
 ### `carmax_search`
 
@@ -2156,6 +2296,146 @@ Browse CourtListener judicial people. Lists CourtListener's anonymous public jud
 
 Search CourtListener opinions. Searches CourtListener's opinion-search index by text and returns opinion-result metadata with a cursor for the next page. The endpoint does not return opinion detail, dockets, judges, alerts, or account data.
 
+### `cricbuzz_archives`
+
+Discover Cricbuzz archive years and series. Returns all year links advertised by the Cricket Archives page and the complete series list for the selected year, grouped by the four visible archive categories. Supply year from the returned years array to fetch that year's page. category and q filter the full parsed series list locally.
+
+### `cricbuzz_auction_info`
+
+Get the Cricbuzz auction guide. Returns all labelled text and list blocks shown in the selected edition's Auction Guide. The guide's fields vary by competition and season; date, venue, auctioneer, purse/roster rules, FAQs and currency-rate blocks are preserved as source text.
+
+### `cricbuzz_auction_live`
+
+Get the current Cricbuzz auction Live-tab payload. Returns current_status, state and featured/editor-pick players from the edition's Live tab. This is not a bid-event feed; a completed edition may return featured players without live bidding.
+
+### `cricbuzz_auction_live_blog`
+
+Get an edition's auction Live Blog article. Returns the public NewsArticle JSON-LD content and dynamic tags linked from the selected edition's Auction Live Blog tab. Not all editions expose this tab; Cricbuzz may return not found or a page without a NewsArticle. Discover tournament/year from cricbuzz/auction/seasons.
+
+### `cricbuzz_auction_news`
+
+Get an edition's Cricbuzz Auction News cards. Returns only the selected auction edition's Auction News cards, with story IDs, canonical URLs, titles, thumbnail metadata and relative age. Global Latest News and Featured Videos sidebar items are excluded. When Cricbuzz explicitly displays No News Available, items is empty and empty_state is no_results. Discover tournament and year from cricbuzz/auction/seasons. The edition page has no sort, filter or pagination control.
+
+### `cricbuzz_auction_options`
+
+Discover Cricbuzz auction filters and sort values. Returns all filter dropdown values and sort choices embedded in the selected public completed-auction page. Use auction/seasons to discover current tournament and year values; when omitted, tournament and year default to ipl and 2026. Filter and sort values vary by edition and are returned dynamically.
+
+### `cricbuzz_auction_player`
+
+Get a Cricbuzz auction player profile and earnings. Returns one player's current edition profile and every auction-earnings row in the public payload. Discover player_id through auction/player-search, auction/upcoming, auction/results or auction/team; discover currency through auction/seasons.
+
+### `cricbuzz_auction_player_search`
+
+Search Cricbuzz auction players. Searches the current edition's public player index. q must contain 3-100 ASCII English letters or spaces, matching the source UI. A valid query with no matching players returns an empty items list.
+
+### `cricbuzz_auction_results`
+
+Get filtered and sorted Cricbuzz completed-auction players. Returns one 1-based page from the selected completed auction. Discover tournament/year/currency with cricbuzz/auction/seasons and the selected edition's Country, Status, Team, Role, Cap and Sort values with cricbuzz/auction/options. country_ids and statuses accept comma-separated values from those menus; the other filters accept one value. Pages return up to 20 rows; the source does not provide a total count or has-more flag.
+
+### `cricbuzz_auction_seasons`
+
+Discover Cricbuzz auction leagues, editions and currencies. Returns every current League & Edition menu value, its canonical season slug and its accepted currencies from Cricbuzz's public season-details JSON.
+
+### `cricbuzz_auction_team`
+
+Get a Cricbuzz auction team's roster. Returns team purse metadata and role-grouped Batters, Wicket Keepers, All Rounders and Bowlers. Discover team_id through auction/teams/options or auction/teams; discover currency through auction/seasons.
+
+### `cricbuzz_auction_teams`
+
+Get Cricbuzz auction team purse and roster summaries. Returns every team row for one selected edition and currency. Discover exact currency choices through auction/seasons and sort labels through auction/teams/options. Valid sort labels are Alphabetical, Spent: High to Low, Spent: Low to High, Remaining: High to Low, Remaining: Low to High, Players: High to Low and Players: Low to High.
+
+### `cricbuzz_auction_teams_options`
+
+Discover Cricbuzz auction teams and sort values. Returns all current team IDs and names plus the seven Teams-tab sorts: Alphabetical, Spent: High to Low, Spent: Low to High, Remaining: High to Low, Remaining: Low to High, Players: High to Low, Players: Low to High. Use the returned team_id values with auction/team and the sort labels with auction/teams.
+
+### `cricbuzz_auction_upcoming`
+
+Get filtered Cricbuzz unauctioned players. Returns one 1-based page of unauctioned players. Discover tournament/year/currency via auction/seasons and exact Country/Role/Cap/Sort values via auction/upcoming/options. Country IDs are comma-separated and can be selected together; sort values are Base Price: High to Low and Base Price: Low to High. The source returns up to 20 rows and no total or has-more flag.
+
+### `cricbuzz_auction_upcoming_options`
+
+Discover Cricbuzz unauctioned-player filters. Returns the edition-specific Country, Role, Cap and Sort menus from the public Unauctioned auction page. Omitted tournament/year default to ipl/2026. Current SA20 2027 Country labels are Afghanistan, Australia, Bangladesh, Canada, England, Hong Kong China, India, Ireland, Italy, Jersey, Kenya, Namibia, Nepal, Netherlands, New Zealand, Pakistan, Scotland, Singapore, South Africa, Sri Lanka, Thailand, United Arab Emirates, United States of America, West Indies and Zimbabwe. Role labels are All, Batter, Bowler, All Rounder and WK Batter; Cap values are Capped and Uncapped; Sort values are Base Price: High to Low and Base Price: Low to High. Use each option's exact 'value' with auction/upcoming.
+
+### `cricbuzz_auction_videos`
+
+Get an edition's Cricbuzz Auction Videos cards. Returns only the selected edition's Auction Videos cards with video IDs, page URLs, titles, durations and thumbnail metadata. The global Featured Videos sidebar is excluded. If Cricbuzz displays No Videos Available, items is an explicit empty array with empty_state=no_videos. Discover tournament/year from cricbuzz/auction/seasons.
+
+### `cricbuzz_match_facts`
+
+Get Cricbuzz match information and squads. Returns the public Info-tab match title, toss, venue guide, umpires, third umpire, referee, both team squads, bench players, and support staff. Use the canonical match URL returned by /cricbuzz/matches. Squad member links are preserved where Cricbuzz publishes them.
+
+### `cricbuzz_match_graphs`
+
+Get numeric Cricbuzz match graphs. Returns the first-party Graphs page's runs, run-rate, runs-per-over, win-probability, innings, and wicket-over values. Commentary prose and media are omitted. Pass the canonical match URL returned by /cricbuzz/matches.
+
+### `cricbuzz_match_overs`
+
+Get Cricbuzz over summaries. Returns every over-summary row present in the first-party Over-by-Over page payload and the live innings filter values. Some upstream snapshots include only a recent window; the response sets is_complete=false in that case. Full ball-by-ball commentary text is not included.
+
+### `cricbuzz_matches`
+
+List Cricbuzz live, recent, or upcoming matches. Returns Cricbuzz match cards grouped by source category and series, including teams, scores when available, venue, time, status, and the canonical live-score URL for detail endpoints. The homepage-only Live Now and Today controls are not included because their effects were not verified. Category filtering is local over the route-backed match groups.
+
+### `cricbuzz_navigation`
+
+Discover Cricbuzz top-level menus and dropdown links. Returns the current first-party JSON-LD navigation tree from the Live Scores page, including the News, Videos, Rankings, and More dropdown items and utility links. The short featured Team and Series dropdown entries are not complete directories; use the teams and series endpoints for their full dynamic lists.
+
+### `cricbuzz_news_story`
+
+Get a public Cricbuzz NewsArticle and its tags. Fetches one public canonical Cricbuzz story URL and returns its JSON-LD headline, author, dates, body, inline links and typed series/team/topic tags. Pass a URL returned by cricbuzz_auction_news or another public Cricbuzz news page. Only https://www.cricbuzz.com/cricket-news/{numeric_id}/{slug} is accepted; premium or login-gated content is not unlocked.
+
+### `cricbuzz_news_topics`
+
+Discover Cricbuzz News sections and topics. Returns the current public News navigation sections and all topic cards linked from the Topics page, including IDs, slugs, titles, descriptions, and canonical URLs. Topic coverage is dynamic and is discovered from Cricbuzz at request time. The response contains topic metadata only, not story bodies; the Premium Editorials navigation entry is marked premium.
+
+### `cricbuzz_rankings`
+
+Get an ICC ranking table from Cricbuzz. Returns Men or Women rankings for Batting, Bowling, All rounder, or Teams. The format list is discovered from the selected category page; Men currently expose Test, ODI, and T20, while Women expose ODI and T20. Ranking rows are parsed from the page's embedded data, and empty ranking tables are reported explicitly.
+
+### `cricbuzz_records`
+
+Discover Cricbuzz record topics and filter values. Returns all record-topic/filter values and the selected Cricbuzz record table. The first-party request path was cold-replayed; supplied filters are validated against the page's current discovery values before fetching data.
+
+### `cricbuzz_schedule`
+
+List Cricbuzz matches by day. Returns every match in the current date window shown by Cricbuzz's Matches By Day page, grouped by date and series. Category and q filters run locally over that complete page payload. The date window is dynamic and can change with the upstream page.
+
+### `cricbuzz_scorecard`
+
+Get a Cricbuzz match scorecard. Returns match header, toss/result, teams/venue, and every innings' batting, bowling, totals, extras, powerplays, wickets, and partnerships. Pass the canonical match URL returned by /cricbuzz/matches. Future matches can return an explicit no_scorecard state. Media assets are not returned.
+
+### `cricbuzz_series`
+
+Discover Cricbuzz current and future series. Returns current and future series grouped by month, with series IDs, dates, and canonical URLs. Filter by the live route-backed category, the Live Streaming flag, or a local case-insensitive series-name substring. Live Streaming may validly return an empty result set when Cricbuzz has no matching entries at the time of the request.
+
+### `cricbuzz_series_stats`
+
+Discover Cricbuzz series statistics. Returns all Batting/Bowling statistic topics and format values for a series, its selected filter state, and selected stats table. 'stat' and 'format' are validated against the page's dynamic option lists and fetched via the first-party series-stats route. Team/Season filter values are not accepted because their complete option sets have not been confirmed.
+
+### `cricbuzz_team_stats`
+
+Fetch one team statistics table. Returns the selected team's Batting or Bowling table. First call /cricbuzz/team/stats/options with the same category and team_id. stat values currently exposed by India are mostRuns, highestScore, highestAvg, highestSr, mostHundreds, mostFifties, mostFours, mostSixes, mostNineties, mostWickets, lowestAvg, bestBowlingInnings, mostFiveWickets, lowestEcon and lowestSr; each team may expose a subset. format_id, year and opponent_id must be exact values from the options response. The source page exposes no sort control; an explicitly empty upstream table returns empty_state=no_results.
+
+### `cricbuzz_team_stats_options`
+
+Discover team statistics topics and filters. Returns the selected team's complete Batting and Bowling topic menus, supported format IDs, every year value and every opponent ID from Cricbuzz's team Stats page. Discover team_id and category from /cricbuzz/teams; use the exact dynamic values returned here with /cricbuzz/team/stats. The source page exposes no sort control.
+
+### `cricbuzz_teams`
+
+Discover Cricbuzz teams. Returns the complete team directory for one Cricbuzz category, with group labels, team IDs, short names, country labels, image IDs, and canonical team profile URLs. The optional q value performs a case-insensitive substring match on team names within the returned category.
+
+### `cricbuzz_video_categories`
+
+Discover Cricbuzz video categories. Returns the current Videos menu and every category card visible on Cricbuzz's category directory, including its dynamic ID, slug, title, current count, and canonical URL. The response contains navigation and category metadata only; it does not include video media.
+
+### `cricbuzz_video_playlists`
+
+Discover Cricbuzz video playlists. Returns every playlist card currently linked from the public Playlists page, including its dynamic playlist ID, title, count, preview video link, and canonical URL. The endpoint returns playlist metadata only and does not proxy video assets.
+
+### `cricbuzz_wtc`
+
+Get Cricbuzz World Test Championship standings. Returns the current public WTC points table and every season value in the page's dropdown. The dropdown selection effect has not been verified, so the endpoint exposes options but does not accept a season_id parameter.
+
 ### `cricinfo_calendar`
 
 Get the Cricinfo international calendar. Returns the dated international cricket calendar that Cricinfo currently publishes, with no parameters. Each event has its ISO date, the match name such as a fixture and venue, and any series labels for that day. The response also gives the event count.
@@ -2487,6 +2767,18 @@ Airbnb market density near a coordinate. Returns an aggregate geohash-grid densi
 ### `datasets_airbnb_search`
 
 Search the Airbnb markets dataset. Returns aggregate Airbnb short-term-rental market rollups from the dataset id enum value 'airbnb-markets'. Aggregate-only: each row is a market cell, never an individual listing. Thin cells are suppressed. group_by enum: 'country', 'market', 'admin1' (top subdivision), 'locality' (settlement), 'room_type' ('entire_place'/'private_room'/'hotel'/'shared_room'), 'property_type' (Airbnb's canonical listing type from the detail page). Enrichment-derived groupings include a 'coverage' object with the number and share of filtered listings carrying that dimension; the 20% minimum gate is not a completeness guarantee, and counts still describe classified rows only. Each cell also carries 'median_price_usd', the median nightly price converted to USD via an approximate dated FX snapshot, for cross-country comparison (combine with 'group_by=room_type' for median price by room type); 'guest_favorite_pct', the share of listings carrying the Guest Favorite badge (an observed lower bound, like 'superhost_pct'); and 'avg_person_capacity', the average guests a listing sleeps over the detail-page-enriched sample. Sort enum: 'listings_desc', 'superhost_pct_desc', 'rating_desc', 'key_asc'. Billing: this search costs 1 credit per record returned, with a minimum of 2 (an empty result costs 2, a full page of 100 costs 100).
+
+### `datasets_apple_books_facets`
+
+Discover Apple Books dataset values. Returns term counts over the same filters as search. Facet values: 'kind', 'genres', 'artist_name', 'publisher', 'series_name', 'narrator', 'provider', 'currency', 'discovery_country', 'discovery_source', 'free'.
+
+### `datasets_apple_books_item`
+
+Get an Apple Books record. Returns one named, publicly usable ebook, audiobook, author, or series record by its resource kind and numeric ID. Kind values: 'book', 'audiobook', 'author', 'series', 'audiobook_series'. Internal crawl errors and unavailable placeholders are not returned.
+
+### `datasets_apple_books_search`
+
+Search Apple Books records. Searches named public ebook, audiobook, author, and series records stored from Apple's public catalog. 'kind' values: 'book', 'audiobook', 'author', 'series', 'audiobook_series'. Unavailable records are excluded. Sort: 'relevance' (requires q), 'rating_count_desc', 'rating_desc', 'release_date_desc', 'name_asc', 'crawled_at_desc'. Billing: 1 credit per returned record, minimum 2.
 
 ### `datasets_apple_maps_places_facets`
 
@@ -3846,15 +4138,15 @@ Get Fanatics Collect Instant Rips categories. Returns every category Fanatics Co
 
 ### `fanaticscollect_listing`
 
-Get Fanatics Collect listing detail. Returns full detail for a single Fanatics Collect listing: a weekly-auction lot, a premier-auction lot, or a fixed-price "buy now" item (including an Instant Rips pack). Fields include title, current bid/starting/asking price, bid count, auction window and status, images, description, completed sale history, and -- when the card is stored in Fanatics' vault -- grading/authentication metadata including a direct PSA cert-verification link.
+Get Fanatics Collect listing detail. Returns full detail for a single Fanatics Collect listing: a weekly-auction lot, a premier-auction lot, or a fixed-price "buy now" item (including an Instant Rips pack). Fields include title, current bid/starting/asking price, bid count, auction window and status, images, description, completed sale history, and -- when the card is stored in Fanatics' vault -- grading/authentication metadata including a direct PSA cert-verification link. Costs 1 credit per successful call.
 
 ### `fanaticscollect_search`
 
-Search Fanatics Collect listings. Searches Fanatics Collect's full marketplace -- weekly auctions, premier auctions, and the fixed-price "Buy Now" marketplace -- by free-text query, category, grading service, price/year/grade range, and listing status, in a caller-selected sort order. See GetCategories for the accepted category, grading-service, status, and sort values.
+Search Fanatics Collect listings. Searches Fanatics Collect's full marketplace -- weekly auctions, premier auctions, and the fixed-price "Buy Now" marketplace -- by free-text query, category, grading service, price/year/grade range, and listing status, in a caller-selected sort order. Only the first 2,400 or so results of a query can be paged through; later pages come back empty and are not charged, so narrow the query with filters. Costs 1 credit per successful call. See GetCategories for the accepted category, grading-service, status, and sort values.
 
 ### `fanaticscollect_sold_items`
 
-Search Fanatics Collect sold items. Searches Fanatics Collect's sales-history archive -- every completed sale across every marketplace, not just what the live search index currently surfaces. A separate product from Search, reached from the "View all sold items" link on every marketplace search page. purchase_price is what the buyer paid in US dollars: for WEEKLY and PREMIER auction sales it includes the buyer's premium, so it is higher than the listing's final bid; for FIXED sales it equals the asking price. See GetCategories for the accepted category, grading-service, eye-appeal-grade, and sort values.
+Search Fanatics Collect sold items. Searches Fanatics Collect's sales-history archive -- every completed sale across every marketplace, not just what the live search index currently surfaces. A separate product from Search, reached from the "View all sold items" link on every marketplace search page. purchase_price is what the buyer paid in US dollars: for WEEKLY and PREMIER auction sales it includes the buyer's premium, so it is higher than the listing's final bid; for FIXED sales it equals the asking price. Only the first 1,000 results of a query can be paged through; later pages come back empty and are not charged, so narrow the query with filters to reach older sales. Costs 3 credits per successful call. See GetCategories for the accepted category, grading-service, eye-appeal-grade, and sort values.
 
 ### `fanaticscollect_trending_searches`
 
@@ -5776,6 +6068,74 @@ Retrieve similar Google Play apps. Returns the apps in the Similar apps cluster 
 
 Retrieve Google Play query suggestions. Returns up to 10 Google Play search suggestions for the term prefix in the path. 'country' and 'lang' take two-letter codes to pick the storefront and language. Each suggestion is a 'term'.
 
+### `gosugamers_article`
+
+GosuGamers article. Returns one GosuGamers news or features article by numeric id: type, title, teaser, section, publish and update times, headline image with caption, authors, the full text as plain text and related articles. An unknown id returns not found. Take 'id' from gosugamers-articles.
+
+### `gosugamers_articles`
+
+GosuGamers news and features archive. Pages the GosuGamers news and features archive (51,051 articles), newest first, with optional 'section' and 'type' filters: id, type, title, teaser, section, publish time, author, image and URL. 'section' is one of the 15 sections that carry articles (the six esports titles, Wild Rift, Free Fire, Battlegrounds Mobile India and the editorial sections entertainment, genshin-impact, honkai-star-rail, zenless-zone-zero, honor-of-kings and umamusume-pretty-derby); an article can belong to several sections. 'type' is 'news' or 'features'. Paged with 'page' and 'page_size' (up to 100). Use gosugamers-article with a returned id for the text.
+
+### `gosugamers_encounters`
+
+GosuGamers head-to-head meetings. Returns the other recorded meetings between two GosuGamers teams as seen from one match: tournament, start time, both teams with ids, tags and final scores, winner flags and the match URL. The given 'match_id' itself is left out; 'game' is required by the upstream but does not narrow the list. Take the ids from gosugamers-matches, gosugamers-results or gosugamers-rankings. Two teams with no other meeting return an empty list.
+
+### `gosugamers_games`
+
+GosuGamers game sections. Returns the game sections whose match pages this API reads: 'dota2', 'counterstrike', 'lol', 'valorant', 'mobile-legends', 'pubg-mobile', 'wild-rift', 'free-fire' and 'battlegrounds-mobile-india', with display names. Use a slug as 'game' in the other gosugamers endpoints.
+
+### `gosugamers_match`
+
+GosuGamers esports match detail. Returns one GosuGamers match: start time, tournament, stage, round, best-of, finished flag, both opponents with score, placement, world ranking and country, the number of games in the series and linked streams with language and viewer count. All of 'game', 'tournament_id' and 'match_id' are required; an id that does not belong to the stated tournament returns not found. Battle-royale titles can list more than two opponents. The 'games' list gives each game's id for gosugamers-match-game.
+
+### `gosugamers_match_game`
+
+GosuGamers single game (map) of a match. Returns one game of a GosuGamers match: the map, each team's score, side and first-pick flag, the picks or bans with the player (agents, heroes or champions where the title publishes them), the lineups, round or half scores (Counter-Strike and Valorant), every team's placement, kills and points for battle-royale games (PUBG Mobile) and VODs. Take 'game_id' from the 'games' list of gosugamers-match. Fields a title does not publish are empty. An unknown game id returns not found.
+
+### `gosugamers_matches`
+
+GosuGamers upcoming and live esports matches. Returns the next upcoming and currently live esports matches from GosuGamers, for one 'game' or across all games, 10 per page by default and up to 100 with 'page' and 'page_size': start time, tournament, stage, round, both teams and the match URL. 'total_rows' reports how many matches the site lists. Use gosugamers-match with the returned tournament and match ids.
+
+### `gosugamers_player`
+
+GosuGamers esports player profile. Returns one GosuGamers player: in-game name, real name, country, GosuGamers Elo rating and world and regional ranking, win/loss/draw record and win rate, streak, career earnings in USD, social links, the current team and previous teams with join and leave dates. A player of a different game than 'game' returns not found.
+
+### `gosugamers_rankings`
+
+GosuGamers team rankings. Returns the GosuGamers Elo team ranking for one 'game', globally or for one ranking region ('region_id', taken from the 'regions' list in the response; 0 is Global), with an optional team name prefix 'q': rank, team id, name, tag, Elo, previous rank and rank change. Paged with 'page' and 'page_size' (up to 100); 'total_rows' reports the size of the ranking. A 'region_id' that the game does not list returns an invalid-parameter error.
+
+### `gosugamers_results`
+
+GosuGamers recent esports match results. Returns the most recent completed esports matches from GosuGamers, for one 'game' or across all games, 10 per page by default and up to 100 with 'page' and 'page_size', with final scores and winner flags. 'total_rows' reports how many results the site lists. Use gosugamers-match with the returned ids for opponents, ranking and streams.
+
+### `gosugamers_stage_groups`
+
+GosuGamers tournament stage groups. Returns the groups (child tournaments) of one stage of a GosuGamers tournament, each with its format (for example Knockout), result type (for example Bracket), status, start time and the teams in it with ranking and country. Take 'tournament_id' from gosugamers-tournaments or gosugamers-matches and 'stage_id' from the stages list of gosugamers-tournament. An unknown stage, or a stage of another tournament, returns an empty list.
+
+### `gosugamers_team`
+
+GosuGamers esports team profile. Returns one GosuGamers team: name, tag, country, logo, GosuGamers Elo rating and world and regional ranking, win/loss/draw record and win rate, current streak, career earnings in USD, social links, the roster with join dates and the team's next upcoming matches. A team of a different game than 'game' returns not found.
+
+### `gosugamers_team_results`
+
+GosuGamers team match history. Returns the completed matches of one GosuGamers team, newest first, across the games it plays: start time, tournament, both teams with ids and final scores, winner flags and the match URL. Paged with 'page' and 'page_size' (up to 100, default 10); 'total_rows' is the team's full history. An unknown team id returns an empty list. Take 'team_id' from gosugamers-rankings, gosugamers-results or gosugamers-team.
+
+### `gosugamers_tournament`
+
+GosuGamers esports tournament detail. Returns one GosuGamers tournament: name, status, start time, description, LAN flag, venue and country, prize pool in USD when listed, sponsors, stages with their status and the next upcoming matches. A tournament that belongs to a different game than 'game' returns not found.
+
+### `gosugamers_tournament_participants`
+
+GosuGamers tournament participants. Returns the teams entered in one GosuGamers tournament: id, name, slug, logo, GosuGamers ranking, country and team URL. Both 'game' and 'tournament_id' are required; the upstream does not narrow the list by game, and an unknown tournament id returns an empty list. Take the tournament id from gosugamers-tournaments, gosugamers-matches or gosugamers-results and use a team id with gosugamers-team or gosugamers-team-results.
+
+### `gosugamers_tournament_talents`
+
+GosuGamers tournament broadcast talents. Returns the casters, hosts and analysts assigned to one GosuGamers tournament: id, name, game, roles, broadcast language code, country, image and profile URL. An unknown tournament id, or a tournament with no listed crew, returns an empty list. Take the tournament id from gosugamers-tournaments, gosugamers-matches or gosugamers-results.
+
+### `gosugamers_tournaments`
+
+GosuGamers esports tournament directory. Lists GosuGamers esports tournaments, optionally for one 'game' and one 'state' ('all', 'ongoing', 'upcoming', 'past'), with an optional name prefix 'q': id, name, game, status, start time, prize pool with currency and USD value, participant count, featured flag and the tournament URL. Paged with 'page' and 'page_size' (up to 100); 'total_rows' reports the size of the filtered list. Use gosugamers-tournament with a returned id and game for stages and upcoming matches.
+
 ### `gq_article`
 
 Get GQ article content. Returns public GQ article metadata and body paragraphs from a canonical story URL. A story GQ marks as subscriber-only returns a 403 permission error instead of partial text.
@@ -7664,6 +8024,58 @@ LiveScore supported sports. Lists the five sports in LiveScore's fixture navigat
 
 LiveScore team page and section data. Returns a public team page section such as overview, fixtures, results, standings, squad, player stats, or team stats. Tab paths and competition-specific identifiers are supplied by the source page; copy a team tab href from LiveScore.
 
+### `lolesports_completed_events`
+
+League of Legends Esports completed matches. Returns every completed match of one tournament with final game wins and the game ids and VOD references for each game. An empty list is valid for a tournament that has not started.
+
+### `lolesports_event`
+
+League of Legends Esports match detail. Returns one match: league, tournament, teams with game wins, best-of strategy, each game's id, number, state ('unneeded', 'unstarted', 'inProgress', 'completed'), blue/red side assignment and VODs, plus broadcast streams. Use a game 'id' with lolesports-game-window or lolesports-game-details. An unknown match id returns not found.
+
+### `lolesports_game_details`
+
+League of Legends Esports player game details. Returns per-player detail frames for one game: level, KDA, gold, creep score, kill participation, damage share, wards, attack damage, ability power, armor, magic resistance, final items, rune ids and skill order. Use participant ids from lolesports-game-window metadata. The same 'starting_time' rule as lolesports-game-window applies.
+
+### `lolesports_game_window`
+
+League of Legends Esports live game window. Returns the lolesports live-stats window for one game: patch, blue and red team and player metadata (champion, role, summoner name) and roughly ten seconds of frames with team gold, kills, towers, inhibitors, barons, dragons and per-player level, KDA, creep score and health. 'game_state' is 'in_game', 'paused' or 'finished'. For a game in progress omit 'starting_time' for the latest window; for a completed game pass a timestamp inside the game.
+
+### `lolesports_gpr`
+
+League of Legends Global Power Rankings. Returns the League of Legends Esports Global Power Rankings (GPR): every ranked team with rank, GPR score, Elo, previous rank and rank change, home league, match and game records, average opponent GPR and the tournaments counted with each result and placement. 'season' selects 'current' (the running year, default) or the Worlds snapshot of a four-digit year ('2025', '2024'; every season listed in the response's 'seasons' is accepted, and a year without a snapshot returns 404); 'league' keeps one home league's teams and 'history' adds the daily GPR history points. The response lists the seasons and home leagues available.
+
+### `lolesports_leagues`
+
+League of Legends Esports leagues. Returns every league on lolesports.com with its numeric 'id', 'slug', name, region, image and display status ('force_selected', 'selected', 'not_selected', 'hidden'). Use a league 'id' with lolesports-schedule or lolesports-tournaments. Region labels are upstream values such as 'EMEA', 'KOREA', 'CHINA', 'NORTH AMERICA' and 'INTERNATIONAL'.
+
+### `lolesports_live`
+
+League of Legends Esports live matches. Returns matches currently in progress across all leagues, in the same shape as lolesports-schedule events. An empty list is valid when no league is playing. Pair a returned match id with lolesports-event to get game ids, then lolesports-game-window for live frames.
+
+### `lolesports_news`
+
+League of Legends Esports news. Returns the articles listed on the League of Legends Esports news page: title, summary, link, publication time, banner image, authors and whether the item links out to another site (a video or a store page). The page shows up to the newest 100 items and has no category, tag or paging controls; 'hl' selects the site language and 'limit' keeps the newest items only.
+
+### `lolesports_schedule`
+
+League of Legends Esports schedule. Returns the match schedule around today: start time, state ('unstarted', 'inProgress', 'completed'), block name, league, teams, outcome and game wins, and best-of strategy. Optionally filter with 'league_id'. Follow 'older_page_token' for past results and 'newer_page_token' for later fixtures; a missing token means that direction is exhausted.
+
+### `lolesports_seasons`
+
+League of Legends Esports seasons and splits. Returns the League of Legends esports calendar since 2011, newest first: every season with its splits (start and end time, region) and the tournaments played in each split with their league. Use a tournament 'id' with lolesports-standings or lolesports-completed-events and a league 'id' with lolesports-tournaments. 'season_id' (taken from an earlier response) returns one season; 'region' keeps only splits of one region and 'league_id' keeps only that league's tournaments, both applied after the fetch. The unfiltered list is large (about 300 KB). A season id that does not exist returns not found.
+
+### `lolesports_standings`
+
+League of Legends Esports standings. Returns one tournament's stages (for example Regular Season, Playoffs), each with sections of matches and ordered team rankings with win-loss records. Playoff brackets include 'previous_match_ids' that link rounds; 'rounds=true' also names each bracket round. Use match ids with lolesports-event.
+
+### `lolesports_teams`
+
+League of Legends Esports teams and rosters. Returns teams with slug, code, status ('active', 'archived'), home league and the roster of players (summoner name, real name, role 'top', 'jungle', 'mid', 'bottom', 'support'). Look up one team with 'slug' or search with 'q'; results are sorted by name and paged. The slug of every team is available from lolesports-standings and lolesports-schedule.
+
+### `lolesports_tournaments`
+
+League of Legends Esports tournaments. Returns a league's tournaments (splits and seasons) with numeric 'id', 'slug', 'start_date' and 'end_date', newest first. Use a tournament 'id' with lolesports-standings or lolesports-completed-events. An unknown league id returns not found.
+
 ### `lululemon_categories`
 
 Browse lululemon's storefront category navigation. Returns lululemon's own storefront category navigation, flattened out of the site's shared header nav: every navigable category with its display name, breadcrumb path, and the exact category/cdp_hash pair lululemon-category's own parameters expect (read directly from the nav's own URL, not guessed from the display label). section, when given, filters the result to one top-level nav section.
@@ -9032,6 +9444,130 @@ Search Old Navy, Gap, Banana Republic, or Athleta products. Searches product lis
 
 Find Old Navy, Gap, Banana Republic, or Athleta store locations. Searches physical store locations for one storefront by free-text search (zip code or city) and/or coordinates. Provide search, or both lat and lng. Select the storefront with the brand parameter ('on' for Old Navy, 'gap' for Gap, 'br' for Banana Republic, 'at' for Athleta; defaults to 'on'). Returns each nearby store's name, full address, phone number, coordinates, distance, and specialties (e.g. "In-Store Shopping", "Outlet"). This is location search only -- it does not report per-item, per-store stock levels; use oldnavy-product-availability for that.
 
+### `opendota_abilities`
+
+OpenDota Dota 2 ability reference. Returns Dota 2 abilities from OpenDota's constants table as compact summaries (key, display name, behavior, target team and type, damage type, dispellable, BKB pierce, cooldown, mana cost, innate flag, description), sorted by key. Internal helper entries without a display name are skipped. 'q' searches the key and display name.
+
+### `opendota_benchmarks`
+
+OpenDota Dota 2 hero benchmarks by percentile. Returns a Dota 2 hero's benchmark percentiles from OpenDota's public games: for each of ten per-minute metrics ('gold_per_min', 'xp_per_min', 'kills_per_min', 'deaths_per_min', 'assists_per_min', 'last_hits_per_min', 'denies_per_min', 'hero_damage_per_min', 'hero_healing_per_min', 'tower_damage') the value at percentiles 0.1 to 0.99, sorted by percentile. An unknown hero id returns 404.
+
+### `opendota_constants`
+
+OpenDota Dota 2 id lookup tables. Returns one OpenDota lookup table as a sorted list of 'id'/'name' entries, used to decode ids in match data: game modes and lobby types (with 'balanced'), patches (with release 'date'), regions, server clusters ('value' is the region id), item and ability ids, permanent buff ids, experience thresholds per level ('value') countries ('id' is the ISO code), order types ('order_types', the unit order names) player slot colors ('player_colors', hex colors), chat wheel phrases ('chat_wheel', 'name' is the label and 'text' the message), item rarity colors ('item_colors', 'text' is the hex color), neutral ancient creeps ('ancients') and skillshot abilities ('skillshots'). 'resource' is one of 'game_mode', 'lobby_type', 'patch', 'region', 'cluster', 'item_ids', 'ability_ids', 'permanent_buffs', 'xp_level', 'countries'.
+
+### `opendota_find_matches`
+
+OpenDota Dota 2 matches by hero lineup. Returns recent public Dota 2 matches in which the given heroes were on team A and/or team B, with both full lineups (radiant and dire), whether Radiant won, and which side the requested team A heroes were on and whether they won. Provide at least one hero id in total; each side takes up to 5 comma-separated hero ids from opendota-heroes. Unknown or repeated hero ids return an invalid-parameter error.
+
+### `opendota_hero_abilities`
+
+OpenDota Dota 2 hero abilities, talents and facets. Returns a Dota 2 hero's ability keys, its eight talents by level and its facets (title, description, color, deprecated flag). An unknown hero id, or a hero OpenDota has no ability data for, returns 404.
+
+### `opendota_hero_descriptions`
+
+OpenDota Dota 2 Aghanim's Scepter and Shard descriptions. Returns, for every Dota 2 hero or for one 'hero_id', what Aghanim's Scepter and Aghanim's Shard do: whether each upgrade exists, its description, the skill it changes and whether it adds a new skill. 'include_lore=true' adds each hero's lore text (about 155 KB for all heroes), so it is off by default. An unknown hero id returns not found. Take 'hero_id' from opendota-heroes.
+
+### `opendota_hero_durations`
+
+OpenDota Dota 2 hero win rate by game duration. Returns a hero's games and wins grouped by game length in five-minute bins ('start_minute' is the bin's first minute), sorted by length, to show whether the hero is stronger early or late. An unknown hero id returns not found.
+
+### `opendota_hero_items`
+
+OpenDota Dota 2 hero item popularity. Returns the items players buy on a hero in four phases ('start_game', 'early_game', 'mid_game', 'late_game'), each sorted by purchase count, with item ids resolved to internal names such as 'power_treads' through the item-id table. An unknown hero id returns not found.
+
+### `opendota_hero_matches`
+
+OpenDota Dota 2 recent matches of a hero. Returns recent professional and public matches in which a hero was played (about 100), each with the side it played, whether it won, its kills, deaths and assists, duration and league when there is one. Players' account ids are not returned. An unknown hero id returns not found.
+
+### `opendota_hero_matchups`
+
+OpenDota Dota 2 hero matchup records. Returns how often a hero faced each other hero in recent public games and how often it won, sorted by games played, with localized hero names and win-rate percentages. An unknown hero id returns not found.
+
+### `opendota_hero_stats`
+
+OpenDota Dota 2 hero pick and win statistics. Returns every Dota 2 hero with base stats (health, mana, armor, attack range, move speed) and OpenDota's aggregate pick/win counts and win rates for professional games (with bans), public games, turbo, and each of the eight rank brackets ('Herald', 'Guardian', 'Crusader', 'Archon', 'Legend', 'Ancient', 'Divine', 'Immortal'). Filter by 'primary_attr' ('agi', 'all', 'int', 'str'), 'attack_type' ('Melee', 'Ranged') and 'role', sort with 'sort' and 'desc', and cap with 'limit'. Win rates are percentages and are omitted when there are no picks.
+
+### `opendota_heroes`
+
+OpenDota hero directory. Returns the live OpenDota hero lookup needed to resolve 'hero_id' values in live and detailed match responses. It includes every current hero ID with its internal name, localized name, primary attribute ('agi', 'all', 'int', or 'str') and attack type ('Melee' or 'Ranged').
+
+### `opendota_items`
+
+OpenDota Dota 2 item reference. Returns Dota 2 items from OpenDota's constants table as compact summaries (key, id, display name, quality, gold cost, behavior, cooldown, mana cost, components, active and passive abilities, numeric attributes), sorted by key. 'q' searches the key and display name, 'quality' filters by quality, and 'qualities' lists the quality values present.
+
+### `opendota_league`
+
+OpenDota Dota 2 league detail and teams. Returns one league's name, tier ('amateur', 'excluded', 'premium', 'professional' or 'unrated' when blank), ticket and banner, plus the teams that played in it with rating and record. An unknown league id returns not found.
+
+### `opendota_league_match_ids`
+
+OpenDota match IDs for one league. Returns match IDs for one league, including amateur leagues omitted from opendota_league_matches. An empty array is valid for a league with no matches. Copy an ID into opendota_match for match details.
+
+### `opendota_league_matches`
+
+OpenDota matches for one league. Returns the complete match list supplied for one OpenDota league, including match ID, teams, scores, start time and series metadata. Optionally filter locally to matches involving one team; league_id and team_id are echoed. This source route is not paginated and can include completed or scheduled rows; use opendota_match for parsed player statistics.
+
+### `opendota_leagues`
+
+OpenDota league directory. Returns every league ID and its source name, ticket, banner and tier. The source list is large and can include historical or excluded leagues. Filter 'tier' locally; 'unrated' selects source rows whose tier is blank. The response echoes tier_filter. Use a returned ID with opendota_league_matches.
+
+### `opendota_live`
+
+OpenDota live games. Returns OpenDota's current top live Dota 2 games: match and league IDs, team names, score, game clock, net-worth lead, player names when exposed, raw hero IDs, the upstream team code ('0' or '1'), and team slot ('1', '2', '3', '4', or '5'). The source mixes public matchmaking with tournament games; 'league_id' is '0' when no league is associated, so its presence alone does not certify a professional event. 'delay_seconds' and 'last_update_time' report source freshness. Live player K/D/A is not provided by this endpoint. Resolve 'hero_id' values with opendota_heroes.
+
+### `opendota_match`
+
+OpenDota match detail. Returns a compact parsed match summary and player lines for one numeric OpenDota match ID. Copy the ID from opendota_live, opendota_pro_matches, opendota_league_matches, or opendota_league_match_ids. Replay-derived player data can be absent or delayed; a missing match ID returns not found. Steam account IDs, chat logs, replay salts and raw telemetry are not returned. 'hero_id' is resolved with opendota_heroes.
+
+### `opendota_patch_notes`
+
+OpenDota Dota 2 patch notes. Without 'patch', lists every patch key OpenDota has notes for (from 7_06d to the current patch) in chronological order with the number of heroes and items changed. With 'patch' (for example '7_38'), returns that patch's general notes, item changes and hero changes (general, talents and per-ability notes, with the hero id and name resolved).
+
+### `opendota_pro_matches`
+
+OpenDota recent professional matches. Returns professional Dota 2 match summaries with match ID, teams, league, start time, duration, scores, winner and series metadata. OpenDota returns up to 100 rows per page. Set 'less_than_match_id' to a positive match ID to fetch older results; use 'next_less_than_match_id' from the response for the next page. An empty cursor page is the end of history. This is recent results, not an upcoming-match schedule. Use opendota_match with one returned match ID for parsed player statistics.
+
+### `opendota_pro_players`
+
+OpenDota professional player roster. Returns a sanitized, searchable page of the OpenDota pro-player roster with player names, country codes and team tags. The upstream sends an unfiltered roster without pagination; this endpoint caches it and applies team_id, q, limit and offset locally. q searches names, tags and country codes. Account IDs, Steam IDs, profile URLs and avatars are omitted.
+
+### `opendota_public_matches`
+
+OpenDota Dota 2 recent public matches by rank. Returns about 100 recent ranked public Dota 2 matches with the heroes on each side, game mode, lobby type and average rank tier, optionally limited to a rank range. Rank tiers are the medal (1 Herald, 2 Guardian, 3 Crusader, 4 Archon, 5 Legend, 6 Ancient, 7 Divine, 8 Immortal) times ten plus stars 1 to 5. Page back with 'less_than_match_id' set to the previous 'next_less_than_match_id'. Players' account ids are not returned.
+
+### `opendota_rank_distribution`
+
+OpenDota Dota 2 rank distribution. Returns how OpenDota's rated players are distributed over Dota 2 rank tiers: for each 'rank_tier' (the first digit is the medal, the second the stars) the medal name, stars, player count, cumulative count and the share and cumulative share in percent, sorted by tier.
+
+### `opendota_records`
+
+OpenDota Dota 2 single-match record leaderboards. Returns the top 100 single-match records for one stat ('kills', 'deaths', 'assists', 'last_hits', 'denies', 'gold_per_min', 'xp_per_min', 'hero_damage', 'tower_damage', 'hero_healing', 'duration'): rank, match id, start time, hero (with name) and the record value. Use opendota-match with a returned match id.
+
+### `opendota_scenarios`
+
+OpenDota Dota 2 scenario win rates. Returns OpenDota's scenario datasets as games, wins and win rate rows, most games first. 'kind' selects 'item-timings' (an item bought by a time for a hero), 'lane-roles' (a hero in a lane role at a time) or 'misc' (courier kill, first blood and chat scenarios by side and region). Filters are validated before any upstream call: 'hero_id' and 'item' apply to item-timings, 'hero_id' and 'lane_role' to lane-roles, 'scenario' to misc.
+
+### `opendota_team`
+
+OpenDota team details. Returns one team's OpenDota profile, tag, logo, rating, wins, losses and most recent match metadata.
+
+### `opendota_team_heroes`
+
+OpenDota Dota 2 team hero pool. Returns the heroes a team has played with games, wins and win rate, sorted by games played. Heroes the team never played are omitted. An unknown team id returns not found.
+
+### `opendota_team_matches`
+
+OpenDota team match history. Returns a team's complete upstream match history with league, opponent, score and winner data. The source does not paginate this list; large histories can contain over a thousand rows. Use opendota_match for parsed player statistics.
+
+### `opendota_team_players`
+
+OpenDota Dota 2 team player history. Returns the players who have played for a team with games played, wins and whether they are a current member, current members first. Steam account ids are not returned. An unknown team id returns not found.
+
+### `opendota_teams`
+
+OpenDota team directory. Returns a zero-based page of OpenDota team records with team IDs, names, tags, ranking and recent-match metadata. OpenDota returns up to 1000 teams per page; use 'next_page' while present. Use a team ID with opendota_team or opendota_team_matches.
+
 ### `opensea_activity`
 
 List marketplace-wide OpenSea activity. Returns the live cross-collection activity feed — every sale, listing, offer, transfer, and mint OpenSea indexes, newest first, with the collection each event belongs to. Filter with 'event_types' for a marketplace-wide trade tape.
@@ -10034,7 +10570,7 @@ Retrieve Product Hunt product makers. Lists the makers of a Product Hunt product
 
 ### `producthunt_product`
 
-Retrieve Product Hunt product details. Returns the core Product Hunt product details. The path takes an exact Product Hunt slug; if you only know the product name, look the slug up first with '/producthunt/search' (live) or '/datasets/producthunt-products/search' (indexed). Unknown slugs return 404, and that 404 is cached for one hour.
+Retrieve Product Hunt product details. Returns the core Product Hunt product details. The path takes an exact Product Hunt slug; if you only know the product name, look the slug up first with '/producthunt/search' (live) or '/datasets/producthunt-products/search' (indexed). Unknown slugs return 404, and that 404 is cached for 24 hours.
 
 ### `producthunt_reviews`
 
@@ -10456,6 +10992,22 @@ Search Redfin listings. Returns Redfin public listing search results. Pass regio
 
 Get Redfin comparable listings. Returns the comparable listings Redfin shows for a property, identified by the required 'property_id'. Each row has the address, city, state, zip, price, beds, baths, 'sqft', 'price_per_sqft', days on market, MLS number, 'hoa_monthly', lot size, year built, status, image and URL, plus coordinates when present.
 
+### `rednote_explore`
+
+Anonymous Rednote explore/channel feed. Returns one page of the anonymous Rednote (international Xiaohongshu) explore feed as normalized note cards: note id, a public note_url of the form https://www.rednote.com/discovery/item/<id>, the card's short-lived xsec_token, media type, title, cover image, like count, and a public author card. Omit channel_id for the default recommendation feed; use channel_id with an id from the channels list returned by this endpoint for a category feed. The upstream serves one server-rendered page per channel (typically 20-35 cards) and has no credential-free cursor, so there is no pagination. Note detail, user profiles, comments, and search are not available on this anonymous surface: note detail and profiles require the page's guest session, and search requires login, so note_url is a link for a human browser rather than a follow-up API call.
+
+### `rednote_note`
+
+Anonymous Rednote note detail. Returns one public Rednote note's normalized detail by rendering the note page in a warm anonymous browser and reading the page's own server-rendered noteDetailMap. No account, login, or note token is required: pass a rednote.com /discovery/item/<id> or /explore/<id> URL. Returns note id, media type, title, description text, topic tags, image URLs, an optional video URL with duration, publish time, a public author card, and integer like/collect/comment/share counters. A login modal may be drawn over the page but the note state is still populated. If the note is removed or the page does not expose its state, the endpoint returns 404; if no browser page can be warmed it fails closed with 503.
+
+### `rednote_note_comments`
+
+Anonymous Rednote note comments. Returns one page of a public Rednote note's comments using a browser-minted signed request against Rednote's web API, with no account or login. Pass a rednote.com /discovery/item/<id> or /explore/<id> note URL; an xsec_token is accepted but not required for comments. Each item includes the comment id, text, like/sub-comment counters, creation time, IP location when exposed, a public author card, and up to five replies; has_more and cursor continue pagination. The request is signed by a shared warm-browser worker, so latency is higher than a plain feed read; when no signer worker is available or the upstream refuses the signed session the endpoint fails closed with 503.
+
+### `rednote_search_suggest`
+
+Anonymous Rednote search suggestions. Returns search suggestions for a partially typed keyword using a browser-minted signed request against Rednote's web API. Suggestions are anonymous and need no account or login; each item carries the suggested text plus optional highlight flags and the suggestion's search type. Only the suggestion list is returned: Rednote search results require a logged-in session and are not exposed. The request is signed by a shared warm-browser worker, so latency is higher than a plain feed read; when no signer worker is available the endpoint fails closed with 503.
+
 ### `reelshort_fandom_categories`
 
 List ReelShort Fandom's article categories. Returns the categories of ReelShort's (reelshort.com) editorial site, Fandom (cast profiles, plot write-ups, streaming guides): id, slug, name, description, number of articles and link, read live from ReelShort. Pass a category slug to reelshort-fandom-posts. Only public editorial text is read.
@@ -10820,6 +11372,18 @@ Rotten Tomatoes movie discovery rows. Returns movie rows from Rotten Tomatoes' b
 
 Rotten Tomatoes TV discovery rows. Returns TV series rows from Rotten Tomatoes' browse listing. Use '/rottentomatoes/browse/filters?list=tv_series_browse' to discover current filters; pagination uses the opaque 'after' cursor from the previous response.
 
+### `rottentomatoes_critic`
+
+Rotten Tomatoes critic profile. Returns one Rotten Tomatoes critic's profile: display name, initials, vanity, encrypted critic id, biography, website, top-critic and Tomatometer-approved flags, review and publication counts, follower/following counts, critics groups, the publications they write for and their most recent reviews. The profile is read directly from Rotten Tomatoes' feed (normally a second or two), with a slower browser fallback when the feed cannot be read. An unknown critic path returns 404. Pass exactly one of 'path' or 'url'.
+
+### `rottentomatoes_critic_publications`
+
+Rotten Tomatoes critic publications. Returns the publications one Rotten Tomatoes critic writes for: publication name, editorial site URL, logo image, encrypted and numeric publication ids, and the top-publication and Tomatometer-approved flags. The list is read directly from Rotten Tomatoes' feed (normally a second or two), with a slower browser fallback when the feed cannot be read. Only the first page is served today; 'data.page_info.end_cursor' reports that more exist. An unknown critic path returns 404. Pass exactly one of 'path' or 'url'.
+
+### `rottentomatoes_critic_reviews`
+
+Rotten Tomatoes reviews by one critic. Returns the movie reviews published by one critic, newest first. Each review carries a stable 'id', ISO 'created_at'/'updated_at', the publication, the original article URL and a 'media' object naming the reviewed title (with its path, URL and poster). The list is pageable 'limit' reviews at a time, up to 500 deep: pass 'data.page_info.end_cursor' as 'after' and keep 'limit' the same while paging. It is read directly from Rotten Tomatoes' review feed ('data.transport' is 'feed_api', normally a second or two), with a slower browser fallback ('browser_render', at most five pages) when the feed cannot be read. A critic with no reviews returns 200 with an empty 'reviews' array; an unknown critic path returns 404. 'data.subject.kind' is 'critic' and 'data.subject.title' is the reviewer's display name as Rotten Tomatoes prints it.
+
 ### `rottentomatoes_critics_authors`
 
 Rotten Tomatoes critic directory. Returns current or inactive critics from Rotten Tomatoes' public author directory. Browse one letter or search by name; use 'next_cursor' as 'after' or 'previous_cursor' as 'before', as indicated by the corresponding page flag. The letter values come from the live directory controls.
@@ -10856,17 +11420,37 @@ Rotten Tomatoes editorial content types. Lists the editorial content types Rotte
 
 Rotten Tomatoes episode detail. Returns Rotten Tomatoes TV episode metadata, scorecard data, parent series/season metadata, and public video metadata. Pass exactly one of 'path' or 'url'.
 
+### `rottentomatoes_episode_reviews`
+
+Rotten Tomatoes TV episode critic reviews. Returns the critic reviews of one TV episode, newest first, read the same way as the season and movie feeds. Reviews carry a stable 'id', ISO 'created_at'/'updated_at', the critic identity and the original article URL. The list is pageable 'limit' reviews at a time, up to 500 deep: pass 'data.page_info.end_cursor' as 'after' and keep 'limit' the same while paging. It is read directly from Rotten Tomatoes' review feed ('data.transport' is 'feed_api', normally about a second), with a slower browser fallback ('browser_render', at most five pages) when the feed cannot be read. Episode review lists are often small or empty: an episode nobody has reviewed yet returns 200 with an empty 'reviews' array. 'data.subject' identifies the episode.
+
 ### `rottentomatoes_movie`
 
 Rotten Tomatoes movie detail. Returns Rotten Tomatoes movie metadata, scorecard data, and representative audience reviews. Pass exactly one of 'path' or 'url'.
 
 ### `rottentomatoes_movie_reviews`
 
-Rotten Tomatoes movie reviews. Returns critic or audience reviews from Rotten Tomatoes, including pagination metadata. Pass exactly one of 'path' or 'url'. Supported 'type' values are 'critics', 'top-critics', 'audience', and 'verified-audience'.
+Rotten Tomatoes movie reviews. Returns Rotten Tomatoes movie reviews, newest first. All four 'type' values return the full review feed in one request: each review carries a stable 'id', ISO 'created_at'/'updated_at' timestamps, the critic identity and the original article URL, and the list is pageable 'limit' reviews at a time: pass 'data.page_info.end_cursor' back as 'after' for the next page and keep 'limit' the same while paging. 'data.transport' is 'feed_api' for that path. A title with no reviews yet, or a top-critics or audience list that is still empty, returns 200 with an empty 'reviews' array. If the feed cannot be read the service loads the movie's own review page the way a visitor's browser does and reads the list that page receives ('transport: browser_render', slower, at most five pages); if that also fails for the first page, the movie page's embedded sample of about 6 reviews is served with 'render_error' set ('transport: public_page') and the call is not charged. 'data.subject.kind' is 'movie', and 'data.movie' remains present for compatibility. 'data.fetched_at' and the 'X-Cache' and 'X-Availability-Last-Success-*' response headers show how fresh the data is. Pass exactly one of 'path' or 'url'. Supported 'type' values are 'critics', 'top-critics', 'audience', and 'verified-audience'.
+
+### `rottentomatoes_movie_videos`
+
+Rotten Tomatoes movie videos and trailers. Returns the videos Rotten Tomatoes lists for one movie: trailers and clips with the video id, title, kind ('TRAILER'/'OTHER'), duration, thumbnail, playable stream/playlist URL and the video page URL. The primary video reference is read from the movie page and the list comes from Rotten Tomatoes' open JSON endpoint ('/cnapi/videos'), so it is as fast as other endpoints. A movie with no listed video returns an empty 'data.videos' rather than an error. 'data.fetched_at' is the UTC time the data was fetched. Pass exactly one of 'path' or 'url'.
+
+### `rottentomatoes_movies`
+
+Rotten Tomatoes movie details, several at once. Returns the details of up to 20 Rotten Tomatoes movies in one call, in the order requested. Each entry carries the title, synopsis, path and URL, 'ems_id', runtime, release date/year, production companies, the release runs with distributors, the Tomatometer and Popcornmeter scores, the score variants for all critics, top critics, all audience and verified audience, the critics and audience consensus, and 'where_to_watch': the public streaming, rental and purchase offers with provider name, link, licence, quality, price and availability date. Those are public provider pages, not playable media URLs. Identifiers that resolve to nothing are listed in 'data.not_found' instead of failing the call. Pass exactly one of 'ids' (Rotten Tomatoes 'ems_id' values) or 'paths' (Rotten Tomatoes movie paths or URLs); the 'paths' form resolves each path first, so it costs one extra upstream read per path. The headline Tomatometer and Popcornmeter carry no counts; review and rating counts are in the score variants (for the number of critic reviews read 'scores.critics_all.review_count'). Review samples are not returned here: use '/rottentomatoes/movie/reviews' for reviews. 'data.fetched_at' is the UTC fetch time.
 
 ### `rottentomatoes_person`
 
 Rotten Tomatoes person detail and filmography. Returns Rotten Tomatoes celebrity/person metadata and filmography rows. Pass exactly one of 'path' or 'url'.
+
+### `rottentomatoes_publication`
+
+Rotten Tomatoes publication profile. Returns one Rotten Tomatoes publication: its name, encrypted id, editorial page, image, whether it is a top publication and Tomatometer approved, its follower and review counts, and the critics who write for it with their names, encrypted ids, profile URLs and top-critic flags. Take the 'id' from 'encrypted_publication_id' (or 'publication_id') on any review row returned by the review endpoints. 'data.fetched_at' is the UTC fetch time.
+
+### `rottentomatoes_publication_reviews`
+
+Rotten Tomatoes publication reviews. Returns the critic reviews one Rotten Tomatoes publication has published, newest first: stable review ids, ISO 'created_at'/'updated_at' times, the critic identity, the publication name, the quote, the score sentiment and the original article URL. Pass 'data.page_info.end_cursor' back as 'after' for the next page, with the same 'limit' (max 20). 'data.subject.kind' is 'publication' and 'data.subject.title' is the outlet's name. An empty list is a '200' with no reviews. The 'id' must be the encrypted publication id ('encrypted_publication_id' on any review row); a numeric id is rejected. 'data.fetched_at' is the UTC fetch time.
 
 ### `rottentomatoes_search`
 
@@ -10875,6 +11459,10 @@ Rotten Tomatoes movie search. Searches Rotten Tomatoes movies by the required 'q
 ### `rottentomatoes_season`
 
 Rotten Tomatoes season detail. Returns Rotten Tomatoes TV season metadata, scorecard data, parent series metadata, and episode rows. Pass exactly one of 'path' or 'url'.
+
+### `rottentomatoes_season_reviews`
+
+Rotten Tomatoes TV season critic reviews. Returns the critic reviews of one TV season, newest first. Each review has a stable 'id', ISO 'created_at'/'updated_at' timestamps, the critic identity and the original article URL. The list is pageable 'limit' reviews at a time, up to 500 deep: pass 'data.page_info.end_cursor' as 'after' and keep 'limit' the same while paging. It is read directly from Rotten Tomatoes' review feed ('data.transport' is 'feed_api', normally about a second); if the feed cannot be read, the service may fall back to loading the season's reviews page in a browser ('transport: browser_render', much slower and at most five pages deep). A season with no critic reviews yet returns 200 with an empty 'reviews' array. 'data.subject' identifies the season. 'data.fetched_at', 'X-Cache' and 'X-Availability-Last-Success-*' describe freshness. Pass exactly one of 'path' or 'url'.
 
 ### `rottentomatoes_series`
 
@@ -11415,6 +12003,66 @@ Suggest products and collections inside a Shop.app shop. Returns search suggesti
 ### `shop_app_suggestions`
 
 Suggest Shop.app searches. Returns Shop.app autocomplete suggestions for the required 'query'. 'limit' defaults to 10 and is capped at 20. Each suggestion is either a search query or a shop, with its 'text', 'type', URL and, for shops, the shop handle, name, rating and image.
+
+### `shopee_banners`
+
+Get Shopee homepage banners. Returns homepage merchandising banners for one slot from the credential-free 'api/v4/banner/batch_list_by_spaces' POST JSON. Public, credential-free endpoint.
+
+### `shopee_categories`
+
+Get the Shopee category tree. Returns the full public category/navigation tree from Shopee's credential-free 'api/v4/pages/get_category_tree' JSON. Public, credential-free endpoint.
+
+### `shopee_category_detail`
+
+Get localized Shopee category details. Returns localized names, parent chain and images for up to 20 category ids from the credential-free 'api/v4/search/get_fe_category_detail' JSON. Public, credential-free endpoint.
+
+### `shopee_flash_sale`
+
+Get the Shopee flash-sale window. Returns the active flash-sale product window from Shopee's credential-free 'api/v4/flash_sale/flash_sale_get_items' JSON. The window is a sampler of the active campaign, not a full catalogue enumeration. Public, credential-free endpoint.
+
+### `shopee_footer`
+
+Get the Shopee footer layout. Returns the site footer/navigation layout (help topics, about, payment/logistics partners, social links, app download) from the credential-free 'api/v4/pages/get_footer_layout' JSON. Public, credential-free endpoint.
+
+### `shopee_home`
+
+Get the Shopee homepage feed. Returns the modular homepage feed (banners, category squares, campaigns, flash-sale cards, prefills, live sessions) from Shopee's credential-free 'api/v4/native/homepage' JSON. Public, credential-free endpoint.
+
+### `shopee_home_categories`
+
+Get Shopee homepage category tiles. Returns the homepage category tiles from the credential-free 'api/v4/pages/get_homepage_category_list' JSON. Public, credential-free endpoint.
+
+### `shopee_location_filters`
+
+Get Shopee location filter vocabulary. Returns the "Shipped From" location facet groups and tag ids from the credential-free 'api/v4/search/location_filter' JSON. Public, credential-free endpoint.
+
+### `shopee_mall_categories`
+
+Get Shopee's official-shop category directory. Returns the official-shop (mall) category directory from Shopee's credential-free 'api/v4/official_shop/get_categories' JSON. Public, credential-free endpoint.
+
+### `shopee_prefills`
+
+Get Shopee search landing prefills. Returns Shopee's search-landing prefill/trending cards from the credential-free 'api/v4/search/search_prefills' JSON. Public, credential-free endpoint.
+
+### `shopee_search_filters`
+
+Get Shopee search filter vocabulary. Returns the server-driven filter groups (locations, shipping, shop type, brands, category facets, payment, rating, condition) for a keyword or category context from the credential-free 'api/v4/search/search_filter_config' JSON. Public, credential-free endpoint.
+
+### `shopee_search_hints`
+
+Get Shopee keyword hints. Returns server-ranked keyword hints for a prefix from the credential-free 'api/v4/search/search_hint' JSON (distinct from search-suggestion: hint-panel keywords with rank/category metadata). Public, credential-free endpoint.
+
+### `shopee_shop_info`
+
+Resolve a Shopee shop identity. Returns one shop public identity from the credential-free 'api/v4/search/get_shop_info' JSON (works without the anti-content-signed shop/get_shop_base). Public, credential-free endpoint.
+
+### `shopee_shops`
+
+List Shopee official shops. Returns a page of the official-shop (mall) directory from the credential-free 'api/v4/official_shop/get_shops' JSON. Public, credential-free endpoint.
+
+### `shopee_suggest`
+
+Get Shopee search suggestions. Returns Shopee search autocomplete suggestions for a keyword prefix from the credential-free 'api/v4/search/search_suggestion' JSON. Public, credential-free endpoint.
 
 ### `shopify_collection_products`
 
@@ -13750,7 +14398,7 @@ Retrieve comments for a TikTok video. Returns the top-level comments of one vide
 
 ### `tiktok_mobile_feed`
 
-Retrieve the TikTok mobile For You feed. Returns one page of videos from TikTok's mobile For You feed, signed with well-formed mobile signature headers (no device or account needed). Each item carries 'aweme_id', 'create_time', 'author_id', 'share_url' and the verified statistics block ('play_count', 'digg_count', 'comment_count', 'share_count', 'collect_count', 'download_count', 'forward_count', 'lose_count', 'lose_comment_count', 'whatsapp_share_count', 'repost_count'). A zero 'count' uses the app's default page size; 'count' is capped at 50.
+Retrieve the TikTok mobile For You feed. Returns one page of videos from TikTok's mobile For You feed. Each item carries 'aweme_id', 'create_time', 'author_id', 'share_url' and the verified statistics block ('play_count', 'digg_count', 'comment_count', 'share_count', 'collect_count', 'download_count', 'forward_count', 'lose_count', 'lose_comment_count', 'whatsapp_share_count', 'repost_count'). A zero 'count' uses the app's default page size; 'count' is capped at 50.
 
 ### `tiktok_mobile_feed_post`
 
@@ -13778,15 +14426,15 @@ Retrieve TikTok LIVE gifts. Returns the complete LIVE gift catalogue in one call
 
 ### `tiktok_mobile_live_hashtags`
 
-LIVE category/game reference catalogue (hashtags, live-studio/voice/third-party tags, game tags). Returns the reference set the app's "go LIVE" flow uses to tag a stream: the general LIVE hashtags ('hashtags', measured 18 entries of '{id, image, namespace, title}', where 'id' 0 is the "None" tag), the live-studio/live-voice/third-party hashtag subsets ('live_studio_hashtags' 16, 'live_voice_hashtags' 16, 'third_party_hashtags' 9), the single 'game_hashtag', and a 1,500-entry game catalogue ('game_tag_list', 'game_tag_count') where every entry carries the same 12 keys: 'id', 'short_name', 'show_name', 'full_name', 'bundle_id', 'package_name', 'game_category' ('[{game_type, title}]' with PC games/Mobile games/Console games/Others), 'hashtag_id', 'hashtag_list', 'gar', 'landscape' (0/1/2) and 'is_new_game'. The upstream is '/webcast/room/hashtag/list/' on the webcast edge host (no origin header); the measured body is 539,361 B and byte-identical on both working webcast hosts, 'language'/'count' do not change it, and there is no cursor/has_more, so it is a one-shot reference dump. Measured 2026-10-22 with the pure-Go (device-free) signer, so it does not need the device-backed signer.
+LIVE category/game reference catalogue (hashtags, live-studio/voice/third-party tags, game tags). Returns the reference set the app's "go LIVE" flow uses to tag a stream: the general LIVE hashtags ('hashtags', measured 18 entries of '{id, image, namespace, title}', where 'id' 0 is the "None" tag), the live-studio/live-voice/third-party hashtag subsets ('live_studio_hashtags' 16, 'live_voice_hashtags' 16, 'third_party_hashtags' 9), the single 'game_hashtag', and a 1,500-entry game catalogue ('game_tag_list', 'game_tag_count') where every entry carries the same 12 keys: 'id', 'short_name', 'show_name', 'full_name', 'bundle_id', 'package_name', 'game_category' ('[{game_type, title}]' with PC games/Mobile games/Console games/Others), 'hashtag_id', 'hashtag_list', 'gar', 'landscape' (0/1/2) and 'is_new_game'. The upstream is '/webcast/room/hashtag/list/' on the webcast edge host (no origin header); the measured body is 539,361 B and byte-identical on both working webcast hosts, 'language'/'count' do not change it, and there is no cursor/has_more, so it is a one-shot reference dump. Measured 2026-10-22,.
 
 ### `tiktok_mobile_live_room`
 
-LIVE room detail: status, viewers, owner, stream URLs, cover. Returns one LIVE room's detail, keyed by 'room_id' — the numeric id that '/api/v1/tiktok/mobile/live/search' returns under 'data[].lives.author.room_id'. The upstream is '/webcast/room/info/' on the webcast edge host (no origin header), captured from the running 47.4.3 app's LIVE surface and reproduced against the live gateway. The response projects the fields callers key on — 'title', 'status' (2 = live), 'user_count' (concurrent viewers), 'create_time', 'owner' (user id, nickname, avatar), 'stats' (cumulative 'enter_count'/'total_user', 'watch_user_count', 'like_count', 'comment_count', 'share_count', 'follow_count', 'replay_viewers'), 'stream' (playable 'flv_pull_url' per resolution plus 'default_resolution'/'candidate_resolution' and the HLS/RTMP URLs) and 'cover' — and keeps the upstream room object unmodified in 'data' (it has ~500 keys, so a partial struct would drop fields). Measured 2026-10-22 with the pure-Go (device-free) signer: one room returned 193-198 KB with 1,595-1,600 concurrent viewers, 27,916 cumulative viewers, 27,096 enters and FLV URLs for FULL_HD1/HD1/SD1/SD2. 'anchor_id' is deliberately NOT forwarded: it was measured to suppress the audience-only 'stats.total_user' (27,916 -> 0 on the same room). A missing, non-numeric or unknown room id answers the webcast envelope's status 10011 and is surfaced as a 400; a finished room (status 30003) is a 400 too. The route is not signature-gated, so it does not need the device-backed signer.
+LIVE room detail: status, viewers, owner, stream URLs, cover. Returns one LIVE room's detail, keyed by 'room_id' — the numeric id that '/api/v1/tiktok/mobile/live/search' returns under 'data[].lives.author.room_id'. The upstream is '/webcast/room/info/' on the webcast edge host (no origin header), captured from the running 47.4.3 app's LIVE surface and reproduced against the live gateway. The response projects the fields callers key on — 'title', 'status' (2 = live), 'user_count' (concurrent viewers), 'create_time', 'owner' (user id, nickname, avatar), 'stats' (cumulative 'enter_count'/'total_user', 'watch_user_count', 'like_count', 'comment_count', 'share_count', 'follow_count', 'replay_viewers'), 'stream' (playable 'flv_pull_url' per resolution plus 'default_resolution'/'candidate_resolution' and the HLS/RTMP URLs) and 'cover' — and keeps the upstream room object unmodified in 'data' (it has ~500 keys, so a partial struct would drop fields). Measured 2026-10-22: one room returned 193-198 KB with 1,595-1,600 concurrent viewers, 27,916 cumulative viewers, 27,096 enters and FLV URLs for FULL_HD1/HD1/SD1/SD2. 'anchor_id' is deliberately NOT forwarded: it was measured to suppress the audience-only 'stats.total_user' (27,916 -> 0 on the same room). A missing, non-numeric or unknown room id answers the webcast envelope's status 10011 and is surfaced as a 400; a finished room (status 30003) is a 400 too.
 
 ### `tiktok_mobile_live_room_by_user`
 
-LIVE room by user: the room a user is currently streaming. Returns the LIVE room a TikTok user is currently streaming, keyed by 'user_id'. The upstream is '/webcast/room/info_by_user/' on the webcast edge host (no origin header) and returns the same room payload as '/api/v1/tiktok/mobile/live/room' (title, status, concurrent viewers, owner, cumulative stats, per-resolution FLV URLs, cover and the ~500-key room object in 'data'), except that the caller addresses a user and the room id is filled from the payload (both 'user_id' and 'room_id' are echoed). Measured 2026-10-22 with the pure-Go (device-free) signer: 'user_id=6707748031095751686' answered 184,575 B (195,220 B on the second webcast host); 'anchor_id' alone answers a 57-byte empty payload, so 'user_id' is the address. A user with no live room answers status 30003 "room has finished" and is surfaced as a 400; a non-numeric user id is a 400 (status 10011); a bare call answers a 57-byte empty success envelope, which is why this endpoint requires 'user_id'. The route is not signature-gated, so it does not need the device-backed signer.
+LIVE room by user: the room a user is currently streaming. Returns the LIVE room a TikTok user is currently streaming, keyed by 'user_id'. The upstream is '/webcast/room/info_by_user/' on the webcast edge host (no origin header) and returns the same room payload as '/api/v1/tiktok/mobile/live/room' (title, status, concurrent viewers, owner, cumulative stats, per-resolution FLV URLs, cover and the ~500-key room object in 'data'), except that the caller addresses a user and the room id is filled from the payload (both 'user_id' and 'room_id' are echoed). Measured 2026-10-22: 'user_id=6707748031095751686' answered 184,575 B (195,220 B on the second webcast host); 'anchor_id' alone answers a 57-byte empty payload, so 'user_id' is the address. A user with no live room answers status 30003 "room has finished" and is surfaced as a 400; a non-numeric user id is a 400 (status 10011); a bare call answers a 57-byte empty success envelope, which is why this endpoint requires 'user_id'.
 
 ### `tiktok_mobile_live_search`
 
@@ -13794,7 +14442,7 @@ Search TikTok LIVE streams. Searches the mobile app's LIVE surface by keyword: '
 
 ### `tiktok_mobile_live_tabs`
 
-Fetch the LIVE tab catalogue. Returns the app's LIVE tab catalogue: 'data[]' holds one entry per tab with the tab's 'id', 'name', 'style', 'enable'/'event' flags and the exact 'url'/'inter_url' feed template the client calls for that tab. The measured tab 1 ("live") points at '/webcast/feed/?content_type=0&style=2&channel_id=21&sub_channel_id=0&tab_id=1&type=live&sub_type=live&req_type=0&cate_id=0' on 'webcast.tiktokv.com'. This closes the route round 553 could not find a host for; it is served by the webcast edge hosts (non-webcast hosts answer 403) and is one of the few LIVE routes that answers device-free: measured with the pure-Go placeholder signer as well as the real device signer, so it does not need the device-backed signing service.
+Fetch the LIVE tab catalogue. Returns the app's LIVE tab catalogue: 'data[]' holds one entry per tab with the tab's 'id', 'name', 'style', 'enable'/'event' flags and the exact 'url'/'inter_url' feed template the client calls for that tab. The measured tab 1 ("live") points at '/webcast/feed/?content_type=0&style=2&channel_id=21&sub_channel_id=0&tab_id=1&type=live&sub_type=live&req_type=0&cate_id=0' on 'webcast.tiktokv.com'. This closes the route round 553 could not find a host for; it is served by the webcast edge hosts (non-webcast hosts answer 403).
 
 ### `tiktok_mobile_music_beats`
 
@@ -13802,11 +14450,11 @@ Retrieve TikTok music beats. Returns the mobile app's beats/songs chart unmodifi
 
 ### `tiktok_mobile_music_choices`
 
-Recommended sounds for video creation. Returns the app's "music choices" list: the recommended sounds it offers on the video-creation page. The upstream is '/aweme/v1/music/choices/'; each 'music_list' entry is the same full sound object the chart routes return (title, album, artists, covers, play URL, duration, ...). Measured 2026-10-21 with the pure-Go (device-free) signer: 56,078 B / 6 full sound objects on one call and 7 on later calls (the same six at the front), and the payload carries NO paging fields (no cursor/has_more), so this is a one-shot recommendation list. The measured 'item_id', 'music_id', 'count' and 'scene' parameters did not deterministically change the list — the recommendations rotate — so none is exposed. The route is not signature-gated, so it does not need the device-backed signer.
+Recommended sounds for video creation. Returns the app's "music choices" list: the recommended sounds it offers on the video-creation page. The upstream is '/aweme/v1/music/choices/'; each 'music_list' entry is the same full sound object the chart routes return (title, album, artists, covers, play URL, duration, ...). Measured 2026-10-21: 56,078 B / 6 full sound objects on one call and 7 on later calls (the same six at the front), and the payload carries NO paging fields (no cursor/has_more), so this is a one-shot recommendation list. The measured 'item_id', 'music_id', 'count' and 'scene' parameters did not deterministically change the list — the recommendations rotate — so none is exposed.
 
 ### `tiktok_mobile_music_collection_list`
 
-Music collection list (paged browse). Returns the app's music-collection LIST ('mc_list' of collection objects with covers), the browse list of curated music collections. This is a different route from '/api/v1/tiktok/mobile/music/collections', which is the collection FEED ('mcf_list', with each entry's music inline). The upstream is '/aweme/v1/music/collection/'. Unlike the feed, this route PAGES for real: 'count' is honoured (measured 1 -> 1 item with 'cursor: 1, has_more: 1'; 5 -> 5 items with 'cursor: 5'; 10/100 -> all 8 collections) and 'cursor' advances (measured 'count=5&cursor=5' -> the remaining 3 with 'has_more: 0'). A negative count answers upstream status 5, which is rejected locally. Measured 2026-10-21 with the pure-Go (device-free) signer: 8 collections total. The route is not signature-gated, so it does not need the device-backed signer.
+Music collection list (paged browse). Returns the app's music-collection LIST ('mc_list' of collection objects with covers), the browse list of curated music collections. This is a different route from '/api/v1/tiktok/mobile/music/collections', which is the collection FEED ('mcf_list', with each entry's music inline). The upstream is '/aweme/v1/music/collection/'. Unlike the feed, this route PAGES for real: 'count' is honoured (measured 1 -> 1 item with 'cursor: 1, has_more: 1'; 5 -> 5 items with 'cursor: 5'; 10/100 -> all 8 collections) and 'cursor' advances (measured 'count=5&cursor=5' -> the remaining 3 with 'has_more: 0'). A negative count answers upstream status 5, which is rejected locally. Measured 2026-10-21: 8 collections total.
 
 ### `tiktok_mobile_music_collections`
 
@@ -13830,35 +14478,35 @@ Retrieve TikTok trending sounds. Returns the mobile app's trending sound chart: 
 
 ### `tiktok_mobile_mv_videos`
 
-MV channel feed: the app's music-video tab, paged. Returns one page of an MV channel feed, the app's music-video ("MV") tab. The upstream is '/aweme/v1/mv/aweme/'; 'mv_id' is a small numeric CHANNEL index, NOT a video id — measured ids 0-10 each returned a 15-video page of full aweme objects (1.05-1.24 MB), while 100 returned a valid empty page and a real aweme id returned an empty list. The server's page size is 15 and 'count' was measured IGNORED ('count=5' and 'count=10' both returned 15 items), so 'count' is not exposed; page with 'cursor'. The returned 'cursor' is a reusable next-page token (measured page 1 'cursor: 18, has_more: 1'; 'cursor=18' returned a fresh page with 'cursor: 38, has_more: 1'). The envelope's 'top_awemes' (pinned entries), 'original_aweme_id', 'page_extra' and 'extra'/'log_pb' are kept as measured. Measured 2026-10-22 with the pure-Go (device-free) signer, so it does not need the device-backed signer. A missing or non-numeric 'mv_id' is a 400; an unknown numeric channel is a valid empty page.
+MV channel feed: the app's music-video tab, paged. Returns one page of an MV channel feed, the app's music-video ("MV") tab. The upstream is '/aweme/v1/mv/aweme/'; 'mv_id' is a small numeric CHANNEL index, NOT a video id — measured ids 0-10 each returned a 15-video page of full aweme objects (1.05-1.24 MB), while 100 returned a valid empty page and a real aweme id returned an empty list. The server's page size is 15 and 'count' was measured IGNORED ('count=5' and 'count=10' both returned 15 items), so 'count' is not exposed; page with 'cursor'. The returned 'cursor' is a reusable next-page token (measured page 1 'cursor: 18, has_more: 1'; 'cursor=18' returned a fresh page with 'cursor: 38, has_more: 1'). The envelope's 'top_awemes' (pinned entries), 'original_aweme_id', 'page_extra' and 'extra'/'log_pb' are kept as measured. Measured 2026-10-22, A missing or non-numeric 'mv_id' is a 400; an unknown numeric channel is a valid empty page.
 
 ### `tiktok_mobile_place_detail`
 
-Place (POI) detail from the mobile app's Places surface. Returns one place detail page, keyed by the 'poi_id' that the place search endpoint returns. The upstream is TikTok's server-driven UI ('/tiktok/poi/slash/v1') frame stream, assembled here into the component map of the place-detail screen: 'food_head_info' (place name, formatted address, category, phone, coordinates, opening hours, rating/score with mention count, price range, tags and photo album), 'poi_top_videos' (top videos strip), 'poi_limited_post' (posts about the place: full video items plus 'aweme_cursor'/'has_more_aweme'), 'poi_review' (review preview with 'has_more') and 'ai_summary' when the place has one. 'nodes' is opaque and complete, 'frames' keeps the raw ordered frames, and the typed counters ('top_video_count', 'post_count', 'post_cursor', 'has_more_posts', 'review_count', 'has_more_reviews') are convenience projections. The measured page-size controls are forwarded with the app's defaults but the server applies its own bounds. The route is not signature-gated, so it does not need the device-backed signer.
+Place (POI) detail from the mobile app's Places surface. Returns one place detail page, keyed by the 'poi_id' that the place search endpoint returns. The upstream is TikTok's server-driven UI ('/tiktok/poi/slash/v1') frame stream, assembled here into the component map of the place-detail screen: 'food_head_info' (place name, formatted address, category, phone, coordinates, opening hours, rating/score with mention count, price range, tags and photo album), 'poi_top_videos' (top videos strip), 'poi_limited_post' (posts about the place: full video items plus 'aweme_cursor'/'has_more_aweme'), 'poi_review' (review preview with 'has_more') and 'ai_summary' when the place has one. 'nodes' is opaque and complete, 'frames' keeps the raw ordered frames, and the typed counters ('top_video_count', 'post_count', 'post_cursor', 'has_more_posts', 'review_count', 'has_more_reviews') are convenience projections. The measured page-size controls are forwarded with the app's defaults but the server applies its own bounds.
 
 ### `tiktok_mobile_place_info`
 
-Compact place (POI) record: address, coordinates, rating, hours, counters. Returns one place's compact record, keyed by the 'poi_id' that the place search endpoint returns. The upstream is TikTok's POI read ('/tiktok/poi/get/v1'), the record behind a place card: 'name', 'address', 'category', 'average_price', 'latitude'/'longitude', 'city_code'/'region_code', 'review_score' with 'review_count'/'no_rating', 'video_count', 'favorite_count', 'opening_hours'/'opening_status', 'cover', 'share_url'/'share_desc' and 'parent_poi', plus the upstream POI object unmodified in 'place' so a richer field is never lost. This is the cheap lookup to use instead of the ~1 MB slash detail page when only the place record is needed. A nonexistent id answers 400 (the upstream business status 3009009 "poi not exist" is a caller error, not an outage). Measured 2026-10-21 with the pure-Go (device-free) signer: 4,594 B for a coffee shop (score 4.7 / 2 reviews, price "$", hours "8:00 AM – 5:00 PM", 11 videos), 4,623 B for a second location (score 4.8 / 13 reviews). The route is not signature-gated, so it does not need the device-backed signer.
+Compact place (POI) record: address, coordinates, rating, hours, counters. Returns one place's compact record, keyed by the 'poi_id' that the place search endpoint returns. The upstream is TikTok's POI read ('/tiktok/poi/get/v1'), the record behind a place card: 'name', 'address', 'category', 'average_price', 'latitude'/'longitude', 'city_code'/'region_code', 'review_score' with 'review_count'/'no_rating', 'video_count', 'favorite_count', 'opening_hours'/'opening_status', 'cover', 'share_url'/'share_desc' and 'parent_poi', plus the upstream POI object unmodified in 'place' so a richer field is never lost. This is the cheap lookup to use instead of the ~1 MB slash detail page when only the place record is needed. A nonexistent id answers 400 (the upstream business status 3009009 "poi not exist" is a caller error, not an outage). Measured 2026-10-21: 4,594 B for a coffee shop (score 4.7 / 2 reviews, price "$", hours "8:00 AM – 5:00 PM", 11 videos), 4,623 B for a second location (score 4.8 / 13 reviews).
 
 ### `tiktok_mobile_place_photos`
 
-Place photo album with per-photo attribution. Returns one place's photo album, keyed by the 'poi_id' that the place search endpoint returns. The upstream is '/tiktok/poi/picture_album/v1': 'categories' holds each album tab ('name', 'pic_tab_typecode', 'pictures' of bare image URL lists and 'pictures_v2', the same photos with 'author' attribution, 'pic_id', 'source' and origin/compressed URL info), 'photo_count' sums the categories' pictures, and 'title' is the app's own header. Measured 2026-10-21 with the pure-Go (device-free) signer: one place answered 5,368 B, title "Gallery (3)", 1 category with 3 photos whose 'pictures_v2' entries name the Google-places contributor; another answered 24,196 B with more photos. The album is one-shot: 'count' and 'pic_tab_typecode' were measured and did not change the page. A nonexistent id answers 500 (the upstream answers status 4 "Server is currently unavailable" on this route, unlike the poi-not-exist code the other place routes use). The route is not signature-gated, so it does not need the device-backed signer.
+Place photo album with per-photo attribution. Returns one place's photo album, keyed by the 'poi_id' that the place search endpoint returns. The upstream is '/tiktok/poi/picture_album/v1': 'categories' holds each album tab ('name', 'pic_tab_typecode', 'pictures' of bare image URL lists and 'pictures_v2', the same photos with 'author' attribution, 'pic_id', 'source' and origin/compressed URL info), 'photo_count' sums the categories' pictures, and 'title' is the app's own header. Measured 2026-10-21: one place answered 5,368 B, title "Gallery (3)", 1 category with 3 photos whose 'pictures_v2' entries name the Google-places contributor; another answered 24,196 B with more photos. The album is one-shot: 'count' and 'pic_tab_typecode' were measured and did not change the page. A nonexistent id answers 500 (the upstream answers status 4 "Server is currently unavailable" on this route, unlike the poi-not-exist code the other place routes use).
 
 ### `tiktok_mobile_place_videos`
 
-Videos posted at one place (paged). Returns one page of the videos posted at a place, keyed by the 'poi_id' that the place search endpoint returns. The upstream is '/tiktok/poi/video/list/v1': 'aweme_list' holds the app's full video objects (id, description, author, statistics, media URLs, music, anchors, ...) and 'item_count' is this page's size. Page with 'cursor': the returned 'cursor' is a reusable next-page token (measured page 1 'cursor: 20' with 'has_more: 1', page 2 'cursor: 40'), never with arithmetic on 'count'. 'count' is a page-size hint, not a strict size: 1/2/5 returned exactly that many items on the first page, a later page returned 8 for count=5, and 10/20/50 were all server-capped at 17. Measured 2026-10-21 with the pure-Go (device-free) signer: 11 videos (940-944 KB) on one place, 17 videos (1.4 MB) on another. The route exposes no sort control: 'sort_type' and 'order' were measured and did not change the page or its order. The upstream throttles bursts, so paced clients are expected. The route is not signature-gated, so it does not need the device-backed signer.
+Videos posted at one place (paged). Returns one page of the videos posted at a place, keyed by the 'poi_id' that the place search endpoint returns. The upstream is '/tiktok/poi/video/list/v1': 'aweme_list' holds the app's full video objects (id, description, author, statistics, media URLs, music, anchors, ...) and 'item_count' is this page's size. Page with 'cursor': the returned 'cursor' is a reusable next-page token (measured page 1 'cursor: 20' with 'has_more: 1', page 2 'cursor: 40'), never with arithmetic on 'count'. 'count' is a page-size hint, not a strict size: 1/2/5 returned exactly that many items on the first page, a later page returned 8 for count=5, and 10/20/50 were all server-capped at 17. Measured 2026-10-21: 11 videos (940-944 KB) on one place, 17 videos (1.4 MB) on another. The route exposes no sort control: 'sort_type' and 'order' were measured and did not change the page or its order. The upstream throttles bursts, so paced clients are expected.
 
 ### `tiktok_mobile_search`
 
-Search TikTok videos on the mobile API. Keyword search returning the mobile API result documents unmodified: each entry has 'aweme_info' (a full video object with statistics), 'card_profile' and search metadata, plus 'cursor' and 'has_more'. Keep 'count' small (20 already exceeds one megabyte of upstream JSON). Requires the device-backed signing service; without it the endpoint returns a generic service-unavailable error instead of an empty page.
+Search TikTok videos on the mobile API. Keyword search returning the mobile API result documents unmodified: each entry has 'aweme_info' (a full video object with statistics), 'card_profile' and search metadata, plus 'cursor' and 'has_more'. Keep 'count' small (20 already exceeds one megabyte of upstream JSON).
 
 ### `tiktok_mobile_search_effects`
 
-Search TikTok effects/stickers by keyword. Searches TikTok's effect catalogue by 'keyword', returning the app's full effect objects ('name', 'hint', 'icon_url', 'file_url', 'effect_id', 'types', 'tags', 'parent'/'children', 'effect_type', 'music', 'source', 'designer_id', 'schema'). The upstream is '/aweme/v1/search/effect/'; the page is unfolded to the top level ('effects', 'cursor', 'has_more', 'search_id', 'use_hot', plus 'bind_effects'/'collection' on some queries). Paging is real but needs BOTH halves of the token: pass the previous response's 'cursor' and 'search_id' together (measured: page 1 'cursor: 100', page 2 with 'cursor=100&search_id=...' returned the final effect with 'has_more: false'; a cursor without its 'search_id' returns an empty page, which the service rejects as a 400). 'count' and 'offset' were measured as no-ops. Measured 2026-10-21 with the pure-Go (device-free) signer: 'keyword=green screen' -> 6 effects (11,831 B) + 1 on page 2, 'green' -> 2, '字幕' -> 4; a keyword with no matches is a valid empty page. The route is not signature-gated, so it does not need the device-backed signer.
+Search TikTok effects/stickers by keyword. Searches TikTok's effect catalogue by 'keyword', returning the app's full effect objects ('name', 'hint', 'icon_url', 'file_url', 'effect_id', 'types', 'tags', 'parent'/'children', 'effect_type', 'music', 'source', 'designer_id', 'schema'). The upstream is '/aweme/v1/search/effect/'; the page is unfolded to the top level ('effects', 'cursor', 'has_more', 'search_id', 'use_hot', plus 'bind_effects'/'collection' on some queries). Paging is real but needs BOTH halves of the token: pass the previous response's 'cursor' and 'search_id' together (measured: page 1 'cursor: 100', page 2 with 'cursor=100&search_id=...' returned the final effect with 'has_more: false'; a cursor without its 'search_id' returns an empty page, which the service rejects as a 400). 'count' and 'offset' were measured as no-ops. Measured 2026-10-21: 'keyword=green screen' -> 6 effects (11,831 B) + 1 on page 2, 'green' -> 2, '字幕' -> 4; a keyword with no matches is a valid empty page.
 
 ### `tiktok_mobile_search_hashtags`
 
-Hashtag suggestions for a keyword (hashtag typeahead). Returns the hashtag suggestions the app shows while typing in the search box, keyed by 'keyword'. The upstream is '/aweme/v1/search/challengesug/'; each 'sug_list' row carries 'cha_name' (hashtag name), 'view_count', 'use_count' and 'cid' (the numeric hashtag id), so this is the discovery step for the hashtag endpoints ('hashtag info' is name-keyed). Measured 2026-10-21 with the pure-Go (device-free) signer: 'keyword=lofi' returned 10 rows ('lofi' 18.2B views / 1.9M uses, then 'lofiasmr', 'lofihiphop', ...), 'coffee' and 'ラーメン' also returned 10 rows, and a keyword with no suggestions is a valid empty page ('sug_list: []'). 'count' is accepted for shape parity but the server was measured to ignore it (5/20/100 all returned 10 rows), and the route has no paging. The route is not signature-gated, so it does not need the device-backed signer.
+Hashtag suggestions for a keyword (hashtag typeahead). Returns the hashtag suggestions the app shows while typing in the search box, keyed by 'keyword'. The upstream is '/aweme/v1/search/challengesug/'; each 'sug_list' row carries 'cha_name' (hashtag name), 'view_count', 'use_count' and 'cid' (the numeric hashtag id), so this is the discovery step for the hashtag endpoints ('hashtag info' is name-keyed). Measured 2026-10-21: 'keyword=lofi' returned 10 rows ('lofi' 18.2B views / 1.9M uses, then 'lofiasmr', 'lofihiphop', ...), 'coffee' and 'ラーメン' also returned 10 rows, and a keyword with no suggestions is a valid empty page ('sug_list: []'). 'count' is accepted for shape parity but the server was measured to ignore it (5/20/100 all returned 10 rows), and the route has no paging.
 
 ### `tiktok_mobile_search_music`
 
@@ -13882,7 +14530,7 @@ Search tabs available for a keyword. Returns the tab keys the mobile search scre
 
 ### `tiktok_mobile_search_user`
 
-Search TikTok users on the mobile API. Keyword search over users, returning 'user_list' unmodified. Each 'user_info' carries the populated creator statistics (follower_count, following_count, total_favorited, aweme_count, custom_verify). Requires the device-backed signing service; without it the endpoint returns a generic service-unavailable error instead of an empty page.
+Search TikTok users on the mobile API. Keyword search over users, returning 'user_list' unmodified. Each 'user_info' carries the populated creator statistics (follower_count, following_count, total_favorited, aweme_count, custom_verify).
 
 ### `tiktok_mobile_trending_categories`
 
@@ -13894,11 +14542,11 @@ Retrieve TikTok trending effects. Returns the effect/sticker discovery feed unmo
 
 ### `tiktok_mobile_user_recommendations`
 
-Recommended creators on the mobile app's Following page. Returns the app's suggested creators for the Following page unmodified: 'user_list' entries are '{user, aweme_list}' where 'user' is the full creator projection (uid, sec_uid, nickname, signature, avatars, follower/following counts, verification and privacy flags) and 'aweme_list' holds up to three recent videos, so this is a creator-discovery surface rather than a bare id list. The route has no paging fields and returns one page of 13-17 creators (fresh recommendations differ per call). 'count' is accepted for parity but the gateway was measured to ignore it. The route is not signature-value gated, so unlike the profile/posts routes it does not need the device-backed signer.
+Recommended creators on the mobile app's Following page. Returns the app's suggested creators for the Following page unmodified: 'user_list' entries are '{user, aweme_list}' where 'user' is the full creator projection (uid, sec_uid, nickname, signature, avatars, follower/following counts, verification and privacy flags) and 'aweme_list' holds up to three recent videos, so this is a creator-discovery surface rather than a bare id list. The route has no paging fields and returns one page of 13-17 creators (fresh recommendations differ per call). 'count' is accepted for parity but the gateway was measured to ignore it.
 
 ### `tiktok_mobile_video_subtitles`
 
-Video captions translated into a target language. Returns one video's own captions translated into the requested language, as TikTok's caption/language ('cla') service serves them. The response carries the track twice: 'webvtt' is the upstream WebVTT text verbatim, and 'cues' is the same track parsed into '{start_ms, end_ms, start, end, text}' records so a caller does not have to implement WebVTT. 'video_id' is the aweme id returned by the feed, search, profile-posts and hashtag endpoints. Measured 2026-10-21 with the pure-Go (device-free) signer: the Korean-caption video 7696141388324293918 answered 11 English cues for 'language=en', and the same video answered Japanese, Chinese, Spanish, French, German, Korean, Portuguese, Russian, Arabic, Hindi, Indonesian, Thai, Vietnamese, Turkish and Italian tracks; a Portuguese-lyrics video answered an 18,494-character English track (240 cues). Track size is a snapshot rather than a contract (the upstream re-translates from a cache), so assert a non-empty track in the requested language, not a byte count. The route is not signature-gated, so it does not need the device-backed signer. A video with no captions answers 400 (upstream status 5); a nonexistent video answers 500 (upstream status 4).
+Video captions translated into a target language. Returns one video's own captions translated into the requested language, as TikTok's caption/language ('cla') service serves them. The response carries the track twice: 'webvtt' is the upstream WebVTT text verbatim, and 'cues' is the same track parsed into '{start_ms, end_ms, start, end, text}' records so a caller does not have to implement WebVTT. 'video_id' is the aweme id returned by the feed, search, profile-posts and hashtag endpoints. Measured 2026-10-21: the Korean-caption video 7696141388324293918 answered 11 English cues for 'language=en', and the same video answered Japanese, Chinese, Spanish, French, German, Korean, Portuguese, Russian, Arabic, Hindi, Indonesian, Thai, Vietnamese, Turkish and Italian tracks; a Portuguese-lyrics video answered an 18,494-character English track (240 cues). Track size is a snapshot rather than a contract (the upstream re-translates from a cache), so assert a non-empty track in the requested language, not a byte count. A video with no captions answers 400 (upstream status 5); a nonexistent video answers 500 (upstream status 4).
 
 ### `tiktok_popular_trend_country_industry_meta`
 
@@ -14612,6 +15260,98 @@ A single Vinted listing's detail. Returns a single Vinted listing's detail: titl
 
 A Vinted seller's public storefront profile. Returns a Vinted seller's public storefront profile: username, self-disclosed coarse location, rating, and follower/following counts. Deliberately excludes online-presence and activity data (last-seen timestamps, upload-frequency badges) present on the live page. Public data, sourced from Vinted's own server-rendered member page.
 
+### `vlr_event`
+
+VLR.gg Valorant event detail and participating teams. Returns one VLR.gg event: name, series, dates, prize, location and the participating teams with ids. Use vlr-event-matches for its matches and vlr-team for a team.
+
+### `vlr_event_agents`
+
+VLR.gg Valorant event agent pick rates by map. Returns the agent pick-rate matrix of one VLR.gg event: for the whole event and for each map, the number of games, the attack-side and defense-side round win rates and the share of games in which each agent was played. Also returns, per map, each team's agents used and the agents picked in each of its matches (compositions). Use it to see an event's meta; vlr-stats gives per-player agent usage.
+
+### `vlr_event_matches`
+
+VLR.gg Valorant event match list. Returns every match of one VLR.gg event (upcoming, live and completed) with teams, scores, stage and whether stats or VODs exist. Use vlr-match with a returned 'id' for map detail.
+
+### `vlr_event_stats`
+
+VLR.gg Valorant event player statistics. Returns the player statistics table of one VLR.gg event (rating, ACS, K:D, KAST, ADR, per-round rates, first kills, clutches, totals) for every player who appeared, optionally for one 'side' ('all', 't' attack, 'ct' defend). For league-wide filtered statistics use vlr-stats.
+
+### `vlr_events`
+
+VLR.gg Valorant events. Returns Valorant events from VLR.gg: ongoing, upcoming and completed events with prize pool, dates and region flag. Filter by 'tier' ('all', 'vct', 'vcl', 't3', 'gc', 'cg', 'off') and 'region' ('all', 'americas', 'emea', 'pacific', 'china'); 'page' pages through completed events. Use vlr-event with a returned 'id'.
+
+### `vlr_forum_categories`
+
+VLR.gg forum categories. Returns the VLR.gg forum directory: each category with slug, name, group, description, thread and post counts and the last poster, time and thread. 'slug' is one of 'valorant-discussion', 'off-topic', 'site-feedback'; use it as 'category' in vlr-forum-threads.
+
+### `vlr_forum_threads`
+
+VLR.gg forum thread list. Returns a page (30) of VLR.gg forum threads, newest activity first, for one 'category' ('valorant-discussion', 'off-topic', 'site-feedback') or the combined list: title, reply count, pinned flag, category, author, post age, frags (score) and the last poster. Thread titles and usernames are public community content; thread bodies and replies are not returned.
+
+### `vlr_match`
+
+VLR.gg Valorant match detail and player statistics. Returns one VLR.gg match: event and stage, exact UTC start time, status ('final', 'live', 'upcoming'), format such as 'Bo3', both teams with series score, the pick/ban note, and every map with picker, round scores split into attack, defend and overtime, duration and per-player lines (agents, rating, ACS, K/D/A, KAST, ADR, headshot percent, first kills and deaths). 'all_maps_players' holds the aggregate across maps. Also returns the teams' head-to-head history and each team's recent results. Player fields are omitted when VLR has not published them yet. Use vlr-match-economy, vlr-match-performance and vlr-match-rounds for the economy, kill-matrix and round-by-round tabs.
+
+### `vlr_match_economy`
+
+VLR.gg Valorant match economy. Returns the Economy tab of one VLR.gg match for every map and for the whole match: each team's pistol rounds, pistol conversion and bonus-round records, win records by buy level ('eco' under 10k, 'half' 10k to 18k, 'full' 18k and over) against each opponent buy level, and round by round banks, loadout values, buy levels, the winner and the winning side. 'available' is false while VLR has not published the tab, which is normal for a match that just ended.
+
+### `vlr_match_performance`
+
+VLR.gg Valorant match performance. Returns the Performance tab of one VLR.gg match for every map and for the whole match: player-versus-player kill matrices (overall kills and deaths, first kills and deaths, and Operator kills and deaths) and per-player advanced stats (2K to 5K multi-kills, 1v1 to 1v5 clutches, econ rating, spike plants and defuses). 'available' is false while VLR has not published the tab.
+
+### `vlr_match_rounds`
+
+VLR.gg Valorant match round-by-round log. Returns the round log (the 2D replay data) of one VLR.gg match for every map that has one: for each round the score after it, the winner, the attacking team, every player's agent, credits left, spend, armor and weapon, and the ordered events (kills with weapon, spike plants and defuses) with their round clock. 'available' is false when VLR has no replay for the match.
+
+### `vlr_matches`
+
+VLR.gg upcoming and live Valorant matches. Returns the Valorant match schedule from VLR.gg: upcoming and live matches grouped by day with both teams, country flags, event, stage, ETA and whether stats or VODs exist. 'status' is 'upcoming', 'live' or 'completed'. 'time_label' is the time shown on the site, whose timezone is not guaranteed; use vlr-match for an exact UTC start time. Use vlr-results for finished matches.
+
+### `vlr_news`
+
+VLR.gg Valorant esports news. Returns the latest Valorant esports news headlines from VLR.gg, 30 per page, with title, summary line, date, author and country flag. Page back through older news with 'page'.
+
+### `vlr_news_article`
+
+VLR.gg news article. Returns one VLR.gg news article: title, author, UTC publish time, the body as plain-text paragraphs, the teams, players and events it links to (type 'team', 'player' or 'event', with id, slug and name), external links and image URLs. Reader comments are not included. Forum threads share the same numeric id space, so an id that is a thread, or does not exist, returns not found. Take 'id' from vlr-news.
+
+### `vlr_player`
+
+VLR.gg Valorant player profile and agent statistics. Returns one VLR.gg player: alias, real name, country, social links, agent-by-agent statistics (use, rounds, rating, ACS, K:D, KAST, ADR, KPR, APR and first kills), current and past teams and recent results.
+
+### `vlr_player_matches`
+
+VLR.gg Valorant player match history. Returns a player's match history from VLR.gg, 50 per page, newest first: event, stage, the player's team and opponent, series score, win or loss and date. Use vlr-match with a returned 'id' for the player's map statistics.
+
+### `vlr_rankings`
+
+VLR.gg Valorant team rankings by region. Returns VLR.gg's team ranking for one region: rank, team, country, rating, record, streak, earnings and last match. 'region' is one of north-america, europe, brazil, asia-pacific, korea, china, japan, la-s, la-n, oceania, mena, gc, collegiate. 'limit' returns the top 1 to 250 teams (default 50).
+
+### `vlr_results`
+
+VLR.gg completed Valorant match results. Returns completed Valorant matches from VLR.gg, newest first, 50 per page, with final series scores, winner flags, event, stage and whether stats or VODs are listed. For a completed match 'eta' is the time since it ended. Use vlr-match with a returned 'id' for map-by-map player statistics.
+
+### `vlr_search`
+
+VLR.gg search for teams, events and players. Searches VLR.gg for teams, events and players by name and returns every match on one page: kind, id, name, canonical URL and logo, plus the event date range and prize pool and, for retired teams, the 'inactive' flag and the team that replaced them ('successor'). 'type' limits the search to 'teams', 'events' or 'players'; the default 'all' returns all three groups with per-group counts. Use the returned id with vlr-team, vlr-event or vlr-player.
+
+### `vlr_stats`
+
+VLR.gg Valorant player statistics with filters. Returns VLR.gg's player statistics table (100 rows per page): agents played, maps, rounds, rating, ACS, K:D, KAST, ADR, KPR, APR, first-kill and clutch rates and totals. Filter with comma-separated 'tier' (vct, vcl, t3, gc, cg, off), 'region' (americas, emea, pacific, china, intl), 'role' (controller, initiator, sentinel, duelist), 'agent' and 'map' names, plus 'timespan' (all, 30d, 60d, 90d or a season year from 2020 up to the current year), 'side' (all, t, ct), 'min_rounds' and 'min_rating'; sort with 'sort' and 'dir'.
+
+### `vlr_team`
+
+VLR.gg Valorant team profile and roster. Returns one VLR.gg team: name, tag, country, links, the roster (players with captain flag, plus coach, manager and analyst staff, each with a player id) and recent matches with scores and results, plus related news. Use vlr-player with a roster 'id'.
+
+### `vlr_team_maps`
+
+VLR.gg Valorant team map win rates. Returns a team's per-map record from VLR.gg: maps played, win percent, wins and losses, plus attack-side and defense-side round win percent, rounds won and lost and first-round counts. Use it to compare map strengths; vlr-team-matches lists the underlying matches.
+
+### `vlr_team_matches`
+
+VLR.gg Valorant team match history. Returns a team's complete match history from VLR.gg, 50 per page, newest first: event, stage, opponent, series score, win or loss and date. Use vlr-match with a returned 'id' for map detail, or vlr-team for the roster.
+
 ### `vox_article`
 
 Get Vox article content. Returns one Vox article by its canonical 'url': title, description, authors, section, published and updated times, lead image and the body 'paragraphs'. Only public content is returned; a subscriber-only or blocked article comes back as an upstream error rather than a partial body.
@@ -14698,11 +15438,11 @@ Discover Wallapop search filters. Returns Wallapop's live search filter schema f
 
 ### `wallapop_item_detail`
 
-Fetch a public Wallapop listing detail page. Returns public listing details parsed from the anonymous server-rendered item page: description, price, taxonomy, condition, images, coarse location, shipping, category attributes, hashtags, and related-search links. Pass a clean https item URL returned by /wallapop/search, using es.wallapop.com, it.wallapop.com, or pt.wallapop.com. Seller/profile/contact data, exact coordinates, postal codes, favorites, and view-tracking state are omitted. The upstream may rate-limit or block requests; this endpoint uses the measured browser_android_native@fresh profile and retries up to three times.
+Fetch a public Wallapop listing detail page. Returns public listing details parsed from the anonymous server-rendered item page: description, price, taxonomy, condition, images, coarse location, shipping, category attributes, hashtags, and related-search links. Pass a clean https item URL returned by /wallapop/search, using es.wallapop.com, it.wallapop.com, or pt.wallapop.com. Seller/profile/contact data, exact coordinates, postal codes, favorites, and view-tracking state are omitted. The upstream may rate-limit or block requests; this endpoint retries automatically (up to three attempts).
 
 ### `wallapop_search`
 
-Search Wallapop public listings. Returns one page of public Wallapop listing cards with title, price, currency, images, coarse location, taxonomy, shipping state, and a public item URL. q is a free-text search. latitude and longitude are required caller-provided coordinates because Wallapop otherwise resolves location from the request egress. category_id accepts any ID returned by /wallapop/categories, including descendants. sort is one of closest, most_relevance, newest, price_low_to_high, or price_high_to_low. When category_id is supplied, discover condition values from /wallapop/filters; categories can add values beyond the base set. Use /wallapop/filter-options for remote filter values. Pass next_cursor back as cursor by itself to fetch the next page.
+Search Wallapop public listings. Returns one page of public Wallapop listing cards with title, price, currency, images, coarse location, taxonomy, shipping state, and a public item URL. q is a free-text search. latitude and longitude are required caller-provided coordinates because Wallapop otherwise infers location from the server's network location. category_id accepts any ID returned by /wallapop/categories, including descendants. sort is one of closest, most_relevance, newest, price_low_to_high, or price_high_to_low. When category_id is supplied, discover condition values from /wallapop/filters; categories can add values beyond the base set. Use /wallapop/filter-options for remote filter values. Pass next_cursor back as cursor by itself to fetch the next page.
 
 ### `walmart_product`
 
@@ -15071,6 +15811,22 @@ Get XDA top stories. Returns about 10 of the latest XDA top stories with no para
 ### `xda_sections`
 
 Get XDA RSS sections. Lists the XDA sections accepted by 'xda-headlines', including 'news', 'reviews', 'buying-guides', 'gpu', 'laptops', 'gaming-handhelds', 'windows', 'linux-hub' and 'ai-tools'. Each has a 'slug', a display 'name' and a feed 'url'. Takes no parameters.
+
+### `xiaohongshu_explore`
+
+Anonymous Xiaohongshu explore/channel feed. Returns one page of the anonymous Xiaohongshu explore feed as normalized note cards: note id, a ready-to-call note_url carrying its short-lived xsec_token, type, title, cover image, like count, and a public author card. Omit channel_id for the upstream default recommendation feed; use channel_id with an id from the channels list returned by this endpoint for a category feed. The upstream serves one server-rendered page per channel (typically 20-33 cards) and has no credential-free cursor, so there is no pagination. Search, user profiles, comments, and note detail without a feed token are not available on this anonymous surface. The xsec_token in note_url is short-lived; call /xiaohongshu/note promptly with the returned note_url, and re-run this endpoint for a fresh token when it expires.
+
+### `xiaohongshu_note`
+
+Anonymous Xiaohongshu note detail. Returns one public Xiaohongshu note normalized from the site's server-rendered page state: note id, type, title, description text (including hashtags), topic tags, image URLs, an optional stable video URL with duration, publish time, author card, and public interaction counters. Pass url with the note_url returned by /xiaohongshu/explore. The URL must be an xiaohongshu.com /explore/<id> or /discovery/item/<id> link carrying its xsec_token; a note id alone is not accessible anonymously, and a stale token returns not-found, so re-run /xiaohongshu/explore to mint a fresh one. Comments are not included because the anonymous page state does not carry them.
+
+### `xiaohongshu_note_comments`
+
+Anonymous Xiaohongshu note comments. Returns one page of a public note's comments using a browser-minted signed request, with no account or login. Pass the note_url returned by /xiaohongshu/explore (it carries the required xsec_token). Each item includes the comment id, text, like/sub-comment counters, creation time, IP location when the site exposes it, a public author card, and up to five replies. has_more and cursor continue pagination: pass the returned cursor to fetch the next page. Comments are read from the anonymous signed API, so a stale note token returns an upstream error; re-run /xiaohongshu/explore for a fresh note_url. Search results and profiles are not exposed because they require login.
+
+### `xiaohongshu_search_suggest`
+
+Anonymous Xiaohongshu search suggestions. Returns search suggestions for a partially typed keyword using a browser-minted signed request. Suggestions come from the site's own anonymous suggestion API and require no account or login. Each item carries the suggested text plus optional highlight flags and the suggestion's search type. Only the suggestion list is returned; search *results* need a logged-in session and are not exposed. The signer is a shared browser worker, so this endpoint is slower than the plain page endpoints (roughly a browser-backed request, not a single HTTP call); if no signer worker is available it returns 503.
 
 ### `yahoo_autos_article`
 
