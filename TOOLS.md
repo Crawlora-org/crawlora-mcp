@@ -1,6 +1,6 @@
 # Crawlora MCP tool catalog
 
-Every tool the Crawlora MCP server exposes (4115), generated from [`tools.json`](./tools.json); do not edit manually. See the [README](./README.md) for setup and an index by platform.
+Every tool the Crawlora MCP server exposes (4186), generated from [`tools.json`](./tools.json); do not edit manually. See the [README](./README.md) for setup and an index by platform.
 
 ## Tools
 
@@ -3479,6 +3479,38 @@ Get a Discogs release. Returns a Discogs release: artists, labels, formats, trac
 ### `discogs_search`
 
 Search the Discogs database. Searches the Discogs database for releases, masters, artists and labels, optionally filtered to one 'type', with 'page' and 'per_page' (max 100). Release and master results carry country, year, formats, labels, genres, styles, catalog number and barcodes; artist and label results carry id, title and thumbnail.
+
+### `dollartree_blog_article`
+
+Get a Dollar Tree Value Seekers Blog article. Returns the public DTBlogPost record for one article URL, including the HTML body and parent category metadata.
+
+### `dollartree_categories`
+
+List Dollar Tree product and blog categories. Returns Dollar Tree's complete public storefront taxonomy, including product departments, nested product categories, and Value Seekers Blog topics. Each node preserves its repository id and search dimension id.
+
+### `dollartree_keyword_typeahead`
+
+Get Dollar Tree keyword suggestions. Returns the keyword-suggestion results from Dollar Tree's search box for a prefix. An empty suggestion list is a valid upstream response.
+
+### `dollartree_price`
+
+Get Dollar Tree product prices. Returns the current list price and per-SKU prices from Dollar Tree's public pricing resource for one product repository id, including the upstream price-range flag.
+
+### `dollartree_product`
+
+Get one Dollar Tree product record. Returns the complete public product record for one Dollar Tree repository id, including the fields and SKU information supplied by the storefront.
+
+### `dollartree_product_typeahead`
+
+Get Dollar Tree product suggestions. Returns up to six product suggestions from Dollar Tree's search box for a prefix, with product identifiers, routes, images, prices, and source attributes.
+
+### `dollartree_search`
+
+Search Dollar Tree products and facets. Searches the public Dollar Tree catalog or browses a category using its search dimension id. Returns products, pagination metadata, every context-specific filter group and option, and each option's upstream navigation state for follow-up filter requests. Sort values are the exact values used by Dollar Tree's storefront.
+
+### `dollartree_stock_status`
+
+Get Dollar Tree stock status for one SKU. Returns the current stock status and orderable, in-stock, backorderable, and preorderable quantities for one product SKU. Use the product id and child SKU repository id returned by the Dollar Tree product endpoints.
 
 ### `dominos_coupons`
 
@@ -9567,6 +9599,94 @@ OpenDota Dota 2 team player history. Returns the players who have played for a t
 ### `opendota_teams`
 
 OpenDota team directory. Returns a zero-based page of OpenDota team records with team IDs, names, tags, ranking and recent-match metadata. OpenDota returns up to 1000 teams per page; use 'next_page' while present. Use a team ID with opendota_team or opendota_team_matches.
+
+### `openligadb_current_group`
+
+Get the current league matchday. Returns OpenLigaDB's current group or matchday for a league shortcut. Use 'openligadb_groups' for all matchdays and 'openligadb_current_matchday' for the matches in this group.
+
+### `openligadb_current_matchday`
+
+Get current matchday fixtures and results. Returns the matches for OpenLigaDB's current group or matchday in one league. This mirrors the source's current-matchday route; a league without a current matchday may return not found. Use 'openligadb_current_group' to see the selected group id or 'openligadb_matches' for a whole season.
+
+### `openligadb_goal_getters`
+
+List league season goal-getters. Returns the source's goal-getter ranking for one discovered league shortcut and season. The ranking uses the source's own goal and result records.
+
+### `openligadb_groups`
+
+List league matchdays and rounds. Returns every matchday or round id for one discovered league shortcut and season. Pass a returned 'groupOrderID' to 'openligadb_matchday_matches' or 'openligadb_last_changed'. Some legacy league-season entries in the source directory may return 404 or an empty group list.
+
+### `openligadb_last_changed`
+
+Get a matchday's last update time. Returns OpenLigaDB's source update timestamp for one league, season and matchday. Use this cheap check before refetching the full matchday when the timestamp is unchanged.
+
+### `openligadb_last_match`
+
+Get a league's last match. Returns the most recently played match for a league shortcut. Use 'openligadb_leagues' to find a shortcut or 'openligadb_last_team_match' for one team.
+
+### `openligadb_last_team_match`
+
+Get a team's last match in a league. Returns the most recently played match for one team id in one league id. Discover the league id with 'openligadb_leagues' and the team id with 'openligadb_teams'.
+
+### `openligadb_league_matches`
+
+List a league season's matches. Returns every fixture and result recorded for one league shortcut and season. Use 'openligadb_groups' and 'openligadb_matchday_matches' for one round, or 'openligadb_leagues' to discover valid league-season pairs. The source returns the full list without pagination.
+
+### `openligadb_league_team_matches`
+
+Find a team's matches in one league season. Returns matches in one league season whose team name matches a partial text fragment. Use 'openligadb_teams' for exact team names and ids. Numeric fragments are rejected because the upstream path assigns numeric segments to matchday ids.
+
+### `openligadb_leagues`
+
+List OpenLigaDB league seasons. Returns every league-season record across all sports. Set 'season' to the season's starting year to use OpenLigaDB's season-specific listing. This is the discovery source for 'league_shortcut', 'league_id', and 'sport'; shortcuts may repeat across seasons, and the response is not paginated. The catalog is community-maintained and may include user-created or legacy entries; verify a selected pair through groups or matches.
+
+### `openligadb_match`
+
+Get one OpenLigaDB match. Returns one match record with its results, goal sequence, teams, location, and source update time. Get 'match_id' from 'openligadb_matches', 'openligadb_matchday_matches', or a team-match endpoint.
+
+### `openligadb_matchday_matches`
+
+List one league matchday. Returns all fixtures and results for one discovered league shortcut, season and group order id. Use 'openligadb_groups' to discover valid matchday or round ids.
+
+### `openligadb_matches_by_team`
+
+Find recent and upcoming matches by team name. Returns matches around the current date across leagues for a partial team-name fragment. Both week counts are required; zero is allowed. Use 'openligadb_matches_by_team_id' when you have a team id.
+
+### `openligadb_matches_by_team_id`
+
+Find recent and upcoming matches by team id. Returns matches around the current date across leagues for an OpenLigaDB team id. Both week counts are required; zero is allowed. Use 'openligadb_matches_by_team' for a partial name search.
+
+### `openligadb_next_match`
+
+Get a league's next match. Returns the next upcoming match for a league shortcut. Use 'openligadb_leagues' to find a shortcut or 'openligadb_next_team_match' for one team.
+
+### `openligadb_next_team_match`
+
+Get a team's next match in a league. Returns the next match for one team id in one league id. Discover the league id with 'openligadb_leagues' and the team id with 'openligadb_teams'.
+
+### `openligadb_result_infos`
+
+List result types configured for a league. Returns the result types configured for one OpenLigaDB league id. Use this for league-specific result names and ids; 'openligadb_result_types' lists the global machine-readable meanings.
+
+### `openligadb_result_types`
+
+List global result types. Returns the global machine-readable meanings of OpenLigaDB result types, including halftime, regulation, extra time, penalties and unknown.
+
+### `openligadb_sports`
+
+List OpenLigaDB sports. Returns OpenLigaDB's current sport directory. Use the returned sport names and ids with 'openligadb_leagues' to inspect the complete league-season catalog; the source currently exposes 13 sports, including its 'Test' category.
+
+### `openligadb_table`
+
+Get a league season's table. Returns the league standings for one discovered shortcut and season. OpenLigaDB's documented 'getgrouptable' path currently returns HTTP 404 on tested league/season pairs; this endpoint uses the live 'getbltable' resource.
+
+### `openligadb_team_pair_matches`
+
+List matches between two teams. Returns every recorded match between two OpenLigaDB team ids. Discover team ids through 'openligadb_teams'.
+
+### `openligadb_teams`
+
+List teams in a league season. Returns the full team list for one discovered league shortcut and season. Use the returned 'teamId' values with the team-match and head-to-head endpoints.
 
 ### `opensea_activity`
 
@@ -16084,13 +16204,25 @@ Search Yahoo video results. Returns Yahoo's video-search results for a query: ti
 
 Yahoo Shopping article content. Returns a single Yahoo Shopping article's full content: title, description, author, publish/update time, section, image, keywords, original publisher, and body paragraphs. Accepts a canonical shopping.yahoo.com article URL, such as one returned by the home or category story streams.
 
+### `yahoo_shopping_author`
+
+Yahoo Shopping author profile and article archive. Fetches one Yahoo Shopping contributor profile and a page of the author's article archive. Use the author slug from author_url in /yahoo-shopping/article; page follows Yahoo's path-segment pagination. Article cards may link to sibling publishers such as AOL.
+
+### `yahoo_shopping_categories`
+
+Yahoo Shopping navigation and article shortcuts. Returns the live editorial sections and nested topics accepted by /yahoo-shopping/category, plus the current direct article shortcuts in the Gift Ideas and Shopping Guides menus. Those article links are not extra category or filter values. Stores and Shopping Lists have separate directory endpoints.
+
 ### `yahoo_shopping_category`
 
-Yahoo Shopping section story stream. Returns a Yahoo Shopping section's editorial story feed: title, destination URL, category, and thumbnail image for each story, with page-based pagination. Sourced from Yahoo Shopping's own server-rendered section pages.
+Yahoo Shopping section story stream. Returns the story cards displayed by a Yahoo Shopping section or nested topic, with page-based pagination. Some curated sections include cross-category or sibling Yahoo links. Use /yahoo-shopping/categories to discover the complete parent/topic taxonomy.
+
+### `yahoo_shopping_experts`
+
+Yahoo Shopping featured expert roster. Returns the contributor cards in the public "More Yahoo experts" carousel on Yahoo Shopping's team profile. Use yahoo-shopping-author for one contributor's profile and paginated article archive.
 
 ### `yahoo_shopping_home`
 
-Yahoo Shopping homepage story stream. Returns Yahoo Shopping's homepage editorial story feed: title, destination URL, category, and thumbnail image for each story. Sourced from Yahoo Shopping's own server-rendered homepage. This is Yahoo's shopping buying-guide/deals content site, not a product-search API -- shopping.yahoo.com no longer exposes a searchable product catalog.
+Yahoo Shopping homepage story stream. Returns Yahoo Shopping's homepage editorial story feed: title, destination URL, category, and thumbnail image for each story. Page follows Yahoo's own path-segment pagination. This is Yahoo's shopping buying-guide/deals content site, not a product-results API.
 
 ### `yahoo_shopping_shopping_list`
 
@@ -16100,6 +16232,14 @@ Yahoo Shopping curated list items. Returns one curated Yahoo Shopping list's ite
 
 Yahoo Shopping curated shopping-lists directory. Returns Yahoo Shopping's curated shopping-lists directory: a slug, title, and image for each themed list (e.g. "Cooling Essentials", "Back to School"). Use a list's slug with GET /yahoo-shopping/shopping-list to read its items.
 
+### `yahoo_shopping_sitemap`
+
+Yahoo Shopping sitemap archive or date page. Reads a canonical Yahoo Shopping sitemap index, section archive, or date page. Responses contain section archives, monthly archive links, day links, or article links depending on the page. Yahoo's date pages currently have broken previous/next links; this endpoint reports observed links and does not synthesize continuation.
+
+### `yahoo_shopping_sitemaps`
+
+Yahoo Shopping sitemap section index. Returns the public sitemap's full set of section and seasonal archive links. Use /yahoo-shopping/sitemap to read an archive or date page.
+
 ### `yahoo_shopping_store`
 
 Yahoo Shopping retailer store deals. Returns one retailer's current deals on Yahoo Shopping: product title, direct retailer product URL, image, brand, currency, price, and sale price for each offer. Sourced from the retailer's shopping.yahoo.com store page's own structured product data -- not a keyword search, a fixed set of currently-featured deals for that retailer. Use GET /yahoo-shopping/stores to find a retailer's slug.
@@ -16108,17 +16248,61 @@ Yahoo Shopping retailer store deals. Returns one retailer's current deals on Yah
 
 Yahoo Shopping retailer store directory. Returns Yahoo Shopping's retailer store directory: a slug, display name, and logo image for each retailer with a dedicated store page (e.g. Amazon, Target, Best Buy). Use a store's slug with GET /yahoo-shopping/store to read its current deals.
 
+### `yahoo_shopping_suggest`
+
+Yahoo Shopping autocomplete suggestions. Returns suggestions from the typeahead endpoint used by Yahoo Shopping's search box. Yahoo does not expose a working Shopping product-results grid or product filters; this route provides autocomplete only.
+
+### `yahoo_sports_college_rankings`
+
+Yahoo Sports college football and basketball rankings. Returns rankings from Yahoo's public NCAAF, NCAAB, or NCAAW rankings page using the page's own public Graphite rankings operation. Poll Type and Poll Date are validated against the live filter catalog returned in this response. Conference filters are also returned, but are client-side on Yahoo's page and are not applied by this endpoint.
+
+### `yahoo_sports_draft`
+
+Yahoo Sports NFL and NBA Draft hub. Returns Yahoo's Drafted Players, Mock Draft, Big Board, or News tab for NFL or NBA, together with the live tab list and exact client-side round/team/position/school/attribute/board selectors shown by that page. The selectors filter data in the browser, so this endpoint returns the complete upstream page data and exposes filter values without applying server-side filters.
+
+### `yahoo_sports_dropdown_catalog`
+
+Yahoo Sports team and category dropdown data. Returns Yahoo's full current menu data for NFL, NHL, NBA, MLB, WNBA, college rank polls, all soccer leagues exposed by the public dropdown operation, and sportsbook-legal states. Team and league objects retain Yahoo's IDs and links for use with matching Yahoo Sports endpoints.
+
 ### `yahoo_sports_game`
 
-Yahoo Sports game boxscore. Returns one game's boxscore (matchup, line score by period, and team stat totals) from sports.yahoo.com's own server-rendered game page. The 'league' enum accepts 'nfl', 'nba', 'wnba', 'mlb', 'nhl', 'college-football', 'college-basketball', 'college-womens-basketball', 'mls', 'premier-league', 'la-liga', 'serie-a', 'bundesliga', 'ligue-1', 'nwsl', 'ligamx-apertura', 'ligamx-clausura', 'copa-america', 'club-world-cup', 'world-cup', 'concacaf-champions-cup', 'concacaf-gold-cup', 'concacaf-league', and 'champions-league'. Get the 'game' slug from a scoreboard or team-schedule response's game 'url' (the last path segment), e.g. 'cleveland-guardians-detroit-tigers-460811106'.
+Yahoo Sports game boxscore. Returns one source game boxscore with matchup, line score and team stat totals, plus Yahoo's play-by-play and win-probability timeline when available. Event objects retain Yahoo's sport-specific fields. Use league plus game for direct league pages, or league=soccer with the exact game_url from a soccer scoreboard for competitions whose game path is published per match.
 
 ### `yahoo_sports_golf_leaderboard`
 
 Yahoo Sports golf tournament leaderboard. Returns one golf tournament's full leaderboard (every golfer's rank, to-par score, status, holes-completed-in-current-round, per-round strokes, and a fixed stat set: earnings, eagles, birdies, pars, bogeys, double bogeys), from Yahoo Sports' own public tournament-leaderboard JSON API. Get the 'tournament' id from a golf-schedule response's 'id' field, e.g. 'golf.e.23'.
 
+### `yahoo_sports_golf_player`
+
+Yahoo Sports golf player profile. Returns one golfer's profile, current-season stats, and tournament-by-tournament history from Yahoo's public player page. Supply the canonical player URL from golf-players or another Yahoo golf response.
+
+### `yahoo_sports_golf_player_news`
+
+Yahoo Sports golf player news. Returns the story and video edges in one golfer's News tab. Latest mode returns Yahoo's opaque cursor and supports the same upstream cursor POST for subsequent pages.
+
+### `yahoo_sports_golf_players`
+
+Yahoo Sports golf player directory. Returns Yahoo's full current-and-retired golfers directory, grouped by last-name initial. The site's A-Z buttons filter the already-loaded list in the browser, so this endpoint returns the complete source list.
+
 ### `yahoo_sports_golf_schedule`
 
-Yahoo Sports golf tournament schedule. Returns a golf tour's tournament schedule for a season (name, dates, status, purse, and venue), from Yahoo Sports' own public tournament-schedule JSON API. The 'tour' enum accepts 'pga-tour', 'pga-european-tours', 'lpga-tour', 'champions-tour', and 'european-tour'. Each tournament's 'id' feeds the golf-leaderboard endpoint's 'tournament' parameter.
+Yahoo Sports golf tournament schedule. Returns a golf tour's tournament schedule for a season (name, dates, status, purse, and venue), from Yahoo Sports' own public sources. The 'tour' enum accepts 'pga-tour', 'pga-european-tours', 'lpga-tour', 'champions-tour', 'european-tour', and 'korn-ferry-tour'. Korn Ferry Tour schedule data comes from the Golf page's own server-rendered schedule; the other tours use Yahoo's public tournament-schedule JSON API. Each tournament's 'id' feeds the golf-leaderboard endpoint's 'tournament' parameter.
+
+### `yahoo_sports_home`
+
+Yahoo Sports home-page stories. Returns the article cards currently embedded on the Yahoo Sports home page, including each card's title, summary, publisher, publication time, canonical URL, and complete upstream tag list.
+
+### `yahoo_sports_injury_report`
+
+Yahoo Sports injury report. Returns Yahoo's current injury table for NFL, NBA, MLB, or NHL. Omit team_id for the page's All Teams view, or provide a Yahoo team ID from yahoo-sports-dropdown-catalog. Each injury row preserves Yahoo's player, position, status, injury description, and start date.
+
+### `yahoo_sports_league_schedule`
+
+Yahoo Sports league schedule games. Returns full game records for the selected date or week from Yahoo's league schedule page. Use yahoo-sports-schedule-catalog for the current seasons, week/phase pairs and NCAA conference/division filter values. The page's own leagueFilter query is applied by Yahoo before the response is parsed.
+
+### `yahoo_sports_leagues`
+
+Yahoo Sports league catalog. Returns all 24 core league keys, source namespaces, and feature flags, plus the complete supported value sets for player search, injuries, NFL/NBA Draft, college rankings, golf tours, tennis ranking types, and motorsports series. Use dedicated soccer scoreboard, rankings, stats, schedule, bracket, sportsbook, RSS, and dropdown catalogs for live filter values.
 
 ### `yahoo_sports_mma_fight_card`
 
@@ -16128,6 +16312,10 @@ Yahoo Sports MMA fight card. Returns the current/next UFC event's full fight car
 
 Yahoo Sports MMA event schedule. Returns the known UFC event calendar (name, date, status), from Yahoo Sports' own server-rendered MMA schedule page. This endpoint is UFC-only and takes no parameters -- Yahoo's own page does not expose Bellator, PFL, ONE Championship, or other promotions from this URL.
 
+### `yahoo_sports_more_news`
+
+Yahoo Sports More News feed. Returns one page from Yahoo Sports' public More News feed using its page-number routes. Story items preserve the source fields as raw objects. The page exposes no server-side tag, sort, or topic filter; use yahoo-sports-topic-news for a topic-specific page.
+
 ### `yahoo_sports_motorsports_race`
 
 Yahoo Sports motorsports race results. Returns one race's full driver-by-driver results (finishing position, driver, car/team, points, laps, time), from Yahoo Sports' own server-rendered race page. The 'series' enum accepts 'f1' and 'nascar'. Get the 'race' slug from a motorsports-schedule response's race 'url' (the last path segment), e.g. 'australian-grand-prix-2026-2961'.
@@ -16136,9 +16324,41 @@ Yahoo Sports motorsports race results. Returns one race's full driver-by-driver 
 
 Yahoo Sports motorsports season schedule. Returns a series' season race list (name, date, status, laps, distance, pole/race winner, venue), from Yahoo Sports' own server-rendered motorsports schedule page. The 'series' enum accepts 'f1' and 'nascar'.
 
+### `yahoo_sports_navigation`
+
+Yahoo Sports section navigation. Returns the exact navcat label and URL links Yahoo renders on the home page or one public sports section page. Use section_url from yahoo-sports-home or this response to discover sport-scoped topics and filters.
+
+### `yahoo_sports_network_catalog`
+
+Yahoo Sports Network and Watch catalog. Returns every current partner entry from the Yahoo Sports Network menu, including disabled entries, nested destinations and partner attribution, plus the homepage's featured Watch show cards. Each show's list_id is accepted by yahoo-sports-video-headlines.
+
 ### `yahoo_sports_news`
 
-Yahoo Sports league news. Returns recent news articles (title, summary, author, published time, and link) for a league from sports.yahoo.com's own server-rendered news page. The 'league' enum accepts 'nfl', 'nba', 'wnba', 'mlb', 'nhl', 'college-football', 'college-basketball', 'college-womens-basketball', 'mls', 'premier-league', 'la-liga', 'serie-a', 'bundesliga', 'ligue-1', 'nwsl', 'ligamx-apertura', 'ligamx-clausura', 'copa-america', 'club-world-cup', 'world-cup', 'concacaf-champions-cup', 'concacaf-gold-cup', 'concacaf-league', and 'champions-league'.
+Yahoo Sports league news. Returns source news articles. For league=soccer, Yahoo exposes a shared cross-competition /soccer/news/ feed and no competition-specific news filter; article tags are preserved verbatim.
+
+### `yahoo_sports_newsletter_archive`
+
+Yahoo Sports newsletter article archive. Returns one page of articles from a newsletter's public archive. Discover current slugs with yahoo-sports-newsletters. The page number maps to Yahoo's own /page/{n}/ archive route; article tags are preserved from the source. Yahoo exposes no archive sort or tag filter. This endpoint does not submit the email subscription form.
+
+### `yahoo_sports_newsletters`
+
+Yahoo Sports newsletter catalog. Lists the current public Yahoo Sports newsletter cards, including each newsletter slug, archive URL, and the schedule/description text shown by the site. This is a read-only catalog; it does not subscribe an email address.
+
+### `yahoo_sports_odds_featured`
+
+Yahoo Sports featured odds games. Returns the current featured game cards from Yahoo's public Graphite featuredGameIds operation, including each source game ID for use with yahoo-sports-odds-game.
+
+### `yahoo_sports_odds_game`
+
+Yahoo Sports game odds markets. Returns the available moneyline, spread and over/under markets and selections for one game using Yahoo's public Graphite playbookGame operation. Get game_id from yahoo-sports-odds-games, yahoo-sports-odds-trending, or yahoo-sports-odds-featured.
+
+### `yahoo_sports_odds_games`
+
+Yahoo Sports current game IDs for an odds league. Returns the current games and their Yahoo game IDs from the public Graphite leagueGameIds operation. A valid current league can return an empty games array during its off-season. Use the sportsbook catalog for the complete league value space.
+
+### `yahoo_sports_odds_trending`
+
+Yahoo Sports trending odds games. Returns the current trending game cards from Yahoo's public Graphite trendingGameIds operation, including each source game ID for use with yahoo-sports-odds-game.
 
 ### `yahoo_sports_olympics_medals`
 
@@ -16146,27 +16366,75 @@ Yahoo Sports Olympics medal count. Returns the current Olympic games' full medal
 
 ### `yahoo_sports_player`
 
-Yahoo Sports player detail. Returns one player's bio/overview (position, jersey, status, injury, physicals, college, draft position) plus current-season stats by category, from sports.yahoo.com's own server-rendered player page. The 'league' enum accepts 'nfl', 'nba', 'wnba', 'mlb', 'nhl', 'college-football', 'college-basketball', 'college-womens-basketball', 'mls', 'premier-league', 'la-liga', 'serie-a', 'bundesliga', 'ligue-1', 'nwsl', 'ligamx-apertura', 'ligamx-clausura', 'copa-america', 'club-world-cup', 'world-cup', 'concacaf-champions-cup', 'concacaf-gold-cup', 'concacaf-league', and 'champions-league'. Get a numeric player id from a roster response's player 'url' (the last path segment).
+Yahoo Sports player detail. Returns one player bio and current-season stats. Use league=soccer for Yahoo's flat soccer player namespace, or a league key from yahoo-sports-leagues; get the numeric player id from a roster record.
+
+### `yahoo_sports_player_search`
+
+Yahoo Sports player search. Searches Yahoo's public playerSearch operation, as used by the NFL, NBA, MLB, and Golf player pages. Yahoo requires at least three characters and currently hard-codes onActiveRosterOnly=false in these search boxes.
+
+### `yahoo_sports_playoff_bracket`
+
+Yahoo Sports playoff bracket data. Returns Yahoo's public bracket slots, seeds, series and game records for NFL, NBA, MLB, WNBA, college football, men's college basketball or women's college basketball. NBA also includes the page's separate Play-In Tournament bracket. Use yahoo-sports-playoff-bracket-catalog to discover the current season values.
+
+### `yahoo_sports_playoff_bracket_catalog`
+
+Yahoo Sports playoff bracket season options. Returns the season choices and any separate tournament selector published by the selected Yahoo playoff bracket page. The supported league set is NFL, NBA, MLB, WNBA, NCAAF, NCAAB and NCAAW.
+
+### `yahoo_sports_rss_catalog`
+
+Yahoo Sports RSS feed catalog. Returns the complete list of RSS feed keys currently listed on Yahoo Sports' syndication page. Use a key with yahoo-sports-rss-feed.
+
+### `yahoo_sports_rss_feed`
+
+Yahoo Sports RSS feed. Returns every item in one Yahoo Sports RSS feed, including full content:encoded HTML and creator/publisher metadata when present. Feed keys come from yahoo-sports-rss-catalog; no caller limit or date filter is added.
+
+### `yahoo_sports_schedule_catalog`
+
+Yahoo Sports league schedule filter catalog. Returns the current season choices, week/phase pairs and conference/division filters shown by one Yahoo league schedule page. League keys are NFL, NBA, MLB, NHL, WNBA, NCAAF, NCAAB and NCAAW.
 
 ### `yahoo_sports_scoreboard`
 
-Yahoo Sports scoreboard. Returns games (teams, score, status, venue, and broadcast info) for a league on a date, from sports.yahoo.com's own server-rendered scoreboard page. The 'league' enum accepts 'nfl', 'nba', 'wnba', 'mlb', 'nhl', 'college-football', 'college-basketball', 'college-womens-basketball', 'mls', 'premier-league', 'la-liga', 'serie-a', 'bundesliga', 'ligue-1', 'nwsl', 'ligamx-apertura', 'ligamx-clausura', 'copa-america', 'club-world-cup', 'world-cup', 'concacaf-champions-cup', 'concacaf-gold-cup', 'concacaf-league', and 'champions-league'.
+Yahoo Sports scoreboard. Returns games with teams, score, status, venue and broadcasts from Yahoo Sports. Use a direct league page key from yahoo-sports-leagues, or league=soccer with competition_id from yahoo-sports-soccer-scoreboard to mirror the root competition selector. Root mode supports date and month; direct competition pages support season.
+
+### `yahoo_sports_section_stream`
+
+Yahoo Sports public section article stream. Returns one page from the public article stream embedded by a Yahoo Sports section page. The service reads the page's current list ID and source parameters from Flight data, then mirrors Yahoo's POST /api/content/ request. Items remain raw AssetRef objects, preserving nested content, tags, provider metadata, and new upstream fields. Use a section_url discovered from yahoo-sports-navigation; current examples include /indycar/ and /motogp/. Pages without an article stream are rejected. The only exposed page selector is Yahoo's integer pageOffset; it defaults to the page's embedded initial offset. Use page_info.start + page_info.count to request the next page. No server-side tag, sort, or category filter is added because the page does not expose one on this stream.
+
+### `yahoo_sports_soccer_scoreboard`
+
+Yahoo Sports all-competition soccer scoreboard. Returns games and the live competition/season selector from Yahoo's combined soccer scoreboard. The optional competition_id mirrors Yahoo's client-side competition dropdown over the preloaded game list; it is not sent upstream. Use the returned id values rather than inventing a competition filter.
+
+### `yahoo_sports_sportsbook_catalog`
+
+Yahoo Sports odds page filter catalog. Returns every league option displayed by Yahoo's public odds page and distinguishes the page's client-side Trending/Soccer groups from the 15 Graphite leagueGameIds values. Use odds-games for one league's game IDs, odds-trending-games or odds-featured-games for those feeds, and odds-game for one game's available markets.
 
 ### `yahoo_sports_standings`
 
-Yahoo Sports standings. Returns league standings (record, streak, games back, and clinch status) grouped by conference/division, from sports.yahoo.com's own server-rendered standings page. The 'league' enum accepts 'nfl', 'nba', 'wnba', 'mlb', 'nhl', 'college-football', 'college-basketball', 'mls', 'premier-league', 'la-liga', 'serie-a', 'bundesliga', 'ligue-1', 'nwsl', 'ligamx-apertura', 'ligamx-clausura', 'world-cup', and 'champions-league' (not 'college-womens-basketball', whose standings page does not embed a full grouped table). Soccer leagues return a single ungrouped table (no conference/division) and each entry's 'record.points' is populated (3 per win, 1 per draw).
+Yahoo Sports standings. Returns grouped standings from a Yahoo Sports standings page. Use a league whose standings flag is true in yahoo-sports-leagues. Soccer standings can use a season from yahoo-sports-soccer-scoreboard; competitions without a source table are excluded.
+
+### `yahoo_sports_stats`
+
+Yahoo Sports league stats table. Returns one complete Yahoo stats table (the embedded data can contain up to 200 rows), plus the live tabs, filters and sort-stat catalog. Pagination in Yahoo's table is client-side; no page or offset parameter is added.
+
+### `yahoo_sports_stats_catalog`
+
+Yahoo Sports stats league catalog. Lists the exact league keys and stats page templates with current embedded stats data. Use this catalog before yahoo-sports-stats-discovery and yahoo-sports-stats.
+
+### `yahoo_sports_stats_discovery`
+
+Yahoo Sports stats tabs and filters. Returns the live tab ids, filter parameters and values, and sort-stat ids for one Yahoo league stats page. This is the discovery surface for selectedTable, qualified, leagueStructure, positionIds, cutTypeIds, sortStatId, week, and weekSeasonPhase.
 
 ### `yahoo_sports_team`
 
-Yahoo Sports team detail. Returns one team's detail (identity, colors, conference/division, and current standing summary) from sports.yahoo.com's own server-rendered team page. The 'league' enum accepts 'nfl', 'nba', 'wnba', 'mlb', 'nhl', 'college-football', 'college-basketball', 'college-womens-basketball', 'mls', 'premier-league', 'la-liga', 'serie-a', 'bundesliga', 'ligue-1', 'nwsl', 'ligamx-apertura', 'ligamx-clausura', 'copa-america', 'club-world-cup', 'world-cup', 'concacaf-champions-cup', 'concacaf-gold-cup', 'concacaf-league', and 'champions-league'. Get a team slug from the scoreboard or standings response (e.g. 'green-bay', 'la-lakers').
+Yahoo Sports team detail. Returns one team detail record. Use league=soccer for Yahoo's flat soccer team namespace, or a league key from yahoo-sports-leagues for its own team page. Team slugs come from scoreboard or standings records.
 
 ### `yahoo_sports_team_roster`
 
-Yahoo Sports team roster. Returns a team's full roster (position, jersey number, status, injury, physicals, college, and experience) from sports.yahoo.com's own server-rendered roster page. The 'league' enum accepts 'nfl', 'nba', 'wnba', 'mlb', 'nhl', 'college-football', 'college-basketball', 'college-womens-basketball', 'mls', 'premier-league', 'la-liga', 'serie-a', 'bundesliga', 'ligue-1', 'nwsl', 'ligamx-apertura', 'ligamx-clausura', 'copa-america', 'club-world-cup', 'world-cup', 'concacaf-champions-cup', 'concacaf-gold-cup', 'concacaf-league', and 'champions-league'. Get a team slug from the scoreboard or standings response (e.g. 'green-bay', 'la-lakers').
+Yahoo Sports team roster. Returns one team roster. Use league=soccer for Yahoo's flat soccer team namespace, or a league key from yahoo-sports-leagues. Team slugs come from team or scoreboard records.
 
 ### `yahoo_sports_team_schedule`
 
-Yahoo Sports team schedule. Returns a team's full schedule (regular season plus any already-played/scheduled playoff games), with the same per-game fields as the scoreboard, from sports.yahoo.com's own server-rendered team schedule page. The 'league' enum accepts 'nfl', 'nba', 'wnba', 'mlb', 'nhl', 'college-football', 'college-basketball', 'college-womens-basketball', 'mls', 'premier-league', 'la-liga', 'serie-a', 'bundesliga', 'ligue-1', 'nwsl', 'ligamx-apertura', 'ligamx-clausura', 'copa-america', 'club-world-cup', 'world-cup', 'concacaf-champions-cup', 'concacaf-gold-cup', 'concacaf-league', and 'champions-league'. Get a team slug from the scoreboard or standings response (e.g. 'green-bay', 'la-lakers').
+Yahoo Sports team schedule. Returns one team schedule. Use league=soccer for Yahoo's flat soccer team namespace, or a league key from yahoo-sports-leagues. Team slugs come from team or scoreboard records.
 
 ### `yahoo_sports_tennis_rankings`
 
@@ -16179,6 +16447,22 @@ Yahoo Sports tennis tournament schedule. Returns the full season tennis tourname
 ### `yahoo_sports_tennis_scoreboard`
 
 Yahoo Sports tennis scoreboard. Returns a snapshot of current/recently-completed tennis matches across the tour (tournament, round, players, per-set scores, winner, and status), from Yahoo Sports' own server-rendered tournaments page. This endpoint takes no parameters -- it is a fixed-size "what's happening right now" snapshot, not a by-date query.
+
+### `yahoo_sports_topic_news`
+
+Yahoo Sports topic news. Returns the current article list for a public Yahoo Sports root or sport-scoped topic page. Topic slugs are open-ended; article tags are returned exactly as Yahoo embeds them.
+
+### `yahoo_sports_video_headlines`
+
+Yahoo Sports video headlines. Returns video cards from Yahoo's public storyheadlines list. Use a list_id from yahoo-sports-video-list-catalog or a Yahoo video-show page; count supports the page's observed values 1 and 6.
+
+### `yahoo_sports_video_list_catalog`
+
+Yahoo Sports video-list catalog. Lists the current video-list IDs embedded in Yahoo Sports' desktop Watch page. Use each list_id with yahoo-sports-video-headlines; IDs are discovered dynamically and may change.
+
+### `yahoo_sports_watch_schedule`
+
+Yahoo Sports TV schedule. Returns the current program schedule exposed by Yahoo Sports' Watch page. The source request has no date, league, season, sort, or pagination parameter.
 
 ### `yahoo_tech_article`
 

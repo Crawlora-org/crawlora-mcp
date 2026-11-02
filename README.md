@@ -7,7 +7,7 @@
 [![crawlora-mcp MCP server](https://glama.ai/mcp/servers/Crawlora-org/crawlora-mcp/badges/score.svg)](https://glama.ai/mcp/servers/Crawlora-org/crawlora-mcp)
 
 **Crawlora MCP** is a **hosted** Model Context Protocol server that gives AI clients and
-agents **4115 structured public‑web‑data tools** across 498 platform groups — search, maps,
+agents **4186 structured public‑web‑data tools** across 500 platform groups — search, maps,
 e‑commerce, social, finance, travel, app stores, media, and reviews — each returning clean,
 normalized **JSON** instead of HTML to parse.
 
@@ -155,7 +155,7 @@ Any client that speaks **Streamable HTTP** can use the generic config in
 
 ## Run it locally (open‑source server)
 
-This repo also ships a small **stdio** MCP server (`index.mjs`) that exposes the same **4115
+This repo also ships a small **stdio** MCP server (`index.mjs`) that exposes the same **4186
 tools**, each wrapping the Crawlora REST API (`https://api.crawlora.net/api/v1`) with your
 `CRAWLORA_API_KEY`. Useful if you'd rather run the server yourself than use the hosted endpoint.
 
@@ -208,7 +208,7 @@ Every account includes **2,000 free credits / month** with no credit card requir
 
 ---
 
-## What you can call (4115 tools / 498 platform groups)
+## What you can call (4186 tools / 500 platform groups)
 
 See [`tools.json`](./tools.json) or your MCP client UI for exact schemas, the [index of every tool by platform](#tools) at the end of this README, and [`TOOLS.md`](./TOOLS.md) for each tool's description. Below is an overview by category:
 
@@ -230,7 +230,7 @@ See [`tools.json`](./tools.json) or your MCP client UI for exact schemas, the [i
 
 ## Why Crawlora MCP?
 
-- **One key, 4115 tools** — search, commerce, social, gaming, finance, and more behind a single MCP endpoint.
+- **One key, 4186 tools** — search, commerce, social, gaming, finance, and more behind a single MCP endpoint.
 - **Structured JSON, not HTML** — every tool returns normalized fields, so an agent can use the result without writing a parser.
 - **Hosted or local** — connect to the hosted Streamable HTTP endpoint with no install, or run the open-source stdio server from this repo with `npx` or Docker.
 - **Free to start** — 2,000 credits per month with no credit card.
@@ -252,7 +252,7 @@ See [`LICENSE`](LICENSE). The Crawlora MCP service itself is a hosted SaaS gover
 
 ## Tools
 
-All 4115 tools by platform, generated from [`tools.json`](./tools.json). [`TOOLS.md`](./TOOLS.md) has the description of every tool.
+All 4186 tools by platform, generated from [`tools.json`](./tools.json). [`TOOLS.md`](./TOOLS.md) has the description of every tool.
 
 <!-- BEGIN MCP.SO TOOLS: generated from tools.json; do not edit manually -->
 - **1stdibs** (4): `firstdibs_categories`, `firstdibs_designers`, `firstdibs_product`, `firstdibs_search`
@@ -364,6 +364,7 @@ All 4115 tools by platform, generated from [`tools.json`](./tools.json). [`TOOLS
 - **depop** (10): `depop_brands`, `depop_categories`, `depop_item`, `depop_item_similar`, `depop_search`, `depop_search_facets`, `depop_search_sellers`, `depop_shop`, `depop_sizes`, `depop_suggest`
 - **developer** (2): `developer_search`, `developer_sources`
 - **discogs** (7): `discogs_artist`, `discogs_artist_releases`, `discogs_label`, `discogs_label_releases`, `discogs_master`, `discogs_release`, `discogs_search`
+- **dollartree** (8): `dollartree_blog_article`, `dollartree_categories`, `dollartree_keyword_typeahead`, `dollartree_price`, `dollartree_product`, `dollartree_product_typeahead`, `dollartree_search`, `dollartree_stock_status`
 - **dominos** (6): `dominos_coupons`, `dominos_customization`, `dominos_menu`, `dominos_nutrition`, `dominos_store`, `dominos_store_locator`
 - **doordash** (12): `doordash_explore`, `doordash_feed`, `doordash_search`, `doordash_search_autocomplete`, `doordash_search_filters`, `doordash_search_items`, `doordash_store`, `doordash_store_fulfillment`, `doordash_store_info`, `doordash_store_item`, `doordash_store_menu`, `doordash_store_reviews`
 - **draftkings** (31): `draftkings_casino_cleopatra_guide`, `draftkings_casino_directory`, `draftkings_casino_slots_categories`, `draftkings_casino_slots_guide`, `draftkings_casino_wheel_of_fortune_guide`, `draftkings_dfs_glossary`, `draftkings_dfs_guide`, `draftkings_dfs_nfl_best_ball_featured_contests`, `draftkings_dfs_rules_and_scoring`, `draftkings_dfs_sports`, `draftkings_event`, `draftkings_event_context`, `draftkings_event_markets`, `draftkings_featured_leagues`, `draftkings_futures`, `draftkings_league_events`, `draftkings_leagues`, `draftkings_live`, `draftkings_odds`, `draftkings_pick6_rule_page`, `draftkings_pick6_rules`, `draftkings_pick6_sports`, `draftkings_predictions_availability`, `draftkings_predictions_categories`, `draftkings_predictions_rules`, `draftkings_quick_links`, `draftkings_racing_race_info`, `draftkings_racing_schedule`, `draftkings_racing_tracks`, `draftkings_team`, `draftkings_teams`
@@ -541,6 +542,7 @@ All 4115 tools by platform, generated from [`tools.json`](./tools.json). [`TOOLS
 - **ohpolly** (11): `ohpolly_collection_products`, `ohpolly_collections`, `ohpolly_page`, `ohpolly_pages`, `ohpolly_product`, `ohpolly_product_recommendations`, `ohpolly_products`, `ohpolly_search_suggest`, `ohpolly_sitemap_urls`, `ohpolly_sitemaps`, `ohpolly_store`
 - **oldnavy** (7): `oldnavy_categories`, `oldnavy_category`, `oldnavy_product`, `oldnavy_product_availability`, `oldnavy_product_reviews`, `oldnavy_search`, `oldnavy_stores`
 - **opendota** (31): `opendota_abilities`, `opendota_benchmarks`, `opendota_constants`, `opendota_find_matches`, `opendota_hero_abilities`, `opendota_hero_descriptions`, `opendota_hero_durations`, `opendota_hero_items`, `opendota_hero_matches`, `opendota_hero_matchups`, `opendota_hero_stats`, `opendota_heroes`, `opendota_items`, `opendota_league`, `opendota_league_match_ids`, `opendota_league_matches`, `opendota_leagues`, `opendota_live`, `opendota_match`, `opendota_patch_notes`, `opendota_pro_matches`, `opendota_pro_players`, `opendota_public_matches`, `opendota_rank_distribution`, `opendota_records`, `opendota_scenarios`, `opendota_team`, `opendota_team_heroes`, `opendota_team_matches`, `opendota_team_players`, `opendota_teams`
+- **openligadb** (22): `openligadb_current_group`, `openligadb_current_matchday`, `openligadb_goal_getters`, `openligadb_groups`, `openligadb_last_changed`, `openligadb_last_match`, `openligadb_last_team_match`, `openligadb_league_matches`, `openligadb_league_team_matches`, `openligadb_leagues`, `openligadb_match`, `openligadb_matchday_matches`, `openligadb_matches_by_team`, `openligadb_matches_by_team_id`, `openligadb_next_match`, `openligadb_next_team_match`, `openligadb_result_infos`, `openligadb_result_types`, `openligadb_sports`, `openligadb_table`, `openligadb_team_pair_matches`, `openligadb_teams`
 - **opensea** (36): `opensea_activity`, `opensea_categories`, `opensea_chains`, `opensea_collection`, `opensea_collection_activity`, `opensea_collection_best_deals`, `opensea_collection_chart`, `opensea_collection_depth`, `opensea_collection_holders`, `opensea_collection_items`, `opensea_collection_offers`, `opensea_collection_rarest_items`, `opensea_collection_search_items`, `opensea_collection_social_proof`, `opensea_collection_top_sales`, `opensea_collection_trait_offers`, `opensea_collection_traits`, `opensea_collections`, `opensea_drops`, `opensea_item`, `opensea_item_activity`, `opensea_item_chart`, `opensea_item_depth`, `opensea_item_listings`, `opensea_item_offers`, `opensea_item_owners`, `opensea_most_watched`, `opensea_profile`, `opensea_profile_activity`, `opensea_profile_collections`, `opensea_profile_created`, `opensea_profile_items`, `opensea_profile_search_items`, `opensea_rankings`, `opensea_search_collections`, `opensea_top_movers`
 - **opentable** (4): `opentable_restaurant`, `opentable_restaurant_menus`, `opentable_restaurant_reviews`, `opentable_search`
 - **otto** (3): `otto_categories`, `otto_product`, `otto_search`
@@ -735,8 +737,8 @@ All 4115 tools by platform, generated from [`tools.json`](./tools.json). [`TOOLS
 - **yahoo-life** (2): `yahoo_life_article`, `yahoo_life_home`
 - **yahoo-news** (7): `yahoo_news_article`, `yahoo_news_category`, `yahoo_news_comment_replies`, `yahoo_news_comments`, `yahoo_news_home`, `yahoo_news_related`, `yahoo_news_suggest`
 - **yahoo-search** (6): `yahoo_search`, `yahoo_search_images`, `yahoo_search_local`, `yahoo_search_news`, `yahoo_search_suggest`, `yahoo_search_videos`
-- **yahoo-shopping** (7): `yahoo_shopping_article`, `yahoo_shopping_category`, `yahoo_shopping_home`, `yahoo_shopping_shopping_list`, `yahoo_shopping_shopping_lists`, `yahoo_shopping_store`, `yahoo_shopping_stores`
-- **yahoo-sports** (18): `yahoo_sports_game`, `yahoo_sports_golf_leaderboard`, `yahoo_sports_golf_schedule`, `yahoo_sports_mma_fight_card`, `yahoo_sports_mma_schedule`, `yahoo_sports_motorsports_race`, `yahoo_sports_motorsports_schedule`, `yahoo_sports_news`, `yahoo_sports_olympics_medals`, `yahoo_sports_player`, `yahoo_sports_scoreboard`, `yahoo_sports_standings`, `yahoo_sports_team`, `yahoo_sports_team_roster`, `yahoo_sports_team_schedule`, `yahoo_sports_tennis_rankings`, `yahoo_sports_tennis_schedule`, `yahoo_sports_tennis_scoreboard`
+- **yahoo-shopping** (13): `yahoo_shopping_article`, `yahoo_shopping_author`, `yahoo_shopping_categories`, `yahoo_shopping_category`, `yahoo_shopping_experts`, `yahoo_shopping_home`, `yahoo_shopping_shopping_list`, `yahoo_shopping_shopping_lists`, `yahoo_shopping_sitemap`, `yahoo_shopping_sitemaps`, `yahoo_shopping_store`, `yahoo_shopping_stores`, `yahoo_shopping_suggest`
+- **yahoo-sports** (53): `yahoo_sports_college_rankings`, `yahoo_sports_draft`, `yahoo_sports_dropdown_catalog`, `yahoo_sports_game`, `yahoo_sports_golf_leaderboard`, `yahoo_sports_golf_player`, `yahoo_sports_golf_player_news`, `yahoo_sports_golf_players`, `yahoo_sports_golf_schedule`, `yahoo_sports_home`, `yahoo_sports_injury_report`, `yahoo_sports_league_schedule`, `yahoo_sports_leagues`, `yahoo_sports_mma_fight_card`, `yahoo_sports_mma_schedule`, `yahoo_sports_more_news`, `yahoo_sports_motorsports_race`, `yahoo_sports_motorsports_schedule`, `yahoo_sports_navigation`, `yahoo_sports_network_catalog`, `yahoo_sports_news`, `yahoo_sports_newsletter_archive`, `yahoo_sports_newsletters`, `yahoo_sports_odds_featured`, `yahoo_sports_odds_game`, `yahoo_sports_odds_games`, `yahoo_sports_odds_trending`, `yahoo_sports_olympics_medals`, `yahoo_sports_player`, `yahoo_sports_player_search`, `yahoo_sports_playoff_bracket`, `yahoo_sports_playoff_bracket_catalog`, `yahoo_sports_rss_catalog`, `yahoo_sports_rss_feed`, `yahoo_sports_schedule_catalog`, `yahoo_sports_scoreboard`, `yahoo_sports_section_stream`, `yahoo_sports_soccer_scoreboard`, `yahoo_sports_sportsbook_catalog`, `yahoo_sports_standings`, `yahoo_sports_stats`, `yahoo_sports_stats_catalog`, `yahoo_sports_stats_discovery`, `yahoo_sports_team`, `yahoo_sports_team_roster`, `yahoo_sports_team_schedule`, `yahoo_sports_tennis_rankings`, `yahoo_sports_tennis_schedule`, `yahoo_sports_tennis_scoreboard`, `yahoo_sports_topic_news`, `yahoo_sports_video_headlines`, `yahoo_sports_video_list_catalog`, `yahoo_sports_watch_schedule`
 - **yahoo-tech** (3): `yahoo_tech_article`, `yahoo_tech_category`, `yahoo_tech_home`
 - **yandex** (2): `yandex_search`, `yandex_suggest`
 - **yardbarker** (5): `yardbarker_article`, `yardbarker_author`, `yardbarker_headlines`, `yardbarker_news`, `yardbarker_sections`
