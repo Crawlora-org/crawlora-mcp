@@ -1,6 +1,6 @@
 # Crawlora MCP tool catalog
 
-Every tool the Crawlora MCP server exposes (4186), generated from [`tools.json`](./tools.json); do not edit manually. See the [README](./README.md) for setup and an index by platform.
+Every tool the Crawlora MCP server exposes (4340), generated from [`tools.json`](./tools.json); do not edit manually. See the [README](./README.md) for setup and an index by platform.
 
 ## Tools
 
@@ -302,7 +302,7 @@ Search Alt's aggregated card marketplace. Searches Alt's universal aggregator in
 
 ### `alt_sold_listings`
 
-Search Alt's completed sales archive. Searches Alt's global archive of completed card sales, aggregated across every source auction house its search carries -- the "market data" side of Alt's card-investment-marketplace positioning. This is a separate index from alt-search/alt-auctions, scoped to a rolling recent time window, not a filtered view of live listings. Pass auction_house=Alt to see only Alt's own completed sales. Each of Alt's own sales carries listing_id and listing_type -- pass both to alt-listing to get that item's certificate number -- and its url is the alt.xyz item page; a sale aggregated from another auction house carries that source site's own url instead. See alt-categories for the accepted category/auction_house/grading_company values.
+Search Alt's completed sales archive. Searches Alt's global archive of completed card sales, aggregated across every source auction house its search carries -- the "market data" side of Alt's card-investment-marketplace positioning. This is a separate index from alt-search/alt-auctions, scoped to a rolling 90-day window, not a filtered view of live listings. Filter by sold date (sold_from, sold_to), by when Alt added the sale to its index (added_from, added_to), by listing type, grade, subject, brand, card number, year, price, population and the serial, print-run and rookie flags; order with sort (sold date, added time, price, population or year, either direction); up to 250 rows per page. To read only new sales, pass the largest added_at you already hold as added_from with sort=added_asc and de-duplicate on id. Pass auction_house=Alt to see only Alt's own completed sales. Each of Alt's own sales carries listing_id and listing_type -- pass both to alt-listing to get that item's certificate number -- and its url is the alt.xyz item page; a sale aggregated from another auction house carries that source site's own url instead. See alt-categories for the accepted category/auction_house/grading_company values.
 
 ### `alt_top_movers`
 
@@ -840,6 +840,30 @@ List Balenciaga store-locator countries. Lists the countries Balenciaga's store 
 
 List Balenciaga stores. Returns Balenciaga's public physical-store directory for one country, including addresses, coordinates, phone numbers, opening hours, and store-service flags. Use balenciaga-store-countries to discover the complete accepted country enum.
 
+### `bandcamp_artist`
+
+Get a Bandcamp artist or label page. Returns a Bandcamp artist or label page: name, location, bio, image and the discography grid of albums and tracks with their URLs. Pass an entry's url to bandcamp_release for full detail.
+
+### `bandcamp_discover`
+
+Browse Bandcamp Discover. Pages through Bandcamp Discover albums. Filter by one to five tags (genres from bandcamp_filters, subgenres from bandcamp_related_tags), physical format (vinyl, CD, cassette), sort (best-selling, new arrivals, random), a time window, and a GeoNames place id. Each album carries artist, location, price, release date, track count, duration, cover art and any physical formats. Page with the returned next_cursor.
+
+### `bandcamp_filters`
+
+List Bandcamp Discover filter values. Returns the complete value space of the bandcamp_discover filters: the 27 top-level genre tags, physical formats, sort orders, time-window ids and the size range.
+
+### `bandcamp_related_tags`
+
+List tags related to a Bandcamp tag. Returns the tags Bandcamp relates to a tag, strongest first, including location tags. Use it to walk from a genre in bandcamp_filters to its subgenres, then pass them to bandcamp_discover.
+
+### `bandcamp_release`
+
+Get one Bandcamp album or track. Returns one Bandcamp album or track page: title, artist, label, release date, tags, about text, credits, digital price, tracklist with durations, physical packages with prices and, for a track, its parent album and ISRC. Audio stream and download URLs are never returned.
+
+### `bandcamp_search`
+
+Search Bandcamp. Runs Bandcamp's site search and returns artists and labels, albums and tracks in Bandcamp's relevance order, each with its id, name, url and artwork (albums and tracks also carry the artist, tracks the album), plus any tags and genre that match the text. Bandcamp returns at most 50 hits (25 for artists) and does not page, so may_have_more reports when the cap was reached; narrow the text or pick a type to see more. Fan accounts are never returned. Pass a result's url to bandcamp_release or bandcamp_artist, and a tag's slug to bandcamp_discover.
+
 ### `barrons_article`
 
 Get a Barron's article's content. Returns one Barron's article's title, byline, section, publication time, word count, and body paragraphs, recovered from a public web-archive snapshot of the article. Barron's serves only the first paragraphs of an article at the origin, so an article is returned only when a full-text archive snapshot exists; an article without one returns 404.
@@ -1364,6 +1388,22 @@ Booking.com hotel reviews. Returns guest reviews for a Booking.com hotel. 'hotel
 
 Search Booking.com hotels. Searches Booking.com hotels for a destination 'query' between 'checkin' and 'checkout' ('YYYY-MM-DD', both required). 'adults' is 1 to 9 (default 2), 'rooms' 1 to 8 (default 1), 'children' 0 to 9, and 'page' is 1-based. Each property has 'name', 'price', 'currency', 'review_score', 'star_rating' and 'distance'; 'results_count' gives the total.
 
+### `booksy_business`
+
+Get one Booksy business's detail record. Returns one Booksy (booksy.com) business: name, slug, description, the website's own listing path token ('<businessId>_<slug>_<categorySlug>_<cityId>_<citySlug>', served by the app and usable to join the two surfaces), every category with its web slug, the geographic chain from country down to zip with numeric ids, address and coordinates, cover and logo images, the complete partner-defined service menu with prices and durations, opening hours, amenities, booking policy text, public contact links and aggregate review scores. This is the Android app's JSON detail route ('/core/v2/customer_api/businesses/{id}/'), so one business costs a few tens of kilobytes instead of a rendered page. An unknown id is a 404. Review text, reviewer identities, staff identities, client records and any availability, booking or payment data are never returned.
+
+### `booksy_businesses`
+
+List and filter Booksy businesses in one market. Returns one page of Booksy's (booksy.com) salon and barber marketplace for a country, filtered by a top-level category, a treatment id or a free-text query, and optionally scoped to a location. This reads the Android customer app's own JSON API ('https://{country}.booksy.com/core/v2/customer_api/businesses/'), which is offset-paginated: page_size is honoured up to 100 (larger values are silently clamped, so they are rejected here) and total is the marketplace's own match count. total saturates at 10000, and total_capped reports when the number is a ceiling rather than an exact count. category and treatment are INTEGER ids — a slug is rejected upstream — taken from booksy-categories and booksy-treatment-hints respectively; they may be combined. The listing filters the app's own client sends are supported as well: sort_order (distance, score, top_rated, by_ids — by_ids requires business_ids and returns the businesses in the order supplied; score is the default ranking and returns the same order as no sort_order), gender (M, F, R — it reorders the page for a stated client gender but does not filter it, so total is unchanged, and an unrecognised value is rejected here because Booksy silently ignores it), open_now and has_special_offers (booleans that restrict the page to businesses open now or running an offer; open_now is sent upstream as 1/0 because Booksy rejects true/false on it), and business_ids (a comma-separated bulk lookup of at most 100 ids, which also satisfies the requirement for one of category, treatment or query). location_id and location_name are alternatives, and an unknown location_name is not an error: the server silently falls back to the whole country, so read the response's location node instead of assuming the name was applied. A page past the end is an honest empty businesses array with total intact; page 0 is rejected. Records carry catalogue metadata, geo, promotion flags and aggregate review scores only — never reviews, reviewer identities, staff or availability.
+
+### `booksy_categories`
+
+List Booksy's complete top-level category enum. Returns Booksy's (booksy.com) complete top-level marketplace category enum for one market, in the upstream's own order, with each category's integer id, name and icon URL. This is the discovery endpoint for the category parameter of booksy-businesses: the 18 values are every top-level search category the marketplace publishes (Hair 1, Nails 3, Massage 4, Wellness and spa 5, Barber 6, Skin care 7, Makeup 9, Pet services 11, Home services 17, Brows and lashes 177, Tattoos 179, Medical aesthetics 183, Dental and orthodontics 184, Hair removal 187, Piercing 190, Braids and locs 657, Health and fitness 658, Professional services 659), verified live for both the US and GB hosts. The list is returned as the host publishes it rather than from a pinned constant, so a taxonomy change is visible. Takes no parameters beyond the market.
+
+### `booksy_treatment_hints`
+
+Discover Booksy treatment ids for a query. Returns the treatments and businesses Booksy's (booksy.com) app API suggests for one search text, with each treatment's integer id, name, slug and type, and each suggested business's id, name, slug, web path token and address. This is the discovery step for the treatment parameter of booksy-businesses, and it is the only treatment-id surface the app API exposes. It is query-driven, not a complete value space: the response says query_driven=true because the upstream returns only what the query matches, and no route found returns the full treatment taxonomy, so a treatment id outside these answers can exist. Prefer seeding it with the service name you want (haircut, braids, nails, massage). A query that matches nothing answers an empty suggestions array rather than an error; a blank query is rejected.
+
 ### `boots_search`
 
 Search Boots UK products and categories. Returns one page of Boots UK's public product catalog, including product cards and live facets. Supply 'q', one or more hierarchical 'category' keys, or both. Use repeatable 'filter=facet_key:option_key' values from that response's dynamic facets, plus the dedicated price and stock controls. 'sort' accepts 'relevance', 'price_low_to_high', 'price_high_to_low', 'top_rated', 'best_seller', or 'newest'.
@@ -1503,6 +1543,38 @@ Get Breitbart top stories. Returns the latest Breitbart top stories from across 
 ### `breitbart_sections`
 
 Get Breitbart sections. Lists the 21 Breitbart sections accepted by 'breitbart-headlines', including 'politics', 'economy', 'border', 'national-security', 'the-media', 'world-news' and 'america250'. Each has a 'slug', a display 'name' and the section's page 'url'. The list was verified on 2026-09-23.
+
+### `bringatrailer_filters`
+
+List Bring a Trailer filter values. Returns the complete value space of every bringatrailer_results filter: vehicle categories, decades, origins, regions with their countries, sort orders, results, auction types, recency windows, maximum-bid presets and the per_page range.
+
+### `bringatrailer_listing`
+
+Get one Bring a Trailer auction. Returns one auction's detail: status, sold or high bid, end time, bid count, comments, views, watchers, seller, location, chassis, listing details, description and lead image. Pass the slug from /listing/{slug}/ or the full listing URL returned by the other endpoints. bid_history=true adds every bid (amount, currency, time, and any soft-close end-time extension) oldest first, without bidder names; it needs no extra request.
+
+### `bringatrailer_live`
+
+List live Bring a Trailer auctions. Returns the auctions currently open on Bring a Trailer (about 1,300) with current bid, end time and attributes. Filter by title text, category, decade, country, ending window, maximum current bid and the premium and no-reserve flags; sort by ending soon, highest bid or lowest bid.
+
+### `bringatrailer_makes`
+
+Bring a Trailer makes and models. Returns Bring a Trailer's Makes and Models Directory: every make with its model pages and the numeric model_id that bringatrailer_results accepts. Narrow with q (matches make or model names) or make (exact slug).
+
+### `bringatrailer_price_history`
+
+Bring a Trailer auction price history. Returns the price chart Bring a Trailer draws for a make or a model: summaries (count, min, median, mean, max) of sold and reserve-not-met final bids, sold prices by closing year, and the most recent auctions as dated points. Exactly one of make and model_id is required; the same filters as bringatrailer_results narrow the chart. Bring a Trailer returns at most the most recent 10,000 auctions, reported as truncated. Large makes can take up to about 50 seconds.
+
+### `bringatrailer_results`
+
+Bring a Trailer completed auctions. Pages through Bring a Trailer's archive of completed collector-vehicle auctions with final bids and sold or reserve-not-met results. Filter by make or model (ids from bringatrailer_makes), keyword, category, decade, origin, country, result, premium or no-reserve type, recency, model-year range, maximum bid and sort order. Every filter value is listed by bringatrailer_filters.
+
+### `bringatrailer_search`
+
+Search Bring a Trailer. Runs Bring a Trailer's site search and returns the matching live listings, make and model pages, previous auctions (sold, reserve not met and withdrawn, with final prices), past events and editorial stories, each with its own total. section narrows the response to one list and pages through it; every list pages 12 rows at a time except previous auctions at 24, and live listings (up to 100, repeated on every site page) come back only on page 1. A term that is exactly a make, model or category name (Ferrari, BMW 2002, boat) makes the site redirect to that page: the response then carries redirect and empty lists, and phrase=true runs the search instead. Member profiles are never returned.
+
+### `bringatrailer_suggest`
+
+Bring a Trailer search suggestions. Returns Bring a Trailer's search-box completions for a term: make pages, model and generation pages, decades and categories. Era rows carry the decade id and category rows the category id that bringatrailer_results accepts as era and category; make rows can be passed by title as make. Use bringatrailer_makes for a model's numeric model_id.
 
 ### `brisbanetimes_article`
 
@@ -2756,6 +2828,18 @@ Get Daily Wire content-vertical sections. Lists the Daily Wire content verticals
 
 Facet the Airbnb markets dataset. Returns suppressed distribution counts over the Airbnb markets dataset, honoring the same filters as search. Facet enum: 'country', 'market', 'currency', 'superhost', 'guest_favorite', 'rating_band', 'review_band', 'admin1' (top subdivision), 'locality' (settlement), 'room_type' ('entire_place'/'private_room'/'hotel'/'shared_room'), 'property_type' (Airbnb's canonical listing type from the detail page), 'amenities' (each amenity with the count of listings offering it). Enrichment-derived facets include a 'coverage' object with the number and share of filtered listings carrying that dimension; buckets stay empty below the 20% minimum visibility gate. Coverage above the gate may still be partial. group_by enum: 'country', 'market', 'admin1', 'locality', 'room_type', 'property_type'.
 
+### `datasets_airbnb_hosts_facets`
+
+Facet the Airbnb hosts dataset. Returns distribution counts over the Airbnb hosts dataset (dataset id enum value 'airbnb-hosts'), honoring the same filters as search. Facet enum: 'superhost', 'identity_verified', 'listing_count_band', 'hosting_years_band', 'interest', 'verification', 'location'.
+
+### `datasets_airbnb_hosts_item`
+
+Get an Airbnb host from the dataset. Returns one host by numeric Airbnb host id from dataset id enum value 'airbnb-hosts', with the full public profile: name, profile link, location, bio, Superhost, home-host and identity-verification flags, verifications, hosting and membership years, total guest reviews, number of listings and interests. Returns 404 when the host is not in the dataset yet.
+
+### `datasets_airbnb_hosts_search`
+
+Search the Airbnb hosts dataset. Searches Airbnb hosts from the dataset id enum value 'airbnb-hosts' — public host profiles with display name, location, bio, Superhost and identity-verification status, hosting tenure, total guest reviews, number of listings and interests. Each record is one host, not one listing. Sort enum: 'review_count_desc', 'listing_count_desc', 'hosting_years_desc', 'relevance'. Billing: this search costs 1 credit per record returned, with a minimum of 2 (an empty result costs 2, a full page of 100 costs 100).
+
 ### `datasets_airbnb_item`
 
 Get an Airbnb market from the dataset. Returns one country's full aggregate Airbnb market profile from dataset id enum value 'airbnb-markets' — headline supply, Superhost share, Guest Favorite share ('guest_favorite_pct', an observed lower bound), 'avg_person_capacity' (average guests a listing sleeps over the detail-page-enriched sample), ratings, its top metros, bounding box, per-currency nightly-price percentiles, and a USD-normalized 'price_usd' percentile block (converted via an approximate dated FX snapshot) for cross-country comparison. Aggregate-only. Returns 404 for a country below the suppression floor.
@@ -2808,9 +2892,33 @@ Get an Apple Podcasts show from dataset. Returns one Apple Podcasts show from th
 
 Search Apple Podcasts shows dataset. Searches the crawled public Apple Podcasts show catalog stored in a search index. One row per show. Discovered from a country x genre x collection chart grid and a search-term sweep — not a full catalog of every Apple Podcasts show. Sort enum: 'relevance', 'popularity', 'track_count_desc', 'release_desc', 'title_asc'. Billing: this search costs 1 credit per record returned, with a minimum of 2 (an empty result costs 2, a full page of 100 costs 100).
 
+### `datasets_apps_charts_facets`
+
+Discover values in the app-charts dataset. Returns up to 50 chart-rank facet buckets ordered by count, using the same filters as 'datasets_apps_charts_search'. Page and page_size do not change the aggregation. A snapshot_date facet without date spans all history; other facets use the search date scope, including the latest-snapshot default when applicable and full history for a single app or date_desc sort. Facet enum: 'store', 'collection', 'chart_type', 'platform', 'category', 'country', 'app_id', 'snapshot_date', 'free'. Store enum: 'ios', 'android'. Chart type enum: 'top_free', 'top_paid', 'top_grossing', 'new'. Platform enum: 'phone', 'pad', 'mac'.
+
+### `datasets_apps_charts_item`
+
+Get one stored app-chart ranking. Retrieves one daily App Store or Google Play chart row by 'chart_uid' from 'datasets_apps_charts_search'.
+
 ### `datasets_apps_charts_search`
 
 Search the app-charts dataset. Searches daily top-chart snapshots from the iOS App Store and Google Play (one document per chart × snapshot × rank). With no 'date' the latest snapshot is returned (today's chart); pair 'app_id' with 'sort=date_desc' for an app's rank over time. Store enum: 'ios', 'android'. Chart type enum: 'top_free', 'top_paid', 'top_grossing', 'new'. Platform enum (Apple device platforms, ios charts only): 'phone', 'pad', 'mac'. Sort enum: 'rank', 'rank_desc', 'date_desc'. Billing: this search costs 1 credit per record returned, with a minimum of 2 (an empty result costs 2, a full page of 100 costs 100).
+
+### `datasets_apps_facets`
+
+Discover values in the apps dataset. Returns up to 50 allowlisted app-facet buckets ordered by count, using the same filters as 'datasets_apps_search'. Page and page_size do not change the aggregation. Facet enum: 'store', 'platforms', 'category', 'country', 'developer', 'free'. Store enum: 'ios', 'android', 'both'. Platform enum: 'phone', 'pad', 'tablet', 'mac', 'tv', 'chromebook', 'watch', 'vision', 'xr', 'car', 'windows'.
+
+### `datasets_apps_item`
+
+Get one stored app record. Retrieves one iOS App Store or Google Play app by its exact 'app_uid', as returned by 'datasets_apps_search'.
+
+### `datasets_apps_reviews_facets`
+
+Discover values in the app-reviews dataset. Returns up to 50 app-review facet buckets ordered by count, using the same filters as 'datasets_apps_reviews_search'. Page and page_size do not change the aggregation. Facet enum: 'store', 'app_id', 'country', 'score'.
+
+### `datasets_apps_reviews_item`
+
+Get one stored app review. Retrieves one public App Store or Google Play review by 'review_uid' from 'datasets_apps_reviews_search'.
 
 ### `datasets_apps_reviews_search`
 
@@ -2818,7 +2926,7 @@ Search the app-reviews dataset. Searches user reviews from the iOS App Store and
 
 ### `datasets_apps_search`
 
-Search the apps-intelligence dataset. Searches resolved iOS App Store and Google Play apps stored in a search index. Store enum: 'ios', 'android', 'both'. Platform enum (Apple device platforms, ios records only): 'phone', 'pad', 'mac', 'tv', 'watch', 'vision'. Sort enum: 'relevance', 'rating_desc', 'reviews_desc', 'installs_desc', 'updated_at_desc', 'popularity_desc'. Billing: this search costs 1 credit per record returned, with a minimum of 2 (an empty result costs 2, a full page of 100 costs 100).
+Search the apps-intelligence dataset. Searches resolved iOS App Store and Google Play apps stored in a search index. Store enum: 'ios', 'android', 'both'. Platform enum: 'phone', 'pad', 'tablet', 'mac', 'tv', 'chromebook', 'watch', 'vision', 'xr', 'car', 'windows' (iOS device values: phone, pad, mac, tv, watch, vision; Android values: phone, tablet, tv, chromebook, watch, xr, car, windows). Sort enum: 'relevance', 'rating_desc', 'reviews_desc', 'installs_desc', 'updated_at_desc', 'popularity_desc'. Billing: this search costs 1 credit per record returned, with a minimum of 2 (an empty result costs 2, a full page of 100 costs 100).
 
 ### `datasets_bbb_businesses_facets`
 
@@ -2883,6 +2991,14 @@ Search the Chrome Web Store dataset. Searches stored Chrome Web Store item snaps
 ### `datasets_chrome_extensions_trending`
 
 Get trending Chrome Web Store items. Returns stored Chrome Web Store items ranked by the latest observed user and rating-count movement. Filters match the search endpoint; sort is fixed to 'trending_desc'. Billing: this endpoint costs 1 credit per record returned, with a minimum of 2 (an empty result costs 2, a full page of 100 costs 100).
+
+### `datasets_creators_facets`
+
+Discover values in the creators dataset. Returns up to 50 creator-facet buckets ordered by count, using the same filters as 'datasets_creators_search'. Page and page_size do not change the aggregation. Deleted/private accounts remain excluded unless include_inactive=true. Contact-email values are never returned. Facet enum: 'niche', 'country', 'verified'.
+
+### `datasets_creators_item`
+
+Get one stored TikTok creator. Retrieves one public TikTok creator profile by 'creator_uid'. Deleted/private accounts remain hidden unless 'include_inactive=true'. Contact email stays redacted by default and 'include_email=true' is honored only for entitled non-Free API keys.
 
 ### `datasets_creators_search`
 
@@ -3172,6 +3288,14 @@ Facet the Product Hunt trends dataset. Returns suppressed distribution counts ov
 
 Search the Product Hunt trends dataset. Returns aggregate Product Hunt launch trends from the dataset id enum value 'producthunt-trends'. Aggregate-only: each row is a category-over-time cell (a topic, optionally within a calendar period), reporting launch count, total and average upvotes, average rating and the top product — never an individual product record. Thin cells are suppressed. group_by enum: 'topic_month', 'topic_year', 'topic'. Sort enum: 'period_desc', 'period_asc', 'launch_count_desc', 'sum_votes_desc'. Billing: this search costs 1 credit per record returned, with a minimum of 2 (an empty result costs 2, a full page of 100 costs 100).
 
+### `datasets_reddit_trending_facets`
+
+Discover values in the Reddit trending dataset. Returns up to 50 Reddit trending-facet buckets ordered by count, using the same filters as 'datasets_reddit_trending_search'. Page and page_size do not change the aggregation. A snapshot_date facet without date spans all history; other facets use the search date scope, including the latest-snapshot default and full history for date_desc sort.
+
+### `datasets_reddit_trending_item`
+
+Get one Reddit trending-post record. Retrieves one stored subreddit-post ranking row by 'post_uid', the 'subreddit:date:rank' key returned by 'datasets_reddit_trending_search'.
+
 ### `datasets_reddit_trending_search`
 
 Search the reddit-trending dataset. Searches daily snapshots of each tracked subreddit's hot-feed post order (one document per subreddit × snapshot × rank) so history accumulates. With no 'date' the latest snapshot is returned (today's trending); pair 'subreddit' with 'sort=date_desc' for a subreddit's trending history over time. There is no score or comment-count field, so 'rank' reflects Reddit's own hot-feed order rather than a locally computed score. Billing: this search costs 1 credit per record returned, with a minimum of 2 (an empty result costs 2, a full page of 100 costs 100).
@@ -3220,9 +3344,25 @@ Find nearby stored Starbucks stores. Returns stored Starbucks stores within a ra
 
 Search the Starbucks store directory. Searches the worldwide Starbucks store directory (dataset id 'starbucks-stores'), built by grid-tiling the store locator around its 50-result cap. Each store has its store number, name, phone, full address, coordinates, weekly hours, amenity codes, and pick-up options. Store discovery is global, but hours, amenities, and phone numbers are populated per market and are largely absent outside the US, Canada, Europe, and the Gulf; an empty schedule means "not published for this market", not "closed". 'country' is the store's true country while 'market' is crawl provenance (the US host geocodes worldwide). Supports full-text 'q', 'country'/'state'/'city'/'market'/'amenity' filters, 'lat'/'lon'/'radius_m' radius filtering, and 'sort' (relevance, distance_asc). Billing: this search costs 1 credit per record returned, with a minimum of 2 (an empty result costs 2, a full page of 100 costs 100).
 
+### `datasets_steam_achievements_facets`
+
+Discover Steam achievement app ids. Returns up to 50 Steam achievement app-id buckets ordered by count, using the same app_id filter as 'datasets_steam_achievements_search'. Page and page_size do not change the aggregation.
+
+### `datasets_steam_achievements_item`
+
+Get one stored Steam achievement. Retrieves one global achievement record by 'appid' and 'name' from 'datasets_steam_achievements_search'.
+
 ### `datasets_steam_achievements_search`
 
 Search steam-achievements dataset. Searches per-game global achievement unlock percentages (one document per appid × achievement). Pass 'app_id' to list a game's achievements. Sort enum: 'percent_desc' (most-unlocked first, default), 'percent_asc' (rarest first), 'rank_asc'. Billing: this search costs 1 credit per record returned, with a minimum of 2 (an empty result costs 2, a full page of 100 costs 100).
+
+### `datasets_steam_charts_facets`
+
+Discover values in the Steam charts dataset. Returns up to 50 Steam chart-facet buckets ordered by count, using the same filters as 'datasets_steam_charts_search'. Page and page_size do not change the aggregation. A snapshot_date facet without date spans all history; other facets use the search date scope, including the latest-snapshot default when applicable and full history for app_id or date_desc sort.
+
+### `datasets_steam_charts_item`
+
+Get one stored Steam chart row. Retrieves one Steam chart snapshot row by 'chart_uid' from 'datasets_steam_charts_search'.
 
 ### `datasets_steam_charts_search`
 
@@ -3240,21 +3380,65 @@ Get a Steam game from the dataset. Returns one Steam game from the 'steam-games'
 
 Search the Steam games dataset. Searches enriched public Steam catalog records stored in a search index. price_tier enum: 'free', 'under5', '5to15', '15to30', '30to60', 'over60'. review_tier enum: 'overwhelmingly_positive', 'very_positive', 'positive', 'mostly_positive', 'mixed', 'mostly_negative', 'negative', 'very_negative', 'overwhelmingly_negative', 'insufficient'. Sort enum: 'relevance', 'owners_desc', 'reviews_desc', 'review_score_desc', 'ccu_desc', 'metacritic_desc', 'price_asc', 'price_desc', 'release_desc', 'release_asc'. Billing: this search costs 1 credit per record returned, with a minimum of 2 (an empty result costs 2, a full page of 100 costs 100).
 
+### `datasets_steam_news_facets`
+
+Discover Steam news app ids. Returns up to 50 Steam news app-id buckets ordered by count, using the same full-text query and app_id filter as 'datasets_steam_news_search'. Page and page_size do not change the aggregation.
+
+### `datasets_steam_news_item`
+
+Get one stored Steam news item. Retrieves one Steam announcement by the 'appid' and 'gid' fields returned by 'datasets_steam_news_search'.
+
 ### `datasets_steam_news_search`
 
 Search the steam-news dataset. Searches Steam news + announcements for tracked apps (one document per appid × gid; the latest items per app are kept). Filter by 'app_id' for a single game's news, or full-text 'q' over the title + contents. Sort enum: 'date_desc' (newest first, default), 'date_asc'. Billing: this search costs 1 credit per record returned, with a minimum of 2 (an empty result costs 2, a full page of 100 costs 100).
+
+### `datasets_steam_playercounts_facets`
+
+Discover Steam player-count app and date values. Returns up to 50 Steam player-count facet buckets ordered by count, using the same filters as 'datasets_steam_playercounts_search'. The search and snapshot_date facet cover stored history by default; supplying date scopes counts to that day. Page and page_size do not change the aggregation.
+
+### `datasets_steam_playercounts_item`
+
+Get one stored Steam player-count point. Retrieves one daily concurrent-player record using 'appid' and 'snapshot_date' from 'datasets_steam_playercounts_search'.
 
 ### `datasets_steam_playercounts_search`
 
 Search steam-playercounts dataset. Searches the daily concurrent-player time series for tracked games (one document per appid × day). Pair 'app_id' with 'sort=date_desc' for a game's player-count history, or pass 'date' for one day's snapshot. Sort enum: 'date_desc' (default), 'date_asc', 'players_desc'. Billing: this search costs 1 credit per record returned, with a minimum of 2 (an empty result costs 2, a full page of 100 costs 100).
 
+### `datasets_steam_prices_facets`
+
+Discover Steam price snapshot values. Returns up to 50 Steam price-history facet buckets ordered by count, using the same filters as 'datasets_steam_prices_search'. The search and snapshot_date facet cover stored history by default; supplying date scopes counts to that day. Page and page_size do not change the aggregation.
+
+### `datasets_steam_prices_item`
+
+Get one stored Steam price record. Retrieves one daily price row using 'appid' and 'snapshot_date' from 'datasets_steam_prices_search'.
+
 ### `datasets_steam_prices_search`
 
 Search the steam-prices dataset. Searches the daily price time series for priced games (one document per appid × day; integer cents). Pair 'app_id' with 'sort=date_desc' for a game's price history, or pass 'date' for one day's snapshot. Sort enum: 'date_desc' (default), 'date_asc', 'price_asc', 'price_desc', 'discount_desc'. Billing: this search costs 1 credit per record returned, with a minimum of 2 (an empty result costs 2, a full page of 100 costs 100).
 
+### `datasets_steam_reviews_facets`
+
+Discover Steam review values. Returns up to 50 Steam review facet buckets ordered by count, using the same filters as 'datasets_steam_reviews_search'. Page and page_size do not change the aggregation.
+
+### `datasets_steam_reviews_item`
+
+Get one stored Steam review. Retrieves one stored recommendation review using 'appid' and 'recommendation_id' from 'datasets_steam_reviews_search'.
+
 ### `datasets_steam_reviews_search`
 
 Search the steam-reviews dataset. Searches the stored Steam review corpus (the most-helpful reviews per game; one document per appid × recommendation). Full-text 'q' over the review body, filter by 'app_id', 'language', or 'voted_up' (positive/negative). Sort enum: 'votes_desc' (most-helpful first, default), 'weighted_desc', 'date_desc'. Billing: this search costs 1 credit per record returned, with a minimum of 2 (an empty result costs 2, a full page of 100 costs 100).
+
+### `datasets_substack_facets`
+
+Discover Substack dataset values. Returns up to 50 count-sorted buckets for a stored-field facet over the Substack dataset, honoring the same filters as 'datasets_substack_search'. Facets cover the indexed discovery corpus, which is not a complete directory.
+
+### `datasets_substack_item`
+
+Get one stored Substack profile or publication. Retrieves one profile or publication snapshot that passed public identity validation when hydrated. Use the exact 'uid' returned by 'datasets_substack_search'. Missing, partial, and unvalidated rows return 404. Snapshots can become stale; inspect 'hydrated_at'.
+
+### `datasets_substack_search`
+
+Search the stored Substack dataset. Searches Substack writer profiles and publications that passed public identity validation when captured. Coverage is a growing discovery corpus, not a complete directory; snapshots are not periodically revalidated and do not trigger live lookups. Inspect hydrated_at for the last successful capture.
 
 ### `datasets_techstack_facets`
 
@@ -3504,6 +3688,10 @@ Get one Dollar Tree product record. Returns the complete public product record f
 
 Get Dollar Tree product suggestions. Returns up to six product suggestions from Dollar Tree's search box for a prefix, with product identifiers, routes, images, prices, and source attributes.
 
+### `dollartree_products`
+
+Get multiple Dollar Tree product records. Returns the complete public product records for a comma-separated list of Dollar Tree repository ids, matching the storefront's list-valued productIds resource.
+
 ### `dollartree_search`
 
 Search Dollar Tree products and facets. Searches the public Dollar Tree catalog or browses a category using its search dimension id. Returns products, pagination metadata, every context-specific filter group and option, and each option's upstream navigation state for follow-up filter requests. Sort values are the exact values used by Dollar Tree's storefront.
@@ -3511,6 +3699,42 @@ Search Dollar Tree products and facets. Searches the public Dollar Tree catalog 
 ### `dollartree_stock_status`
 
 Get Dollar Tree stock status for one SKU. Returns the current stock status and orderable, in-stock, backorderable, and preorderable quantities for one product SKU. Use the product id and child SKU repository id returned by the Dollar Tree product endpoints.
+
+### `domain_dns_record_types`
+
+List supported DNS record types. Returns the complete record-type vocabulary accepted by domain_dns_resolve.
+
+### `domain_dns_resolve`
+
+Resolve one public DNS record query. Performs one Google Public DNS JSON query. Use domain_dns_record_types to discover supported types.
+
+### `domain_rdap_domain`
+
+Get domain registration data. Uses the IANA RDAP DNS bootstrap and the selected registry's domain lookup.
+
+### `domain_rdap_ip`
+
+Get IP allocation data. Performs one RIR RDAP lookup for a public IPv4 or IPv6 address.
+
+### `domain_robots`
+
+Fetch robots.txt. Resolves the hostname through public DoH, pins the HTTPS request to a validated public IP, and returns robots.txt up to 256 KiB.
+
+### `domain_site`
+
+Inspect one public HTTPS homepage. Resolves the hostname through public DoH, rejects unsafe addresses, pins the connection while preserving Host and TLS SNI, then derives TLS, public headers, and technology from one bounded homepage response.
+
+### `domain_subdomains`
+
+List public indexed subdomains. Returns crt.name index entries. Names may be historical, are not checked against live DNS, and the source limits unauthenticated queries to 100 per source IP per day.
+
+### `domain_wayback_availability`
+
+Get the closest Wayback snapshot. Performs one Internet Archive Availability API request.
+
+### `domain_wayback_cdx`
+
+Get Wayback CDX year samples. Performs one bounded Internet Archive CDX request and returns the earliest sample per year.
 
 ### `dominos_coupons`
 
@@ -4164,13 +4388,45 @@ List Fanatics Collect auction events. Returns Fanatics Collect's current and rec
 
 List Fanatics Collect search filter values. Returns every accepted value for GetListing's marketplace param -- WEEKLY, PREMIER, FIXED -- and for Search's marketplace, category_parent, sub_category, grading_service, status, and sort params. Discovery endpoint for those closed enums.
 
+### `fanaticscollect_instant_pack_release`
+
+Fanatics Collect Topps Instant Pack release details. Returns a release's title, launch time, current status, checklist link and published odds by checklist ID. The price in cents appears when a price is published. Unknown checklists return 404. Discover the checklist ID with fanaticscollect-instant-pack-releases.
+
+### `fanaticscollect_instant_pack_releases`
+
+Fanatics Collect Topps Instant Packs releases. Lists the Instant Packs releases currently published by Fanatics Collect with the release ID, checklist ID, launch time and listing ID when available. Pass a checklist ID to fanaticscollect-instant-pack-release for the product details, published checklist and pull odds.
+
 ### `fanaticscollect_instant_rips_categories`
 
 Get Fanatics Collect Instant Rips categories. Returns every category Fanatics Collect's "Instant Rips" mystery-pack product (fanaticscollect.com/instant-rips) currently advertises on its homepage: id, name, and price range. Instant Rips is a "buy a randomized pack, a real graded card is revealed" product; each category's id is a real listing id, fetchable through GetListing with type=FIXED for that entry point's own full detail. This does not cover the individual pack-tier tiles within a category or the homepage's "Recently ripped" live feed.
 
+### `fanaticscollect_instant_rips_pack_categories`
+
+Fanatics Collect Instant Rips pack categories. List the categories from both Instant Rips catalog rails, including Limited Release when available. The category ID selects a pack catalog. The separate default listing ID identifies the marketplace listing linked from the category tile.
+
+### `fanaticscollect_instant_rips_pack_checklist`
+
+Fanatics Collect Instant Rips card checklist. Fetch up to 15 public card checklist rows for a Fanatics Collect pack checklist ID from fanaticscollect_instant_rips_packs. Each row can include card title, tier, year, brand, set, grade and population. Pass next_cursor with the same checklist_id and optional tier for the next page. An uncovered checklist can return an empty page.
+
+### `fanaticscollect_instant_rips_packs`
+
+Fanatics Collect Instant Rips packs by category. Fetch up to 15 public Instant Rips packs for a category UUID from fanaticscollect_instant_rips_pack_categories. Each row can include the pack checklist ID, listing ID, price, status, and published hit-rate tiers. Pass a checklist_id to fanaticscollect_recently_ripped to narrow reveal history. An empty list is valid.
+
 ### `fanaticscollect_listing`
 
 Get Fanatics Collect listing detail. Returns full detail for a single Fanatics Collect listing: a weekly-auction lot, a premier-auction lot, or a fixed-price "buy now" item (including an Instant Rips pack). Fields include title, current bid/starting/asking price, bid count, auction window and status, images, description, completed sale history, and -- when the card is stored in Fanatics' vault -- grading/authentication metadata including a direct PSA cert-verification link. Costs 1 credit per successful call.
+
+### `fanaticscollect_newsroom`
+
+Fanatics Collect newsroom article metadata. List public Fanatics Collect newsroom posts with title, publication time, category, link and images when available. Page starts at 1. Use fanaticscollect_newsroom_filters to discover category and tag IDs and pass multiple IDs separated by hyphens. Sort newest first by default or choose oldest. An empty page is valid.
+
+### `fanaticscollect_newsroom_filters`
+
+Fanatics Collect newsroom filter discovery. Discover the newsroom category and tag IDs, labels and supported publication sort orders. Pass these IDs to fanaticscollect_newsroom to filter its paginated article metadata. This operation takes no parameters and reads the current archive filter catalog.
+
+### `fanaticscollect_recently_ripped`
+
+Fanatics Collect Recently Ripped cards. Fetch up to 15 recent public Instant Rips card reveals with card and pack titles, item type, time and images. Omit checklist_id for the general feed or pass a pack checklist UUID from fanaticscollect_instant_rips_packs to narrow the feed. An uncovered pack can return an empty list.
 
 ### `fanaticscollect_search`
 
@@ -4632,6 +4888,30 @@ Get Fast Company top stories. Returns the current Fast Company top stories. Each
 
 Get Fast Company sections. Returns the Fast Company section/topic inventory: the site's six primary verticals (Tech, Work Life, News, Design, Leadership, Impact) plus every topic tag accepted by GET /fastcompany/headlines (78 values total, too many to enumerate inline -- see that endpoint for the full, current, live-verified list), each linking to its public RSS feed.
 
+### `fever_cities`
+
+Search Fever cities by name. Searches Fever's (feverup.com) city index and returns the matching city records grouped by the upstream's own suggestion type: city id, city code (pass it to fever-plans and fever-filters), name, country, region, slug, language, centre coordinates and thumbnail. Matching is Fever's own fuzzy name match, so search by name (new york, london) rather than by a bare city code: a three-letter code query that matches nothing falls back to the whole top-city list instead of reporting no results. No public route enumerates every Fever city; fever-top-cities is a fixed 25-city seed and this search is the way to reach the rest.
+
+### `fever_feed`
+
+List one city's curated Fever feed rows and the feed's pill filter enum. Returns one city's curated Fever (feverup.com) feed: every row with its title, subtype, layout and Fever category id, plus the feed's complete pill enum (creative, culture, wellness, tourist, social, luxe, romantic, detective, nightlife, foodie, adventurer, family). This is a discovery surface, not coverage: the rows are editorial carousels, and each row's items are reached through fever-plans with the row's whatplanfilter_id. It exists because fever-filters is incomplete: Fever runs two disjoint category id spaces, and today's NYC feed exposes nine category ids the filter list never lists (558, 566, 655, 851, 865, 871, 1033, 1070, 1109 on 2026-11-08, drifting by city and day), most of which fever-plans accepts as whatplanfilter_id. pill_id filters the rows and is validated against the pills array in the same response, because the enum is only learnable from the response itself; an unknown pill is a typed invalid-params error listing the accepted ids. A served city is identified by a non-empty pills array, so an unserved city_code is a typed invalid-params error naming the code rather than an empty success. Carousel items are deliberately not exposed: the whatplanfilter item route answers 404 upstream for every variant.
+
+### `fever_filters`
+
+List one city's complete Fever category and date filter value space. Returns the complete filter value space Fever publishes for one city: the date windows (Today, Tomorrow, This weekend, Next week, Later) and every category id with its label and page URL. This is the discovery endpoint for fever-plans' whatplanfilter_id parameter, so a caller never has to hard-code a category set, and the set is per city (19 categories for NYC, 17 for LAX). The date window ids are Fever's own shortcuts for display; fever-plans takes epoch-second bounds rather than these ids.
+
+### `fever_plan`
+
+Get one Fever plan's detail record. Returns one Fever (feverup.com) plan: name, description, canonical page, city, category labels, advertised from-price, every place it happens at with coordinates, gallery images, the first and last session dates, translation languages and the plan's own session flags. This reads Fever's JSON plan route rather than the Angular page that carries the same record, so one plan costs a few kilobytes instead of a few hundred. An unknown plan id is a 404. The price is the advertised starting price and is volatile; it is never a final or purchasable price, and no ticket, session-availability or checkout data is returned.
+
+### `fever_plans`
+
+List and filter Fever plans for a city. Returns one page of Fever's (feverup.com) plan catalogue for a city, optionally filtered by category and session-date window and ordered by one of Fever's own sort values. This is the category and date browse Fever's own website refuses (its listing API is a 403), served from the public search endpoint the site and its app already use. page_size is capped at 100: the upstream silently truncates larger values to 100 rows, so anything above 100 is rejected. date_start and date_end are epoch SECONDS; date_start is required whenever a window is given, and a millisecond value is rejected because the upstream silently answers an empty window for one. Category ids come from fever-filters. Latitudes/longitudes default to the city's own centre from fever-top-cities; a city outside that list needs an explicit pair. count is the search index's own match count and is not the website's total_plans, so the two can differ materially.
+
+### `fever_top_cities`
+
+List Fever's fixed top-city seed. Returns Fever's (feverup.com) fixed list of 25 top cities, in the upstream's own order, with each city's id, code, name, country, region, slug, language, centre coordinates and thumbnail. This is the only enumerable city surface on the platform: it is a top list and not the complete city set, so use fever-cities to find a city outside it. It takes no parameters and has no paging.
+
 ### `firstdibs_categories`
 
 List 1stDibs categories and filters. Returns the live handbags category directory, sort keys, price presets, and filter values discovered from 1stDibs. Returned category slugs are valid for firstdibs-search.
@@ -4720,6 +5000,10 @@ Flashscore news for a team, player, tournament or sport. Returns the article ids
 
 Flashscore basketball, hockey and baseball box score. Returns the per-player box score of a basketball, hockey or baseball match: one table per team (hockey adds a goalkeeper table and baseball a pitcher table) with the statistic columns the provider defines for that sport, and each player's value per column, or null where Flashscore shows a dash. Other sports and matches without box-score coverage return not found.
 
+### `flashscore_match_commentary`
+
+Flashscore match text commentary. Returns the play-by-play text Flashscore publishes for a match, newest first. Each entry can include the displayed minute, a detailed clock and an event type. Pre-match comments may have no time. Matches without text coverage return not found.
+
 ### `flashscore_match_darts`
 
 Flashscore darts throw-by-throw and statistics. Returns a darts match leg by leg: who started and won each leg, the leg score, every visit with the points scored, the score remaining and 180 or 140-plus highlights, and the score the winner finished from, plus the statistics comparison (three-dart average, 180s, 140+ and 100+ visits, checkout percentage, highest checkout). Set-play matches add the set of each leg, the leg score within the set and the statistics of every set; a live match includes the leg being played. Streamed events whose scoring is not tracked and non-darts matches return not found.
@@ -4732,13 +5016,17 @@ Flashscore match head-to-head and recent results. Returns Flashscore's public he
 
 Flashscore match highlights. Returns public highlight identifiers, metadata, and video links as the provider's raw delimited text. Video content is not fetched or included. Matches without available highlights return not found.
 
+### `flashscore_match_incidents`
+
+Flashscore structured match incidents. Fetch the structured Flashscore incident timeline by match ID with period, displayed clock, team side and ordered actions. An incident can group a goal and assist or both players in a substitution. Valid summaries without incidents return an empty list. Use flashscore_match_commentary for editorial text.
+
 ### `flashscore_match_info`
 
 Flashscore match venue and broadcast information. Returns the public match information feed, including available venue, city, capacity, and broadcast listings, as the provider's raw delimited text.
 
 ### `flashscore_match_lineups`
 
-Flashscore match lineups and formations. Returns the public starting-lineup and formation feed as the provider's raw delimited text. Matches without published lineups return not found.
+Flashscore match lineups and formations. Returns each side's confirmed formation, starters and substitutes with positions, in-match ratings and incidents such as cards and substitutions, plus coaches and the substitutions made. Lineups usually appear shortly before kickoff for covered matches; a match with no lineup players on either side returns not found. Use flashscore-match-predicted-lineups for expected lineups before they are confirmed.
 
 ### `flashscore_match_missing_players`
 
@@ -4767,6 +5055,10 @@ Flashscore point-by-point scoring history. Returns the scoring history of a tenn
 ### `flashscore_match_predicted_lineups`
 
 Flashscore predicted lineups. Returns each side's predicted formation, predicted starters with position tags and player details, lineup groups, and coaches. Predictions usually appear shortly before kickoff for covered matches; a match with no predicted players on either side returns not found.
+
+### `flashscore_match_prematch_scorers`
+
+Flashscore pre-match top scorers. Fetch the pre-match scorer panel for a Flashscore match by match ID, with each side’s leading scorers, competition and recent goal averages, and player goal counts from recent fixtures. A match without a scorer panel returns not found. Use flashscore_match_player_stats for individual performance during the selected match.
 
 ### `flashscore_match_report`
 
@@ -4896,6 +5188,10 @@ Flashscore top search entities. Returns the ten-or-fewer public team, player, an
 
 Flashscore competition seasons by stage id. Returns every season of the competition that owns a tournament stage: season label, season tournament id, whether it is current, the winning participants and the stage ids of each season, plus the requested stage's names and page tabs (summary, odds, standings, results, fixtures, draw, news). Get a stage id from tournament_stage_id in the competition block of team, player and match event lists, then reuse the stage ids returned here for older seasons. Pass a stage id, not a season tournament id or a competition id: other ids can return an unrelated competition, so check the returned tournament name. An unknown stage id returns not found.
 
+### `flashscore_tournament_draw`
+
+Flashscore tournament draw by season and stage. Returns one knockout stage with its entrants and ordered bracket rounds, slots, linked match IDs, scores and winners. A slot can contain replays or have no linked match yet. Use the season tournament_id and its stage_id from flashscore-tournament-archive-seasons or the competition block of an event. A stage without a published draw returns not found.
+
 ### `flashscore_tournament_events`
 
 Flashscore tournament season results or fixtures. Returns a page of the public results or fixtures feed for any supported sport and competition path. Page 1 is embedded in the public tournament page; later pages follow its Show more feed sequence. Sum event_count from successive pages until total_events is reached.
@@ -4915,6 +5211,26 @@ Flashscore competition standings table. Returns a competition-level table feed i
 ### `flashscore_tournament_standings_views`
 
 Flashscore competition standings view discovery. Returns the table views currently exposed on a public Flashscore competition standings page. The view set varies by competition and stage; use a returned value with flashscore-tournament-standings.
+
+### `flickreels_classify`
+
+List one page of a FlickReels category. Returns one page of a FlickReels (flickreels.net) category listing: twelve titles with each one's playlet id, the slug flickreels-movie requires, title, cover, episode count, tags and canonical URL, plus the site's own total for that category. Take tag_id and slug from flickreels-genres for the same locale: the route is slug+id keyed, so an id-only request, a wrong slug and an unknown id are all a 404. Page 0 is treated as page 1 locally because the upstream canonicalises it, and a page past the end is a valid empty page with empty=true and the site's total intact, never an error.
+
+### `flickreels_genres`
+
+List FlickReels' complete category and language taxonomy. Returns the complete FlickReels (flickreels.net) category taxonomy for one locale: every category the site lists, each with the tag_id and slug that flickreels-classify requires, plus the site's own 10-entry language list, which is the value space of the language parameter. This is the discovery endpoint for both the tag_id and language parameters, so no caller has to hard-code them. Category tag ids and slugs are locale-scoped: read both from the same locale you pass to the listing endpoint. The All category is tag_id 0 and its slug is all.
+
+### `flickreels_home`
+
+List the FlickReels home page's shelves. Returns every shelf the FlickReels (flickreels.net) home page renders, in the site's own order: each shelf's column id, the slug flickreels-shelf needs when the row links a see-more page, its title, the site's own count and the titles it rendered. Five shelves are observed for the default locale. The site publishes the true count while rendering only a window of rows, so the count and the returned list length legitimately differ; use flickreels-shelf with the shelf id to page a shelf that carries more.
+
+### `flickreels_movie`
+
+Get a FlickReels title with its full episode list. Returns one FlickReels (flickreels.net) title: the site's own title, cover, synopsis, episode count, release date and tag labels, the complete episode list (number, chapter id, title, duration in seconds and locked flag), and the detail page's own related shelf. The route is slug+id keyed, so pass both values from the same card; an id-only request or a wrong slug is a 404. Episode cover images are signed with an expiring token and are deliberately not returned, and no playable media is ever exposed.
+
+### `flickreels_shelf`
+
+List one page of a FlickReels curated shelf. Returns one page of a curated FlickReels (flickreels.net) shelf: the shelf's title and the site's own total, plus twelve titles with each one's playlet id, movie slug, title, cover, episode count, tags and canonical URL. Take shelf_id from a flickreels-home shelf; the slug is optional because the upstream ignores that path segment. A shelf can hold far more rows than the home page renders, so page through with the page parameter and stop when a page returns an empty list, which the upstream answers as a valid 200 rather than a 404.
 
 ### `foodpanda_restaurant`
 
@@ -5251,6 +5567,22 @@ Get the latest Free Malaysia Today stories. Returns Free Malaysia Today's curren
 ### `freemalaysiatoday_sections`
 
 List Free Malaysia Today sections. Lists every live-verified primary editorial navigation section, with its slug, display name, and landing-page URL. This is the live-verified primary editorial navigation taxonomy; media, promotional, and duplicate commercial destinations are excluded.
+
+### `fresha_landing_venues`
+
+List the venues on one Fresha landing page. Returns the venue list Fresha (fresha.com) publishes on one of its own pre-rendered landing pages: each venue's name, canonical page, published business types, postal address with coordinates, average rating with its rating count, the venue's coarse price band and an image. Read a plain city page with city alone, a business-type page with business_type, or a treatment-type page with treatment_type; the two facets are mutually exclusive. city is the page's own value with its country prefix, e.g. us-new-york. There is no pagination on this route: Fresha pre-renders a fixed list (about 30 venues on a city page, 130 on a business-type or treatment-type page) and exposes no page parameter, so count is the number of venues on the page and never a total. A facet combination Fresha does not publish is a not-found. The price range is the venue's own coarse display string and is not this API's price surface: a venue's service menu, read through fresha-venue, is.
+
+### `fresha_search_venues`
+
+Search Fresha venues by text, place, price, gender, award and treatment. Returns one page of Fresha's (fresha.com) salon, barber and wellness venue search: each venue's id, slug, name, canonical page, address, business type, rating and rating count, rating badge, cover image and distance, plus the gateway's own match count and a forward cursor. Pass a latitude/longitude pair to search a place (with neither, the gateway falls back to its own default centre and the response reports the centre it used). query, min_price, service_gender (EVERYONE, MALE, FEMALE), awards (BEST_IN_CLASS, HIGHLY_RECOMMENDED), sort (DISTANCE, RATING, RECOMMENDED) and the three treatment ids from fresha-taxonomy (category:<slug>, tag:<slug>, treatment:<category>/<type>) each change the result set. first is 1 to 200 and larger values are rejected because the gateway rejects them too. Paging is cursor-based: pass next_cursor back as after while has_next_page is true, and note that a malformed cursor silently restarts the list at page one. count 0 with no error is an honest empty result for a valid filter. Search results carry no price: a venue's own service menu, read through fresha-venue, is the only place this API publishes one.
+
+### `fresha_taxonomy`
+
+List Fresha's treatment categories, tags and treatment types. Returns one page of Fresha's (fresha.com) treatment taxonomy: the ids that fresha-search-venues accepts as treatment_category_id, treatment_tag_id and treatment_type_id. Each node carries its id, display label, kind (TreatmentCategory, TreatmentTag or TreatmentType) and an icon for categories; ids take the forms category:<slug>, tag:<slug> and treatment:<category-slug>/<type-slug>. With no query this returns Fresha's closed category page: 20 categories, with a 21st reachable only by text search, so categories are effectively complete. Tags and treatment types are not: they only appear for a text query and are ranked by Fresha's own autocomplete, so treat a text search as a discovered set rather than a complete catalogue, and page it with next_start while has_next_page is true. Use words from a treatment name (nail, haircut, massage). first is 1 to 200.
+
+### `fresha_venue`
+
+Get one Fresha venue's profile, opening hours and service menu. Returns one Fresha (fresha.com) venue: name, description, canonical page, country and currency, business type, full postal address with coordinates, average rating with its rating count and rating badge, published opening hours per day, gallery images and the venue's own service menu. The service menu is grouped as the venue groups it; every service carries its own retail price in the venue's own currency and its shortest and longest duration in seconds, so this is the only place this API publishes a price and it is always the provider's own menu price, never a quote or a booking price. Pass a slug from fresha-search-venues. An unknown slug is a not-found, not an empty success. No staff, professional profile, review text or reviewer identity is returned, and no availability slot, booking or checkout data exists on this route.
 
 ### `ft_article`
 
@@ -5668,6 +6000,46 @@ Get the latest Globe and Mail stories. Returns The Globe and Mail's current publ
 
 List Globe and Mail sections. Lists every Globe and Mail section accepted by /globeandmail/headlines, with its slug, display name, and landing-page URL. This is the full public, RSS-backed section taxonomy from the site's primary navigation.
 
+### `glovo_categories`
+
+List a Glovo city's store categories. Returns a city's top-level store categories (for example Food, Groceries, Shops, Pharmacy & Beauty). Each carries the id that /glovo/stores/filters and /glovo/stores take as category_id. Only categories of type STORES have a store list; other types, such as package delivery, are listed but have none. The set differs by city.
+
+### `glovo_cities`
+
+List the countries and cities Glovo serves. Returns Glovo's live directory of every country and city it delivers in, read from the directory its own landing page embeds. Each city carries the slug and the city code; every other Glovo endpoint takes country plus city (either the slug or the code) from here. The countries field always lists every supported country code, so the optional country filter's value space is discoverable; a country Glovo does not serve returns a 400 rather than an empty list. As of 2026-11-02 the directory covers 24 countries and 1,330 cities.
+
+### `glovo_city`
+
+Get one Glovo city's market settings. Returns one city's market settings: its name, whether it is enabled, the languages it supports (the values the language parameter of every Glovo endpoint accepts for that city), its currency and its timezone. A city or country Glovo does not serve returns a 400 pointing to /glovo/cities.
+
+### `glovo_store`
+
+Get one Glovo store's detail. Returns one store's public detail: name, slug, category, address and coordinates, whether it is open and enabled, rating label and count, delivery and service fees, cuisine filters, promotions and its default address_id. An unknown store_id returns a 404.
+
+### `glovo_store_fees`
+
+Get one Glovo store's small-basket surcharge tiers. Returns the small-basket surcharge tiers of one store: for each basket-value range (lower_bound to upper_bound) the extra fee charged, its currency and Glovo's strategy name. A store with no small-basket surcharge returns an empty tiers list. When address_id is omitted the store's own default location is looked up first, which costs one extra upstream call.
+
+### `glovo_store_menu`
+
+Get one Glovo store's menu collections. Returns one store's menu as its tree of collections (for example Top sellers, Starters, Drinks). Each collection's slug is the value /glovo/store/products takes as collection. When address_id is omitted the store's own default location is looked up first, which costs one extra upstream call.
+
+### `glovo_store_products`
+
+Get one Glovo store's products. Returns one store's products grouped into sections, each with a name, description, price, currency, display price, image URL, stock flag and its option groups (sizes, sides, toppings with price impact). Pass collection to return only one menu collection. limit caps the total products across sections (default 200, maximum 500); truncated reports whether more existed. When address_id is omitted the store's own default location is looked up first, which costs one extra upstream call.
+
+### `glovo_store_search`
+
+Search one Glovo store's products by keyword. Returns the products of one store that match a keyword (for example burger), with the same fields as /glovo/store/products: name, description, price, currency, display price, image URL, stock flag and option groups. total_products reports how many matched in the store; limit caps the returned list (default 50, maximum 500). A keyword that matches nothing returns an empty list, not an error. When address_id is omitted the store's own default location is looked up first, which costs one extra upstream call.
+
+### `glovo_stores`
+
+List a Glovo category's ranked stores. Returns the first page of up to 50 stores from a city's category, in Glovo's own ranking, optionally narrowed to one cuisine or type filter. total_entries reports how many stores match in the city; only the first page is reachable without logging in (Glovo's server-rendered list ignores paging parameters), so use filter_id to reach other subsets. A category_id the city does not list, or a filter_id the category does not offer, returns a 404; a real category with no matching stores returns an empty list. The ranking and each store's distance are relative to the city's default point and can change between calls. Each store carries its id and address_id, which the store, menu and products endpoints take, plus its rating label, delivery estimate, delivery fee, promotions and open status.
+
+### `glovo_stores_filters`
+
+List a Glovo category's cuisine and type filters. Returns the cuisine or type filters (for example Burgers, Pizza, Healthy) that one category's store list accepts in one city. Each carries the id that /glovo/stores takes as filter_id. The filter set is category- and city-scoped, so call this for the same country, city and category_id you will pass to /glovo/stores. A category_id Glovo does not recognise in that city returns a 404.
+
 ### `gmanews_article`
 
 Get GMA News article content. Returns public GMA News Online article metadata and body paragraphs from a canonical article URL. GMA News articles are free to read; no content is paywalled.
@@ -5970,7 +6342,7 @@ Google Maps place reviews API. Returns the reviews Google shows on a specified p
 
 ### `google_map_search`
 
-Google Maps search API. Searches Google Maps with a request body of 'keyword', 'language' and 'country' (an ISO-2 code such as 'us'), all required. Each place has its name, place id, categories, address, coordinates, phone, website, rating and review count. 'rating' is 'null' when Google has no aggregate rating.
+Google Maps search API. Searches Google Maps with a request body of 'keyword' (required) plus optional 'language' (default 'en') and 'country' (an ISO-2 code such as 'us', default 'us'). Each place has its name, place id, categories, address, coordinates, phone, website, rating and review count. 'rating' is 'null' when Google has no aggregate rating.
 
 ### `google_news`
 
@@ -8128,6 +8500,42 @@ Get a lululemon product's full detail. Returns one lululemon product's full deta
 
 Browse lululemon's physical store directory. Returns lululemon's own complete physical store directory (480 US and 86 Canada locations), including regular weekly hours and in-store amenities. All filters are optional and applied to the full directory. country and state are free-text equality filters against the values this directory actually carries (2-letter codes, e.g. US/CA, NY/CA), not an enforced enum. lat and lng (both required together) filter to stores within radius_miles (1 to 500, defaults to 50), sorted nearest-first.
 
+### `luma_calendar`
+
+Get a public Luma calendar. Returns public calendar details, its current tags, featured items and initial upcoming events from the public calendar page. Personal, membership, subscription and payment fields are omitted. Use luma-calendar-events for past or date-specific feeds.
+
+### `luma_calendar_events`
+
+List events for a public Luma calendar. Returns public future, past, or date-specific events for one calendar. 'period' accepts 'future', 'past', or 'specific'; the last value requires RFC3339 'after' and 'before' timestamps.
+
+### `luma_categories`
+
+List Luma event categories. Returns Luma's complete current public event-category list. Use each category slug with the category detail or event-feed endpoint.
+
+### `luma_category`
+
+Get a Luma event category. Returns public category details and its public featured/timeline calendars. The slug must be one of 'family', 'books', 'games', 'tech', 'food', 'ai', 'running', 'arts', 'climate', 'fitness', 'wellness', or 'crypto'.
+
+### `luma_category_events`
+
+List and search events in a Luma category. Returns public event cards in a Luma category. The category slug must be one of 'family', 'books', 'games', 'tech', 'food', 'ai', 'running', 'arts', 'climate', 'fitness', 'wellness', or 'crypto'. Query, cursor, page limit, and optional coordinates mirror Luma's category feed. Follow 'next_cursor' only when 'has_more' is true.
+
+### `luma_event`
+
+Get a public Luma event. Returns public event details, categories, host display names, and ticket availability fields. Guest identities, payment data, and private calendar fields are omitted.
+
+### `luma_place`
+
+Get a Luma place. Returns public place details from a Luma place page, including its name, slug, time zone, public coordinates, description, and event metadata.
+
+### `luma_place_calendars`
+
+List public calendars for a Luma place. Returns calendars that Luma publicly lists for a place. Personal and blocked calendars are omitted.
+
+### `luma_place_events`
+
+List and search public events for a Luma place. Returns public event cards for a Luma place. The optional query, page limit, and cursor mirror the place's public event feed. Follow the returned 'next_cursor' only when 'has_more' is true.
+
 ### `macrumors_article`
 
 Get MacRumors article content. Returns a MacRumors article by 'url': a dated news post, or a '/guide/', '/how-to/' or '/review/' page. The response has the title, description, section, authors, lead image, publish time, 'updated_at' and body 'paragraphs'. Roundup, author and forum URLs are rejected. Reviews have no 'updated_at', and 'paywalled' is omitted.
@@ -8928,6 +9336,14 @@ Get The Motley Fool top investing stories. Returns up to 50 recent Motley Fool i
 
 List The Motley Fool news sections. Lists the 10 Motley Fool Stock Market News section slugs that the headlines endpoint accepts, from 'trending-news' and 'news' to 'most-active-stocks', 'top-stock-gainers' and 'top-stock-losers'. Each entry has a 'slug', a display 'name' ('news' is named Stock News) and a section 'url'.
 
+### `nascar_live_feed`
+
+Get NASCAR’s latest published global session feed. Preserves the native anonymous feed and its source identity and timestamps. This resource does not accept series or historical selectors.
+
+### `nascar_races`
+
+Get the current-season NASCAR race feed. Preserves the native anonymous feed and its source identity and timestamps. This resource does not accept series or historical selectors.
+
 ### `nationafrica_article`
 
 Get Nation Africa article content. Returns public Nation Africa article metadata and body paragraphs from a canonical article URL. paywalled is true for a Premium story: the publisher serves an anonymous reader only the opening paragraph(s), so paragraphs is a partial teaser and nothing is bypassed. Video, photo, audio, puzzle and cartoon URLs are rejected with a 400.
@@ -9055,6 +9471,38 @@ Get NDTV video categories. Returns the live-verified NDTV-hosted category slugs 
 ### `ndtv_videos`
 
 Get videos from an NDTV category. Returns one page of metadata cards from a supported NDTV-hosted video category. Use ndtv-video-categories to discover the complete supported category set; request pages sequentially. This returns no media bytes or player URLs.
+
+### `netshort_browse`
+
+List one page of NetShort's browse index. Returns one page of NetShort's (netshort.com) all-episodes browse index: 10 titles per page over the same 11,575-title catalogue as netshort-plots, with the site's own totalCount. It is the same library in the site's browse ordering and a different page size, so it overlaps netshort-plots almost completely — use netshort-plots for coverage and this endpoint when the browse order is what you want; do not merge the two expecting disjoint sets. Pages are 1-based; page 0 is rejected and a page past the end is a 404.
+
+### `netshort_genres`
+
+List NetShort's label taxonomy. Returns NetShort's (netshort.com) label taxonomy as the site's own plot index carries it: four navigation tabs (all-plots, story, characters, settings) and every label value underneath them, each with its labelId, labelName, site path and play count. This is the discovery endpoint for netshort-label, so a caller never has to guess a label id. The capture held 196 labels over the four tabs (146 distinct ids), and three tabs end at exactly 50: that is the upstream's own per-tab cap, not a truncation here, so capped reports it and the list must not be described as provably exhaustive. Labels here are the type-2 id space; the labels attached to a card are a different, type-1 vocabulary.
+
+### `netshort_home`
+
+Get NetShort's home shelves. Returns the NetShort (netshort.com) home page's five curated shelves (Trending Now, New Releases, Highly Recommended, Exclusive Originals and one editorial shelf), each with its display name, its "see all" link and 11-12 titles. Every title carries its shortPlayId, library id, name, episode path, cover, synopsis, episode count, finished flag and labels. Pass language to read a different locale's catalogue: the site offers 17 locales and each is a separate library, so shelves and ids differ per locale. Take a title id from any card and pass it to netshort-title; take a label id and name from netshort-genres for netshort-label.
+
+### `netshort_label`
+
+List one page of a NetShort label listing. Returns one page of one NetShort (netshort.com) label listing: 24 titles per page with the site's own totalCount for that label, in the same card shape as netshort-plots. Take label_id and name from netshort-genres — the site's own label path is /drama/<name>-<id>-2 and carries both, so a type-2 label id without its name is rejected locally. Label pages are English-only in practice regardless of the site's locale prefixes. Pages are 1-based; page 0 is rejected and a page past the end is a 404.
+
+### `netshort_plots`
+
+List one page of NetShort's whole catalogue. Returns one page of NetShort's (netshort.com) complete catalogue in the site's plot-index order: 24 titles per page with the site's own totalCount (11,575 titles in the 2026-11-07 capture), page number and page size. Use it to walk the whole library; consecutive pages do not overlap. Pages are 1-based path segments: page 1 is the canonical un-suffixed URL and page 0 is rejected locally. A page past the end answers HTTP 404 upstream, so has-next is only ever a full-page signal — walk until a 404. Pass language for one of the site's 17 locale catalogues.
+
+### `netshort_search`
+
+Search NetShort's catalogue by keyword. Returns one page of NetShort (netshort.com) keyword search results: each match's shortPlayId, library id, name with the upstream's highlight markup stripped, episode path, cover, synopsis, episode count and labels. This is the platform's only real search — its /search page ships just the site shell — and it is reached through the site's own encrypted XHR, with the key material read from the site's public bundle at runtime and never pinned. The search is fuzzy, not exact: an unmatched keyword still returns token matches, so treat results as approximate and never read an empty result as "no such title" (only an empty query is empty, and that is rejected locally). Pages are not a strict partition either — page 2 repeated 2 of page 1's 15 ids in the 2026-11-07 measurement — so dedupe by id when accumulating pages. The upstream applies a floor of 15 items on page 1, so a response can carry more results than page_size. language selects the locale and results are locale-specific.
+
+### `netshort_title`
+
+Get one NetShort title with its episode window. Returns one NetShort (netshort.com) title: shortPlayId, library id, name, canonical episode path, cover, synopsis, label list, the site's own like and chase counters (display strings such as 282.6K, not exact integers), publish time, delisted flag, and the episode window the page carries (40 videoEpisodeInfos with episode id, number, lock flag and cover). has_more_episodes reports a full 40-episode window, so a longer series continues past it. An unknown title id is a 404. Play URLs and the site's shortPlayAddress fields are never returned.
+
+### `netshort_toplist`
+
+List one NetShort toplist board. Returns one of NetShort's (netshort.com) four fixed toplist boards: twelve titles with the same card shape as the other catalogue endpoints and no paging. The four boards — trending-short-dramas, new-short-drama-releases, recommended-short-dramas, exclusive-original-short-dramas — are the complete set from the site's own navigation, and each board's titles also appear as a home shelf, so this is the cheaper single-board read. An unknown board is rejected locally.
 
 ### `news18_article`
 
@@ -9600,6 +10048,78 @@ OpenDota Dota 2 team player history. Returns the players who have played for a t
 
 OpenDota team directory. Returns a zero-based page of OpenDota team records with team IDs, names, tags, ranking and recent-match metadata. OpenDota returns up to 1000 teams per page; use 'next_page' while present. Use a team ID with opendota_team or opendota_team_matches.
 
+### `openf1_car_data`
+
+OpenF1 Formula 1 car telemetry samples. Returns car telemetry at roughly 3.7 Hz: speed, engine RPM, gear, throttle percentage, brake flag and DRS status for each sample timestamp. Always pass driver_number and a date window: a whole-session request without a driver is rejected upstream as too much data at once.
+
+### `openf1_championship_drivers`
+
+OpenF1 Formula 1 driver championship standings. Returns each driver's championship position and points before the race and during/after it. Available for race sessions only; other session types return an empty list.
+
+### `openf1_championship_teams`
+
+OpenF1 Formula 1 team championship standings. Returns each team's championship position and points before the race and during/after it. Available for race sessions only; other session types return an empty list.
+
+### `openf1_drivers`
+
+OpenF1 Formula 1 drivers in a session or meeting. Returns the drivers entered in a session or meeting with their permanent number, broadcast/full name, three-letter acronym, team name and colour, and headshot URL. Use it to resolve a driver_number before querying telemetry, laps or position data.
+
+### `openf1_intervals`
+
+OpenF1 Formula 1 interval and gap measurements. Returns the gap to the car ahead and the gap to the leader, updated about every four seconds during race sessions. Values are raw source data: a number of seconds, an array, or a string such as +1 LAP, and null for the leader. Race sessions only; other session types return an empty list.
+
+### `openf1_laps`
+
+OpenF1 Formula 1 lap times and sectors. Returns per-lap data: lap duration, three sector durations, intermediate and speed-trap speeds, pit-out flag and the mini-sector code arrays the source publishes. Segment arrays are not published during races. Pass session_key plus driver_number to keep the response bounded.
+
+### `openf1_location`
+
+OpenF1 Formula 1 car position samples. Returns the approximate car position at roughly 3.7 Hz in the circuit's 3D coordinate system (x, y, z). The origin is arbitrary and is not tied to a point on the track, and lateral placement is not carried. Always pass driver_number and a date window to keep the response small.
+
+### `openf1_meetings`
+
+OpenF1 Formula 1 meetings by season and filters. Returns Formula 1 Grand Prix and testing weekends from OpenF1's anonymous public API: meeting and official name, country, circuit key and type, circuit info/image URLs, GMT offset and start/end timestamps. A season query is the discovery surface for the country, circuit and meeting values the other OpenF1 resources filter on.
+
+### `openf1_overtakes`
+
+OpenF1 Formula 1 overtakes. Returns position exchanges during race sessions, naming the overtaking and overtaken driver and the position held after the pass. The source includes pit-stop and penalty position changes and states the data may be incomplete. Race sessions only.
+
+### `openf1_pit`
+
+OpenF1 Formula 1 pit lane entries. Returns pit-lane entries with the lap number, time spent in the pit lane and the stationary stop time where the source publishes it (from the 2024 United States Grand Prix onwards). Present across session types, so pass session_key and optionally driver_number.
+
+### `openf1_position`
+
+OpenF1 Formula 1 driver position changes. Returns each driver's position at every change during a session, with the timestamp of the change. Pass session_key with driver_number or a position bound to keep the result small.
+
+### `openf1_race_control`
+
+OpenF1 Formula 1 race control messages. Returns race-control messages: session status, incidents, flags, safety car and DRS events, with category, flag, scope, sector, lap number, qualifying phase and the message text. Use session_key for one session, or a date window to sweep a range.
+
+### `openf1_session_result`
+
+OpenF1 Formula 1 session classification. Returns the classification published a few minutes after the official results: final position, laps completed, DNF/DNS/DSQ flags, points for races, and duration and gap to the leader, which are single numbers for a race and Q1/Q2/Q3 arrays for practice and qualifying.
+
+### `openf1_sessions`
+
+OpenF1 Formula 1 sessions by season and filters. Returns the practice, qualifying, sprint and race sessions OpenF1 publishes, with session type and name, start/end timestamps, meeting and circuit keys, country and location. A session_key from this list is the input to almost every other OpenF1 route; latest resolves to the current or most recent session.
+
+### `openf1_starting_grid`
+
+OpenF1 Formula 1 starting grid. Returns the grid for an upcoming or completed race: grid position, driver number and the qualifying lap duration that set it, published a few minutes after the official results. The rows are keyed by the qualifying session_key that set the grid, not the race session_key; pair this route with the matching openf1-sessions row.
+
+### `openf1_stints`
+
+OpenF1 Formula 1 stints and tyre compounds. Returns each continuous driving period on one set of tyres: stint number, starting and ending lap, tyre compound and tyre age at the start. Use session_key with driver_number for one driver's strategy.
+
+### `openf1_team_radio`
+
+OpenF1 Formula 1 team radio recordings. Returns published driver-to-team radio exchanges with the timestamp and an MP3 recording URL. Only a selection of communications is published and coverage is sparse; several sessions return no radio data at all.
+
+### `openf1_weather`
+
+OpenF1 Formula 1 track weather samples. Returns track-weather samples updated about once a minute: air and track temperature, humidity, pressure, wind speed and direction, and the rainfall flag. Pass session_key or meeting_key plus a date window for a bounded read.
+
 ### `openligadb_current_group`
 
 Get the current league matchday. Returns OpenLigaDB's current group or matchday for a league shortcut. Use 'openligadb_groups' for all matchdays and 'openligadb_current_matchday' for the matches in this group.
@@ -10048,6 +10568,22 @@ Get the Papa John's Russia priced menu (RUB). Returns Papa John's **Russia** men
 
 Get one Papa John's store. Returns one Papa John's store's published profile: address, phone, coordinates, general and pickup hours, timezone, Google Place id, and ordering link. The path comes from a store child returned by GET /papajohns/directory. Passing a directory path returns 404.
 
+### `partiful_city_facets`
+
+Get one facet of one Partiful region. Returns one facet of one Partiful (partiful.com) region: the requested slug, the facet value Partiful reports for it, its label, the month and date-range labels, the facet's featured events, the date and category facets Partiful offers alongside it, and the other regions it links. Each event carries its id, title, start and end time, timezone, status, cover image, canonical URL and venue name plus approximate city and neighborhood. The slug is validated locally against the complete fifteen-value set (events, today, tomorrow, this-week, this-weekend, thanksgiving, fall, popups, food, free-events, live-music, parties, run-clubs, trivia, lgbtq) because Partiful answers an unknown slug with a 200 that silently degrades to its unfiltered ANYTIME view; the response's facet value must match the slug, or the call fails as an upstream error rather than returning the wrong list. A slug Partiful does not serve for that region is reported as a 400 naming both values. Facet availability is per-region and seasonal, which is why the response carries the arrays rather than a fixed per-region promise. Private-party data is never returned.
+
+### `partiful_city_feed`
+
+Get one region's Partiful discover feed. Returns one Partiful (partiful.com) region's public discover feed: the region code and label, its trending carousel, every themed carousel, a flat feed of up to twenty featured events, and the category facets Partiful currently offers for that region. Each event carries its id, title, start and end time, timezone, status, cover image, canonical URL and venue name plus approximate city and neighborhood; pass an id to partiful-event for the full public event. This is a curated discovery feed, never a complete city catalogue: Partiful publishes a fixed slab and there is no page, cursor or offset parameter, so a page parameter is not accepted and coverage is only what Partiful chose to feature. Private-party data is never returned: guest lists, attendees, invite/RSVP state, ownerIds, host contacts, exact street addresses and RSVP counters are dropped, and non-public events are filtered out. Regions come from partiful-explore-cities.
+
+### `partiful_event`
+
+Get one public Partiful event. Returns one publicly listed Partiful (partiful.com) event: title, host-authored description, start and end time, timezone, status, cover image, canonical URL, venue name plus approximate city and neighborhood, host display names, the page's own advertised offers with a free signal, and the public events Partiful suggests. Take event_id from partiful-city-feed, partiful-city-facets or partiful-explore-cities; ids are twenty alphanumeric characters and are validated locally. An unknown id is a 404, and an event that is not public or requires a password is answered as a 404 because it belongs to the invite-link surface. Privacy is a hard scope limit: guest lists, attendee names and phone numbers, invite/RSVP state, ownerIds, host ids and contacts, exact street addresses and aggregate RSVP counters are never returned.
+
+### `partiful_explore_cities`
+
+List the three regions Partiful's Explore hub features. Returns the top of Partiful's (partiful.com) public Explore surface: the three regions its hub features (New York City, Los Angeles, San Francisco), each with the carousel's own title, subtitle, icon and featured events. Every event carries its id, title, start and end time, timezone, status, cover image, canonical partiful.com URL, and venue name plus approximate city and neighborhood. Private-party fields are never returned: guest lists, attendee names and phone numbers, invite/RSVP state, ownerIds, host contacts, exact street addresses and aggregate RSVP counters are dropped, and events flagged isPublic false or requiring a password are filtered out. This is also the discovery endpoint for the region parameter: its region codes are the complete nine-value set (NYC, LA, SF, CHI, ATX, BOS, DC, MIA, LON). Explore is a curated discovery feed, not a city catalogue: there is no pagination anywhere on this surface.
+
 ### `patreon_creator`
 
 Get a public Patreon creator profile. Returns public profile metadata from a creator's Patreon page: creator identity, summary, images, membership and creation counts, public earnings snapshot, membership/RSS availability flags, and public external profile links. handle is the creator's page handle, e.g. CachyOS for patreon.com/CachyOS.
@@ -10123,6 +10659,46 @@ Get PEOPLE top stories. Returns the current PEOPLE celebrity and entertainment t
 ### `people_sections`
 
 Get PEOPLE sections. Returns the full PEOPLE section/category navigation inventory (37 entries as of 2026-09-24), each with a slug, display name, and public listing URL. Use a returned slug as the section parameter on GET /people/headlines.
+
+### `petsmart_categories`
+
+List PetSmart's product categories. Returns PetSmart's category directory: every category path (for example Dog > Food > Dry Food) with its name, parent path and depth, about 1,400 in all, hierarchical so a parent path covers its descendants. A category's path is the value /petsmart/search and /petsmart/search/filters take as category. Filter with query (text in the path), parent (descendants of a path) and depth, and page through with page and limit. Ancestor paths that the directory does not list itself are included, since products carry them and they are valid category filters. Pass country=ca for the Canadian catalog.
+
+### `petsmart_product`
+
+Get one PetSmart product's full detail. Returns one product's full public detail by SKU: everything /petsmart/search returns plus the full description (as text and as PetSmart's HTML), short description, manufacturer name and SKU, every UPC, all category paths, the size and flavor variation options, current promotions, shipping dimensions and every other catalog attribute PetSmart publishes (life stage, food form, flavor, health considerations and so on) under attributes. An unknown SKU returns a 404. Pass country=ca for the Canadian catalog.
+
+### `petsmart_product_inventory`
+
+Get one PetSmart product's stock count per store. Returns how many units of a product PetSmart reports in each store, as store number and quantity, highest stock first, with totals over every store that has a record (stores_with_record, stores_in_stock, total_units). Narrow with store_id (repeatable) and min_quantity; limit caps the list (default 100, maximum 2000) without changing the totals. Store numbers are PetSmart's own; PetSmart's store locator is not available anonymously, so this endpoint does not map them to addresses. An unknown SKU returns a 404.
+
+### `petsmart_search`
+
+Search PetSmart products. Returns one page of PetSmart products from its catalog of about 20,000, optionally narrowed by keyword, category, brand, price range, minimum rating or any catalog filter, in six orderings (relevance, price_asc, price_desc, best_sellers, top_rated, new_arrivals). Each product carries its SKU id, master product id, name, brand, price (current, list and PetSmart's display text, with the range across sizes), images, rating and review count, primary category, pets, size, variations, UPC and availability flags (available online, in stock in stores, in-store only, online only, pickup and autoship eligible). total_results and total_pages describe the whole result set; PetSmart pages no deeper than 10,000 results, so narrow the search to reach the rest. Call /petsmart/categories and /petsmart/search/filters for the valid category and filter values; an unknown category path or filter name returns a 400 rather than an empty list. Pass country=ca for the Canadian catalog.
+
+### `petsmart_search_filters`
+
+List PetSmart's catalog filters and their values. Returns every filter PetSmart's catalog offers (about 120, such as brand, pet type, food form, size, flavor and life stage) with each filter's top values and product counts, scoped to the same search arguments /petsmart/search takes so the counts describe the result set that search would return. facet_names always lists every valid filter name for /petsmart/search's filter parameter. Pass facet to list one filter's values (up to 1,000) and facet_query to search within them, for example brand names containing blue; numeric_ranges reports the spread of numeric attributes such as price and rating over the scoped products. An unknown facet returns a 400. Pass country=ca for the Canadian catalog.
+
+### `petsmart_suggest`
+
+Get PetSmart search suggestions. Returns PetSmart's own search suggestions for partial text, each with its relative popularity and how many products it matches exactly. Useful for completing a search phrase before calling /petsmart/search. Pass country=ca for the Canadian catalog.
+
+### `pgatour_leaderboard`
+
+Get the website-default golf leaderboard. Returns the selected public golf resource with its native identity, tour and resolved season context. Player IDs retain significant leading zeroes.
+
+### `pgatour_players`
+
+Get a professional golf player directory. Returns the selected public golf resource with its native identity, tour and resolved season context. Player IDs retain significant leading zeroes.
+
+### `pgatour_schedule`
+
+Get the website-default golf schedule. Returns the selected public golf resource with its native identity, tour and resolved season context. Player IDs retain significant leading zeroes.
+
+### `pgatour_stats`
+
+Get the golf statistics overview. Returns the selected public golf resource with its native identity, tour and resolved season context. Player IDs retain significant leading zeroes.
 
 ### `phillyinquirer_article`
 
@@ -11502,7 +12078,7 @@ Rotten Tomatoes critic publications. Returns the publications one Rotten Tomatoe
 
 ### `rottentomatoes_critic_reviews`
 
-Rotten Tomatoes reviews by one critic. Returns the movie reviews published by one critic, newest first. Each review carries a stable 'id', ISO 'created_at'/'updated_at', the publication, the original article URL and a 'media' object naming the reviewed title (with its path, URL and poster). The list is pageable 'limit' reviews at a time, up to 500 deep: pass 'data.page_info.end_cursor' as 'after' and keep 'limit' the same while paging. It is read directly from Rotten Tomatoes' review feed ('data.transport' is 'feed_api', normally a second or two), with a slower browser fallback ('browser_render', at most five pages) when the feed cannot be read. A critic with no reviews returns 200 with an empty 'reviews' array; an unknown critic path returns 404. 'data.subject.kind' is 'critic' and 'data.subject.title' is the reviewer's display name as Rotten Tomatoes prints it.
+Rotten Tomatoes reviews by one critic. Returns the movie reviews published by one critic, newest first. Each review carries a stable 'id', ISO 'created_at'/'updated_at', the publication, the original article URL and a 'media' object naming the reviewed title (with its path, URL and poster). The list is pageable 'limit' reviews at a time: pass 'data.page_info.end_cursor' as 'after' and keep 'limit' the same while paging. It is read directly from Rotten Tomatoes' review feed ('data.transport' is 'feed_api', normally a second or two), with a slower browser fallback ('browser_render', at most five pages) when the feed cannot be read. A critic with no reviews returns 200 with an empty 'reviews' array; an unknown critic path returns 404. 'data.subject.kind' is 'critic' and 'data.subject.title' is the reviewer's display name as Rotten Tomatoes prints it.
 
 ### `rottentomatoes_critics_authors`
 
@@ -11542,7 +12118,7 @@ Rotten Tomatoes episode detail. Returns Rotten Tomatoes TV episode metadata, sco
 
 ### `rottentomatoes_episode_reviews`
 
-Rotten Tomatoes TV episode critic reviews. Returns the critic reviews of one TV episode, newest first, read the same way as the season and movie feeds. Reviews carry a stable 'id', ISO 'created_at'/'updated_at', the critic identity and the original article URL. The list is pageable 'limit' reviews at a time, up to 500 deep: pass 'data.page_info.end_cursor' as 'after' and keep 'limit' the same while paging. It is read directly from Rotten Tomatoes' review feed ('data.transport' is 'feed_api', normally about a second), with a slower browser fallback ('browser_render', at most five pages) when the feed cannot be read. Episode review lists are often small or empty: an episode nobody has reviewed yet returns 200 with an empty 'reviews' array. 'data.subject' identifies the episode.
+Rotten Tomatoes TV episode critic reviews. Returns the critic reviews of one TV episode, newest first, read the same way as the season and movie feeds. Reviews carry a stable 'id', ISO 'created_at'/'updated_at', the critic identity and the original article URL. The list is pageable 'limit' reviews at a time: pass 'data.page_info.end_cursor' as 'after' and keep 'limit' the same while paging. It is read directly from Rotten Tomatoes' review feed ('data.transport' is 'feed_api', normally about a second), with a slower browser fallback ('browser_render', at most five pages) when the feed cannot be read. Episode review lists are often small or empty: an episode nobody has reviewed yet returns 200 with an empty 'reviews' array. 'data.subject' identifies the episode.
 
 ### `rottentomatoes_movie`
 
@@ -11582,7 +12158,7 @@ Rotten Tomatoes season detail. Returns Rotten Tomatoes TV season metadata, score
 
 ### `rottentomatoes_season_reviews`
 
-Rotten Tomatoes TV season critic reviews. Returns the critic reviews of one TV season, newest first. Each review has a stable 'id', ISO 'created_at'/'updated_at' timestamps, the critic identity and the original article URL. The list is pageable 'limit' reviews at a time, up to 500 deep: pass 'data.page_info.end_cursor' as 'after' and keep 'limit' the same while paging. It is read directly from Rotten Tomatoes' review feed ('data.transport' is 'feed_api', normally about a second); if the feed cannot be read, the service may fall back to loading the season's reviews page in a browser ('transport: browser_render', much slower and at most five pages deep). A season with no critic reviews yet returns 200 with an empty 'reviews' array. 'data.subject' identifies the season. 'data.fetched_at', 'X-Cache' and 'X-Availability-Last-Success-*' describe freshness. Pass exactly one of 'path' or 'url'.
+Rotten Tomatoes TV season critic reviews. Returns the critic reviews of one TV season, newest first. Each review has a stable 'id', ISO 'created_at'/'updated_at' timestamps, the critic identity and the original article URL. The list is pageable 'limit' reviews at a time: pass 'data.page_info.end_cursor' as 'after' and keep 'limit' the same while paging. It is read directly from Rotten Tomatoes' review feed ('data.transport' is 'feed_api', normally about a second); if the feed cannot be read, the service may fall back to loading the season's reviews page in a browser ('transport: browser_render', much slower and at most five pages deep). A season with no critic reviews yet returns 200 with an empty 'reviews' array. 'data.subject' identifies the season. 'data.fetched_at', 'X-Cache' and 'X-Availability-Last-Success-*' describe freshness. Pass exactly one of 'path' or 'url'.
 
 ### `rottentomatoes_series`
 
@@ -12508,6 +13084,10 @@ SofaScore event managers. Returns the two managers (coaches) of a match with the
 
 SofaScore event odds. Returns one match's betting markets and choices. Returns 404 when SofaScore has no odds for the match.
 
+### `sofascore_event_player_actions`
+
+SofaScore football player action maps. Returns the spatial actions SofaScore tracks for one football player in a match, grouped into passes, dribbles, defensive actions and ball carries. Includes pitch coordinates, end coordinates when reported, and optional outcome and key-pass flags. Get the player id from event-lineups. An uncovered match or player returns 404.
+
 ### `sofascore_event_player_heatmap`
 
 SofaScore event player heatmap. Returns one player's touch locations in a football match as 'points', each an 'x' and 'y' on SofaScore's 0-100 pitch scale. Get 'player_id' from event-lineups. Returns 404 when SofaScore has no heatmap for that player in that match, which includes players who did not play, unstarted matches and sports other than football.
@@ -12535,6 +13115,10 @@ SofaScore event statistics. Returns one match's statistics (possession, shots, p
 ### `sofascore_event_team_heatmap`
 
 SofaScore event team heatmap. Returns one team's touch locations in a football match as 'player_points' (outfield players) and 'goalkeeper_points', each point an 'x' and 'y' on SofaScore's 0-100 pitch scale. 'team_id' must be the home or away team of the event; get both ids from the event endpoint. Returns 404 when SofaScore has no heatmap for that team in that match, which includes teams that did not play it, unstarted matches and sports other than football.
+
+### `sofascore_event_team_shotmap`
+
+SofaScore basketball team shot chart. Returns one team's shot chart in a basketball game, with the made, missed and saved counts at each court location in SofaScore's coordinate units. Pass the home or away team id from the event. An uncovered team or event returns 404.
 
 ### `sofascore_event_team_streaks`
 
@@ -15708,6 +16292,30 @@ Search the public web. Search Brave's public web results. limit (1-50, default 1
 
 Tech stack — detect what a website is built with. Fetches a public URL and fingerprints the web technologies it is built with — a BuiltWith / Wappalyzer-style detector. Returns a list of detected 'technologies', each with its 'categories', a 'confidence' ('high', 'medium', 'low'), an optional 'version', and the 'evidence' that matched. Covers JavaScript frameworks and libraries (React, Vue.js, Angular, Svelte, jQuery), web frameworks / static site generators (Next.js, Nuxt.js, Gatsby, Remix, SvelteKit, Astro, Hugo), CMS and website builders (WordPress, Drupal, Joomla, Ghost, Wix, Squarespace, Webflow), e-commerce (Shopify, WooCommerce, Magento, BigCommerce), analytics, ad pixels, and tag managers (Google Analytics, Google Tag Manager, Meta Pixel, LinkedIn, Bing, TikTok/Pinterest/Reddit pixels, Segment, Hotjar, Microsoft Clarity), CDNs, UI frameworks and fonts, payments (Stripe, PayPal, Klarna), live chat, marketing automation, A/B testing, consent management, CAPTCHAs (reCAPTCHA, hCaptcha, Turnstile), video, and search. It also inspects response headers to identify the web server (nginx, Apache, IIS), the CDN / hosting provider (Cloudflare, CloudFront, Fastly, Vercel, Netlify), and the server-side language / framework (PHP, ASP.NET, Ruby on Rails, Django, Laravel, Express). Results are directional, not exhaustive. The 'render' fetch strategy is one of 'browser' (headless browser that executes JavaScript — the default, so client-injected scripts like analytics, tag managers and pixels are detected), 'auto' (HTTP, escalating to a real browser only when blocked or JS-rendered), or 'http' (HTTP only, no JavaScript — fastest, but sees only the server HTML); defaults to 'browser'. Only public pages are supported; respect each site's terms of use and robots directives. Also returns 'unmatched_evidence' (when present) — third-party script/stylesheet host domains and a '<meta generator>' value the detector saw on the page but doesn't yet have a named signature for; useful for spotting a vendor worth requesting coverage for. 'is_infrastructure' flags a URL whose host looks like backend CDN/DNS/cloud-vendor infrastructure rather than a real, human-navigable website. 'reachable' is false only when the target could not be fetched at all (even after an automatic www./plain-HTTP retry) — 'technologies' may still be partially populated from DNS-based signals alone in that case, and 'failure_reason' explains what happened.
 
+### `webtoon_genre`
+
+List every series in one WEBTOON genre. Returns one WEBTOON (webtoons.com) genre listing: every series the site lists for that genre in one document, with each series' title number, title, genre label, authors when the card prints them, thumbnail, canonical URL, the site's own counter and the UP badge. The response carries the site's own series total for the genre when the page prints it. Genres come from webtoon-genres; sort is WEBTOON's own ordering control.
+
+### `webtoon_genres`
+
+List WEBTOON's complete genre taxonomy. Returns the complete WEBTOON (webtoons.com) genre list: 17 genres, each with its slug (pass it to webtoon-genre), display label and listing URL. This is the discovery endpoint for the genre parameter, so a caller never has to hard-code the set.
+
+### `webtoon_originals`
+
+List one day of WEBTOON's release calendar. Returns one day of WEBTOON's (webtoons.com) Originals release calendar: every series updating that day, with each series' title number, title, genre, authors, thumbnail, canonical URL, the site's own counter and the UP badge. The complete day is one document, so there is no paging. Use the complete tab for finished series.
+
+### `webtoon_rankings`
+
+List one WEBTOON chart. Returns one fixed WEBTOON (webtoons.com) chart: thirty ranked series with rank position, title number, title, genre, thumbnail, canonical URL and the site's own counter. Four tabs exist; the chart size is fixed and there is no paging.
+
+### `webtoon_search`
+
+Search WEBTOON series by keyword. Returns one page of WEBTOON (webtoons.com) search results, grouped into the page's own ORIGINALS and CANVAS sections. Each card carries its title number, title, authors, genre path segment, absolute URL, thumbnail, WEBTOON's own view counter, UP badge, adult flag and normalized webtoon_type; pass a card's title_no to webtoon-series for episode metadata. scope selects the site's own tab: all (the default) is a combined preview of at most 12 cards per section and cannot be paged, while originals and canvas serve up to 30 cards per page and return an empty sections list for a page past the end. A keyword that matches nothing is a valid 200 with no sections. Search cards carry no genre label, so genre is the hyphenated path segment from the card's own href (map it through webtoon-genres for webtoon-genre) and is empty for canvas cards.
+
+### `webtoon_series`
+
+Get a WEBTOON series with a page of its episode list. Returns one WEBTOON (webtoons.com) series: title, genre, authors, summary, cover, the site's own view and subscribe counters, the release-day line, and a ten-episode page window (episode number, title, release date, thumbnail, viewer URL, UP badge). Take title_no from any listing endpoint's card. The page window is fixed at ten episodes and WEBTOON publishes no total episode count, so has_next_page is a window-size signal, not an exact remaining count. An unknown title number is a 404. Panel images and Fast Pass state are never returned.
+
 ### `wendys_categories`
 
 List Wendy's national menu categories. Returns every category on Wendy's national (restaurant-agnostic) menu, grouped by which of Wendy's own top-level day-parts (Lunch/Dinner, Breakfast) it appears under -- a few categories such as Coffee and Beverages appear under both. No restaurant selection is required; this is the same catalog a signed-out visitor sees before ever picking a location. Each category's slug is what GET /wendys/menu takes.
@@ -15879,6 +16487,14 @@ Get a Wall Street Journal article's content. Returns one Wall Street Journal art
 ### `wsj_author`
 
 Get a Wall Street Journal author's profile and recent articles. Returns one Wall Street Journal author's profile (name, job title, bio, and social links when available) and the recent articles listed on their author page, read directly from the live page. The author page sits behind the same access wall as article pages, so a nonexistent author slug returns 404.
+
+### `wta_countries`
+
+Discover WTA ranking country and region codes. Returns the source codes and labels used by player rankings. ALL omits the nationality filter. Team race rankings do not have a country selector.
+
+### `wta_rankings`
+
+Get WTA player or team rankings. Returns native ranks, points, tournament counts, movement and player identity. Player views preserve the actual published rankedAt value. Team rows retain both players and do not fabricate a ranking date.
 
 ### `x_post`
 
