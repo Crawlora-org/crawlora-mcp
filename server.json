@@ -2,7 +2,7 @@
   "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
   "name": "net.crawlora/crawlora-mcp",
   "title": "Crawlora MCP",
-  "description": "Hosted MCP: 4646 structured web-data tools across 530 platform groups.",
+  "description": "Hosted MCP: 4684 structured web-data tools across 534 platform groups.",
   "version": "1.17.20",
   "websiteUrl": "https://crawlora.net/mcp",
   "repository": {

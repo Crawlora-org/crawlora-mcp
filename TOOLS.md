@@ -1,6 +1,6 @@
 # Crawlora MCP tool catalog
 
-Every tool the Crawlora MCP server exposes (4646), generated from [`tools.json`](./tools.json); do not edit manually. See the [README](./README.md) for setup and an index by platform.
+Every tool the Crawlora MCP server exposes (4684), generated from [`tools.json`](./tools.json); do not edit manually. See the [README](./README.md) for setup and an index by platform.
 
 ## Tools
 
@@ -4212,6 +4212,10 @@ Get E! News top stories. Returns up to 30 top stories from the US edition of E! 
 
 Get E! News sections. Lists the 12 E! News sections accepted by 'eonline-headlines', from 'top_stories', 'tv' and 'movies' to 'royals', 'fashion' and 'shop'. Each entry has the 'slug', 'name' and feed 'url'. The list is curated from the main navigation hubs and major tag feeds, not every tag.
 
+### `epicgames_free_promotions`
+
+Get Epic Games Store free promotions. Returns the store's current and upcoming promotion offers for the requested locale and country. The response preserves the upstream Catalog searchStore payload and its promotion windows; a zero price alone does not mean an offer is part of a limited-time promotion.
+
 ### `espn_athlete`
 
 ESPN athlete. Returns one athlete's bio/overview (name, position, jersey, physicals, current team). The 'sport' enum accepts 'football', 'basketball', 'baseball', 'hockey', and 'soccer'. The 'league' enum accepts 'nfl', 'college-football', 'nba', 'wnba', 'mens-college-basketball', 'womens-college-basketball', 'mlb', 'nhl', 'eng.1', 'esp.1', 'ita.1', 'ger.1', 'fra.1', 'usa.1', and 'uefa.champions'; it must be valid for the chosen sport.
@@ -7263,6 +7267,18 @@ List Healthgrades physician specialties. Returns every specialty name and direct
 ### `healthgrades_top_searches`
 
 List popular Healthgrades searches. Returns the popular specialty searches Healthgrades currently suggests, in 'groups'. Each group has a category, a title such as Popular Healthcare Specialties, and suggestions with a label and value. The set changes over time and is not a fixed list.
+
+### `hearthstone_card`
+
+Get a Hearthstone card by ID. Returns one card from the public Hearthstone card library. The card record and pagination metadata preserve the upstream response shape.
+
+### `hearthstone_card_filters`
+
+List Hearthstone card gallery filters. Returns the card gallery's current filter collections and sort options. Filter values come from the gallery page configuration; sort slugs come from its current hashed card bundle.
+
+### `hearthstone_cards`
+
+List Hearthstone cards. Returns a card-gallery page with native constructed, Battlegrounds, Mercenaries, and card-back filters. Dynamic filter values are discoverable from hearthstone_filters; sort mappings are returned there as well. The default view is all-class Standard with page size 450.
 
 ### `hermes_categories`
 
@@ -10328,6 +10344,10 @@ NBA homepage leader board. Returns the homepage leader board for one category. T
 
 NBA hustle statistics for one game. Returns the hustle statistics for one game: minutes plus contested shots (overall, two-point and three-point), deflections, charges drawn, screen assists and screen-assist points, loose balls recovered (offensive, defensive and total) and box-outs. Marker-verified columns are PLAYER_ID, TEAM_ID, MINUTES, CONTESTED_SHOTS, CONTESTED_SHOTS_2PT, CONTESTED_SHOTS_3PT, DEFLECTIONS, CHARGES_DRAWN, SCREEN_ASSISTS, SCREEN_AST_PTS, OFF_LOOSE_BALLS_RECOVERED, DEF_LOOSE_BALLS_RECOVERED, LOOSE_BALLS_RECOVERED and BOX_OUTS; the sampled BOX_OUTS_PLAYER and BOX_OUTS_TEAM names did not match and are not claimed.
 
+### `nba_hustle_team`
+
+Returns the league's team hustle table: contested shots, deflections, charges drawn, screen assists and points, loose balls recovered and box-outs. Returns the league's team hustle table: contested shots, deflections, charges drawn, screen assists and points, loose balls recovered and box-outs.
+
 ### `nba_league_game_log`
 
 NBA game log for a season, by team or by player. Returns every game in a season as the league's game log. With player_or_team=T each row is one team-game and carries GAME_ID, TEAM_ID, GAME_DATE, MATCHUP, WL, MIN, PTS, PLUS_MINUS and VIDEO_AVAILABLE; with player_or_team=P each row is one player-game (the same identity columns plus PLAYER_ID and PLAYER_NAME) and the payload grows to several hundred KB. direction orders the log newest-first (DESC) or chronologically (ASC).
@@ -10339,6 +10359,10 @@ NBA lineup dashboard. Returns the lineup dashboard for one lineup size and measu
 ### `nba_news`
 
 NBA news articles from nba.com. Returns the news articles nba.com is currently featuring, read from the page's embedded JSON state: article id, title, slug, canonical permalink, excerpt, publication and modification timestamps, publish status, word count and the primary section name and slug. Permalinks are the canonical article URLs, so a caller can link straight to a story without building a URL.
+
+### `nba_opp_pt_shot`
+
+Returns the league's opponent shooting table: one row per team with the shooting it allows, split overall and from three. Returns the league's opponent shooting table: one row per team with the shooting it allows, split overall and from three.
 
 ### `nba_play_by_play`
 
@@ -10356,17 +10380,37 @@ NBA league bio table. Returns the league bio table for a season: each player's h
 
 NBA player season-by-season and career statistics. Returns one player's career statistics as several tables: the season-by-season regular-season line, the career regular-season totals, the season-by-season postseason line and the career postseason totals. Verified columns are SEASON_ID, TEAM_ID, GP, GS, MIN and PTS. per_mode PerGame or Totals is validated against the values verified on this endpoint.
 
+### `nba_player_clutch`
+
+Returns the league's clutch player table for one clutch window and score margin: the players' clutch shooting and counting stats. Returns the league's clutch player table for one clutch window and score margin: the players' clutch shooting and counting stats.
+
 ### `nba_player_dash_pt_shots`
 
 NBA player tracking shot dashboard. Returns one player's tracking shot dashboard as several result sets (overall, and the tracking breakdowns the upstream returns). The endpoint rejects a trimmed query with HTTP 500, so the full dashboard scope set is always sent.
+
+### `nba_player_game_logs`
+
+Returns one player's game log for a season, one row per game with the player's box-score line. Returns one player's game log for a season, one row per game with the player's box-score line.
 
 ### `nba_player_info`
 
 NBA player profile. Returns one player's league profile: full name forms, birth date, school and country, draft year and round, jersey number, position, height and weight, team identity and season experience. Take the player id from nba-players or nba-team-roster.
 
+### `nba_player_profile_v2`
+
+Returns one player's full profile stat set: the season-by-season regular-season line, the career regular-season totals and the postseason equivalents. Returns one player's full profile stat set: the season-by-season regular-season line, the career regular-season totals and the postseason equivalents.
+
+### `nba_player_pt_shot`
+
+Returns the league's player shooting table: one row per player with the shooting line, split overall and from three. Returns the league's player shooting table: one row per player with the shooting line, split overall and from three.
+
 ### `nba_player_stats`
 
 NBA league-wide player statistics table. Returns the league-wide player statistics table for one season, measure and aggregation: one row per player with the columns the source publishes for that measure, keyed by the source's own column names such as PLAYER_ID, PLAYER_NAME, TEAM_ID, GP, MIN, PTS, REB and AST. Base and Advanced are the two verified measures, and PerGame and Totals the two verified aggregations; read the response's headers list rather than assuming a fixed column set.
+
+### `nba_player_streak_finder`
+
+Returns player game streaks for a season: the streak rows the upstream computes, one row per streak, with the player identity and streak totals. Returns player game streaks for a season: the streak rows the upstream computes, one row per streak, with the player identity and streak totals.
 
 ### `nba_players`
 
@@ -10396,9 +10440,33 @@ NBA standings for a season and season type. Returns the standings table for one 
 
 NBA synergy play-type dashboard. Returns the synergy play-type dashboard for one play type and grouping. This endpoint takes a four-digit SeasonYear rather than the dashboards' YYYY-YY season label. play_type is pinned to the one verified value, Isolation, and type_grouping to the verified offensive grouping.
 
+### `nba_team_dash_pt_pass`
+
+Returns one team's passing dashboard: the pass-type breakdowns the upstream computes for that team, as several result sets. Returns one team's passing dashboard: the pass-type breakdowns the upstream computes for that team, as several result sets.
+
+### `nba_team_dash_pt_shots`
+
+Returns one team's tracking shot dashboard: the shot breakdowns the upstream computes for that team (by touch time and shot type), as several result sets. Returns one team's tracking shot dashboard: the shot breakdowns the upstream computes for that team (by touch time and shot type), as several result sets.
+
 ### `nba_team_details`
 
 NBA franchise background, season history and awards. Returns one franchise's detail from the league statistics service: the franchise background row (team id, abbreviation, nickname, city, arena and capacity, owner, general manager, head coach, G-League affiliate, founding year), its season-by-season history, and its championship awards. Verified columns are TEAM_ID, ABBREVIATION, NICKNAME, CITY, ARENA, ARENACAPACITY, OWNER, GENERALMANAGER, HEADCOACH, DLEAGUEAFFILIATION and YEARFOUNDED on TeamBackground, plus YEARAWARDED and OPPOSITETEAM on TeamAwardsChampionships; the upstream sends more columns than were confirmed here and they are passed through as-is.
+
+### `nba_team_game_logs`
+
+Returns one team's game log for a season, one row per game with the team's box-score line (field goals, threes, rebounds, assists, steals, blocks, turnovers, points and plus-minus). Returns one team's game log for a season, one row per game with the team's box-score line (field goals, threes, rebounds, assists, steals, blocks, turnovers, points and plus-minus).
+
+### `nba_team_info_common`
+
+Returns one team's identity and season summary: city, name, abbreviation, code, conference and division, the win/loss record and per-game team averages, plus the team's available seasons. Returns one team's identity and season summary: city, name, abbreviation, code, conference and division, the win/loss record and per-game team averages, plus the team's available seasons.
+
+### `nba_team_on_off`
+
+Returns a team's on-court/off-court player splits: the on-court and off-court rows the upstream computes, with each player's minutes and rating impact. Returns a team's on-court/off-court player splits: the on-court and off-court rows the upstream computes, with each player's minutes and rating impact.
+
+### `nba_team_pt_shot`
+
+Returns the league's team shooting table: one row per team with the shooting line, split overall and from three. Returns the league's team shooting table: one row per team with the shooting line, split overall and from three.
 
 ### `nba_team_roster`
 
@@ -10415,6 +10483,10 @@ NBA league-wide team statistics table. Returns the league-wide team statistics t
 ### `nba_team_stats_leaders`
 
 NBA league leaders for one statistical category. Returns the league leaders table for one ranked statistical category: one row per player with the columns the source publishes, keyed by the source's own column names such as PLAYER_ID, PLAYER_NAME, TEAM_ID, GP, MIN, PTS, REB and AST. stat_category is required and only the verified categories are accepted; the upstream answers HTTP 403 when it is omitted, so this route rejects the request locally instead.
+
+### `nba_team_years`
+
+Returns every franchise and the range of seasons it has played, one row per team. Returns every franchise and the range of seasons it has played, one row per team.
 
 ### `nbc_article`
 
@@ -10699,6 +10771,26 @@ List NFHS Network states and territories. Returns the complete state list NFHS N
 ### `nfhs_suggest`
 
 Typeahead school and association suggestions. Returns typeahead suggestions for a partial name (at least 3 characters). The profiles scope (default) returns schools and state associations, matching the site's global search box; the schools scope returns schools only. Each item uses the school shape, so school items carry the full school identity and location fields. Use nfhs-schools for a paginated filtered search instead.
+
+### `nhl_gamecenter_boxscore`
+
+Get NHL game boxscore. Returns the upstream gamecenter boxscore for one NHL game ID, preserving the source's team and player statistics.
+
+### `nhl_gamecenter_play_by_play`
+
+Get NHL game play by play. Returns the upstream gamecenter play-by-play for one NHL game ID, preserving the source event sequence and team/player fields.
+
+### `nhl_schedule`
+
+Get NHL schedule. Returns the NHL schedule resource for the requested ISO date. Omitting date uses the upstream 'now' resource. The response preserves game IDs, game state, and source schedule structure.
+
+### `nhl_seasons`
+
+List NHL seasons. Returns the NHL API's native season catalog without additional filtering or derived fields.
+
+### `nhl_standings`
+
+Get NHL standings. Returns the NHL standings resource for the requested ISO date. Omitting date uses the upstream 'now' resource. The response preserves NHL team IDs, standings fields, and source dates.
 
 ### `nike_categories`
 
@@ -13587,6 +13679,66 @@ Sephora store locator. Returns Sephora physical store locations near a coordinat
 ### `sephora_suggest`
 
 Sephora search suggestions. Returns Sephora's own search-box type-ahead suggestions for a partial keyword: keyword-completion terms, matching products, and trending/related categories. Sephora's own upstream never returns a genuine zero-result state for a nonempty query -- a deliberately nonsense query still returns unrelated product suggestions.
+
+### `serebii_pokemongo_event_categories`
+
+List Serebii Pokémon GO event category pages. Returns the nine native event category pages linked from the Pokémon GO event index.
+
+### `serebii_pokemongo_event_detail_community_day`
+
+Get a Serebii Pokémon GO Community Day page. Returns the public tables from one native Community Day detail page. Linked pages and media are not fetched.
+
+### `serebii_pokemongo_event_detail_global`
+
+Get a Serebii Pokémon GO global event page. Returns the public tables from one native Global Events detail page. Linked pages and media are not fetched.
+
+### `serebii_pokemongo_event_detail_hatch_day`
+
+Get a Serebii Pokémon GO Hatch Day page. Returns the public tables from one native Hatch Day detail page. Linked pages and media are not fetched.
+
+### `serebii_pokemongo_event_detail_incense_day`
+
+Get a Serebii Pokémon GO Incense Day page. Returns the public tables from one native Incense Day detail page. Linked pages and media are not fetched.
+
+### `serebii_pokemongo_event_detail_max_battle_day`
+
+Get a Serebii Pokémon GO Max Battle Day page. Returns the public tables from one native Max Battle Day detail page. Linked pages and media are not fetched.
+
+### `serebii_pokemongo_event_detail_raid_day`
+
+Get a Serebii Pokémon GO Raid Day page. Returns the public tables from one native Raid Day detail page. Linked pages and media are not fetched.
+
+### `serebii_pokemongo_event_detail_real_life`
+
+Get a Serebii Pokémon GO real-life event page. Returns the public tables from one native Real Life Events detail page. Linked pages and media are not fetched.
+
+### `serebii_pokemongo_event_detail_research_day`
+
+Get a Serebii Pokémon GO Research Day page. Returns the public tables from one native Research Day detail page. Linked pages and media are not fetched.
+
+### `serebii_pokemongo_event_detail_ticket`
+
+Get a Serebii Pokémon GO ticket event page. Returns the public tables from one native Ticket Events detail page. Linked pages and media are not fetched.
+
+### `serebii_pokemongo_event_only_moves`
+
+List Serebii Pokémon GO event-only move tables. Returns Serebii's Fast Attacks and Charge Attacks tables for moves identified as event-only.
+
+### `serebii_pokemongo_event_only_research`
+
+List Serebii Pokémon GO event-only field research. Returns the rows from Serebii's Event Only Field Research table.
+
+### `serebii_pokemongo_events`
+
+List events from a Serebii Pokémon GO category page. Returns the rows from one native Serebii Pokémon GO event category page, preserving source order and date labels.
+
+### `serebii_pokemongo_spotlight_hours`
+
+List Serebii Pokémon GO Spotlight Hour archive rows. Returns rows from Serebii's historical Spotlight Hour table. The source dates are labels and do not represent a current or future schedule.
+
+### `serebii_pokemongo_unown_events`
+
+List Serebii Pokémon GO Unown event locations. Returns the rows from Serebii's Unown Event Locations archive, including source date, event, locations, letters, and restrictions.
 
 ### `sevennewsau_article`
 

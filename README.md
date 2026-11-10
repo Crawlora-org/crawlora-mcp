@@ -7,7 +7,7 @@
 [![crawlora-mcp MCP server](https://glama.ai/mcp/servers/Crawlora-org/crawlora-mcp/badges/score.svg)](https://glama.ai/mcp/servers/Crawlora-org/crawlora-mcp)
 
 **Crawlora MCP** is a **hosted** Model Context Protocol server that gives AI clients and
-agents **4646 structured public‑web‑data tools** across 530 platform groups — search, maps,
+agents **4684 structured public‑web‑data tools** across 534 platform groups — search, maps,
 e‑commerce, social, finance, travel, app stores, media, and reviews — each returning clean,
 normalized **JSON** instead of HTML to parse.
 
@@ -155,7 +155,7 @@ Any client that speaks **Streamable HTTP** can use the generic config in
 
 ## Run it locally (open‑source server)
 
-This repo also ships a small **stdio** MCP server (`index.mjs`) that exposes the same **4646
+This repo also ships a small **stdio** MCP server (`index.mjs`) that exposes the same **4684
 tools**, each wrapping the Crawlora REST API (`https://api.crawlora.net/api/v1`) with your
 `CRAWLORA_API_KEY`. Useful if you'd rather run the server yourself than use the hosted endpoint.
 
@@ -208,7 +208,7 @@ Every account includes **2,000 free credits / month** with no credit card requir
 
 ---
 
-## What you can call (4646 tools / 530 platform groups)
+## What you can call (4684 tools / 534 platform groups)
 
 See [`tools.json`](./tools.json) or your MCP client UI for exact schemas, the [index of every tool by platform](#tools) at the end of this README, and [`TOOLS.md`](./TOOLS.md) for each tool's description. Below is an overview by category:
 
@@ -230,7 +230,7 @@ See [`tools.json`](./tools.json) or your MCP client UI for exact schemas, the [i
 
 ## Why Crawlora MCP?
 
-- **One key, 4646 tools** — search, commerce, social, gaming, finance, and more behind a single MCP endpoint.
+- **One key, 4684 tools** — search, commerce, social, gaming, finance, and more behind a single MCP endpoint.
 - **Structured JSON, not HTML** — every tool returns normalized fields, so an agent can use the result without writing a parser.
 - **Hosted or local** — connect to the hosted Streamable HTTP endpoint with no install, or run the open-source stdio server from this repo with `npx` or Docker.
 - **Free to start** — 2,000 credits per month with no credit card.
@@ -252,7 +252,7 @@ See [`LICENSE`](LICENSE). The Crawlora MCP service itself is a hosted SaaS gover
 
 ## Tools
 
-All 4646 tools by platform, generated from [`tools.json`](./tools.json). [`TOOLS.md`](./TOOLS.md) has the description of every tool.
+All 4684 tools by platform, generated from [`tools.json`](./tools.json). [`TOOLS.md`](./TOOLS.md) has the description of every tool.
 
 <!-- BEGIN MCP.SO TOOLS: generated from tools.json; do not edit manually -->
 - **1stdibs** (4): `firstdibs_categories`, `firstdibs_designers`, `firstdibs_product`, `firstdibs_search`
@@ -381,6 +381,7 @@ All 4646 tools by platform, generated from [`tools.json`](./tools.json). [`TOOLS
 - **economictimes** (5): `economictimes_article`, `economictimes_author`, `economictimes_headlines`, `economictimes_news`, `economictimes_sections`
 - **engadget** (5): `engadget_article`, `engadget_author`, `engadget_headlines`, `engadget_news`, `engadget_sections`
 - **eonline** (5): `eonline_article`, `eonline_author`, `eonline_headlines`, `eonline_news`, `eonline_sections`
+- **epicgames** (1): `epicgames_free_promotions`
 - **espn** (9): `espn_athlete`, `espn_game_summary`, `espn_news`, `espn_rankings`, `espn_scoreboard`, `espn_standings`, `espn_team`, `espn_team_roster`, `espn_teams`
 - **etsy** (7): `etsy_listing`, `etsy_listing_reviews`, `etsy_search`, `etsy_shop`, `etsy_shop_listings`, `etsy_shop_reviews`, `etsy_shop_search`
 - **euronews** (5): `euronews_article`, `euronews_author`, `euronews_headlines`, `euronews_news`, `euronews_sections`
@@ -450,6 +451,7 @@ All 4646 tools by platform, generated from [`tools.json`](./tools.json). [`TOOLS
 - **gymshark** (10): `gymshark_collection_products`, `gymshark_collections`, `gymshark_page`, `gymshark_pages`, `gymshark_product`, `gymshark_product_recommendations`, `gymshark_products`, `gymshark_sitemap_urls`, `gymshark_sitemaps`, `gymshark_store`
 - **hbr** (4): `hbr_article`, `hbr_categories`, `hbr_headlines`, `hbr_topic`
 - **healthgrades** (16): `healthgrades_autocomplete`, `healthgrades_facilities_filters`, `healthgrades_facilities_search`, `healthgrades_facility`, `healthgrades_health_article`, `healthgrades_health_articles`, `healthgrades_health_topics`, `healthgrades_hospital`, `healthgrades_hospital_award_filters`, `healthgrades_hospital_awards`, `healthgrades_locations`, `healthgrades_physician`, `healthgrades_physicians_filters`, `healthgrades_physicians_search`, `healthgrades_specialties`, `healthgrades_top_searches`
+- **hearthstone** (3): `hearthstone_card`, `hearthstone_card_filters`, `hearthstone_cards`
 - **hermes** (8): `hermes_categories`, `hermes_category`, `hermes_product`, `hermes_product_recommendations`, `hermes_products`, `hermes_search`, `hermes_stores`, `hermes_suggest`
 - **hindustantimes** (5): `hindustantimes_article`, `hindustantimes_author`, `hindustantimes_headlines`, `hindustantimes_news`, `hindustantimes_sections`
 - **hltv** (9): `hltv_event`, `hltv_events`, `hltv_match`, `hltv_matches`, `hltv_player`, `hltv_rankings`, `hltv_results`, `hltv_search`, `hltv_team`
@@ -540,7 +542,7 @@ All 4646 tools by platform, generated from [`tools.json`](./tools.json). [`TOOLS
 - **nationafrica** (5): `nationafrica_article`, `nationafrica_author`, `nationafrica_headlines`, `nationafrica_news`, `nationafrica_sections`
 - **national** (5): `national_article`, `national_author`, `national_headlines`, `national_news`, `national_sections`
 - **nationalpost** (5): `nationalpost_article`, `nationalpost_author`, `nationalpost_headlines`, `nationalpost_news`, `nationalpost_sections`
-- **nba** (37): `nba_box_score`, `nba_box_score_advanced`, `nba_box_score_four_factors`, `nba_box_score_misc`, `nba_box_score_player_track`, `nba_box_score_scoring`, `nba_box_score_usage`, `nba_common_all_players`, `nba_draft_combine_anthro`, `nba_enums`, `nba_franchise_history`, `nba_game_detail`, `nba_games`, `nba_homepage_leaders`, `nba_hustle_stats`, `nba_league_game_log`, `nba_lineups`, `nba_news`, `nba_play_by_play`, `nba_player_awards`, `nba_player_bio_stats`, `nba_player_career_stats`, `nba_player_dash_pt_shots`, `nba_player_info`, `nba_player_stats`, `nba_players`, `nba_playoff_picture`, `nba_pt_defend`, `nba_pt_stats`, `nba_scoreboard`, `nba_standings`, `nba_synergy_play_types`, `nba_team_details`, `nba_team_roster`, `nba_team_shot_locations`, `nba_team_stats`, `nba_team_stats_leaders`
+- **nba** (51): `nba_box_score`, `nba_box_score_advanced`, `nba_box_score_four_factors`, `nba_box_score_misc`, `nba_box_score_player_track`, `nba_box_score_scoring`, `nba_box_score_usage`, `nba_common_all_players`, `nba_draft_combine_anthro`, `nba_enums`, `nba_franchise_history`, `nba_game_detail`, `nba_games`, `nba_homepage_leaders`, `nba_hustle_stats`, `nba_hustle_team`, `nba_league_game_log`, `nba_lineups`, `nba_news`, `nba_opp_pt_shot`, `nba_play_by_play`, `nba_player_awards`, `nba_player_bio_stats`, `nba_player_career_stats`, `nba_player_clutch`, `nba_player_dash_pt_shots`, `nba_player_game_logs`, `nba_player_info`, `nba_player_profile_v2`, `nba_player_pt_shot`, `nba_player_stats`, `nba_player_streak_finder`, `nba_players`, `nba_playoff_picture`, `nba_pt_defend`, `nba_pt_stats`, `nba_scoreboard`, `nba_standings`, `nba_synergy_play_types`, `nba_team_dash_pt_pass`, `nba_team_dash_pt_shots`, `nba_team_details`, `nba_team_game_logs`, `nba_team_info_common`, `nba_team_on_off`, `nba_team_pt_shot`, `nba_team_roster`, `nba_team_shot_locations`, `nba_team_stats`, `nba_team_stats_leaders`, `nba_team_years`
 - **nbc** (5): `nbc_article`, `nbc_author`, `nbc_headlines`, `nbc_news`, `nbc_sections`
 - **ndtv** (12): `ndtv_article`, `ndtv_author`, `ndtv_headlines`, `ndtv_latest_videos`, `ndtv_live_blog`, `ndtv_live_blogs`, `ndtv_news`, `ndtv_search`, `ndtv_sections`, `ndtv_video`, `ndtv_video_categories`, `ndtv_videos`
 - **netshort** (8): `netshort_browse`, `netshort_genres`, `netshort_home`, `netshort_label`, `netshort_plots`, `netshort_search`, `netshort_title`, `netshort_toplist`
@@ -551,6 +553,7 @@ All 4646 tools by platform, generated from [`tools.json`](./tools.json). [`TOOLS
 - **newsweek** (5): `newsweek_article`, `newsweek_author`, `newsweek_headlines`, `newsweek_news`, `newsweek_sections`
 - **newyorker** (5): `newyorker_article`, `newyorker_author`, `newyorker_headlines`, `newyorker_news`, `newyorker_sections`
 - **nfhs** (17): `nfhs_activities`, `nfhs_affiliate`, `nfhs_affiliates`, `nfhs_association`, `nfhs_associations`, `nfhs_event`, `nfhs_events`, `nfhs_filters`, `nfhs_highlights`, `nfhs_producer`, `nfhs_publisher`, `nfhs_school`, `nfhs_schools`, `nfhs_search`, `nfhs_sports`, `nfhs_states`, `nfhs_suggest`
+- **nhl** (5): `nhl_gamecenter_boxscore`, `nhl_gamecenter_play_by_play`, `nhl_schedule`, `nhl_seasons`, `nhl_standings`
 - **nike** (9): `nike_categories`, `nike_product`, `nike_product_availability`, `nike_product_details`, `nike_product_recommendations`, `nike_product_reviews`, `nike_search`, `nike_stores`, `nike_suggest`
 - **ninetofivegoogle** (5): `ninetofivegoogle_article`, `ninetofivegoogle_author`, `ninetofivegoogle_headlines`, `ninetofivegoogle_news`, `ninetofivegoogle_sections`
 - **ninetofivemac** (5): `ninetofivemac_article`, `ninetofivemac_author`, `ninetofivemac_headlines`, `ninetofivemac_news`, `ninetofivemac_sections`
@@ -637,6 +640,7 @@ All 4646 tools by platform, generated from [`tools.json`](./tools.json). [`TOOLS
 - **seattletimes** (5): `seattletimes_article`, `seattletimes_author`, `seattletimes_headlines`, `seattletimes_news`, `seattletimes_sections`
 - **sec** (10): `sec_company_intelligence`, `sec_company_search`, `sec_company_submissions`, `sec_filing`, `sec_filing_sections`, `sec_financials`, `sec_frames`, `sec_full_text_search`, `sec_insider`, `sec_institutional_holdings`
 - **sephora** (9): `sephora_brands`, `sephora_categories`, `sephora_category`, `sephora_product`, `sephora_product_questions`, `sephora_product_reviews`, `sephora_search`, `sephora_stores`, `sephora_suggest`
+- **serebii** (15): `serebii_pokemongo_event_categories`, `serebii_pokemongo_event_detail_community_day`, `serebii_pokemongo_event_detail_global`, `serebii_pokemongo_event_detail_hatch_day`, `serebii_pokemongo_event_detail_incense_day`, `serebii_pokemongo_event_detail_max_battle_day`, `serebii_pokemongo_event_detail_raid_day`, `serebii_pokemongo_event_detail_real_life`, `serebii_pokemongo_event_detail_research_day`, `serebii_pokemongo_event_detail_ticket`, `serebii_pokemongo_event_only_moves`, `serebii_pokemongo_event_only_research`, `serebii_pokemongo_events`, `serebii_pokemongo_spotlight_hours`, `serebii_pokemongo_unown_events`
 - **sevennewsau** (5): `sevennewsau_article`, `sevennewsau_author`, `sevennewsau_headlines`, `sevennewsau_news`, `sevennewsau_sections`
 - **sfgate** (5): `sfgate_article`, `sfgate_author`, `sfgate_headlines`, `sfgate_news`, `sfgate_sections`
 - **shakeshack** (4): `shakeshack_locations`, `shakeshack_menu`, `shakeshack_nearby`, `shakeshack_store`
