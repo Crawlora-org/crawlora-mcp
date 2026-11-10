@@ -7,7 +7,7 @@
 [![crawlora-mcp MCP server](https://glama.ai/mcp/servers/Crawlora-org/crawlora-mcp/badges/score.svg)](https://glama.ai/mcp/servers/Crawlora-org/crawlora-mcp)
 
 **Crawlora MCP** is a **hosted** Model Context Protocol server that gives AI clients and
-agents **4340 structured public‑web‑data tools** across 517 platform groups — search, maps,
+agents **4684 structured public‑web‑data tools** across 534 platform groups — search, maps,
 e‑commerce, social, finance, travel, app stores, media, and reviews — each returning clean,
 normalized **JSON** instead of HTML to parse.
 
@@ -155,7 +155,7 @@ Any client that speaks **Streamable HTTP** can use the generic config in
 
 ## Run it locally (open‑source server)
 
-This repo also ships a small **stdio** MCP server (`index.mjs`) that exposes the same **4340
+This repo also ships a small **stdio** MCP server (`index.mjs`) that exposes the same **4684
 tools**, each wrapping the Crawlora REST API (`https://api.crawlora.net/api/v1`) with your
 `CRAWLORA_API_KEY`. Useful if you'd rather run the server yourself than use the hosted endpoint.
 
@@ -208,7 +208,7 @@ Every account includes **2,000 free credits / month** with no credit card requir
 
 ---
 
-## What you can call (4340 tools / 517 platform groups)
+## What you can call (4684 tools / 534 platform groups)
 
 See [`tools.json`](./tools.json) or your MCP client UI for exact schemas, the [index of every tool by platform](#tools) at the end of this README, and [`TOOLS.md`](./TOOLS.md) for each tool's description. Below is an overview by category:
 
@@ -230,7 +230,7 @@ See [`tools.json`](./tools.json) or your MCP client UI for exact schemas, the [i
 
 ## Why Crawlora MCP?
 
-- **One key, 4340 tools** — search, commerce, social, gaming, finance, and more behind a single MCP endpoint.
+- **One key, 4684 tools** — search, commerce, social, gaming, finance, and more behind a single MCP endpoint.
 - **Structured JSON, not HTML** — every tool returns normalized fields, so an agent can use the result without writing a parser.
 - **Hosted or local** — connect to the hosted Streamable HTTP endpoint with no install, or run the open-source stdio server from this repo with `npx` or Docker.
 - **Free to start** — 2,000 credits per month with no credit card.
@@ -252,7 +252,7 @@ See [`LICENSE`](LICENSE). The Crawlora MCP service itself is a hosted SaaS gover
 
 ## Tools
 
-All 4340 tools by platform, generated from [`tools.json`](./tools.json). [`TOOLS.md`](./TOOLS.md) has the description of every tool.
+All 4684 tools by platform, generated from [`tools.json`](./tools.json). [`TOOLS.md`](./TOOLS.md) has the description of every tool.
 
 <!-- BEGIN MCP.SO TOOLS: generated from tools.json; do not edit manually -->
 - **1stdibs** (4): `firstdibs_categories`, `firstdibs_designers`, `firstdibs_product`, `firstdibs_search`
@@ -302,6 +302,7 @@ All 4340 tools by platform, generated from [`tools.json`](./tools.json). [`TOOLS
 - **bloomberg** (6): `bloomberg_article`, `bloomberg_author`, `bloomberg_categories`, `bloomberg_headlines`, `bloomberg_news`, `bloomberg_news_sitemaps`
 - **bluesky** (11): `bluesky_author_feed`, `bluesky_followers`, `bluesky_follows`, `bluesky_post_likes`, `bluesky_post_quotes`, `bluesky_post_reposted_by`, `bluesky_post_thread`, `bluesky_posts`, `bluesky_profile`, `bluesky_search_actors`, `bluesky_trending_topics`
 - **bo3** (28): `bo3_economy_baseline`, `bo3_forum`, `bo3_forum_categories`, `bo3_match`, `bo3_match_games`, `bo3_match_history`, `bo3_match_players`, `bo3_news_categories`, `bo3_news_feed`, `bo3_player`, `bo3_player_leaderboard`, `bo3_player_recent_matches`, `bo3_player_stats`, `bo3_records`, `bo3_team`, `bo3_team_prize_money`, `bo3_team_ranking_dates`, `bo3_team_rankings`, `bo3_team_recent_matches`, `bo3_team_stats`, `bo3_tournament`, `bo3_tournament_map_pool`, `bo3_tournament_mvps`, `bo3_tournament_squads`, `bo3_tournament_stages`, `bo3_tournaments`, `bo3_transfers`, `bo3_valorant_leaderboard`
+- **boardgamegeek** (14): `boardgamegeek_cardsets`, `boardgamegeek_entity`, `boardgamegeek_game`, `boardgamegeek_geeklist`, `boardgamegeek_geeklist_items`, `boardgamegeek_geeklists`, `boardgamegeek_hotness`, `boardgamegeek_links`, `boardgamegeek_media`, `boardgamegeek_recommendations`, `boardgamegeek_reviews`, `boardgamegeek_taxonomy`, `boardgamegeek_thread`, `boardgamegeek_threads`
 - **bonhams** (5): `bonhams_auction_detail`, `bonhams_auction_lots`, `bonhams_auction_search`, `bonhams_lot_detail`, `bonhams_lot_search`
 - **booking** (3): `booking_hotel_detail`, `booking_reviews`, `booking_search`
 - **booking-attractions** (3): `booking_attractions_detail`, `booking_attractions_reviews`, `booking_attractions_search`
@@ -380,6 +381,7 @@ All 4340 tools by platform, generated from [`tools.json`](./tools.json). [`TOOLS
 - **economictimes** (5): `economictimes_article`, `economictimes_author`, `economictimes_headlines`, `economictimes_news`, `economictimes_sections`
 - **engadget** (5): `engadget_article`, `engadget_author`, `engadget_headlines`, `engadget_news`, `engadget_sections`
 - **eonline** (5): `eonline_article`, `eonline_author`, `eonline_headlines`, `eonline_news`, `eonline_sections`
+- **epicgames** (1): `epicgames_free_promotions`
 - **espn** (9): `espn_athlete`, `espn_game_summary`, `espn_news`, `espn_rankings`, `espn_scoreboard`, `espn_standings`, `espn_team`, `espn_team_roster`, `espn_teams`
 - **etsy** (7): `etsy_listing`, `etsy_listing_reviews`, `etsy_search`, `etsy_shop`, `etsy_shop_listings`, `etsy_shop_reviews`, `etsy_shop_search`
 - **euronews** (5): `euronews_article`, `euronews_author`, `euronews_headlines`, `euronews_news`, `euronews_sections`
@@ -389,6 +391,7 @@ All 4340 tools by platform, generated from [`tools.json`](./tools.json). [`TOOLS
 - **expresstribune** (5): `expresstribune_article`, `expresstribune_author`, `expresstribune_headlines`, `expresstribune_news`, `expresstribune_sections`
 - **extract** (1): `extract`
 - **facebook** (2): `facebook_marketplace_search`, `facebook_page`
+- **faceit** (35): `faceit_ban_reasons`, `faceit_banlist`, `faceit_banlist_stats`, `faceit_best_clips`, `faceit_championship`, `faceit_championship_bracket`, `faceit_championship_participants`, `faceit_championship_search`, `faceit_clip`, `faceit_clips`, `faceit_competition_matches`, `faceit_fpl`, `faceit_game_modes`, `faceit_games`, `faceit_hub`, `faceit_hub_categories`, `faceit_hub_memberships`, `faceit_hubs`, `faceit_hubs_detailed`, `faceit_leaderboard`, `faceit_leaderboard_detail`, `faceit_leaderboard_statuses`, `faceit_maps`, `faceit_match_clips`, `faceit_organizer`, `faceit_player`, `faceit_player_rank`, `faceit_regions`, `faceit_rule`, `faceit_rules`, `faceit_skill_levels`, `faceit_standings`, `faceit_team`, `faceit_tournaments_past`, `faceit_user_skills`
 - **fanatics** (4): `fanatics_categories`, `fanatics_category`, `fanatics_product`, `fanatics_search`
 - **fanaticscollect** (15): `fanaticscollect_auctions`, `fanaticscollect_categories`, `fanaticscollect_instant_pack_release`, `fanaticscollect_instant_pack_releases`, `fanaticscollect_instant_rips_categories`, `fanaticscollect_instant_rips_pack_categories`, `fanaticscollect_instant_rips_pack_checklist`, `fanaticscollect_instant_rips_packs`, `fanaticscollect_listing`, `fanaticscollect_newsroom`, `fanaticscollect_newsroom_filters`, `fanaticscollect_recently_ripped`, `fanaticscollect_search`, `fanaticscollect_sold_items`, `fanaticscollect_trending_searches`
 - **fanaticslive** (8): `fanaticslive_browse`, `fanaticslive_channel`, `fanaticslive_instant_rips`, `fanaticslive_leagues`, `fanaticslive_shop`, `fanaticslive_shop_shows`, `fanaticslive_shops`, `fanaticslive_show`
@@ -406,6 +409,7 @@ All 4340 tools by platform, generated from [`tools.json`](./tools.json). [`TOOLS
 - **forbes** (6): `forbes_article`, `forbes_author`, `forbes_billionaires`, `forbes_categories`, `forbes_headlines`, `forbes_person`
 - **foreignaffairs** (5): `foreignaffairs_article`, `foreignaffairs_author`, `foreignaffairs_headlines`, `foreignaffairs_topic`, `foreignaffairs_topics`
 - **foreignpolicy** (8): `foreignpolicy_article`, `foreignpolicy_author`, `foreignpolicy_headlines`, `foreignpolicy_live`, `foreignpolicy_live_detail`, `foreignpolicy_project`, `foreignpolicy_projects`, `foreignpolicy_topic`
+- **formula1** (28): `formula1_driver`, `formula1_driver_grid`, `formula1_driver_season_results`, `formula1_driver_standings`, `formula1_filters`, `formula1_json_awards`, `formula1_json_constructors`, `formula1_json_driver_assembly`, `formula1_json_drivers`, `formula1_json_editorial`, `formula1_json_event_tracker`, `formula1_json_meeting_datasets`, `formula1_json_meetings`, `formula1_json_race_assembly`, `formula1_json_results`, `formula1_json_season_award`, `formula1_json_team_assembly`, `formula1_meetings`, `formula1_race_calendar`, `formula1_race_hub`, `formula1_season_awards`, `formula1_season_results`, `formula1_seasons`, `formula1_session_results`, `formula1_team`, `formula1_team_grid`, `formula1_team_season_results`, `formula1_team_standings`
 - **fortune** (12): `fortune_article`, `fortune_author`, `fortune_companies`, `fortune_company`, `fortune_company_filters`, `fortune_headlines`, `fortune_news`, `fortune_ranking`, `fortune_ranking_filters`, `fortune_ranking_lists`, `fortune_ranking_years`, `fortune_sections`
 - **fotmob** (31): `fotmob_audio_matches`, `fotmob_fifa_ranking_periods`, `fotmob_fifa_rankings`, `fotmob_latest_news`, `fotmob_league`, `fotmob_leagues`, `fotmob_lineup_builder_players`, `fotmob_lineup_builder_team`, `fotmob_match`, `fotmob_match_media`, `fotmob_matches`, `fotmob_news`, `fotmob_news_article`, `fotmob_player`, `fotmob_player_match_stats`, `fotmob_player_matches`, `fotmob_player_stats`, `fotmob_search`, `fotmob_seasons`, `fotmob_stats`, `fotmob_stats_categories`, `fotmob_table`, `fotmob_team`, `fotmob_team_fixtures`, `fotmob_team_news`, `fotmob_transfers`, `fotmob_trending_news`, `fotmob_trending_searches`, `fotmob_tv_guide`, `fotmob_tv_guide_channels`, `fotmob_tv_guide_countries`
 - **foxnews** (6): `foxnews_article`, `foxnews_author`, `foxnews_headlines`, `foxnews_news`, `foxnews_search`, `foxnews_sections`
@@ -415,6 +419,7 @@ All 4340 tools by platform, generated from [`tools.json`](./tools.json). [`TOOLS
 - **fresha** (4): `fresha_landing_venues`, `fresha_search_venues`, `fresha_taxonomy`, `fresha_venue`
 - **ft** (6): `ft_article`, `ft_author`, `ft_categories`, `ft_headlines`, `ft_news`, `ft_search`
 - **fussballde** (27): `fussballde_amateur_stats`, `fussballde_club`, `fussballde_club_matches`, `fussballde_club_search`, `fussballde_competition_options`, `fussballde_competitions`, `fussballde_federation`, `fussballde_filters`, `fussballde_match`, `fussballde_match_calendar`, `fussballde_match_comparison`, `fussballde_match_plan`, `fussballde_matchday`, `fussballde_national_top_scorers`, `fussballde_news`, `fussballde_news_article`, `fussballde_news_search`, `fussballde_player`, `fussballde_player_matches`, `fussballde_player_search`, `fussballde_position_history`, `fussballde_postal_codes`, `fussballde_table`, `fussballde_team`, `fussballde_team_matches`, `fussballde_team_squad`, `fussballde_top_scorers`
+- **futgg** (21): `futgg_fc27_catalog`, `futgg_fc27_definitions`, `futgg_fc27_evolution`, `futgg_fc27_evolutions`, `futgg_fc27_gg_rating_ranks`, `futgg_fc27_gg_ratings`, `futgg_fc27_objective_categories`, `futgg_fc27_objective_group`, `futgg_fc27_objective_group_by_ea`, `futgg_fc27_objective_group_by_objective`, `futgg_fc27_objectives`, `futgg_fc27_player_sorts`, `futgg_fc27_players`, `futgg_fc27_price_index`, `futgg_fc27_prices`, `futgg_fc27_sbc_categories`, `futgg_fc27_sbc_set`, `futgg_fc27_sbc_set_by_challenge`, `futgg_fc27_sbc_set_by_ea`, `futgg_fc27_sbc_sets`, `futgg_fc27_season_pass`
 - **gamerant** (5): `gamerant_article`, `gamerant_author`, `gamerant_headlines`, `gamerant_news`, `gamerant_sections`
 - **gamesradar** (5): `gamesradar_article`, `gamesradar_author`, `gamesradar_headlines`, `gamesradar_news`, `gamesradar_sections`
 - **gbnews** (5): `gbnews_article`, `gbnews_author`, `gbnews_headlines`, `gbnews_news`, `gbnews_sections`
@@ -446,8 +451,10 @@ All 4340 tools by platform, generated from [`tools.json`](./tools.json). [`TOOLS
 - **gymshark** (10): `gymshark_collection_products`, `gymshark_collections`, `gymshark_page`, `gymshark_pages`, `gymshark_product`, `gymshark_product_recommendations`, `gymshark_products`, `gymshark_sitemap_urls`, `gymshark_sitemaps`, `gymshark_store`
 - **hbr** (4): `hbr_article`, `hbr_categories`, `hbr_headlines`, `hbr_topic`
 - **healthgrades** (16): `healthgrades_autocomplete`, `healthgrades_facilities_filters`, `healthgrades_facilities_search`, `healthgrades_facility`, `healthgrades_health_article`, `healthgrades_health_articles`, `healthgrades_health_topics`, `healthgrades_hospital`, `healthgrades_hospital_award_filters`, `healthgrades_hospital_awards`, `healthgrades_locations`, `healthgrades_physician`, `healthgrades_physicians_filters`, `healthgrades_physicians_search`, `healthgrades_specialties`, `healthgrades_top_searches`
+- **hearthstone** (3): `hearthstone_card`, `hearthstone_card_filters`, `hearthstone_cards`
 - **hermes** (8): `hermes_categories`, `hermes_category`, `hermes_product`, `hermes_product_recommendations`, `hermes_products`, `hermes_search`, `hermes_stores`, `hermes_suggest`
 - **hindustantimes** (5): `hindustantimes_article`, `hindustantimes_author`, `hindustantimes_headlines`, `hindustantimes_news`, `hindustantimes_sections`
+- **hltv** (9): `hltv_event`, `hltv_events`, `hltv_match`, `hltv_matches`, `hltv_player`, `hltv_rankings`, `hltv_results`, `hltv_search`, `hltv_team`
 - **hm** (7): `hm_categories`, `hm_listing`, `hm_product`, `hm_product_related`, `hm_search`, `hm_search_suggestions`, `hm_stores`
 - **hollywoodreporter** (5): `hollywoodreporter_article`, `hollywoodreporter_author`, `hollywoodreporter_headlines`, `hollywoodreporter_news`, `hollywoodreporter_sections`
 - **homedepot** (6): `homedepot_categories`, `homedepot_category`, `homedepot_product`, `homedepot_product_questions`, `homedepot_search`, `homedepot_suggest`
@@ -472,6 +479,7 @@ All 4340 tools by platform, generated from [`tools.json`](./tools.json). [`TOOLS
 - **iol** (5): `iol_article`, `iol_author`, `iol_headlines`, `iol_news`, `iol_sections`
 - **irishindependent** (5): `irishindependent_article`, `irishindependent_author`, `irishindependent_headlines`, `irishindependent_news`, `irishindependent_sections`
 - **irishtimes** (5): `irishtimes_article`, `irishtimes_author`, `irishtimes_headlines`, `irishtimes_news`, `irishtimes_sections`
+- **itchio** (14): `itchio_browse`, `itchio_browse_options`, `itchio_catalog`, `itchio_jam_calendar`, `itchio_jams_browse`, `itchio_jams_entries`, `itchio_jams_options`, `itchio_jams_overview`, `itchio_jams_results`, `itchio_jams_results_options`, `itchio_jams_submission`, `itchio_project`, `itchio_tags`, `itchio_top_rated`
 - **japantimes** (5): `japantimes_article`, `japantimes_author`, `japantimes_headlines`, `japantimes_news`, `japantimes_sections`
 - **jcrew** (8): `jcrew_categories`, `jcrew_category`, `jcrew_product`, `jcrew_product_reviews`, `jcrew_search`, `jcrew_size_chart`, `jcrew_stores`, `jcrew_suggest`
 - **jerusalempost** (6): `jerusalempost_article`, `jerusalempost_author`, `jerusalempost_authors`, `jerusalempost_headlines`, `jerusalempost_news`, `jerusalempost_sections`
@@ -485,6 +493,7 @@ All 4340 tools by platform, generated from [`tools.json`](./tools.json). [`TOOLS
 - **khaleejtimes** (5): `khaleejtimes_article`, `khaleejtimes_author`, `khaleejtimes_headlines`, `khaleejtimes_news`, `khaleejtimes_sections`
 - **kick** (21): `kick_categories`, `kick_category_clips`, `kick_channel`, `kick_channel_chatroom`, `kick_channel_clips`, `kick_channel_emotes`, `kick_channel_links`, `kick_channel_streams`, `kick_channel_videos`, `kick_clip`, `kick_clips`, `kick_drops`, `kick_gifts`, `kick_languages`, `kick_livestreams`, `kick_search_categories`, `kick_search_channels`, `kick_subcategories`, `kick_subcategory`, `kick_top_channels`, `kick_video`
 - **kickstarter** (4): `kickstarter_comments`, `kickstarter_discover`, `kickstarter_project`, `kickstarter_updates`
+- **klook** (18): `klook_activity`, `klook_attractions_categories`, `klook_attractions_destinations`, `klook_attractions_highlights`, `klook_attractions_search`, `klook_attractions_suggest`, `klook_categories`, `klook_destinations`, `klook_hot`, `klook_interests`, `klook_recommendations`, `klook_reviews`, `klook_search`, `klook_search_filters`, `klook_search_hot_keywords`, `klook_search_unified`, `klook_suggest`, `klook_verticals`
 - **kohls** (4): `kohls_category`, `kohls_product_reviews`, `kohls_stores`, `kohls_suggest`
 - **kotaku** (5): `kotaku_article`, `kotaku_author`, `kotaku_headlines`, `kotaku_news`, `kotaku_sections`
 - **kroger** (10): `kroger_categories`, `kroger_category`, `kroger_coupons`, `kroger_product`, `kroger_product_reviews`, `kroger_products`, `kroger_related_tags`, `kroger_search`, `kroger_store`, `kroger_suggest`
@@ -508,6 +517,7 @@ All 4340 tools by platform, generated from [`tools.json`](./tools.json). [`TOOLS
 - **manga** (6): `manga_rankings`, `manga_search`, `manga_title`, `manga_title_characters`, `manga_title_recommendations`, `manga_title_staff`
 - **marketwatch** (5): `marketwatch_article`, `marketwatch_author`, `marketwatch_headlines`, `marketwatch_news`, `marketwatch_sections`
 - **mashable** (5): `mashable_article`, `mashable_author`, `mashable_headlines`, `mashable_news`, `mashable_sections`
+- **maxpreps** (20): `maxpreps_rankings_groupings`, `maxpreps_request_enums`, `maxpreps_school`, `maxpreps_school_contests`, `maxpreps_school_proximal`, `maxpreps_school_search`, `maxpreps_school_seasons`, `maxpreps_school_zip_search`, `maxpreps_scoreboard`, `maxpreps_season_navigation`, `maxpreps_sports`, `maxpreps_states`, `maxpreps_team`, `maxpreps_team_context`, `maxpreps_team_next_contest`, `maxpreps_team_rankings`, `maxpreps_team_roster_summary`, `maxpreps_team_schedule`, `maxpreps_team_stat_leaders`, `maxpreps_tournament_sports`
 - **mcdonalds** (6): `mcdonalds_categories`, `mcdonalds_item`, `mcdonalds_item_list`, `mcdonalds_menu`, `mcdonalds_restaurant_menu`, `mcdonalds_restaurants`
 - **mediaite** (5): `mediaite_article`, `mediaite_author`, `mediaite_headlines`, `mediaite_news`, `mediaite_sections`
 - **medicalnewstoday** (5): `medicalnewstoday_article`, `medicalnewstoday_author`, `medicalnewstoday_headlines`, `medicalnewstoday_news`, `medicalnewstoday_sections`
@@ -522,14 +532,17 @@ All 4340 tools by platform, generated from [`tools.json`](./tools.json). [`TOOLS
 - **mlb** (66): `mlb_discovery`, `mlb_editorial_feed`, `mlb_game`, `mlb_game_boxscore`, `mlb_game_play_by_play`, `mlb_league_leaders`, `mlb_league_stats`, `mlb_player`, `mlb_player_stats`, `mlb_prospect_rankings`, `mlb_prospect_stats`, `mlb_schedule`, `mlb_search`, `mlb_standings`, `mlb_statcast`, `mlb_statcast_abs_challenges`, `mlb_statcast_active_spin`, `mlb_statcast_arm_angle`, `mlb_statcast_arm_strength`, `mlb_statcast_arm_strength_player`, `mlb_statcast_arm_value`, `mlb_statcast_arm_value_details`, `mlb_statcast_baserunning`, `mlb_statcast_bat_tracking`, `mlb_statcast_batted_ball`, `mlb_statcast_birthday_index`, `mlb_statcast_catcher_blocking`, `mlb_statcast_catcher_blocking_details`, `mlb_statcast_catcher_framing`, `mlb_statcast_catcher_framing_details`, `mlb_statcast_catcher_pop_time`, `mlb_statcast_catcher_stance`, `mlb_statcast_catcher_throwing`, `mlb_statcast_catcher_throwing_details`, `mlb_statcast_expected`, `mlb_statcast_fielding_run_value`, `mlb_statcast_first_base_receiving`, `mlb_statcast_first_base_receiving_details`, `mlb_statcast_home_runs`, `mlb_statcast_home_runs_details`, `mlb_statcast_oaa`, `mlb_statcast_park_factors`, `mlb_statcast_percentile`, `mlb_statcast_pitch_arsenal`, `mlb_statcast_pitch_arsenal_details`, `mlb_statcast_pitch_arsenals`, `mlb_statcast_pitch_movement`, `mlb_statcast_pitch_tempo`, `mlb_statcast_pitch_tempo_player`, `mlb_statcast_pitch_timer`, `mlb_statcast_player_details`, `mlb_statcast_rolling`, `mlb_statcast_run_value`, `mlb_statcast_running_game`, `mlb_statcast_running_game_details`, `mlb_statcast_sprint_speed`, `mlb_statcast_sprint_speed_teams`, `mlb_statcast_swing_path`, `mlb_statcast_swing_timing`, `mlb_statcast_swing_timing_details`, `mlb_statcast_top_performers`, `mlb_statcast_year_to_year`, `mlb_team_roster`, `mlb_team_stats`, `mlb_teams`, `mlb_transactions`
 - **mlive** (1): `mlive_news`
 - **modaoperandi** (4): `modaoperandi_categories`, `modaoperandi_designers`, `modaoperandi_product`, `modaoperandi_search`
+- **modrinth** (34): `modrinth_check_project`, `modrinth_collection`, `modrinth_collections`, `modrinth_dependencies`, `modrinth_file_projects`, `modrinth_file_update`, `modrinth_file_version`, `modrinth_file_versions`, `modrinth_files_update`, `modrinth_files_update_individual`, `modrinth_files_update_many`, `modrinth_forge_updates`, `modrinth_license`, `modrinth_metadata_link_platforms`, `modrinth_metadata_loader_field_values`, `modrinth_metadata_loader_fields`, `modrinth_metadata_loaders`, `modrinth_organization`, `modrinth_organization_projects`, `modrinth_organizations`, `modrinth_project`, `modrinth_project_disclosures`, `modrinth_project_version`, `modrinth_project_versions`, `modrinth_projects`, `modrinth_random_projects`, `modrinth_search`, `modrinth_search_v3`, `modrinth_search_v3_body`, `modrinth_search_v3_options`, `modrinth_statistics`, `modrinth_tags`, `modrinth_version`, `modrinth_versions`
 - **moncler** (6): `moncler_categories`, `moncler_category`, `moncler_product`, `moncler_search`, `moncler_stores`, `moncler_suggest`
 - **moneycontrol** (5): `moneycontrol_article`, `moneycontrol_author`, `moneycontrol_headlines`, `moneycontrol_news`, `moneycontrol_sections`
 - **monitors** (6): `monitors_checks`, `monitors_create`, `monitors_delete`, `monitors_get`, `monitors_list`, `monitors_update`
 - **motleyfool** (5): `motleyfool_article`, `motleyfool_author`, `motleyfool_headlines`, `motleyfool_news`, `motleyfool_sections`
-- **nascar** (2): `nascar_live_feed`, `nascar_races`
+- **motogp** (20): `motogp_bmw_award`, `motogp_categories`, `motogp_circuit_poles`, `motogp_circuit_records`, `motogp_circuit_wins`, `motogp_classifications`, `motogp_content_categories`, `motogp_content_event`, `motogp_content_events`, `motogp_entries`, `motogp_entry_grid_options`, `motogp_event_files`, `motogp_events`, `motogp_latest_session`, `motogp_next_live_session`, `motogp_seasons`, `motogp_sessions`, `motogp_standings`, `motogp_standings_files`, `motogp_starting_grid`
+- **nascar** (5): `nascar_live_feed`, `nascar_race_weekend`, `nascar_races`, `nascar_season_races`, `nascar_series`
 - **nationafrica** (5): `nationafrica_article`, `nationafrica_author`, `nationafrica_headlines`, `nationafrica_news`, `nationafrica_sections`
 - **national** (5): `national_article`, `national_author`, `national_headlines`, `national_news`, `national_sections`
 - **nationalpost** (5): `nationalpost_article`, `nationalpost_author`, `nationalpost_headlines`, `nationalpost_news`, `nationalpost_sections`
+- **nba** (51): `nba_box_score`, `nba_box_score_advanced`, `nba_box_score_four_factors`, `nba_box_score_misc`, `nba_box_score_player_track`, `nba_box_score_scoring`, `nba_box_score_usage`, `nba_common_all_players`, `nba_draft_combine_anthro`, `nba_enums`, `nba_franchise_history`, `nba_game_detail`, `nba_games`, `nba_homepage_leaders`, `nba_hustle_stats`, `nba_hustle_team`, `nba_league_game_log`, `nba_lineups`, `nba_news`, `nba_opp_pt_shot`, `nba_play_by_play`, `nba_player_awards`, `nba_player_bio_stats`, `nba_player_career_stats`, `nba_player_clutch`, `nba_player_dash_pt_shots`, `nba_player_game_logs`, `nba_player_info`, `nba_player_profile_v2`, `nba_player_pt_shot`, `nba_player_stats`, `nba_player_streak_finder`, `nba_players`, `nba_playoff_picture`, `nba_pt_defend`, `nba_pt_stats`, `nba_scoreboard`, `nba_standings`, `nba_synergy_play_types`, `nba_team_dash_pt_pass`, `nba_team_dash_pt_shots`, `nba_team_details`, `nba_team_game_logs`, `nba_team_info_common`, `nba_team_on_off`, `nba_team_pt_shot`, `nba_team_roster`, `nba_team_shot_locations`, `nba_team_stats`, `nba_team_stats_leaders`, `nba_team_years`
 - **nbc** (5): `nbc_article`, `nbc_author`, `nbc_headlines`, `nbc_news`, `nbc_sections`
 - **ndtv** (12): `ndtv_article`, `ndtv_author`, `ndtv_headlines`, `ndtv_latest_videos`, `ndtv_live_blog`, `ndtv_live_blogs`, `ndtv_news`, `ndtv_search`, `ndtv_sections`, `ndtv_video`, `ndtv_video_categories`, `ndtv_videos`
 - **netshort** (8): `netshort_browse`, `netshort_genres`, `netshort_home`, `netshort_label`, `netshort_plots`, `netshort_search`, `netshort_title`, `netshort_toplist`
@@ -539,6 +552,8 @@ All 4340 tools by platform, generated from [`tools.json`](./tools.json). [`TOOLS
 - **newsmax** (5): `newsmax_article`, `newsmax_author`, `newsmax_headlines`, `newsmax_news`, `newsmax_sections`
 - **newsweek** (5): `newsweek_article`, `newsweek_author`, `newsweek_headlines`, `newsweek_news`, `newsweek_sections`
 - **newyorker** (5): `newyorker_article`, `newyorker_author`, `newyorker_headlines`, `newyorker_news`, `newyorker_sections`
+- **nfhs** (17): `nfhs_activities`, `nfhs_affiliate`, `nfhs_affiliates`, `nfhs_association`, `nfhs_associations`, `nfhs_event`, `nfhs_events`, `nfhs_filters`, `nfhs_highlights`, `nfhs_producer`, `nfhs_publisher`, `nfhs_school`, `nfhs_schools`, `nfhs_search`, `nfhs_sports`, `nfhs_states`, `nfhs_suggest`
+- **nhl** (5): `nhl_gamecenter_boxscore`, `nhl_gamecenter_play_by_play`, `nhl_schedule`, `nhl_seasons`, `nhl_standings`
 - **nike** (9): `nike_categories`, `nike_product`, `nike_product_availability`, `nike_product_details`, `nike_product_recommendations`, `nike_product_reviews`, `nike_search`, `nike_stores`, `nike_suggest`
 - **ninetofivegoogle** (5): `ninetofivegoogle_article`, `ninetofivegoogle_author`, `ninetofivegoogle_headlines`, `ninetofivegoogle_news`, `ninetofivegoogle_sections`
 - **ninetofivemac** (5): `ninetofivemac_article`, `ninetofivemac_author`, `ninetofivemac_headlines`, `ninetofivemac_news`, `ninetofivemac_sections`
@@ -568,7 +583,7 @@ All 4340 tools by platform, generated from [`tools.json`](./tools.json). [`TOOLS
 - **pcmag** (5): `pcmag_article`, `pcmag_author`, `pcmag_headlines`, `pcmag_news`, `pcmag_sections`
 - **people** (5): `people_article`, `people_author`, `people_headlines`, `people_news`, `people_sections`
 - **petsmart** (6): `petsmart_categories`, `petsmart_product`, `petsmart_product_inventory`, `petsmart_search`, `petsmart_search_filters`, `petsmart_suggest`
-- **pgatour** (4): `pgatour_leaderboard`, `pgatour_players`, `pgatour_schedule`, `pgatour_stats`
+- **pgatour** (15): `pgatour_leaderboard`, `pgatour_players`, `pgatour_schedule`, `pgatour_schedule_seasons`, `pgatour_stat_detail`, `pgatour_stat_options`, `pgatour_stats`, `pgatour_tournament_broadcast`, `pgatour_tournament_course_stats`, `pgatour_tournament_field`, `pgatour_tournament_links`, `pgatour_tournament_overview`, `pgatour_tournament_past_results`, `pgatour_tournament_tee_times`, `pgatour_tournament_weather`
 - **phillyinquirer** (5): `phillyinquirer_article`, `phillyinquirer_author`, `phillyinquirer_headlines`, `phillyinquirer_news`, `phillyinquirer_sections`
 - **philstar** (5): `philstar_article`, `philstar_author`, `philstar_headlines`, `philstar_news`, `philstar_sections`
 - **phonearena** (5): `phonearena_article`, `phonearena_author`, `phonearena_headlines`, `phonearena_news`, `phonearena_sections`
@@ -625,6 +640,7 @@ All 4340 tools by platform, generated from [`tools.json`](./tools.json). [`TOOLS
 - **seattletimes** (5): `seattletimes_article`, `seattletimes_author`, `seattletimes_headlines`, `seattletimes_news`, `seattletimes_sections`
 - **sec** (10): `sec_company_intelligence`, `sec_company_search`, `sec_company_submissions`, `sec_filing`, `sec_filing_sections`, `sec_financials`, `sec_frames`, `sec_full_text_search`, `sec_insider`, `sec_institutional_holdings`
 - **sephora** (9): `sephora_brands`, `sephora_categories`, `sephora_category`, `sephora_product`, `sephora_product_questions`, `sephora_product_reviews`, `sephora_search`, `sephora_stores`, `sephora_suggest`
+- **serebii** (15): `serebii_pokemongo_event_categories`, `serebii_pokemongo_event_detail_community_day`, `serebii_pokemongo_event_detail_global`, `serebii_pokemongo_event_detail_hatch_day`, `serebii_pokemongo_event_detail_incense_day`, `serebii_pokemongo_event_detail_max_battle_day`, `serebii_pokemongo_event_detail_raid_day`, `serebii_pokemongo_event_detail_real_life`, `serebii_pokemongo_event_detail_research_day`, `serebii_pokemongo_event_detail_ticket`, `serebii_pokemongo_event_only_moves`, `serebii_pokemongo_event_only_research`, `serebii_pokemongo_events`, `serebii_pokemongo_spotlight_hours`, `serebii_pokemongo_unown_events`
 - **sevennewsau** (5): `sevennewsau_article`, `sevennewsau_author`, `sevennewsau_headlines`, `sevennewsau_news`, `sevennewsau_sections`
 - **sfgate** (5): `sfgate_article`, `sfgate_author`, `sfgate_headlines`, `sfgate_news`, `sfgate_sections`
 - **shakeshack** (4): `shakeshack_locations`, `shakeshack_menu`, `shakeshack_nearby`, `shakeshack_store`
@@ -645,6 +661,7 @@ All 4340 tools by platform, generated from [`tools.json`](./tools.json). [`TOOLS
 - **soundcloud** (5): `soundcloud_playlist`, `soundcloud_profile`, `soundcloud_search`, `soundcloud_track`, `soundcloud_user_tracks`
 - **space** (5): `space_article`, `space_author`, `space_headlines`, `space_news`, `space_sections`
 - **sparkfun** (4): `sparkfun_categories`, `sparkfun_category`, `sparkfun_product`, `sparkfun_search`
+- **speedrun** (17): `speedrun_catalog`, `speedrun_categories`, `speedrun_category_detail`, `speedrun_category_records`, `speedrun_category_variables`, `speedrun_game_detail`, `speedrun_game_leaderboard`, `speedrun_games`, `speedrun_level_categories`, `speedrun_level_detail`, `speedrun_level_leaderboard`, `speedrun_level_records`, `speedrun_level_variables`, `speedrun_levels`, `speedrun_records`, `speedrun_resource_options`, `speedrun_variables`
 - **sportingnews** (5): `sportingnews_article`, `sportingnews_author`, `sportingnews_headlines`, `sportingnews_news`, `sportingnews_sections`
 - **sportskeeda** (48): `sportskeeda_article`, `sportskeeda_author`, `sportskeeda_college_basketball_schedule`, `sportskeeda_college_basketball_schedule_options`, `sportskeeda_cricket_commentary`, `sportskeeda_cricket_match`, `sportskeeda_depth_chart`, `sportskeeda_draft_picks`, `sportskeeda_draft_picks_options`, `sportskeeda_event_calendar`, `sportskeeda_event_calendar_options`, `sportskeeda_feed`, `sportskeeda_football_data`, `sportskeeda_football_options`, `sportskeeda_guessing_game`, `sportskeeda_guessing_game_entities`, `sportskeeda_guessing_games`, `sportskeeda_nba_queries`, `sportskeeda_news`, `sportskeeda_page_data`, `sportskeeda_page_options`, `sportskeeda_player_stats`, `sportskeeda_profile`, `sportskeeda_quiz`, `sportskeeda_quiz_categories`, `sportskeeda_quizzes`, `sportskeeda_salary_cap`, `sportskeeda_schedule`, `sportskeeda_sections`, `sportskeeda_sitemap_items`, `sportskeeda_sitemaps`, `sportskeeda_standings`, `sportskeeda_standings_options`, `sportskeeda_taxonomy_search`, `sportskeeda_topic`, `sportskeeda_trade_values`, `sportskeeda_transactions`, `sportskeeda_transactions_options`, `sportskeeda_video`, `sportskeeda_videos`, `sportskeeda_wiki_activity`, `sportskeeda_wiki_article`, `sportskeeda_wiki_categories`, `sportskeeda_wiki_contributors`, `sportskeeda_wiki_issues`, `sportskeeda_wiki_options`, `sportskeeda_wiki_pages`, `sportskeeda_wiki_summary`
 - **spotify** (30): `spotify_album`, `spotify_album_tracks`, `spotify_albums_search`, `spotify_artist`, `spotify_artist_albums`, `spotify_artist_playlists`, `spotify_artist_related`, `spotify_artists_search`, `spotify_audiobook`, `spotify_audiobook_chapters`, `spotify_audiobooks_search`, `spotify_chapter`, `spotify_episodes_search`, `spotify_featured_charts_by_country`, `spotify_genre`, `spotify_home`, `spotify_playlist`, `spotify_playlists_search`, `spotify_popular_by_country`, `spotify_profile`, `spotify_profile_followers`, `spotify_profile_playlists`, `spotify_profiles_search`, `spotify_search`, `spotify_section`, `spotify_shows_search`, `spotify_track`, `spotify_track_recommended`, `spotify_track_similar_albums`, `spotify_tracks_search`
@@ -742,7 +759,7 @@ All 4340 tools by platform, generated from [`tools.json`](./tools.json). [`TOOLS
 - **wish** (6): `wish_categories`, `wish_product`, `wish_product_related`, `wish_product_reviews`, `wish_search`, `wish_suggest`
 - **wolt** (8): `wolt_cities`, `wolt_collections`, `wolt_restaurant`, `wolt_restaurant_availability`, `wolt_restaurant_menu`, `wolt_restaurant_menu_search`, `wolt_search`, `wolt_search_filters`
 - **wsj** (2): `wsj_article`, `wsj_author`
-- **wta** (2): `wta_countries`, `wta_rankings`
+- **wta** (10): `wta_countries`, `wta_match_states`, `wta_rankings`, `wta_tournament`, `wta_tournament_draws`, `wta_tournament_matches`, `wta_tournament_order_of_play`, `wta_tournament_players`, `wta_tournament_seasons`, `wta_tournaments`
 - **x** (3): `x_post`, `x_profile`, `x_profile_posts`
 - **xbox** (5): `xbox_browse`, `xbox_collection`, `xbox_game`, `xbox_reviews`, `xbox_search`
 - **xda** (5): `xda_article`, `xda_author`, `xda_headlines`, `xda_news`, `xda_sections`
