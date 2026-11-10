@@ -1,6 +1,6 @@
 # Crawlora MCP tool catalog
 
-Every tool the Crawlora MCP server exposes (4340), generated from [`tools.json`](./tools.json); do not edit manually. See the [README](./README.md) for setup and an index by platform.
+Every tool the Crawlora MCP server exposes (4646), generated from [`tools.json`](./tools.json); do not edit manually. See the [README](./README.md) for setup and an index by platform.
 
 ## Tools
 
@@ -1335,6 +1335,62 @@ BO3.gg esports transfer feed. Returns BO3.gg's esports player and coach transfer
 ### `bo3_valorant_leaderboard`
 
 BO3.gg Valorant player leaderboard. Returns BO3.gg's Valorant player leaderboard over a day range (default: the last six months): players ranked by 'sort' ('acs', 'kills', 'deaths', 'damage', 'assists', 'first_kills', 'clutches', 'first_duels', 'games', 'rounds') in 'order' ('desc', 'asc') with paging. Each player has nickname, slug, games, rounds and every per-round average as a 'stats' map; players below the API's minimum-games threshold for the window are excluded ('min_games_count').
+
+### `boardgamegeek_cardsets`
+
+List a BoardGameGeek game's card sets. Returns the card sets recorded for a game, including the base or expansion flag, notes, prior card-set family links, and each set's card types with physical width/height, quantity and quantity notes. Useful for card-size or sleeving questions. A game with no card sets returns a valid empty list.
+
+### `boardgamegeek_entity`
+
+Get a BoardGameGeek family, person, company, property or version. Returns one non-game entity by canonical object type and numeric id: name, alternate names, description and wiki text, website, images, and the typed link map for that entity (for example a designer's credits, a publisher's games, a family's members, a category's games, or a version's parent game and publishers). Community counters and the item's field schema are merged in. Slug aliases are not accepted because they return item records without description content.
+
+### `boardgamegeek_game`
+
+Get a BoardGameGeek game's detail, ratings and links. Returns one BoardGameGeek game by its numeric item id: primary and alternate names, player counts, play time, minimum age, description and wiki text, official website, images, and the typed link map (designers, artists, publishers, categories, mechanics, families, expansions, versions, honors). Community ratings, rank lines, poll answers, and ownership/play counters are merged in, and the item's field schema is included. Uses BoardGameGeek's anonymous website JSON API; no token or login is involved.
+
+### `boardgamegeek_geeklist`
+
+Get a BoardGameGeek geeklist's detail. Returns one community geeklist's metadata and body: title, creator id, post/edit dates, plain-text body, rendered bodyXml, privacy/comment/trade flags, sort direction and domain, and the source's discoverability links (items, comments, thumbs, tips). Use boardgamegeek_geeklist_items to page its entries.
+
+### `boardgamegeek_geeklist_items`
+
+List a BoardGameGeek geeklist's entries. Returns one page of a geeklist's entries: each entry's id, linked item summary (id, name, href, descriptors, images), author id, post/edit dates, commentary body, optional custom image, rating snapshot and links. The source pages entries 25 at a time; a page past the end is a valid empty page.
+
+### `boardgamegeek_geeklists`
+
+List geeklists that link a BoardGameGeek object. Returns one page of the community geeklists that link an object, filtered by category (all, trade, general) and sorted by hot or recent. Each row carries the list title, author, item count, recommendation count and dates. The response includes the category filters the source offers and the list totals. Use boardgamegeek_geeklist and boardgamegeek_geeklist_items to read a list's content.
+
+### `boardgamegeek_hotness`
+
+Get BoardGameGeek's current hotness list. Returns the site's ranked hotness list for one object type: games (thing), people or companies, with the object identifier, name, rank position, rank delta since the previous day, year published (games only), short description (games only) and images. The list length is requested with showcount; the source caps it at 50.
+
+### `boardgamegeek_links`
+
+List a BoardGameGeek object's typed links. Returns one page of a typed link list for an object: for a game, its mechanics, categories, designers, publishers, expansions or versions; for a family, its games; for a person, their credits; for a company, its games; for a property, its games; for a version, its parent game and publishers. Each row carries the linked object's identity, name, post date, subtype and image. The link type must be valid for the requested object type; see boardgamegeek-taxonomy for the complete per-type value space.
+
+### `boardgamegeek_media`
+
+List a BoardGameGeek item's images, videos or files. Returns one page of media for one item: gallery images with captions and vote counts, videos with host, title, duration and thumbnail, or file pages with filename, size and language. Exactly one of images, videos or files is populated. Filters follow the source's own per-kind filter models: images accept sort, interval, gallery, tag and license; videos accept sort, gallery and languageid; files accept sort and languageid. A filter used with the wrong kind is rejected locally with HTTP 400.
+
+### `boardgamegeek_recommendations`
+
+Get BoardGameGeek recommendations for a game. Returns BoardGameGeek's "fans also like" recommendations for one game: each suggested item's identity, name and image, plus the source's similarity rating, rank, voter count, year published and fan count. An unknown game id yields a valid empty list with count 0 rather than an error.
+
+### `boardgamegeek_reviews`
+
+List a BoardGameGeek object's reviews. Returns an object's hot and recent reviews as the source publishes them: text review threads (thread id, subject, forum, author, dates, post count) and video reviews (video id, host, external id, title, language, thumbnail), with the source's review totals and the paths to the full review lists. An object with no reviews is a valid empty result, not an error.
+
+### `boardgamegeek_taxonomy`
+
+List BoardGameGeek's object-type, subtype and link-type enums. Returns the complete pinned taxonomy this family accepts: the canonical object types and entity types, the live-verified subtypes for each object type (with separately listed unverified subtypes), the verified link types for each object type, and the hotness, media, media-filter and entity enums. Values were verified with anonymous live requests on the date in verified_at and are constants, not live reads. Use it to validate objecttype/linktype combinations before calling the other BoardGameGeek routes.
+
+### `boardgamegeek_thread`
+
+Get a BoardGameGeek thread and one page of its articles. Returns a forum thread's metadata (subject, forum id, creator, post/page counts, pin/lock flags, breadcrumbs) plus one page of its articles: article id, author id, post and edit dates, plain-text body, rendered bodyXml, first-post flag and links. The source pages articles 25 at a time; a page past the end is a valid empty page. Use boardgamegeek_threads to discover thread ids.
+
+### `boardgamegeek_threads`
+
+List a BoardGameGeek object's forum threads. Returns one page of forum threads for a BoardGameGeek object (game, family, person, company, property or version), sorted by hot, recent or active. Each row carries the thread id, subject, forum, author, post/last-post dates, post count, pin/lock flags and hrefs, and the response includes the forums that object exposes with their thread/post counts so callers can discover the forumid filter. Use boardgamegeek_thread to read a thread's articles.
 
 ### `bonhams_auction_detail`
 
@@ -4364,6 +4420,146 @@ Search Facebook Marketplace. Fetches Facebook Marketplace search or browse resul
 
 Get Facebook page details. Fetches public data about a Facebook Page given its page ID, vanity name, or full page URL: name, follower/like counts, intro, category, business hours/price range, review count, and any public contact details (email, phone, address, website, WhatsApp number) exposed on the Page's About tab.
 
+### `faceit_ban_reasons`
+
+FACEIT ban reason enum. Returns the closed ban-reason enum the ban-list filter accepts. The upstream names these values in its own validation error, so they are server-validated. Pass one as the reason parameter of faceit-banlist to filter the ban list.
+
+### `faceit_banlist`
+
+FACEIT public ban list page. Returns one page of the public FACEIT ban list: ban id, banned user id and nickname, avatar, country, reason, start and end timestamps and duration. Paging uses the upstream's size parameter (5-100, default 25) and the opaque cursor returned with the previous page; pass it back to advance. A cursor from the upstream is echoed in the response.
+
+### `faceit_banlist_stats`
+
+FACEIT ban list aggregate counters. Returns the aggregate FACEIT ban counters: bans in the last 12 months and bans in the last 30 days. The upstream publishes no per-reason or per-game breakdown on this anonymous surface.
+
+### `faceit_best_clips`
+
+FACEIT player best clips in a time window. Returns a player's best Allstar clips inside an inclusive time window: the same clip row shape as faceit-clips, ordered by the upstream best-clip ranking. Both from and to are required RFC3339 timestamps. Only cs2 has Allstar clips; a window with no clips is a valid empty list. The upstream ignores offset on this route, so no offset parameter is exposed.
+
+### `faceit_championship`
+
+FACEIT championship detail by id. Returns one FACEIT championship: identity and organizer, status and type, region, slots and participant counts, subscription/check-in/start timestamps (epoch milliseconds), entry checks, substitution policy, normalized match settings, schedule and groups, the organizer's FFA leaderboard points and role names. Championship ids are discovered through faceit-championship-search. An unknown id answers 404.
+
+### `faceit_championship_bracket`
+
+FACEIT championship group bracket by group and round. Returns one group and round of a championship bracket: group number, delimiter, status, total and the bracket match pairings with each side's player id and faction number. The group and round parameters are required by the upstream; start and end bound the returned match range. An unknown championship answers 404.
+
+### `faceit_championship_participants`
+
+FACEIT championship participants page. Returns one page of a championship's participants: membership id, player identity (id, nickname, avatar, country and game list), the championship reference, role names and the participant's championship status. The upstream caps the page size at 50. Paging uses limit and offset, and the response echoes the upstream start and end markers.
+
+### `faceit_championship_search`
+
+Discover FACEIT championships and leaderboards. Returns leaderboard discovery rows, which are the anonymous way to discover championship ids: leaderboard identity, entity id/type, game and region, season, group/round/bracket placement, ranking type, scoring fields, dates, status and prize metadata. Defaults to ongoing championships. status is a closed enum (see faceit-leaderboard-statuses); entity_type and type are forwarded as filters and are not server-validated. The upstream caps a page at 100 rows.
+
+### `faceit_clip`
+
+FACEIT Allstar clip detail. Returns one Allstar clip by id: title, view count, embed URL, thumbnail, linked FACEIT match id and match instance, processing status, demo filename, clip reason, map and round. Clip ids come from faceit-clips. An unknown id answers 404.
+
+### `faceit_clips`
+
+FACEIT player Allstar clips. Returns one page of a player's Allstar clips: clip id, title, view count, embed URL, thumbnail, linked FACEIT match id and match instance, processing status, map, round and creation/update timestamps. Only the cs2 game has Allstar clips; every other game is rejected by the upstream as unknown. Paging uses limit and offset and the response reports has_more. An unknown player is a valid empty page.
+
+### `faceit_competition_matches`
+
+FACEIT competition match list. Returns one page of a competition's match list for a competition id and type. The upstream requires both id and type and rejects a missing type; an unknown id is an empty list. The sampled anonymous response was empty and its non-empty item shape is unverified, so each match is passed through as raw upstream JSON rather than a guessed DTO.
+
+### `faceit_fpl`
+
+FACEIT Pro League circuits. Returns FPL (FACEIT Pro League) circuits, optionally filtered to one game: circuit id, game and region, display name, default flag, season windows with start and end timestamps, and the configured ranking source. An unknown game is a valid empty list. Paging uses limit and offset and the response reports has_more.
+
+### `faceit_game_modes`
+
+FACEIT public queues for a game and region. Returns the public matchmaking queues for a game and region: queue id, queue group id, localized label, spectator flag and team size. Both game and region are required by the upstream. A pair with no queues is a valid empty list, not an error.
+
+### `faceit_games`
+
+FACEIT game slugs confirmed by the live map oracle. Returns the pinned game taxonomy: the slugs whose map configuration answered with real maps on the verification date. The upstream exposes no anonymous games catalogue, so this list is pinned and marked not complete rather than being a claimed complete catalogue. Every other FACEIT route validates its game parameter against this set.
+
+### `faceit_hub`
+
+FACEIT hub detail by id. Returns one FACEIT hub: identity, description, game/region/category, organizer, publication and featured flags, slot and player counts, skill band, join permissions, rules id, images, geo/region/game checks, nested child hubs, role identities, FACEIT points, prize counts and queue/application/chat settings. An unknown id answers 404.
+
+### `faceit_hub_categories`
+
+FACEIT hub category enum. Returns the closed hub category enum the hub membership endpoint accepts. The upstream names these values in its own validation error, so they are server-validated.
+
+### `faceit_hub_memberships`
+
+FACEIT user hub memberships. Returns one page of a user's hub and competition memberships: membership id, user identity, the competition/hub reference (game, category, skill band, join permissions, player count, child ids), role names, highest role ranking and join date. This is the only anonymous hub-discovery path the FACEIT website exposes, so hub ids for faceit-hub come from here. category is a closed enum.
+
+### `faceit_hubs`
+
+FACEIT hubs by id. Returns summary rows for up to 20 hub ids supplied as a repeated ids parameter: hub id, game and region, name, organizer, avatar, player count, category, publication state, relationship type, child ids and organizer tier. An unknown id is simply omitted from the item list. Hub ids come from faceit-hub-memberships.
+
+### `faceit_hubs_detailed`
+
+FACEIT full hub objects for up to 20 ids. Returns full hub objects for up to 20 hub ids through the v2 bulk read: identity, description, game/region/category, organizer and owner, publication flags, slot and player counts, skill band, join permissions, rules id, images, checks, child ids, role identities, points and queue/application/chat settings. Unlike faceit-hubs (summaries) and faceit-hub (one id), this resolves several full hubs in one call. An unknown id is omitted from the item list.
+
+### `faceit_leaderboard`
+
+FACEIT ranked leaderboard for one game and region. Returns one page of a game region's ranked leaderboard: position, player identity and country, Elo, skill level, verification level and global position. With season set it reads the season-aware ranking and also returns the requested season and the available season history; without season it reads the all-time ranking. The upstream caps a page at 100 rows. An unknown game or region code is a valid empty page, not an error.
+
+### `faceit_leaderboard_detail`
+
+FACEIT leaderboard detail by id. Returns one leaderboard's full configuration: entity references, game and region, group/round/bracket placement, ranking and points configuration, scoring fields, prizes, requirements, status and ranking-field visibility rules. Leaderboard ids come from faceit-championship-search or faceit-standings. An unknown id answers 404.
+
+### `faceit_leaderboard_statuses`
+
+FACEIT leaderboard status enum. Returns the closed leaderboard status enum: ONGOING, UPCOMING and FINISHED. The upstream rejects lowercase and any other value, so callers must use these exact uppercase values. Also returns the observed entity type and leaderboard type values, which the gateway does not validate.
+
+### `faceit_maps`
+
+FACEIT votable maps for a game. Returns a game's votable map taxonomy: map id, display name, game map id, class name and two image sizes. A game without map configuration is answered with 404 by the upstream and surfaces as NotFound; discover valid game slugs from faceit-games.
+
+### `faceit_match_clips`
+
+FACEIT Allstar clips for one match. Returns one page of the Allstar clips attached to one FACEIT match: clip id, title, view count, embed URL, thumbnail, linked user and match ids, processing status, map and round. Match ids come from any clip row returned by faceit-clips or faceit-best-clips. Only cs2 has Allstar clips; an unknown match is a valid empty page.
+
+### `faceit_organizer`
+
+FACEIT organizer profile by id. Returns one organizer's public profile: name and type, plan-tier limits, publication state, avatar and cover, sponsors, public staff roles, social links, supported games, description, featuring countries, countries, geo regions and features. Organizer ids appear as organizer_id on championship and leaderboard rows. The staff account ids are deliberately not mirrored. An unknown id answers 404.
+
+### `faceit_player`
+
+FACEIT player profile by nickname or user id. Returns one FACEIT profile: nickname, avatar and cover image, country, verified/registration status, memberships and per-game competitive state (Elo, region, skill level and level label). Exactly one of nickname and user_id is required. The ranking routes accept the user id returned here. A nickname that does not exist is an unknown entity and answers 404; profile friends, streaming ids and linked platform accounts are deliberately not mirrored.
+
+### `faceit_player_rank`
+
+FACEIT player ranked position in one game and region. Returns one player's position in a game and region ranking, either the all-time ranking or a season-aware ranking when season is set. A nickname is resolved to its user id first, so a nickname request costs one extra upstream lookup. Position is null when the player has no rank there. Exactly one of nickname and user_id is required.
+
+### `faceit_regions`
+
+FACEIT region codes known to the website. Returns the documented region values: the website client's GEO-REGION list, region codes observed serving live ranking data, and free-form region values seen on live championship leaderboard rows. Region is not a server-validated closed set, so this list is advisory and any well-formed 2-8 character code is forwarded to the upstream.
+
+### `faceit_rule`
+
+FACEIT competition rule detail. Returns one published rule set: rule id, name, game, organizer id, creation and update timestamps and the full rule body in markdown. Rule ids come from faceit-rules. An unknown id answers 404.
+
+### `faceit_rules`
+
+FACEIT published competition rules. Returns one page of the published FACEIT competition rule sets: rule id, name, game, organizer id, creation and update timestamps and the full rule body in markdown. The upstream accepts entity filters but ignores them, so this route exposes only paging. Paging uses limit and offset.
+
+### `faceit_skill_levels`
+
+FACEIT skill levels and Elo bands for a game. Returns a game's skill-level configuration: the level number (1-10) and its inclusive Elo band. This is the discovery surface for the skill levels that ranking rows report. The upstream returns a default mapping for any slug, so this route does not prove a game exists and is not an error for an unknown-but-valid slug.
+
+### `faceit_standings`
+
+FACEIT championship standings by group and round. Returns a championship's standings for one group and round: the leaderboard identity and each ranked participant's entity id, name, avatar, skill level, country, played count, position and points. The upstream requires group and round plus a segment or match number. An entity or round without standings is a valid empty list, not an error.
+
+### `faceit_team`
+
+FACEIT team profile by id. Returns one public FACEIT team profile: name and nickname, game, leader, team type and status, description, country, avatar and cover, creation/update timestamps, social links, member and pending-member ids, and public member rows (guid, nickname, avatar, country and game list). Team ids are discovered from premade championship bracket faction ids in faceit-championship-bracket. An unknown id answers 404 and is returned as NotFound.
+
+### `faceit_tournaments_past`
+
+FACEIT player past tournament history. Returns one page of a player's past tournament history. The upstream answered the sampled anonymous requests with an empty list and its non-empty item shape is unverified, so each item is passed through as raw upstream JSON rather than a guessed DTO. A nickname with no history is a valid empty result.
+
+### `faceit_user_skills`
+
+FACEIT player skills for up to 10 users in one game. Returns competitive skill entries for a bounded batch of up to 10 players in one game: Elo value, skill level, ranked match count, latest Elo delta, current win streak and the professional-player flag, plus the upstream skill expiration timestamp. Duplicate ids are collapsed and unknown users are omitted, so the entries list can be shorter than the request and is a valid empty result when no player has skill data. The upstream requires exactly one game per request and returns entries in its own order.
+
 ### `fanatics_categories`
 
 Get Fanatics' league and team navigation tree. Returns Fanatics' full top-level navigation tree: leagues (NFL, MLB, NBA, NHL, Soccer, WWE, College, ...) and, where Fanatics exposes a team-level breakdown, each league's teams (College's several hundred schools included). Each league's or team's url is directly usable as fanatics_category's url input. Public data sourced from fanatics.com's own navigation data.
@@ -5328,6 +5524,118 @@ List Foreign Policy project hubs. Returns one page of Foreign Policy's live publ
 
 Get Foreign Policy category or tag archive. Returns one page of a public Foreign Policy category or tag archive (newest first). type selects the archive namespace and defaults to category; topic is the slug within it; page is 1-based.
 
+### `formula1_driver`
+
+One Formula 1 driver profile. Returns one driver profile: full name, team, nationality and car number, the season the statistics describe, the current-season statistics (grand prix and sprint results, points and positions) and the career statistics, plus identity facts such as date and place of birth. The nested-statistics label and value are kept as text so suffixed values such as "1 (x9)" survive unchanged.
+
+### `formula1_driver_grid`
+
+The Formula 1 driver grid the site currently shows. Returns the current race grid: each driver's first and last name, team, nationality, team colour, profile slug and profile URL. The grid page has no season selector (a season query is ignored upstream), so the route describes the season the page header names and reports that season in the payload. The grid is the current race line-up and can be smaller than the standings row set, which also lists mid-season substitutes.
+
+### `formula1_driver_season_results`
+
+One Formula 1 driver's race-by-race results for a season. Returns one driver's per-round results for a season: round, Grand Prix name, weekend date, the constructor the driver raced for in that round, finishing position or a non-numeric classification such as DNF, NC or DSQ, and the points scored. The page lists the rounds the driver appears in, not every round of the championship. The driver code is the page's real key; the slug only builds the URL and a wrong slug still serves the driver.
+
+### `formula1_driver_standings`
+
+Formula 1 drivers' championship standings. Returns one season's drivers' championship table: position, driver name and abbreviation, nationality, team, points, and the driver code, profile slug and standings URLs the page links to. The results archive covers 1950 through the current season.
+
+### `formula1_filters`
+
+List the pinned Formula 1 request values. Returns the pinned value space the Formula1 routes validate locally: the eleven session-result views with their page labels, the four season awards, the accepted season range per route class, the current season, and the discovery notes for driver codes, team values, meeting ids and the two slug spaces. The site publishes no value-listing endpoint for these; the values are read from its own page navigation and covered by exact-set tests. No upstream call is made.
+
+### `formula1_json_awards`
+
+Formula 1 season awards from the JSON API. Returns one season's award dropdown: the four award labels and the absolute extension path that returns each award's per-round winners. The award values match formula1-json-season-award's award enum.
+
+### `formula1_json_constructors`
+
+Formula 1 constructors from the JSON API. Returns one season's constructor dropdown: each team's value (the standings identifier), name, logo image and team colour codes. This is the discovery surface for the team value formula1-team-season-results accepts.
+
+### `formula1_json_driver_assembly`
+
+One Formula 1 driver's editorial assembly. Returns one driver's full editorial assembly payload exactly as the API sends it: the driver reference and identifier, SEO copy, profile and logo images, shop link, results-archive CTA, pull quote, vertical video stories, gallery images and the related article/video assemblies. Use either 'reference' (the alphanumeric driver code from formula1-json-drivers) or 'identifier' (the driver slug), never both.
+
+### `formula1_json_drivers`
+
+Formula 1 driver codes from the JSON API. Returns one season's driver dropdown: each driver's code (the value formula1-driver-season-results and the HTML standings rows use), display names, name format, avatar image and team colour codes. A season with no driver entries returns an empty list.
+
+### `formula1_json_editorial`
+
+Formula 1 editorial JSON resources. Returns one editorial resource exactly as the API sends it: the season event listing (every round with its event slug, official name, circuit facts and dates), the driver listing, the constructor listing, the atom race calendar (meeting dates with city and timezone) or the results archive metadata. The resource is a closed set; every resource except race-calendar requires a season, and race-calendar rejects one.
+
+### `formula1_json_event_tracker`
+
+Formula 1 event tracker: current season context and live-timing source. Returns the event tracker payload the site's own front end reads: the current season context (season year, current or next meeting key, event and season state), the current meeting's identity and dates, the live-timing and static replay base URLs, and any published race results. This is the current-event surface; the URLs it names are not fetched by any route (live timing stays out of scope).
+
+### `formula1_json_meeting_datasets`
+
+Formula 1 session datasets for one meeting, from the JSON API. Returns one meeting's dataset dropdown: each dataset's label, its relative path (with the meeting or session parameters), whether it is a session result, whether it is available and the editorial session type. This is the discovery surface for the dataset values formula1-json-results accepts for that meeting; a sprint dataset appears only on sprint weekends.
+
+### `formula1_json_meetings`
+
+Formula 1 meeting ids from the JSON API. Returns one season's meeting dropdown from formula1.com's own JSON API: each meeting's numeric id, name, country code and ISO country name, and which one the site marks as current. Use the id with formula1-json-results and formula1-json-meeting-datasets; the JSON API requires the site's embedded public-bundle key, which this service rediscovers on first use and refreshes when the gateway rejects it.
+
+### `formula1_json_race_assembly`
+
+One Formula 1 race weekend's editorial assembly. Returns one race weekend's full editorial assembly payload exactly as the API sends it: the structured data (fomRaceId, season, identifier, SEO copy, brand colour and images), the session schedule (race.meetingSessions with session codes, names and UTC start/end times), the circuit description, session link sets, promotional content and the related article/video assemblies. Use either 'meeting' or 'season'+'identifier', never both. Identifiers match the race-hub event slugs from formula1-race-calendar.
+
+### `formula1_json_results`
+
+One Formula 1 session dataset's rich JSON payload. Returns one session dataset's full JSON payload for a meeting, exactly as formula1.com's own API returns it: session metadata, the result rows with every field the API sends, classification codes, gaps, lap counts, points, qualifying segment times and the meeting block. The dataset is the closed set from formula1-json-meeting-datasets; practice requires its numbered session and every other dataset rejects one. The payload is kept verbatim in data, so no rich field is reshaped or dropped.
+
+### `formula1_json_season_award`
+
+One Formula 1 season award's rich JSON payload. Returns one season award extension payload exactly as the API sends it: the award text, call-to-action, article or video tags, and the per-round winner data with classified times, driver and team references. The award enum is the closed set the JSON API publishes; a season that predates an award is a valid empty data list.
+
+### `formula1_json_team_assembly`
+
+One Formula 1 team's editorial assembly. Returns one team's full editorial assembly payload exactly as the API sends it: the team key and identifier, SEO copy, profile and logo images, shop link, profile text, vertical video stories, gallery images and the related article/video assemblies. Use either 'key' (the numeric teamKey from formula1-json-editorial resource=constructor-listing) or 'identifier' (the team slug), never both.
+
+### `formula1_meetings`
+
+Formula 1 meetings with numeric meeting ids for one season. Returns one season's Grand Prix weekends in championship order with the site's numeric meeting id, the results-archive slug, the Grand Prix name, the weekend date and the winner's race result once the round has run. The meeting id is the only stable race key and is the selector the session-results route takes; on a detail URL the season and slug segments are decorative.
+
+### `formula1_race_calendar`
+
+Formula 1 race calendar for one season. Returns the season's published calendar: every Grand Prix weekend including future rounds and pre-season testing, with the race-hub event slug, the short and official event names, the host country, the parsed weekend start and end dates, the completed marker and the championship round. The event slug is the race-hub selector and is a different slug space from the results-archive slug; winners come from the season-results route.
+
+### `formula1_race_hub`
+
+One Formula 1 race weekend hub. Returns one race weekend's hub: the event's official name, description, host location and weekend bounds from the page's schema.org structured data, the published session schedule with UTC start and end times, the circuit facts (length, first Grand Prix, lap count) and, once the race has run, the top-five result table. The event slug is the race-hub slug from formula1-race-calendar and is a different slug space from the results-archive slug.
+
+### `formula1_season_awards`
+
+Formula 1 season award winners by round. Returns one season award's per-round winner list: the DHL Fastest Lap, Pirelli Pole Position, DHL Fastest Pit Stop (a team award) or Salesforce Driver of the Day. Each row carries the round, numeric meeting id, Grand Prix name, winner and the award time where the page renders one. An award the site does not publish for the requested season returns HTTP 400 with an explicit message.
+
+### `formula1_season_results`
+
+Formula 1 season results table. Returns one season's completed rounds: round number, numeric meeting id, results-archive slug, Grand Prix name, weekend date, race winner with abbreviation, winning team, lap count and race time. A season that has not started yet is a valid empty result.
+
+### `formula1_seasons`
+
+Formula 1 seasons published by the results archive. Returns every championship season the formula1.com results archive publishes, newest first, with the season the site currently defaults to marked as current. This is the discovery surface for the season parameter the other Formula 1 routes accept: the archive covers 1950 through the current season.
+
+### `formula1_session_results`
+
+One Formula 1 session result table by meeting id. Returns one session's classified table for a meeting: race, qualifying, starting grid, practice 1 to 3, pit-stop summary, fastest laps or the three sprint sessions. The meeting id is the real selector; the season and slug parameters only build the upstream URL and are decorative on the site's own detail pages. A session the site has no data for (a sprint view on a non-sprint weekend, or a practice session the weekend did not run) is a valid empty result.
+
+### `formula1_team`
+
+One Formula 1 team profile. Returns one team profile: team name, the current drivers the profile lists with their profile slugs, the season the statistics describe, the current-season statistics and the career statistics, plus profile facts such as full team name, base, team chief and power unit.
+
+### `formula1_team_grid`
+
+The Formula 1 team grid the site currently shows. Returns the current team grid: each team's name, team colour, profile slug, profile URL and the drivers the card names. The team page has no season selector (a season query is ignored upstream), so the route describes the season the page header names and reports that season in the payload.
+
+### `formula1_team_season_results`
+
+One Formula 1 team's race-by-race points for a season. Returns one team's per-round points for a season: round, Grand Prix name, weekend date and the points the team scored in that round. The page lists the rounds the team appears in. The team value comes from formula1-team-standings and the upstream page matches it case-insensitively, so Mercedes and mercedes both serve the same team.
+
+### `formula1_team_standings`
+
+Formula 1 constructors' championship standings. Returns one season's constructors' championship table: position, team, points and the team standings URL. The constructors' championship started in 1958; a pre-1958 season returns available=false with an empty table, and a season the site has not published yet returns an empty table.
+
 ### `fortune_article`
 
 Get Fortune article content. Returns one Fortune article by its canonical 'url'. The response has the title, description, publish and update times, section, authors, lead image, body 'paragraphs' and a 'paywalled' flag. Subscriber-only or blocked articles return an upstream error.
@@ -5715,6 +6023,90 @@ Get a FUSSBALL.DE team squad. Returns a team's players for a season: the 'squad'
 ### `fussballde_top_scorers`
 
 Get the FUSSBALL.DE top scorers of a competition. Returns a page of a competition's top-scorer list with position, player, team and goals; page through it with 'limit' (1 to 100, default 30) and 'offset'. Tied scorers share a position. A competition without recorded scorers returns an empty list; cups and tournaments have no scorer list at all and return 404.
+
+### `futgg_fc27_catalog`
+
+Discover FC27 native card catalogs. Returns native catalog IDs, EA IDs and labels. Use eaId for player filters; internal database IDs are a separate namespace.
+
+### `futgg_fc27_definitions`
+
+Get native FC27 card definitions. Reads the source batch metadata endpoint with EA item IDs and preserves card identity/stat fields. This does not fetch accounts or install anything.
+
+### `futgg_fc27_evolution`
+
+Read FC27 evolution detail. Uses the source evolution slug and returns native game/rule/level/upgrade metadata with its published raw-definition example. This differs from list example-card wrappers. Preserves nulls and source order while excluding biography/account/editorial/internal engine data. No previous-edition fallback, player/path generation, local upgrades or media execution.
+
+### `futgg_fc27_evolutions`
+
+Browse FC27 evolution metadata. Reads native expiry/cosmetic/name/page/full-list options and preserves source evolution rules, level tasks, upgrade choices, published metrics and example cards. include_cosmetics=false does not mean every returned isCosmeticEvolution is false; the source option is forwarded without a local partition. Omission preserves the underlying API default; explicitly request include_cosmetics=true to match the current FC27 UI. No eligible-player/path generation, account tracking, biography or local calculation.
+
+### `futgg_fc27_gg_rating_ranks`
+
+Get FC27 published GG-rating rank histograms. Returns every native role histogram with source scale and bucket data. Role IDs are distinct from card EA item IDs. This returns the publisher's dataset without calculating new player ranks or percentiles.
+
+### `futgg_fc27_gg_ratings`
+
+Get FC27 published GG ratings. Returns the complete native compact rating dataset with delta-coded EA item IDs, positions and scaled scores. Source fields, order, wire version and sentinel values remain intact. Publication references refresh automatically.
+
+### `futgg_fc27_objective_categories`
+
+Discover FC27 objective group categories. Returns every source-backed group category, including the native coming-soon selector. The separate Season Pass campaign navigation row is excluded. UI-only Expiring Soon is not a server filter and is not offered. Native EA category IDs and optional flags are preserved; category_slug is the consuming value.
+
+### `futgg_fc27_objective_group`
+
+Read FC27 objective group detail. Reads a source group slug and preserves task rules, completion requirements, source rewards and optional values. objectivesCompletionCount is a public completion requirement, not user progress. No automatic previous-edition fallback, biography/account data or locally built squad/reward totals.
+
+### `futgg_fc27_objective_group_by_ea`
+
+Read FC27 objective group by EA group ID. Uses group eaId, not its internal database id or a child objective EA id. Returns the same public parent group metadata as the slug resource, without account state or cross-edition fallback.
+
+### `futgg_fc27_objective_group_by_objective`
+
+Read FC27 parent group by EA objective ID. Uses objectivesEaIds or objectives[].eaId and returns the parent group, not a standalone task DTO. EA group IDs and database IDs are distinct. No account tracking, biography or completion mutation.
+
+### `futgg_fc27_objectives`
+
+Browse FC27 objective groups. Preserves native category, preview, expiry and pagination arguments/results. Current source quirk: omitted hide_expired hides expired groups, while explicit true or false both include them. The API forwards the native flag without locally correcting it. Full mode returns data only; paginated mode has currentPage,next,totalPages and no invented totalCount. No local expiry windows, squad building, account progress or reward aggregation.
+
+### `futgg_fc27_player_sorts`
+
+Discover native FC27 player sorts. Returns the complete accepted business-sort catalog for the native Console or PC context, grouped by source labels with exact ascending/descending values. Price uses different Console/PC keys. Pass one returned value as sorts to the FC27 players endpoint. Biological sorts are outside the game-card contract.
+
+### `futgg_fc27_players`
+
+Search native FC27 player cards. Preserves source card, page/next and capped total metadata. Native definition predicates qualify position/body/foot/gender/acceleration filters; base accelerateType is not a substitute for possible chemistry-style types.
+
+### `futgg_fc27_price_index`
+
+Get FC27 published card-price index. Returns native delta-coded EA item identifiers and sparse price/token metadata, preserving source wire fields and zero/absent values. The index is not a historical-price series.
+
+### `futgg_fc27_prices`
+
+Get FC27 published card prices. Supports all four native Console/PC standard/dynamic publications. Dynamic columns are combined with the same publication's shared index exactly as the website does; every price/status column is checked against its item index. Returns native compact fields, not computed price estimates or history.
+
+### `futgg_fc27_sbc_categories`
+
+Discover FC27 SBC categories. Returns every native SBC category with its slug, label, database ID, EA category ID and source active-set count. Slugs are accepted by the SBC listing; virtual Expired/Expiring Soon tabs use listing flags instead. Counts are source catalog values and are not recalculated for each listing filter.
+
+### `futgg_fc27_sbc_set`
+
+Read FC27 SBC set detail. Reads a source-provided FC27 set slug and returns native set, challenge, condition/reward metadata and published prices. Preserves source IDs, order, repeatability and nullable values. Excludes biography, account/render flags and unreviewed editorial blobs. Does not execute a solver or access a private club.
+
+### `futgg_fc27_sbc_set_by_challenge`
+
+Read FC27 parent SBC set by EA challenge ID. Uses a native EA challenge identity from challengeEaIds or challenges[].eaId and returns its parent set. This resource does not return a standalone challenge DTO. Database IDs and EA set IDs are different namespaces. No biography, account access or solver execution.
+
+### `futgg_fc27_sbc_set_by_ea`
+
+Read FC27 SBC set by EA set ID. Uses the native EA set identity from listing eaId, not the set database id or an EA challenge ID. Returns the same public set/challenge/reward metadata as the slug resource. No account, biography or solver execution.
+
+### `futgg_fc27_sbc_sets`
+
+Browse FC27 squad building challenges. Reads native category/search/expiry filters and pagination. Both expiry flags true preserve the source's expired-only precedence. no_pagination=true returns the native data-only envelope and ignores pagination controls; no metadata is synthesized. Native page_size<=0 resolves its default. Preserves rewards, challenge metadata, published prices and null/false/zero values; excludes biography, account/render flags and unreviewed editorial data.
+
+### `futgg_fc27_season_pass`
+
+Read FC27 Season Pass reward metadata. Returns current native campaign identity, dates, nullable premium currency metadata and every reward-tier row. Free and premium rows can share a level number and remain separate in source order. isPremium describes a reward tier, not user entitlement. No purchase, account access, reward aggregation, biography or media fetch.
 
 ### `gamerant_article`
 
@@ -6924,6 +7316,42 @@ Get Hindustan Times top stories. Returns Hindustan Times' current top stories fr
 
 Get Hindustan Times sections. Lists the 24 Hindustan Times sections accepted by 'hindustantimes-headlines', including 'india-news', 'world-news', 'cricket', 'real-estate', 'nri' and 'editors-pick'. Each entry has a 'slug', display 'name' and section 'url'. Takes no parameters.
 
+### `hltv_event`
+
+Get a Counter-Strike event overview. Returns one event's public HLTV overview page by numeric 'id': name, canonical URL, 'status' ('finished', 'ongoing', or 'upcoming'), start/end dates in UTC, total prize pool, participating team count, location, and the attending teams with their ids, logos and the HLTV/Valve ranking positions shown at event start. The trailing 'slug' is cosmetic and optional; HLTV resolves the event by id. Use hltv-events to discover event ids.
+
+### `hltv_events`
+
+Get the Counter-Strike event calendar. Returns HLTV's public event calendar: ongoing events, featured events, and the month-grouped upcoming list. Each event has its numeric 'id', canonical 'url', 'name', 'status' ('ongoing' or 'upcoming'), 'type' (for example 'LAN', 'Intl. LAN', 'Online'), start/end dates in UTC when published, prize pool and location when the card shows them, and the top participating teams when listed. Use hltv-event with an id from this response for one event's overview.
+
+### `hltv_match`
+
+Get a Counter-Strike match detail page. Returns one HLTV match by numeric 'id': both teams with ids, logos and series score; 'status' ('finished', 'live' or 'upcoming'); scheduled 'date' in UTC; 'format' ('bo1'/'bo3'/'bo5'), LAN flag and stage from the veto summary; the event id/name/URL; the full map list with per-map 'score', 'winner', 'picked_by', regulation and overtime 'halves', and the per-map stats page id; the map 'veto' in order ('picked', 'removed' or 'left over'); both 'lineups' with player ids, nicknames, real names and roles; the match-total scoreboard 'stats'; and 'map_stats' scoreboards for the captured maps. The trailing 'slug' is cosmetic and optional; HLTV resolves the match by id.
+
+### `hltv_matches`
+
+Get live and upcoming Counter-Strike 2 matches. Returns HLTV's current live and upcoming Counter-Strike 2 matches, no input needed. Each match has its numeric 'id', canonical 'url', scheduled 'starts_at' (UTC; omitted for matches already live), 'status' ('live' or 'upcoming'), 'format' ('bo1'/'bo3'/'bo5'), 'stage', star rating 'stars' (0-5), 'region', LAN flag, both teams with ids and logos, and the event id/name. Use this for the current schedule; use hltv-results for finished matches and hltv-events for tournament calendars. Pinned matches may omit 'event.name' while still carrying 'event.id'.
+
+### `hltv_player`
+
+Get a Counter-Strike player profile. Returns one player's public HLTV profile by numeric 'id': nickname, real name, country, age and date of birth when published, canonical URL, current team (id, name, logo) when the player is on a team, and the role-rating rows HLTV shows (Rating 3.0 plus Firepower, Entrying, Trading, Opening, Closing, Sniping and Utility scored out of 100). The trailing 'slug' is cosmetic and optional; HLTV resolves the player by id.
+
+### `hltv_rankings`
+
+Get the HLTV world team ranking. Returns one HLTV Counter-Strike world-ranking snapshot: the snapshot 'date' and every ranked team in order, each with 'rank', team id/name/logo, HLTV 'points', the week-over-week 'change' ('+1', '-2', 'new', or '-' for unchanged), and the five ranked players with their ids and profile URLs. Omit 'date' for the current ranking; pass a snapshot date ('YYYY-MM-DD', typically a Monday) to read an older ranking. A date with no published snapshot returns '404'.
+
+### `hltv_results`
+
+Get finished Counter-Strike 2 match results. Returns one page of HLTV's finished-match archive, 100 results per page in reverse chronological order. Each result has the match 'id', canonical 'url', group 'date' (YYYY-MM-DD), both teams with logos, 'score' as [team1, team2], 'winner' (1 or 2), event name, 'format', and star rating. Pass 'offset' to page: 'next_offset' in the response is the value for the following page and is absent on the last page; 'total' is the archive's full result count. Offsets past the end return an empty 'results' list rather than an error.
+
+### `hltv_search`
+
+Search HLTV for players, teams and articles. Runs HLTV's public site search and returns its result groups. Each group has a 'name' (for example 'Player', 'Team' or 'Article') and 'items'; every item has a 'type' ('player', 'team', 'article', 'event' or 'match'), numeric 'id', 'name', canonical 'url' and 'slug'. Player items carry their 'country'; team items carry a 'logo_url'; article items carry the publication 'date' and the 'author' with the author profile 'author_url'. The query is required (up to 100 characters) and is echoed as 'query'. Use this to resolve a name to the ids that hltv-player, hltv-team, hltv-event and hltv-match accept.
+
+### `hltv_team`
+
+Get a Counter-Strike team profile. Returns one team's public HLTV profile by numeric 'id': name, country, logo, canonical URL, the team's current HLTV and Valve ranking positions (with regional rank when shown), and the current five-player roster with player ids, nicknames, real names, profile URLs and in-game roles when HLTV publishes them. The trailing 'slug' is cosmetic and optional; HLTV resolves the team by id. Use hltv-rankings to discover team ids.
+
 ### `hm_categories`
 
 Browse H&M's storefront category navigation. Returns H&M's own storefront category navigation, department by department: every direct nav item and subcategory currently shown in the site's own menu, with its display name and storefront URL. Where this build has separately verified the value against hm-listing's own category_id parameter, that id is included too; category_id is omitted for entries not yet verified rather than guessed, since the visible category label is confirmed NOT a reliable way to derive H&M's real listing category ids for every category. department, when given, filters the result to one department.
@@ -7508,6 +7936,62 @@ Get Irish Times top stories. Returns up to 100 current Irish Times top stories f
 
 Get Irish Times sections. Lists the 16 Irish Times sections accepted by 'irishtimes-headlines': 'ireland', 'opinion', 'politics', 'business', 'your-money', 'world', 'sport', 'life-style', 'health', 'technology', 'culture', 'property', 'food', 'motors', 'history' and 'abroad'. Each entry has a 'slug', 'name' and 'url'.
 
+### `itchio_browse`
+
+Browse itch.io projects by native filter path. Follow paths from browse options or tag discovery. Supports all nine classifications and native filter/sort combinations with one-based pages. Returns the source order, project cards and native item count; an explicit empty page returns an empty array.
+
+### `itchio_browse_options`
+
+Discover itch.io catalog filters and sorts. Returns all visible filter groups, source destination paths, five native sort choices, the current facet values and a tag-discovery reference. Tags form an open vocabulary; suggested tags are not an exhaustive list of creator tags. Follow returned paths to preserve the selected context.
+
+### `itchio_catalog`
+
+Get a native itch.io classification index. Reads public itch.io catalog metadata without account keys, purchases or creator administration.
+
+### `itchio_jam_calendar`
+
+Get itch.io game-jam calendar. Returns every jam in the public calendar payload, preserving source IDs, relative detail URLs, dates, joined counts, hue and optional featured/highlight values. Dates remain source strings. The calendar is a source-selected window, not an exhaustive archive. Participant, duration and featured UI filters operate locally and are not server query parameters.
+
+### `itchio_jams_browse`
+
+Browse itch.io game jams. Follows native timing/voting/featured/participation filters and context-specific sorts. Preserves source cards, host links, dates, display counts, result links, ordering and page links. Explicit empty pages return an empty array. The /jams landing grid supports page1 only and has no pagination field.
+
+### `itchio_jams_entries`
+
+Read itch.io game-jam submissions. Resolves the current native submissions JSON URL from the public jam page and returns its full published document. Preserves source ordering, entry and project ID namespaces, generated_on, zero counts, contributor credits and optional project metadata. The upstream UI filters, sorts and paginates this document locally; this endpoint accepts no server-side filter, sort or page parameters. Account, rating and custom private submission data are excluded.
+
+### `itchio_jams_options`
+
+Discover itch.io game-jam filters and sorts. Returns every visible filter-group value, selected choice, clear-filter path and contextual sort. At /jams returns native landing-page browse links. Follow returned paths without guessing parameter translations. Account, hosting, joining and rating operations are excluded.
+
+### `itchio_jams_overview`
+
+Read itch.io game-jam overview. Returns the jam's native identity, date strings, optional voting deadline, hosting credits/links, description text, status text, banner, display statistics and navigation. Preserves upcoming, active, voting and finished page metadata without computing a phase or countdown. Account and participation actions are excluded.
+
+### `itchio_jams_results`
+
+Read itch.io game-jam results. Reads a published per-criterion ranking page. Criteria must belong to the selected jam's live discovery menu. Preserves native ties, rank text, adjusted/raw score strings (including n/a), creator credits, submission links and relative pagination. No derived rankings or account actions.
+
+### `itchio_jams_results_options`
+
+Discover itch.io game-jam ranking criteria. Returns every visible criterion label and native results path for one jam, including the default/primary selection. Criteria are host-defined and may include manual rankings or Overall. Use a root /jam/slug/results path linked from jam browse. Hidden or unpublished results are unavailable.
+
+### `itchio_jams_submission`
+
+Read itch.io jam submission metadata and scores. Returns the public submission's project/jam identity, title, summary, submitter credits and published per-criterion rank/score/raw-score strings. Preserves n/a manual scores and source ordering. results_available:false means the anonymous page provides no published score table; it does not assert that private or future results do not exist. Individual votes, comments, arbitrary custom answers, judge feedback and account actions are excluded.
+
+### `itchio_project`
+
+Get itch.io public project details. Returns source project ID, title, summary, project description, cover URL and every available More information row/link. Uses public HTTPS creator.itch.io project pages only; source schema metadata provides title fallback. Download instructions, community text, credentials and account/purchase/download requests are excluded.
+
+### `itchio_tags`
+
+Get native itch.io picker options. Reads public itch.io catalog metadata without account keys, purchases or creator administration.
+
+### `itchio_top_rated`
+
+Get a native top-rated games page. Reads public itch.io catalog metadata without account keys, purchases or creator administration.
+
 ### `japantimes_article`
 
 Get a The Japan Times article. Returns public article metadata. If the page marks its body as blurred for anonymous visitors, paywalled is true and hidden subscriber text is omitted.
@@ -8087,6 +8571,78 @@ Get a Kickstarter campaign's detail. Returns one Kickstarter campaign's detail: 
 ### `kickstarter_updates`
 
 Get a Kickstarter campaign's updates feed. Returns one Kickstarter campaign's full updates feed: for each update, its number, title, author, whether the author is the creator, publish date, body text, and comment count. creator and slug are the two path segments of the project URL, e.g. lookingglass and musubi for kickstarter.com/projects/lookingglass/musubi.
+
+### `klook_activity`
+
+Get a Klook activity card. Returns the public card-level record for one Klook activity: title, destination, price, rating, review count, image, coordinates and tags. Use an activity_id from /klook/search. This is Klook's card surface; the full detail page payload is behind Klook's bot defense and is not served.
+
+### `klook_attractions_categories`
+
+List Klook attraction categories. Returns Klook's attractions-vertical category set: the flat list of attraction categories with ids, names and listing URLs, plus the vertical's root category ("Attraction tickets"). Use a category_id with /klook/attractions/search to narrow listings; this list is the authoritative value space for that parameter.
+
+### `klook_attractions_destinations`
+
+Discover Klook attractions destinations. Returns Klook's attractions destination-discovery surface: the hot attractions countries with their top activity cards (always), the hot cities for a country (when country_id is supplied), and the cities near a destination city (when city_id is supplied). Note the two country id spaces: the response's countries[].country_id uses Klook's activity-country ids (Japan is 1012), while the country_id parameter uses the destination-country ids from /klook/destinations (Japan is 12) because that is what Klook's hot-city read accepts. Nearby cities carry their upstream distance in kilometres; hot cities do not. Empty hot-city or nearby-city lists are valid answers.
+
+### `klook_attractions_highlights`
+
+List curated Klook attraction highlight sections. Returns Klook's curated attraction highlight sections (Bestsellers, Book for today or tomorrow, New experiences, deals, date ideas, great for kids) for a city or a country, each with its top activity cards, plus the section-list button text and URL. A scope is required: type defaults to city when city_id is supplied and country otherwise, and the id must match the requested type. Unscoped highlights are rejected upstream.
+
+### `klook_attractions_search`
+
+Search Klook attractions by destination or category. Returns one page of Klook's attractions-vertical listings (theme parks, museums, observation decks and the rest of the attraction-ticket catalogue) for an optional destination city and/or attraction category. Use city_id from /klook/destinations and category_id from /klook/attractions/categories; with neither it returns Klook's global attractions listing. Unlike /klook/search this reads Klook's dedicated attractions catalogue, which is a separate inventory from the general experiences search. sort reorders the same result set, page is 1-based, and prices are display strings in the response currency. Klook caps the reported total at 10000 for broad queries.
+
+### `klook_attractions_suggest`
+
+Autocomplete Klook attractions, cities and countries. Returns Klook attractions-vertical autocomplete matches for a partial query: matching attraction tickets with ids, city ids, images and URLs, plus matching destination cities and countries. Use a returned activity_id with /klook/activities/{activity_id} or its city_id with /klook/attractions/search.
+
+### `klook_categories`
+
+List Klook activity categories. Returns Klook's complete filterable activity category tree with ids, names and listing URLs. Use a category_id with /klook/search to narrow results; the tree is the authoritative value space for that parameter.
+
+### `klook_destinations`
+
+List Klook countries and destination areas. Returns Klook's bookable country list and its destination-guide area tree with city ids and listing URLs. Use a city_id with /klook/search to browse that destination.
+
+### `klook_hot`
+
+List Klook hot destinations and activities. Returns Klook's curated hot lists: named groups of popular destinations and popular activities, the Travel Must-Haves category group, and the short vertical menu published alongside them. Destination entries carry a city id and country name plus a landing link; use a city entry's id with /klook/search or /klook/destinations. Activity entries carry the activity id and display name. An empty hot list is a valid answer, not an error.
+
+### `klook_interests`
+
+List Klook interest topics. Returns Klook's published interest-topic landing pages, read from its en-US interest sitemap. Each entry carries the interest id, the landing-page slug, the optional city id or country id the page is scoped to, and the absolute landing URL. The same interest id appears more than once: once unscoped, and again scoped to a country or a city, because each is a separately published landing page. Use an interest id as the interest_tag value with /klook/search (browse only, not with query); the context-scoped interest options for a specific destination are published by /klook/search/filters.
+
+### `klook_recommendations`
+
+Get Klook curated category recommendations. Returns Klook's curated "unmissable experiences" sections for a destination (or its default global selection): named category sections with their activity cards, plus the call-to-action button. Use city_id from /klook/destinations or /klook/suggest to scope the sections; use /klook/search or /klook/attractions/search for a full result page instead.
+
+### `klook_reviews`
+
+List recent Klook reviews for a city. Returns recent review cards from Klook's city-level review feed for one product vertical: the reviewed activity title and URL, the review score, the review text and its timestamp. Reviewer display names are deliberately not returned because they are personal data, even when Klook masks them. Vertical experiences (the default) reads Klook's experiences review feed and attractions reads its attractions review feed; the two feeds are separate inventories. Use a city_id from /klook/destinations.
+
+### `klook_search`
+
+Search Klook travel activities. Returns Klook activity search results for a free-text query, a destination city, or a category. A free-text query runs Klook keyword search against its en-US catalogue and can be combined with city_id and category_id; without a query the request browses a destination or category listing instead. Use city_id from /klook/destinations (or a city from /klook/suggest) and category_id from /klook/categories; the tag filters (interest_tag, service_lang_tag, duration_tag, other_filters_tag) take ids from /klook/search/filters, and interest_tag is browse-only. sort reorders the same result set. A query with no matches returns an empty activities list, Klook caps the reported total at 10000 for broad queries, and prices are display strings in the response currency.
+
+### `klook_search_filters`
+
+Get Klook search filter metadata. Returns the filter metadata Klook publishes for a search context: the category tree, price bounds, the bookable dates, the destination tree and the accepted sort values. vertical selects the product vertical. experiences (the default) returns the activity category tree, the price slider bounds, the accepted sort values and the resolved destination, but no destination tree and no enumerated dates: use /klook/destinations for the experiences destination tree and /klook/search for the date-range input. attractions returns the attraction category tree with Klook's own enabled flags, the attraction price bounds, the exact bookable start dates and the region -> country -> city destination tree. Use a returned category id with /klook/search (experiences) or /klook/attractions/search (attractions), and a returned city id with either listing.
+
+### `klook_search_hot_keywords`
+
+Get Klook hot search keywords and topic tabs. Returns the hot search keywords Klook publishes for a search context, together with its curated topic tabs. Without country_id it reads the start-page set, scoped to city_id when one is supplied and unscoped otherwise; with country_id it reads that destination country's page instead and city_id is ignored. hot_words entries carry the keyword text, the exact query Klook records for it and a landing url when Klook publishes one (some hot words have no link). tabs are named lists of curated items (a raw tab key such as search_topics_popular, or Klook's display name for the curated tab that has no raw key), and each item carries its title, subtitle, icon, landing url and display price when present. An empty hot_words list is a valid answer, not an error.
+
+### `klook_search_unified`
+
+Search Klook across product verticals. Returns Klook's platform search-box suggestions for a partial query: destination cities, keyword suggestions, vertical-service shortcuts (airport transfers, hotels, rail passes and similar) and matching activities in one list. Each suggestion carries a normalized type (destination, keyword, vertical_service, activity or other), Klook's raw upstream type code in upstream_type, and an absolute landing url. Vertical-service entries can carry Klook's own template placeholders such as {dest_city_id} in their url; they are served as-is, so substitute a real id only if you know that vertical's own parameter shape. A query with no matches returns an empty suggestions list. Use a destination suggestion's id with /klook/search (city_id), or an activity suggestion's id with /klook/activities/{activity_id}.
+
+### `klook_suggest`
+
+Autocomplete Klook activities, cities and countries. Returns Klook autocomplete matches for a partial query: matching activities, destination cities with city ids, and countries. Use a returned city_id with /klook/search, or an activity_id with /klook/activities/{activity_id}.
+
+### `klook_verticals`
+
+List Klook product verticals. Returns Klook's navigation vertical menu: the top-level product verticals (Things to do, WiFi & SIM Card, Transportation, Train Tickets & Passes, Food & Dining) with every child entry nested. Each entry carries Klook's own type/template key, display label, icon key and absolute listing link. Use the menu to discover which product families Klook currently sells; the things_to_do children are the template_id value space the search page accepts.
 
 ### `kohls_category`
 
@@ -8668,6 +9224,86 @@ Get Mashable top stories. Returns fresh Mashable top stories from the public all
 
 Get Mashable sections. Returns the public Mashable category taxonomy accepted by the headlines endpoint. Only categories that publish a working public RSS feed are listed.
 
+### `maxpreps_rankings_groupings`
+
+MaxPreps ranking groupings for a state season. Returns one state season's ranking groupings: the league/section/division/athlete naming aliases, the state divisions, the associations and the designated market areas, each with its id and canonical rankings/scoreboard URLs. This is the discovery surface for the sectionId, stateDivisionId, associationId and dmaId values maxpreps-scoreboard and maxpreps-team-rankings accept.
+
+### `maxpreps_request_enums`
+
+MaxPreps closed request enum values. Returns every closed request value set the MaxPreps routes validate locally: the 53 state codes, the 64 gender+sport tokens, the three genders, the three team levels, the two school-search sort orders and the seven scoreboard contexts with the identifier kind each context's id parameter must carry. Values were cold-replay verified on 2026-11-09 and are covered by exact-set tests. No upstream call is made.
+
+### `maxpreps_school`
+
+MaxPreps school record by id. Returns one school's institutional record by schoolId: name, address, city, ZIP, state, colours, mascot, enrollment, school type and the governing association (id, name, abbreviation, URL). Use it after maxpreps-school-search to resolve the school behind a team.
+
+### `maxpreps_school_contests`
+
+MaxPreps school recent and upcoming contests. Returns a school's recent and upcoming contests across sports: contest id, canonical URL, timestamp, sport/gender/season/year, team level, contest state, TBA flags, home/away type and both teams with score, result and record. The source caps the list with maxLimit and returns the most relevant contests first.
+
+### `maxpreps_school_proximal`
+
+MaxPreps schools near a school. Returns the MaxPreps schools near one school, using that school as the proximity origin, with the same school record shape as maxpreps-school-search: identity, location, colours, mascot, enrollment and each school's sport-season ids. Offset pagination with maxResults and startFrom; optional name, distance, ZIP, season and state-scope filters.
+
+### `maxpreps_school_search`
+
+Search MaxPreps schools by name. Searches MaxPreps schools by name and returns school records with identity, location, colours, mascot, enrollment and the sport-season ids of the school's teams. Offset pagination with maxResults and startFrom; sortOrder Name sorts alphabetically, Distance requires schoolId and returns rows nearest to that school. This is the primary discovery surface for schoolId and team sportSeasonId values.
+
+### `maxpreps_school_seasons`
+
+MaxPreps school sport seasons. Returns every sport-season entry one school publishes: one row per team at each level and year, with the sportSeasonId, allSeasonId, gender, sport, level, teamLevel, season and year, and the canonical team URL. This is the discovery surface for the sportSeasonId values that maxpreps-team, maxpreps-team-schedule, maxpreps-team-stat-leaders, maxpreps-team-roster-summary, maxpreps-team-next-contest and maxpreps-team-context require.
+
+### `maxpreps_school_zip_search`
+
+List MaxPreps schools near a ZIP code. Returns the MaxPreps schools around one five-digit US ZIP code with the same school record shape as maxpreps-school-search: identity, location, colours, mascot, enrollment and each school's sport-season ids. Offset pagination with startFrom; optional name, city and distance filters. Use it when a caller starts from a location rather than a school name.
+
+### `maxpreps_scoreboard`
+
+MaxPreps scoreboard contest ids by date. Returns the scoreboard for one context (National, State, Section, StateDivision, Association, League or DMA) and one genderSport and level: the yesterday/today/tomorrow scoreboard canonical URLs and the contest ids grouped by date. Use the ids to discover which games exist on a date; this route returns the id index, not the contest detail.
+
+### `maxpreps_season_navigation`
+
+MaxPreps season navigation tree. Returns the season navigation tree for one allSeasonId: the resolved season name and the site's own navigation sections (Football Home, Teams, Players, States, Scores, Rankings, Stat leaders, Photos, Playoffs, Videos, Record Book, News, Live Streams) with their links. Use it to resolve the season an allSeasonId belongs to and the sport/season pages the site itself links.
+
+### `maxpreps_sports`
+
+MaxPreps gender and sport taxonomy. Returns the complete MaxPreps gender/sport taxonomy grouped by Boys, Co-ed and Girls: 64 gender+sport entries covering 40 distinct sports. Each entry carries its own allSeasonId, display name, public URL, canonical genderSport token, schedule model and stat model. This is the discovery surface for the genderSport enum and the allSeasonId values the other routes accept.
+
+### `maxpreps_states`
+
+MaxPreps states and areas taxonomy. Returns the complete MaxPreps state/area taxonomy: 54 records covering the 50 US states, the District of Columbia, National (NN), Prep Schools (PS) and Mexico. Each record carries the state GUID, code, long name, section/division naming aliases, governing-body identity and time zone. This is the discovery surface for the stateCode enum every other MaxPreps route accepts.
+
+### `maxpreps_team`
+
+MaxPreps team-season record. Returns one team-season record by teamId and sportSeasonId: school identity and address, season/level/gender/sport, league, section and state division (with their ids), governing association and the team's canonical URL. The returned sectionId, leagueId, stateDivisionId and associationId are the identifiers maxpreps-scoreboard and maxpreps-team-rankings accept for their non-state contexts.
+
+### `maxpreps_team_context`
+
+MaxPreps team page context. Returns the focused team page context for one team season: the team identity (same shape as maxpreps-team), every school sport-season, the sport's own vocabulary (contest/athlete aliases, period alias, overtime alias), the state record, the team's ranking summaries for the current and last season, its overall and league standings, its designated market areas, its association affiliations and its content-availability flags. Site chrome, partner/commerce blocks, team photo and internal settings are excluded.
+
+### `maxpreps_team_next_contest`
+
+MaxPreps team next contest. Returns one team season's next-contest box: the contest (date, site, teams, scores, home/away type, contest state) with the same contest shape as maxpreps-team-schedule, the derived fields the site renders (title, contest alias, canonical URL, TBA flags) and the Hudl linkage block. Videos and the gofan/NFHS stream URLs are media/commerce fields and are excluded.
+
+### `maxpreps_team_rankings`
+
+MaxPreps team rankings (national, state, section). Returns a ranked team list for one sport season: national, state (stateCode) or section (sectionId) scope, with the rank, school identity, overall record, rating, strength, movement, team size, last-updated time and total ranked count. The source pages with count and page; teamSize is optional and the source returned the same rankings with and without it.
+
+### `maxpreps_team_roster_summary`
+
+MaxPreps team roster counts. Returns one team season's roster counts only: whether the team has a team photo, the athlete count, how many athletes have a photo or jersey number, and the Hudl athlete count. Coach names and staff records are personal data and are excluded; use this route for roster size, not for player records.
+
+### `maxpreps_team_schedule`
+
+MaxPreps team schedule and results. Returns one team season's full schedule with results: each contest's date, site, state, per-team scores (b1..b30), result, home/away type, forfeit/TBA flags, contest state (Pregame, ContestInProgress, Boxscore, ScoreNotReported) and the derived fields the site renders (title, contest alias, canonical URL, overtime, tournament and bracket identity).
+
+### `maxpreps_team_stat_leaders`
+
+MaxPreps team stat leaders. Returns one team season's stat-leader rows: the stat name and header, the stat value, the leader's rank within that stat and the leaderboard context, plus the minimum-games cutoffs the leaderboard applied. Athlete identity (name, photo, positions, class year, ids) is deliberately excluded; this route reports the statistics, not player records.
+
+### `maxpreps_tournament_sports`
+
+MaxPreps tournament sports. Returns the sports the upstream publishes tournament (playoff) brackets for, with each sport's display name and canonical playoffs URL. Optionally scope the list to one state with stateCode.
+
 ### `mcdonalds_categories`
 
 List McDonald's menu categories. Returns one market's McDonald's menu categories -- 13 in the United States at time of writing, including breakfast, burgers, chicken-and-fish-sandwiches, mcnuggets-and-mccrispy-strips, snack-wrap, fries-sides, happy-meal, sweets-treats, mccafe-coffees, drinks, sauces-and-condiments and the two value menus; other markets publish their own, from 6 in Switzerland to 17 in Australia. Each entry's slug is the value GET /mcdonalds/menu takes. Slugs are not portable between markets, so pass the same country back. Eight markets publish a reachable menu, fewer than the ten the restaurant locator covers.
@@ -9248,6 +9884,142 @@ Get a Moda Operandi product. Returns one Moda Operandi product by its product pa
 
 Search Moda Operandi products. Searches or browses the Moda Operandi catalogue for one department, with 'gender' ('women' or 'men') required and either 'q' or 'category' needed as well. Filter by 'designer', 'color', 'size', 'availability', price range or 'on_sale', and sort with 'sort'. 'limit' is 1 to 180 per page. Returns products plus facet counts and the 'total'.
 
+### `modrinth_check_project`
+
+Resolve a project ID or slug. Returns the native public Modrinth metadata for this resource. See the endpoint reference for exact request and response behavior.
+
+### `modrinth_collection`
+
+Read a public Modrinth collection. Reads public collection metadata and its complete native project-ID list. Retains native list order, visibility, timestamps and nullable fields while excluding the owner's account identifier. Does not fetch project details or private collections.
+
+### `modrinth_collections`
+
+Resolve public Modrinth collections. Uses the native bulk read for a JSON array of collection IDs. Preserves the returned order, omissions and complete per-collection project-ID lists. Excludes owner account identifiers and private data. An empty array returns an empty array.
+
+### `modrinth_dependencies`
+
+Get project dependency metadata. Returns the native public Modrinth metadata for this resource. See the endpoint reference for exact request and response behavior.
+
+### `modrinth_file_projects`
+
+Resolve file hashes to projects. Returns the native public Modrinth metadata for this resource. See the endpoint reference for exact request and response behavior.
+
+### `modrinth_file_update`
+
+Resolve a compatible update for a file. Returns the native public Modrinth metadata for this resource. See the endpoint reference for exact request and response behavior.
+
+### `modrinth_file_version`
+
+Resolve a version by file hash. Returns the native public Modrinth metadata for this resource. See the endpoint reference for exact request and response behavior.
+
+### `modrinth_file_versions`
+
+Resolve file hashes to versions. Returns the native public Modrinth metadata for this resource. See the endpoint reference for exact request and response behavior.
+
+### `modrinth_files_update`
+
+Resolve compatible updates for files. Returns the native public Modrinth metadata for this resource. See the endpoint reference for exact request and response behavior.
+
+### `modrinth_files_update_individual`
+
+Resolve updates with per-file filters. Returns the native public Modrinth metadata for this resource. See the endpoint reference for exact request and response behavior.
+
+### `modrinth_files_update_many`
+
+List compatible update versions for files. Returns the native public Modrinth metadata for this resource. See the endpoint reference for exact request and response behavior.
+
+### `modrinth_forge_updates`
+
+Get native Forge update metadata. Returns the native public Modrinth metadata for this resource. See the endpoint reference for exact request and response behavior.
+
+### `modrinth_license`
+
+Get source license title and text. Returns the native public Modrinth metadata for this resource. See the endpoint reference for exact request and response behavior.
+
+### `modrinth_metadata_link_platforms`
+
+Get Modrinth link platforms. Returns every native link-platform name and donation classification. This is public reference metadata and does not initiate donations, payments or account actions.
+
+### `modrinth_metadata_loader_field_values`
+
+Get Modrinth loader-field values. Returns all native enumerable values and metadata for a field from loader-field discovery. Null ordering/type/major and explicit false remain distinct; optional upstream metadata filters are not exposed.
+
+### `modrinth_metadata_loader_fields`
+
+Discover Modrinth loader fields. Returns every distinct supported field advertised by the native loader catalog, preserving first source occurrence. Names refresh with the loader catalog rather than a hard-coded field list.
+
+### `modrinth_metadata_loaders`
+
+Get Modrinth loader capabilities. Returns native v3 loader names, supported games, project types, supported fields and metadata. Use the dedicated loader-field discovery to obtain accepted field names.
+
+### `modrinth_organization`
+
+Read a public Modrinth organization. Reads an organization by its native ID or slug and returns its public name, description and icon metadata. Account, team-member and moderation data are excluded.
+
+### `modrinth_organization_projects`
+
+Read a public organization's Modrinth projects. Returns every anonymously visible project published by the organization in native order, including reviewed game, compatibility and public server metadata. Validates organization identity before accepting the list. Does not add project-type filters, sorting or pagination.
+
+### `modrinth_organizations`
+
+Resolve public Modrinth organizations. Uses the native bulk read for a JSON array of organization IDs or slugs. Preserves native response order and omissions instead of creating entries for unknown IDs. Returns public organization metadata without members or account data. An empty array returns an empty array.
+
+### `modrinth_project`
+
+Get a Modrinth project. Returns the native public Modrinth metadata for this resource. See the endpoint reference for exact request and response behavior.
+
+### `modrinth_project_disclosures`
+
+Get Modrinth public project disclosures. Returns all current public declarations, their type-specific fields and timestamps. Empty declarations are valid. Public AI/system/telemetry/derivative/paid-feature/archive metadata is preserved; moderation, authorship, lock and deletion controls are omitted. No credentials, private/member view or write operation is used.
+
+### `modrinth_project_version`
+
+Get a project version by number or ID. Returns the native public Modrinth metadata for this resource. See the endpoint reference for exact request and response behavior.
+
+### `modrinth_project_versions`
+
+List project versions. Returns the native public Modrinth metadata for this resource. See the endpoint reference for exact request and response behavior.
+
+### `modrinth_projects`
+
+Get native multiple-project metadata. Returns the native public Modrinth metadata for this resource. See the endpoint reference for exact request and response behavior.
+
+### `modrinth_random_projects`
+
+Get native random projects. Returns the native public Modrinth metadata for this resource. See the endpoint reference for exact request and response behavior.
+
+### `modrinth_search`
+
+Search Modrinth projects. Returns the native public Modrinth metadata for this resource. See the endpoint reference for exact request and response behavior.
+
+### `modrinth_search_v3`
+
+Search current Modrinth projects and servers. Returns native v3 name/summary/project_types/version-aware hits, page, hits_per_page and total_hits. Uses native offset/limit and filter expressions unchanged. Source limit0 resolves to1, values above100 cap at100; page is one-based. New_filters takes precedence over legacy filters/version; version is a legacy expression clause, not a bare game-version value. Use search options and native metadata catalogs for values.
+
+### `modrinth_search_v3_body`
+
+Search Modrinth using the native v3 JSON body. Performs the upstream native POST search read. Offset and limit are decimal strings in this body; show_metadata preserves explicit false and optionally returns native per-hit score/sort metadata. No projects or account state are modified. Other fields and filter precedence match GET search.
+
+### `modrinth_search_v3_options`
+
+Discover Modrinth v3 search options. Returns all supported indexes, published server UI region/language choices, exact native content/status filter expressions, disclosure search flags and catalog paths for dynamic project types, categories, loaders, versions, environments and licenses. These reference choices do not restrict the native expression grammar.
+
+### `modrinth_statistics`
+
+Get Modrinth instance statistics. Returns the native public Modrinth metadata for this resource. See the endpoint reference for exact request and response behavior.
+
+### `modrinth_tags`
+
+Discover Modrinth catalog values. Returns the native public Modrinth metadata for this resource. See the endpoint reference for exact request and response behavior.
+
+### `modrinth_version`
+
+Get a version by ID. Returns the native public Modrinth metadata for this resource. See the endpoint reference for exact request and response behavior.
+
+### `modrinth_versions`
+
+Get native multiple-version metadata. Returns the native public Modrinth metadata for this resource. See the endpoint reference for exact request and response behavior.
+
 ### `moncler_categories`
 
 List Moncler categories. Returns Moncler's full category tree (id, name, description, and subcategories). Every id is a valid value for moncler-category's own category_id parameter. levels controls how many levels of subcategories are included.
@@ -9336,13 +10108,105 @@ Get The Motley Fool top investing stories. Returns up to 50 recent Motley Fool i
 
 List The Motley Fool news sections. Lists the 10 Motley Fool Stock Market News section slugs that the headlines endpoint accepts, from 'trending-news' and 'news' to 'most-active-stocks', 'top-stock-gainers' and 'top-stock-losers'. Each entry has a 'slug', a display 'name' ('news' is named Stock News) and a section 'url'.
 
+### `motogp_bmw_award`
+
+Get MotoGP BMW Award standings. Returns every source classification row and its report URL for a calendar season year. Uses a numeric year, not a season UUID. Native empty classifications remain empty and do not imply that the award existed in that season. Report links are metadata only.
+
+### `motogp_categories`
+
+Discover historical result categories. Reads anonymous MotoGP results metadata using the result UUID namespace. Historical categories and test events retain their native source fields.
+
+### `motogp_circuit_poles`
+
+Get native MotoGP circuit pole records. Preserves every native rider/count row, source ordering and pagination metadata. Uses result-circuit UUIDs and lowercase circuit-statistics categories; no new rank, total or historical category alias is calculated.
+
+### `motogp_circuit_records`
+
+Get native circuit record metadata. Reads anonymous native result metadata. Result UUID namespaces and source report/record variants are preserved.
+
+### `motogp_circuit_wins`
+
+Get native MotoGP circuit win records. Mirrors the circuit first-place-frequency resource. Preserves source rider identities, times, finishing position1, order and pagination metadata. Lowercase category names are a separate namespace from result-category UUIDs. Empty MotoE data can be valid even when native pagination totals are nonzero.
+
+### `motogp_classifications`
+
+Get a native MotoGP session classification. Reads anonymous MotoGP results metadata using the result UUID namespace. Historical categories and test events retain their native source fields.
+
+### `motogp_content_categories`
+
+Read MotoGP content category catalog. Returns the complete native category entity IDs, names and signed numeric legacy IDs for a source season year. These category UUIDs differ from event-instance and result-category UUIDs. Legacy IDs select latest sports sessions; historical choices can have no available session and return404 there.
+
+### `motogp_content_event`
+
+Read MotoGP content event metadata. Uses a content-event UUID from the content catalog or session metadata. Returns the native public event/category/venue/track/schedule metadata and explicit result-event/result-circuit UUID bridges when present. Does not synthesize mappings or hydrate classifications. Preserves nulls, dates and source spelling; excludes assets, playback, client location and venue narratives.
+
+### `motogp_content_events`
+
+Read MotoGP content event catalog. Returns all source event metadata in native order, including GP, test and media-event timing metadata. Preserves native schedules, season context, venue/track fields, category relations and availability flags. Assets, playback, client location and venue narrative content are excluded. Source season years can include preseason dates in the preceding calendar year. No locally computed filters, timezone transforms or pagination.
+
+### `motogp_entries`
+
+Read a MotoGP event category's published entry list. Returns the whole native entry array and optional report link. Preserves professional rider identities, countries, numbers, team/constructor data and published wildcard/replacement/rookie flags. Validates the event's category context before reading entries. Does not reconcile entries with grids or infer active riders.
+
+### `motogp_entry_grid_options`
+
+Discover MotoGP entry-list and grid selectors. Resolves a native content event's explicit result-event bridge and categories. Returns complete entry-list UUID tuples and GP starting-grid season/shortname/category tuples. Uses the site's native category-name conversion. Missing bridges or mismatched category namespaces fail rather than inventing identifiers. No source rows or media are fetched for discovery.
+
+### `motogp_event_files`
+
+Get native event and category report links. Reads anonymous native result metadata. Result UUID namespaces and source report/record variants are preserved.
+
+### `motogp_events`
+
+List native season events. Reads anonymous MotoGP results metadata using the result UUID namespace. Historical categories and test events retain their native source fields.
+
+### `motogp_latest_session`
+
+Read latest MotoGP sports session metadata. Reads the native sport/session resource, with optional signed legacy-category and GP/test selectors. Omission preserves the upstream default. Returned session/category/event IDs are content metadata IDs, not result-session/category UUIDs. Historical categories can return older sessions or native404. Null season fields and published timing/availability flags remain unchanged; no media or account access.
+
+### `motogp_next_live_session`
+
+Read next live MotoGP session metadata. Reads the native next-session request with live=true and returns reviewed public broadcast timing, category and event metadata. Preserves source ordering within nested metadata and null/false/zero values. Content-session UUIDs are not result-session UUIDs. Playback assets, account state, client location and venue narratives are excluded. No query parameters.
+
+### `motogp_seasons`
+
+Discover MotoGP result seasons. Reads anonymous MotoGP results metadata using the result UUID namespace. Historical categories and test events retain their native source fields.
+
+### `motogp_sessions`
+
+List event and category sessions. Reads anonymous MotoGP results metadata using the result UUID namespace. Historical categories and test events retain their native source fields.
+
+### `motogp_standings`
+
+Get native season rider standings. Reads anonymous native result metadata. Result UUID namespaces and source report/record variants are preserved.
+
+### `motogp_standings_files`
+
+Get native standings report links. Reads anonymous native result metadata. Result UUID namespaces and source report/record variants are preserved.
+
+### `motogp_starting_grid`
+
+Read a published MotoGP starting grid. Reads the native season/shortname/category grid after validating its GP event context. Preserves native grid order, positions, times, professional rider/team data and optional penalty text. Biography and media fields are excluded. No qualifying-order calculation, row regrouping, entry reconciliation or local filters are added.
+
 ### `nascar_live_feed`
 
 Get NASCAR’s latest published global session feed. Preserves the native anonymous feed and its source identity and timestamps. This resource does not accept series or historical selectors.
 
+### `nascar_race_weekend`
+
+Get NASCAR race-weekend results and sessions. Returns all native weekend_race and weekend_runs rows for a discovered race, preserving source result fields, run types and timestamps. The race must belong to the selected native season/series; driver biography fields are omitted. No ranking, status inference or local series filtering is performed.
+
 ### `nascar_races`
 
 Get the current-season NASCAR race feed. Preserves the native anonymous feed and its source identity and timestamps. This resource does not accept series or historical selectors.
+
+### `nascar_season_races`
+
+Get a NASCAR season race feed. Returns the complete published source series groups for a native calendar year. Discover race and series IDs here before requesting a weekend. Year is a source resource key, not a guarantee that every historical/future file is published; missing or denied source objects remain errors.
+
+### `nascar_series`
+
+Discover NASCAR source series IDs. Returns every native series ID and source group key in a published season feed. No marketing label or unavailable season inventory is invented. Omission selects the current UTC calendar year.
 
 ### `nationafrica_article`
 
@@ -9403,6 +10267,154 @@ Get National Post top stories. Returns the latest 10 National Post stories acros
 ### `nationalpost_sections`
 
 Get National Post sections. Lists the 45 National Post section slugs accepted by 'nationalpost-headlines', such as 'canada', 'opinion', 'hockey' and 'gift-guide', each with its display 'name' and category page 'url'. Links that leave nationalpost.com (Financial Post, Driving.ca, puzzles, classifieds, e-paper) and the paid Sponsored categories are not included.
+
+### `nba_box_score`
+
+NBA traditional box score for one game. Returns the traditional box score for one game: both teams and, per team, one row per player with player id, name, jersey number, position, starter flag, minutes, points, rebounds, assists and field goals made. The player ids are the source's stable player identity used by the player-statistics routes.
+
+### `nba_box_score_advanced`
+
+NBA advanced box score for one game. Returns the advanced box score for one game: each team's per-player rows with the upstream's own advanced statistics keyed by their source names. Verified statistic keys include netRating, pace and pie; the upstream sends a larger key set (offensive/defensive rating and the percentage family use long names such as offensiveRating and effectiveFieldGoalPercentage) and every key is passed through unchanged rather than projected onto a guessed struct.
+
+### `nba_box_score_four_factors`
+
+NBA four-factors box score for one game. Returns the four-factors box score for one game. Verified statistic keys are effectiveFieldGoalPercentage, freeThrowAttemptRate, teamTurnoverPercentage, offensiveReboundPercentage, oppEffectiveFieldGoalPercentage and oppFreeThrowAttemptRate.
+
+### `nba_box_score_misc`
+
+NBA miscellaneous box score for one game. Returns the miscellaneous box score for one game: points off turnovers, second chance and fast-break points, paint points, opponent points off turnovers, blocks, blocks against, personal fouls and fouls drawn. All of those keys are verified on this flavor.
+
+### `nba_box_score_player_track`
+
+NBA player-tracking box score for one game. Returns the player-tracking box score for one game. Verified statistic keys are speed, distance, touches, passes, secondaryAssists, contestedFieldGoalsMade and uncontestedFieldGoals. Unlike its siblings this flavor answers the game id alone, so it takes no league or period parameters.
+
+### `nba_box_score_scoring`
+
+NBA scoring-distribution box score for one game. Returns the scoring-distribution box score for one game. Verified statistic keys are percentageFieldGoalsAttempted2pt, percentageFieldGoalsAttempted3pt, percentagePoints2pt, percentagePoints3pt, percentagePointsFastBreak and percentagePointsPaint.
+
+### `nba_box_score_usage`
+
+NBA usage box score for one game. Returns the usage box score for one game: each team's per-player rows with the upstream's usage statistics. Verified statistic keys are usagePercentage, percentageFieldGoalsAttempted, percentageFreeThrowsAttempted, percentageAssists, percentageTurnovers, percentageRebounds and percentagePoints.
+
+### `nba_common_all_players`
+
+NBA league-wide player listing for a season. Returns the league's complete player listing for a season (the CommonAllPlayers table). Verified columns are PERSON_ID, DISPLAY_FIRST_LAST, ROSTERSTATUS, TEAM_ID, TEAM_NAME, TEAM_ABBREVIATION and PLAYERCODE. This is the widest player listing in the family; use nba-players when you want the index with roster attributes, and this route when you need the historical-to-current player set.
+
+### `nba_draft_combine_anthro`
+
+NBA draft combine anthropometric measurements. Returns one draft class's combine anthropometric measurements (the DraftCombinePlayerAnthro table). Verified columns are PLAYER_ID, FIRST_NAME, LAST_NAME, POSITION, HEIGHT_WO_SHOES, WEIGHT, WINGSPAN, STANDING_REACH, HAND_LENGTH and HAND_WIDTH. The draft year is required: the endpoint has no all-years mode that was verified.
+
+### `nba_enums`
+
+List the pinned NBA request enum values. Returns the complete pinned request-enum inventory the NBA routes validate locally: league ids, season types (all four upstream values, including Pre Season and All Star), measure types, per modes, leader stat categories, the leaderboard scope, the game-date and season formats, and the values deliberately blocked because they are not verified. The upstream exposes no value-listing endpoint and answers an invalid enum with a bare HTTP 500, so these values are pinned from measured live acceptance and covered by exact-set tests. No upstream call is made.
+
+### `nba_franchise_history`
+
+NBA franchise history, including defunct teams. Returns every franchise's history as two tables: FranchiseHistory for active franchises and DefunctTeams for the ones that no longer play. Verified columns are TEAM_ID, TEAM_NAME, START_YEAR, END_YEAR, YEARS and GAMES. The table is league-wide and needs no team id; pass team_id only to narrow it.
+
+### `nba_game_detail`
+
+NBA game summary detail from nba.com. Returns one game's summary detail from nba.com's game page, read from the page's embedded JSON state: status and clock, game duration, attendance and sellout flag, venue id, name, city, state, country and timezone, the officiating crew with names and jersey numbers, series text, and each team's per-period scoring with a derived game total. Use nba-box-score for per-player statistics; this route is the game-level summary the box score does not carry.
+
+### `nba_games`
+
+Current NBA games from nba.com's own page state. Returns the games currently shown on nba.com's games page, read from the page's embedded JSON state: game id, code, status and clock, period, and both teams with id, tricode, name, score, wins and losses. The shape is identical to nba-scoreboard, so the two routes are interchangeable for callers. This route is an independent fallback: it uses nba.com's public website instead of the statistics service, needs no parameters, and returns the slate that page displays rather than an arbitrary date.
+
+### `nba_homepage_leaders`
+
+NBA homepage leader board. Returns the homepage leader board for one category. This endpoint has no required parameter beyond the league: a LeagueID-only request answers 200 and echoes its whole contract, which is how its parameter names were recovered after an earlier sampled request answered 400. Note its category spelling is the upstream's own — 'Points' and 'Rebounds', not the 'PTS' short form leagueleaders uses.
+
+### `nba_hustle_stats`
+
+NBA hustle statistics for one game. Returns the hustle statistics for one game: minutes plus contested shots (overall, two-point and three-point), deflections, charges drawn, screen assists and screen-assist points, loose balls recovered (offensive, defensive and total) and box-outs. Marker-verified columns are PLAYER_ID, TEAM_ID, MINUTES, CONTESTED_SHOTS, CONTESTED_SHOTS_2PT, CONTESTED_SHOTS_3PT, DEFLECTIONS, CHARGES_DRAWN, SCREEN_ASSISTS, SCREEN_AST_PTS, OFF_LOOSE_BALLS_RECOVERED, DEF_LOOSE_BALLS_RECOVERED, LOOSE_BALLS_RECOVERED and BOX_OUTS; the sampled BOX_OUTS_PLAYER and BOX_OUTS_TEAM names did not match and are not claimed.
+
+### `nba_league_game_log`
+
+NBA game log for a season, by team or by player. Returns every game in a season as the league's game log. With player_or_team=T each row is one team-game and carries GAME_ID, TEAM_ID, GAME_DATE, MATCHUP, WL, MIN, PTS, PLUS_MINUS and VIDEO_AVAILABLE; with player_or_team=P each row is one player-game (the same identity columns plus PLAYER_ID and PLAYER_NAME) and the payload grows to several hundred KB. direction orders the log newest-first (DESC) or chronologically (ASC).
+
+### `nba_lineups`
+
+NBA lineup dashboard. Returns the lineup dashboard for one lineup size and measure: one row per lineup with GROUP_ID, GROUP_NAME, TEAM_ID, TEAM_ABBREVIATION and the counting/rate columns for the requested measure. The payload is large — the five-man sample was about 712 KB — so request it once and page locally. GroupQuantity is pinned to the one verified size, 5.
+
+### `nba_news`
+
+NBA news articles from nba.com. Returns the news articles nba.com is currently featuring, read from the page's embedded JSON state: article id, title, slug, canonical permalink, excerpt, publication and modification timestamps, publish status, word count and the primary section name and slug. Permalinks are the canonical article URLs, so a caller can link straight to a story without building a URL.
+
+### `nba_play_by_play`
+
+NBA play-by-play for one game. Returns every play-by-play action for one game in period order: action number and type, period, an ISO-8601 clock such as PT12M00.00S, team and player identity, the description, shot result and value, and the running home/away score. A full game is about 220 KB, so request it once and page locally rather than polling.
+
+### `nba_player_awards`
+
+NBA player award history. Returns one player's award history, one row per award. Marker-verified columns are PERSON_ID, FIRST_NAME, LAST_NAME, TEAM, DESCRIPTION, SEASON, CONFERENCE, TYPE, SUBTYPE1, SUBTYPE2, SUBTYPE3, ALL_NBA_TEAM_NUMBER and ALL_NBA_TEAM; the sampled AWARD_TYPE, ALL_DEFENSIVE_TEAM_NUMBER and ALL_ROOKIE_TEAM_NUMBER names did not match and are not claimed.
+
+### `nba_player_bio_stats`
+
+NBA league bio table. Returns the league bio table for a season: each player's height (label and inches), weight, college, country, draft year/round/number and age, with season GP and the counting stat line. Marker-verified columns are PLAYER_ID, PLAYER_NAME, TEAM_ID, TEAM_ABBREVIATION, AGE, PLAYER_HEIGHT, PLAYER_HEIGHT_INCHES, PLAYER_WEIGHT, COLLEGE, COUNTRY, DRAFT_YEAR, DRAFT_ROUND, DRAFT_NUMBER, GP, PTS, REB and AST — the complete sampled set matched.
+
+### `nba_player_career_stats`
+
+NBA player season-by-season and career statistics. Returns one player's career statistics as several tables: the season-by-season regular-season line, the career regular-season totals, the season-by-season postseason line and the career postseason totals. Verified columns are SEASON_ID, TEAM_ID, GP, GS, MIN and PTS. per_mode PerGame or Totals is validated against the values verified on this endpoint.
+
+### `nba_player_dash_pt_shots`
+
+NBA player tracking shot dashboard. Returns one player's tracking shot dashboard as several result sets (overall, and the tracking breakdowns the upstream returns). The endpoint rejects a trimmed query with HTTP 500, so the full dashboard scope set is always sent.
+
+### `nba_player_info`
+
+NBA player profile. Returns one player's league profile: full name forms, birth date, school and country, draft year and round, jersey number, position, height and weight, team identity and season experience. Take the player id from nba-players or nba-team-roster.
+
+### `nba_player_stats`
+
+NBA league-wide player statistics table. Returns the league-wide player statistics table for one season, measure and aggregation: one row per player with the columns the source publishes for that measure, keyed by the source's own column names such as PLAYER_ID, PLAYER_NAME, TEAM_ID, GP, MIN, PTS, REB and AST. Base and Advanced are the two verified measures, and PerGame and Totals the two verified aggregations; read the response's headers list rather than assuming a fixed column set.
+
+### `nba_players`
+
+NBA player index: every player id for a season. Returns the league's player index for a season, one row per player with player id, first and last name, team id and the source's roster attributes. This is the family's player-id discovery route: the ids it returns are what nba-player-info, nba-box-score and nba-play-by-play accept, so call this instead of guessing an id. Pass team_id to narrow the index to one roster.
+
+### `nba_playoff_picture`
+
+NBA playoff picture by conference. Returns the current playoff picture as two tables, EastConfPlayoffPicture and WestConfPlayoffPicture. Verified columns are TEAM_ID, CONFERENCE and CLINCHED; the upstream sends more columns than were confirmed here (the sampled PLAYOFF_RANK column name did not match the response) and any extras are passed through as-is.
+
+### `nba_pt_defend`
+
+NBA defensive tracking dashboard. Returns the league's defensive tracking table for one defended-shot category. Marker-verified columns are CLOSE_DEF_PERSON_ID, PLAYER_NAME, TEAM_ID, TEAM_ABBREVIATION, AGE, GP, G, FREQ, D_FGM, D_FGA, D_FG_PCT, NORMAL_FG_PCT and PCT_PLUSMINUS. The player identity column on this table is CLOSE_DEF_PERSON_ID, not PLAYER_ID.
+
+### `nba_pt_stats`
+
+NBA player-tracking dashboard. Returns the league player-tracking dashboard for one tracking measure. The endpoint rejects a trimmed query with HTTP 500, so the full dashboard scope set is always sent. pt_measure_type is pinned to the one verified measure, SpeedDistance.
+
+### `nba_scoreboard`
+
+NBA scoreboard for one game day. Returns every NBA game for a game day from the league's own statistics service: game id, code, status and clock, period, and both teams with id, tricode, name, score, wins and losses. Game ids from this route are the input to the box-score and play-by-play routes. The upstream requires a game date, so a missing date defaults to the current UTC date; the NBA game day is US Eastern, so pass game_date explicitly when the exact slate matters.
+
+### `nba_standings`
+
+NBA standings for a season and season type. Returns the standings table for one season and season type: one row per team with team id, city, name, slug, conference, division, wins, losses, win percentage, playoff rank, streak, conference record and clinched flag. Western/Eastern conference and division are columns rather than parameters, so one call returns the whole league and callers split on them.
+
+### `nba_synergy_play_types`
+
+NBA synergy play-type dashboard. Returns the synergy play-type dashboard for one play type and grouping. This endpoint takes a four-digit SeasonYear rather than the dashboards' YYYY-YY season label. play_type is pinned to the one verified value, Isolation, and type_grouping to the verified offensive grouping.
+
+### `nba_team_details`
+
+NBA franchise background, season history and awards. Returns one franchise's detail from the league statistics service: the franchise background row (team id, abbreviation, nickname, city, arena and capacity, owner, general manager, head coach, G-League affiliate, founding year), its season-by-season history, and its championship awards. Verified columns are TEAM_ID, ABBREVIATION, NICKNAME, CITY, ARENA, ARENACAPACITY, OWNER, GENERALMANAGER, HEADCOACH, DLEAGUEAFFILIATION and YEARFOUNDED on TeamBackground, plus YEARAWARDED and OPPOSITETEAM on TeamAwardsChampionships; the upstream sends more columns than were confirmed here and they are passed through as-is.
+
+### `nba_team_roster`
+
+NBA team roster for a season. Returns one team's roster for a season, one row per player with player id, name, nickname, player slug, jersey number, position, height and weight. Player ids from this route are the input nba-player-info accepts; take the team id from nba-standings.
+
+### `nba_team_shot_locations`
+
+NBA team shot-location dashboard. Returns the team shot-location dashboard: one row per team with the shooting columns for each distance zone. The endpoint requires both MeasureType and DistanceRange; a request without MeasureType answers HTTP 400 naming that parameter. distance_range is pinned to the one verified value, 'By Zone'.
+
+### `nba_team_stats`
+
+NBA league-wide team statistics table. Returns the league-wide team statistics table for one season, measure and aggregation: one row per team with the columns the source publishes for that measure, keyed by the source's own column names such as TEAM_ID, TEAM_NAME, GP, W, L, W_PCT, PTS and PLUS_MINUS. Base and Advanced are the two verified measures, and PerGame and Totals the two verified aggregations; the columns differ between measures, so read the response's headers list rather than assuming a fixed set.
+
+### `nba_team_stats_leaders`
+
+NBA league leaders for one statistical category. Returns the league leaders table for one ranked statistical category: one row per player with the columns the source publishes, keyed by the source's own column names such as PLAYER_ID, PLAYER_NAME, TEAM_ID, GP, MIN, PTS, REB and AST. stat_category is required and only the verified categories are accepted; the upstream answers HTTP 403 when it is omitted, so this route rejects the request locally instead.
 
 ### `nbc_article`
 
@@ -9619,6 +10631,74 @@ Get The New Yorker top stories. Returns fresh The New Yorker top stories from it
 ### `newyorker_sections`
 
 List The New Yorker sections. Lists every The New Yorker section accepted by the headlines endpoint, with slug, display name, and feed URL. This is the complete set of public text-article feeds the publisher serves; cartoon, podcast, video, and puzzle feeds are not included.
+
+### `nfhs_activities`
+
+List NFHS Network activities and sports. Returns the complete activity list NFHS Network serves: sports plus non-sport activities such as graduation, band performance and assembly, with each record's sport, two-team, indoor, championship and top-sport flags. Use this discovery endpoint to obtain the exact activity names the nfhs-events and nfhs-highlights activity filter accepts, matched case-insensitively. The upstream list is complete and ordered; is_sport and is_top_sport are filtered locally against the upstream's own flags.
+
+### `nfhs_affiliate`
+
+Get one NFHS Network broadcast affiliate. Returns one broadcast affiliate by its key or slug, including its type, network and subscription flags, attribution group, colours, social links and state coverage. Use nfhs-affiliates to discover the key or slug first.
+
+### `nfhs_affiliates`
+
+Search NFHS Network broadcast affiliates. Returns one page of broadcast affiliates with identity, type, network and subscription flags, attribution group, colours, social links and state coverage. Search by name with search_term (at least 3 characters) or filter by state; page with start/size and use next_cursor for deep pages. Use nfhs-affiliate to fetch one record by key or slug.
+
+### `nfhs_association`
+
+Get one NFHS Network state association. Returns one state association or section by its key or slug, including its about text, colours, social links, state coverage and publisher, producer and championship-page identities. Use nfhs-associations to discover the key or slug first.
+
+### `nfhs_associations`
+
+Search NFHS Network state associations and sections. Returns one page of state high-school associations and their sections (for example GHSA or CIF - North Coast Section) with identity, acronym, timezone, colours, social links, state coverage, publisher and producer keys and championship page URL. Search by name or acronym with search_term (at least 3 characters) or filter by state; page with start/size and use next_cursor for deep pages. Use nfhs-association to fetch one record by key or slug.
+
+### `nfhs_event`
+
+Get one NFHS Network event. Returns one game or event by key with its full schedule, sport, game type, gender, level, scores, status, postseason flag, participant teams and publisher identities. Broadcast ingest data, VOD keys, tickets and contact fields are not part of this contract. The site reads event detail from the echo service first and falls back to unity; this route mirrors that order. Use nfhs-events to discover the event key first.
+
+### `nfhs_events`
+
+Search NFHS Network games and events. Returns one page of games and events from the live, upcoming or on-demand drill-down with schedule, sport, game type, gender, level, scores, status, postseason flag, participant teams and publisher identities. Filter by activity display name from nfhs-activities, state from nfhs-states, gender and level from nfhs-filters, school_key or publisher_key, a free-text search_term (at least 3 characters) and a YYYY-MM-DD from/to start-date range; sort by start_time or date. Page with start/size and use next_cursor for deep pages. Use nfhs-event for the full detail of one event key.
+
+### `nfhs_filters`
+
+List the closed NFHS Network event-filter value space. Returns every closed enum the NFHS Network event-filter UI exposes: genders, levels, event drill-down types, event sort expressions, highlight sort expressions, school sort expressions and suggester scopes. The activity and state value spaces are larger upstream-owned lists and have their own discovery endpoints (nfhs-activities, nfhs-states). Use this before calling nfhs-events, nfhs-highlights, nfhs-schools or nfhs-suggest so a filter value is never guessed. This endpoint takes no parameters.
+
+### `nfhs_highlights`
+
+Search NFHS Network highlights. Returns one page of published highlight clips with title, headline, subtitle, date, duration, publisher identity and logo, sport, game type, gender, level, categories and thumbnail. Filter by activity display name from nfhs-activities, state from nfhs-states, gender and level from nfhs-filters, school_key, a free-text search_term (at least 3 characters) and a YYYY-MM-DD from/to date range; sort by date or created_at. Page with start/size and use next_cursor for deep pages.
+
+### `nfhs_producer`
+
+Get one NFHS Network producer. Returns one producer record by key: identity, type, state-association linkage, state coverage, colours, social links and related publishers. Producer keys appear in school and event records. Use nfhs-publisher for the publisher that fronts a producer. Device and contact data is not part of this contract.
+
+### `nfhs_publisher`
+
+Get one NFHS Network publisher. Returns one publisher record by key: identity, type, state-association linkage, state coverage, colours, social links, network/subscription flags and related producers. Publisher keys appear in an event's publishers list and in school records. Use nfhs-producer for the producer behind a publisher. Device and contact data is not part of this contract.
+
+### `nfhs_school`
+
+Get one NFHS Network school. Returns one school by its key or slug with identity, mascot, acronym, address, city, state, coordinates, colours, logo, network/subscription flags, publisher and producer keys and share image. Contact fields, subscriber emails and Pixellot device mappings are not part of this contract. Use nfhs-schools or nfhs-suggest to discover the key or slug first.
+
+### `nfhs_schools`
+
+Search NFHS Network schools. Returns one page of schools with identity, mascot, acronym, address, city, state, coordinates, colours, logo, network/subscription flags, publisher and producer keys and share image. Search within a state (recommended) and optionally by school name with search_term (at least 3 characters), sorted by school_name+asc or school_name+desc; page with start/size and use next_cursor for deep pages. Use nfhs-suggest for typeahead and nfhs-school for one record by key or slug.
+
+### `nfhs_search`
+
+Free-text search across NFHS Network entities. Returns one page of mixed-entity search results for a term of at least 3 characters. Each item's content_type identifies its shape: school items carry school identity and location fields, state_association items carry association identity, and game items carry game scheduling fields. Optionally filter by state from nfhs-states or activity from nfhs-activities; page with start/size and use next_cursor for deep pages. Use the entity-specific routes when the type is known.
+
+### `nfhs_sports`
+
+List NFHS Network sport slugs and two-team flags. Returns the sport-slug to flags map NFHS Network uses in its sport routes, currently the is_two_team flag for each of the nine two-team sports. The keys are the URL slugs used in /sports/{sport}/... routes; the nfhs-events activity filter instead takes the activity display names returned by nfhs-activities. This endpoint takes no parameters.
+
+### `nfhs_states`
+
+List NFHS Network states and territories. Returns the complete state list NFHS Network serves (52 values, including DC and the national "US" pseudo-state) with the name, code and slug used by state routes. Use it to obtain the exact state code the nfhs-schools, nfhs-events, nfhs-highlights, nfhs-associations, nfhs-affiliates and nfhs-search state filters accept. This endpoint takes no parameters.
+
+### `nfhs_suggest`
+
+Typeahead school and association suggestions. Returns typeahead suggestions for a partial name (at least 3 characters). The profiles scope (default) returns schools and state associations, matching the site's global search box; the schools scope returns schools only. Each item uses the school shape, so school items carry the full school identity and location fields. Use nfhs-schools for a paginated filtered search instead.
 
 ### `nike_categories`
 
@@ -10696,9 +11776,53 @@ Get a professional golf player directory. Returns the selected public golf resou
 
 Get the website-default golf schedule. Returns the selected public golf resource with its native identity, tour and resolved season context. Player IDs retain significant leading zeroes.
 
+### `pgatour_schedule_seasons`
+
+Discover PGA tour-specific schedule seasons. Returns every native season value and display label for the selected tour. Labels such as2022–2023 are not replaced by guessed calendar years. Use returned values with the schedule season selector; omission there preserves its own source default.
+
+### `pgatour_stat_detail`
+
+Read a PGA Tour statistics table. Returns the published player and tour-average rows for a native stat ID. Preserves source season labels, columns, values and selector menus. Use stat options for per-stat years and tournaments; pair query_type with tournament_id. Search, sorting and favorites are not server filters.
+
+### `pgatour_stat_options`
+
+Discover PGA Tour statistics selectors. Returns the native years, season labels, tournaments and event-query types for one statistics table. A year selector refreshes the tournament choices for that season. Stat IDs and category groups come from statistics discovery.
+
 ### `pgatour_stats`
 
 Get the golf statistics overview. Returns the selected public golf resource with its native identity, tour and resolved season context. Player IDs retain significant leading zeroes.
+
+### `pgatour_tournament_broadcast`
+
+Get PGA tournament broadcast coverage. Returns native regional broadcast schedules, network metadata and the actual source country code. There is no country selector or worldwide-coverage promise. Direct media stream URLs are omitted; no stream is fetched. Use year, slug and full main-tour ID from tournament-link discovery.
+
+### `pgatour_tournament_course_stats`
+
+Get PGA Tour tournament course statistics. Returns every native course, round summary and hole statistic. Null all-round selectors remain null. Supply canonical year, slug and full tournament ID from tournament-link discovery. Other tours and team-event variants are not qualified by this local contract.
+
+### `pgatour_tournament_field`
+
+Get PGA Tour tournament field and alternates. Returns the complete native field and alternate lists, status and qualifying metadata. It does not equate field membership with leaderboard rows. Supply canonical year, slug and full tournament ID from tournament-link discovery. Other tours and team-event variants are not qualified by this local contract.
+
+### `pgatour_tournament_links`
+
+Discover PGA tournament URL contexts. Returns year, slug and ID from actual main-tour schedule/sitemap links. Schedule events without a matching source link are listed separately; their slugs are not guessed. Use returned contexts with tournament tab endpoints.
+
+### `pgatour_tournament_overview`
+
+Get PGA Tour tournament overview. Returns native tournament facts, courses and individual champion history. Ticket purchase links and account preference fields are omitted. Supply canonical year, slug and full tournament ID from tournament-link discovery. Other tours and team-event variants are not qualified by this local contract.
+
+### `pgatour_tournament_past_results`
+
+Get PGA Tour tournament past results. Returns the source default historical results and every native available-season entry. The resolved results ID can refer to a previous year; no year selector is invented. Supply canonical year, slug and full tournament ID from tournament-link discovery. Other tours and team-event variants are not qualified by this local contract.
+
+### `pgatour_tournament_tee_times`
+
+Get PGA Tour tournament tee times. Returns all native rounds, groups and professional player identities with source tee times and timezone. Supply canonical year, slug and full tournament ID from tournament-link discovery. Other tours and team-event variants are not qualified by this local contract.
+
+### `pgatour_tournament_weather`
+
+Get PGA tournament weather forecast. Returns native hourly and daily forecasts, source conditions, wind, humidity, precipitation and Celsius/Fahrenheit strings. Reads the tournament overview resource without calculating weather values. Use year, slug and full main-tour ID from tournament-link discovery.
 
 ### `phillyinquirer_article`
 
@@ -13547,6 +14671,74 @@ Get a SparkFun product. Returns one SparkFun product by 'sku', for example 'DEV-
 ### `sparkfun_search`
 
 Search SparkFun products. Searches public SparkFun product data with pagination and dynamic facet filters. Each filter must be 'attribute:value'; use values from the response's filters array.
+
+### `speedrun_catalog`
+
+Discover Speedrun.com filter catalogs. Reads anonymous Speedrun.com v1 metadata and preserves native opaque identifiers, run context and pagination. Source attribution: Speedrun.com.
+
+### `speedrun_categories`
+
+Get native game categories. Reads anonymous Speedrun.com v1 metadata and preserves native opaque identifiers, run context and pagination. Source attribution: Speedrun.com.
+
+### `speedrun_category_detail`
+
+Get Speedrun category detail. Returns complete native category detail and context. Use game/category/level discovery IDs, not mutable abbreviations. Metadata embeds preserve their native wrappers; account/profile embeds are excluded. Records count places and preserve ties, empty boards and native pagination. Variable resources return every applicable value and its source scope.
+
+### `speedrun_category_records`
+
+Get Speedrun category records. Returns complete native category records and context. Use game/category/level discovery IDs, not mutable abbreviations. Metadata embeds preserve their native wrappers; account/profile embeds are excluded. Records count places and preserve ties, empty boards and native pagination. Variable resources return every applicable value and its source scope.
+
+### `speedrun_category_variables`
+
+Get Speedrun category variables. Returns complete native category variables and context. Use game/category/level discovery IDs, not mutable abbreviations. Metadata embeds preserve their native wrappers; account/profile embeds are excluded. Records count places and preserve ties, empty boards and native pagination. Variable resources return every applicable value and its source scope.
+
+### `speedrun_game_detail`
+
+Get Speedrun game detail. Returns complete native game detail and context. Use game/category/level discovery IDs, not mutable abbreviations. Metadata embeds preserve their native wrappers; account/profile embeds are excluded. Records count places and preserve ties, empty boards and native pagination. Variable resources return every applicable value and its source scope.
+
+### `speedrun_game_leaderboard`
+
+Get a Speedrun full-game leaderboard. Returns native places, tied runs and game/category/level context. top counts places, not runs. IDs come from game/category/level discovery; platform/region use catalog discovery. Game variables expose value IDs and scope; requested variables are checked against this board's native applicable-variable embedding. No local ranking or synthetic pagination is performed.
+
+### `speedrun_games`
+
+Search Speedrun.com games. Reads anonymous Speedrun.com v1 metadata and preserves native opaque identifiers, run context and pagination. Source attribution: Speedrun.com.
+
+### `speedrun_level_categories`
+
+Get Speedrun level categories. Returns complete native level categories and context. Use game/category/level discovery IDs, not mutable abbreviations. Metadata embeds preserve their native wrappers; account/profile embeds are excluded. Records count places and preserve ties, empty boards and native pagination. Variable resources return every applicable value and its source scope.
+
+### `speedrun_level_detail`
+
+Get Speedrun level detail. Returns complete native level detail and context. Use game/category/level discovery IDs, not mutable abbreviations. Metadata embeds preserve their native wrappers; account/profile embeds are excluded. Records count places and preserve ties, empty boards and native pagination. Variable resources return every applicable value and its source scope.
+
+### `speedrun_level_leaderboard`
+
+Get a Speedrun individual-level leaderboard. Returns native places, tied runs and game/category/level context. top counts places, not runs. IDs come from game/category/level discovery; platform/region use catalog discovery. Game variables expose value IDs and scope; requested variables are checked against this board's native applicable-variable embedding. No local ranking or synthetic pagination is performed.
+
+### `speedrun_level_records`
+
+Get Speedrun level records. Returns complete native level records and context. Use game/category/level discovery IDs, not mutable abbreviations. Metadata embeds preserve their native wrappers; account/profile embeds are excluded. Records count places and preserve ties, empty boards and native pagination. Variable resources return every applicable value and its source scope.
+
+### `speedrun_level_variables`
+
+Get Speedrun level variables. Returns complete native level variables and context. Use game/category/level discovery IDs, not mutable abbreviations. Metadata embeds preserve their native wrappers; account/profile embeds are excluded. Records count places and preserve ties, empty boards and native pagination. Variable resources return every applicable value and its source scope.
+
+### `speedrun_levels`
+
+Get native game levels. Reads anonymous Speedrun.com v1 metadata and preserves native opaque identifiers, run context and pagination. Source attribution: Speedrun.com.
+
+### `speedrun_records`
+
+Get native top-one game record boards. Reads anonymous Speedrun.com v1 metadata and preserves native opaque identifiers, run context and pagination. Source attribution: Speedrun.com.
+
+### `speedrun_resource_options`
+
+Discover Speedrun contextual resource options. Lists supported metadata embeds, contextual ordering directions and global timing method names by resource path. Game detail supplies per-game timing support. No upstream collection or account request is made.
+
+### `speedrun_variables`
+
+Get native game variable definitions. Reads anonymous Speedrun.com v1 metadata and preserves native opaque identifiers, run context and pagination. Source attribution: Speedrun.com.
 
 ### `sportingnews_article`
 
@@ -16492,9 +17684,41 @@ Get a Wall Street Journal author's profile and recent articles. Returns one Wall
 
 Discover WTA ranking country and region codes. Returns the source codes and labels used by player rankings. ALL omits the nationality filter. Team race rankings do not have a country selector.
 
+### `wta_match_states`
+
+Discover WTA match-feed state selectors. Lists the accepted native state query values and labels. Query states U,L,C differ from raw response MatchState values; response values are retained unchanged.
+
 ### `wta_rankings`
 
 Get WTA player or team rankings. Returns native ranks, points, tournament counts, movement and player identity. Player views preserve the actual published rankedAt value. Team rows retain both players and do not fabricate a ranking date.
+
+### `wta_tournament`
+
+Read a WTA tournament season. Returns the tournament's native season metadata, live scoring identifier and published singles/doubles champions. Group and season-specific levels remain separate. Use the tournament calendar and season discovery for IDs and years.
+
+### `wta_tournament_draws`
+
+Read a WTA tournament draw resource. Returns all event draws published in the native tournament resource, including available singles, doubles and qualifying draws. Decodes the native nested JSON into objects while preserving field case, cardinality, scores, seeds, byes, groups and source round data. Native null draw data remains null. UI tab/round choices do not add server filters or computed bracket advancement.
+
+### `wta_tournament_matches`
+
+Read a WTA tournament match-feed snapshot. Returns all rows in the published native response with professional match, score, timing and participant fields. Optional states is a unique CSV of U,L,C from match-state discovery. No local date/type filtering, sorting, bracket updates or incremental cursor is added. Raw MatchState codes and padded EventID/MatchID strings are preserved.
+
+### `wta_tournament_order_of_play`
+
+Read a WTA tournament order of play. Decodes the whole native order-of-play resource into structured objects, preserving source days, courts, match order, participant structures, display/ISO dates and court UTC offsets. Native null schedules remain null. Personnel and unreviewed fields are excluded. No generated calendar, latest-day calculation or timezone conversion is performed.
+
+### `wta_tournament_players`
+
+Read a WTA tournament's published entry list. Returns every published event and entry in source order, preserving singles, doubles teams, qualifying entries, string seeds and native status flags. Only professional participant IDs/names/country codes are retained. The native tournament context is validated before accepting this context-less roster resource. No draw reconciliation, active-player filtering or inferred winner status is added.
+
+### `wta_tournament_seasons`
+
+Discover WTA tournament calendar seasons. Returns every season currently offered by the tournament calendar, preserving source order. Historical calendar availability does not imply ranking-date availability.
+
+### `wta_tournaments`
+
+Get WTA tournament calendar events. Returns one native page of up to100 events for a discovered calendar season, including lower tiers when no level is supplied. Level and surface filter the upstream resource. Event levels can differ from tournament-group defaults. Raw pageInfo is preserved even when numPages is zero with additional entries. Winners, player biographies and match details are outside this metadata response.
 
 ### `x_post`
 
